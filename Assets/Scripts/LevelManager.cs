@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour {
 	public static LevelManager levelManager;
 	private Camera kamera;
 	public static PlayerController player;
+	private Transform background;
 
 	public Text meterText;
 
@@ -40,6 +41,13 @@ public class LevelManager : MonoBehaviour {
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
+
+		GameObject obj = GameObject.FindGameObjectWithTag( "BackgroundContainer" );
+		if( null == obj ) {
+			Debug.LogError( "Conteneur de fond introuvable, ajoute le tag 'BackgroundContainer' !" );
+		}
+		background = obj.transform;
+
 	}
 
 	void Start () {
@@ -53,6 +61,10 @@ public class LevelManager : MonoBehaviour {
 		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
 		sizeLastBlock = blockList[0].GetComponent<Collider2D> ().bounds.size.x;
 		sizeFirstBlock = sizeLastBlock;
+
+		GameObject obj = PoolingManager.current.Spawn("Background");
+		obj.transform.parent = background;
+		obj.SetActive(true);
 	}
 
 	void Update () {
