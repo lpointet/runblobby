@@ -30,7 +30,6 @@ public class LevelManager : MonoBehaviour {
 
 	// Augmentation de la vitesse par palier
 	private float distanceTraveled;
-	public float ratioAugmentSpeed;
 
 	//public int[] listStep;
 	//private int currentStep;
@@ -45,8 +44,6 @@ public class LevelManager : MonoBehaviour {
 
 	void Start () {
 		distanceTraveled = 0;
-		if (ratioAugmentSpeed <= 0)
-			ratioAugmentSpeed = 1000;
 		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 1;
 		cameraEndPosition = kamera.transform.position.x + kamera.orthographicSize * kamera.aspect + 1;
 
@@ -72,11 +69,10 @@ public class LevelManager : MonoBehaviour {
 		// A changer, car le calcul (des constantes) ne permet pas de ralentir la vitesse par ailleurs
 		if (!player.stats.isDead) {
 			distanceTraveled += player.stats.moveSpeed * Time.deltaTime;
-			player.stats.moveSpeed = player.stats.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
+			//player.stats.moveSpeed = player.stats.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
+			//player.stats.moveSpeed = player.stats.initialMoveSpeed + player.stats.initialMoveSpeed * Time.time / 60f;
 			 
 			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m";
-
-			Debug.Log (Time.deltaTime);
 		}
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra

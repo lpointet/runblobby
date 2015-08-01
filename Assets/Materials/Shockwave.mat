@@ -112,10 +112,6 @@ Material:
         second: 0
       data:
         first:
-          name: _InvFade
-        second: 1
-      data:
-        first:
           name: _Stencil
         second: 0
       data:
@@ -176,6 +172,10 @@ Material:
         second: 0
       data:
         first:
+          name: _InvFade
+        second: 1
+      data:
+        first:
           name: _Cull
         second: 2
     m_Colors:
@@ -197,12 +197,12 @@ Material:
         second: {r: .5, g: .5, b: .5, a: .5}
       data:
         first:
-          name: _EmisColor
-        second: {r: .200000003, g: .200000003, b: .200000003, a: 0}
-      data:
-        first:
           name: _HueVariation
         second: {r: 1, g: .5, b: 0, a: .100000001}
+      data:
+        first:
+          name: _EmisColor
+        second: {r: .200000003, g: .200000003, b: .200000003, a: 0}
 --- !u!1002 &2100001
 EditorExtensionImpl:
   serializedVersion: 6
