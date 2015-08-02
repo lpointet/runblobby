@@ -11,7 +11,10 @@ public class Enemy : MonoBehaviour {
 		public float moveSpeed;
 		public float jumpHeight;
 		public bool isDead;
-
+		
+		public float shieldPercentage;
+		public float shieldProbability;
+		
 		public int damageToGive;
 		public int pointScore;
 	}
@@ -34,12 +37,15 @@ public class Enemy : MonoBehaviour {
 	
 	private Rigidbody2D herosRb;
 	
+	private bool shieldActive;
+	
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
 		myTransform = transform;
 	}
 
 	void Start() {
+		stats.shieldPercentage = Mathf.Clamp( stats.shieldPercentage, 0f, 1f );
 		init();
 	}
 
@@ -50,6 +56,10 @@ public class Enemy : MonoBehaviour {
 	private void init() {
 		// Init health
 		stats.healthPoint = stats.healhPointMax;
+		
+		// Init shield
+		stats.shieldProbability = Mathf.Clamp( stats.shieldProbability, 0f, 1f );
+		shieldActive = stats.shieldProbability > 0f ? Random.Range( 0f, 1f ) <= stats.shieldProbability : false;
 	}
 
 	void Update () {
@@ -89,8 +99,13 @@ public class Enemy : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	public void HurtEnemy(int damage) {
+		if( shieldActive ) {
+			// damage is divided by 2 for a 100% shield
+			damage = Mathf.RoundToInt( damage * ( 1f - 0.5f * stats.shieldPercentage ) );
+		}
+		
 		stats.healthPoint -= damage;
 		
 		if (stats.healthPoint <= 0) {
