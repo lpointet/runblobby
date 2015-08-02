@@ -754,8 +754,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetX: 2
-  hasRightBuddy: 0
-  hasLeftBuddy: 0
   reverseScale: 1
 --- !u!1001 &169367553
 Prefab:
