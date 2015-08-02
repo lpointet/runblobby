@@ -29,7 +29,7 @@ public class Tiling : MonoBehaviour {
 	void Update () {
 		if (!leftBuddy || !rightBuddy) { // on évite les calculs si ça existe déjà
 			// calculer la vision de la caméra (moitié) de ce que la caméra voit dans les coordonnées réelles
-			float camHorizontalExtend = kamera.orthographicSize * Screen.width/Screen.height;
+			float camHorizontalExtend = kamera.orthographicSize * kamera.aspect;
 
 			if( !rightBuddy ) {
 				// calculer la position x où la caméra peut voir le bord du sprite
