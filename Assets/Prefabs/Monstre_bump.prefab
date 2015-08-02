@@ -60,6 +60,8 @@ MonoBehaviour:
     moveSpeed: 0
     jumpHeight: 0
     isDead: 0
+    shieldPercentage: 0
+    shieldProbability: 0
     damageToGive: 1
     pointScore: 50
   movingEnemy: 0
@@ -136,6 +138,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: bouncableEnemy
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: stats.shieldPercentage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: stats.shieldProbability
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

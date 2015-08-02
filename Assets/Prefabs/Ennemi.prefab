@@ -119,6 +119,8 @@ MonoBehaviour:
     moveSpeed: 0
     jumpHeight: 0
     isDead: 0
+    shieldPercentage: 0
+    shieldProbability: 0
     damageToGive: 1
     pointScore: 50
   movingEnemy: 0

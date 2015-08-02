@@ -4781,11 +4781,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 5
-  weaponPower: 1
+  weaponPower: 5
   whatToHit:
     serializedVersion: 2
     m_Bits: 512
-  muzzleFlashPrefab: {fileID: 497424, guid: 3120eb417c0f98942817646cb74fb587, type: 2}
+  muzzleFlashPrefab: {fileID: 0}
   bulletTrailPrefab: {fileID: 435126, guid: 7028cf0818e54b747a8b8cd1f40b1902, type: 2}
 --- !u!114 &1434480392
 MonoBehaviour:
