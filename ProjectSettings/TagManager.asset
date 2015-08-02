@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GameMaster
   - Enemy_bumper
+  - BackgroundContainer
   layers:
   - Default
   - TransparentFX
