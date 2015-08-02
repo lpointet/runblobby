@@ -78,7 +78,6 @@ public class LevelManager : MonoBehaviour {
 		}*/
 
 		// Augmentation de la vitesse progressive
-		// A changer, car le calcul (des constantes) ne permet pas de ralentir la vitesse par ailleurs
 		if (!player.stats.isDead) {
 			distanceTraveled += player.stats.moveSpeed * Time.deltaTime;
 			//player.stats.moveSpeed = player.stats.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);

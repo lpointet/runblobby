@@ -39,8 +39,6 @@ public class CameraManager : MonoBehaviour {
 		xOffset = (unitsInWidth / 2f) * xOffsetPourcentage;
 		yOffset = Camera.main.orthographicSize * yOffsetPourcentage;
 		transform.position = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + yOffset, transform.position.z);
-
-		Debug.Log (xOffset);
 	}
 
 	void Update () {
