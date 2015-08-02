@@ -43,13 +43,6 @@ public class Tiling : MonoBehaviour {
 			if( !leftBuddy ) {
 				float edgeVisiblePositionLeft = (myTransform.position.x + spriteWidth/2) + camHorizontalExtend;
 
-				Debug.Log ("new loop");
-				Debug.Log (myTransform.position.x);
-				Debug.Log (spriteWidth);
-				Debug.Log (camHorizontalExtend);
-				Debug.Log (edgeVisiblePositionLeft);
-				Debug.Log (kamera.transform.position.x);
-
 				if (kamera.transform.position.x > edgeVisiblePositionLeft + offsetX) {
 					myTransform.gameObject.SetActive(false);
 					rightBuddy.GetComponent<Tiling>().leftBuddy = null;
