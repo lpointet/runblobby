@@ -14,7 +14,7 @@ public class PoolingManager : MonoBehaviour {
 		
 		foreach(PoolingScript pool in poolCollection)
 		{
-			pool.Awake();
+			pool.Init();
 			pools.Add(pool.poolName, pool);
 		}
 	}

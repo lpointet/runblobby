@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour {
 		blockList = new List<GameObject> {blockStart};
 		// ICI : Instantiate si jamais c'est un prefab
 		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
-		sizeLastBlock = blockList[0].GetComponent<Collider2D> ().bounds.size.x;
+		sizeLastBlock = blockList[0].GetComponent<BlockManager> ().widthSize;
 		sizeFirstBlock = sizeLastBlock;
 		
 		GameObject obj = PoolingManager.current.Spawn("Background");
@@ -90,7 +90,7 @@ public class LevelManager : MonoBehaviour {
 			blockList [0].SetActive(false);
 			blockList.RemoveAt(0);
 
-			sizeFirstBlock = blockList[0].GetComponent<Collider2D>().bounds.size.x;
+			sizeFirstBlock = blockList[0].GetComponent<BlockManager>().widthSize;
 		}
 
 		// Création du prochain bloc si le gros bloc en cours approche de la fin de la caméra

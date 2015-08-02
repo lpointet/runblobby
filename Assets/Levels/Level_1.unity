@@ -2056,7 +2056,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1576015070}
-  - 61: {fileID: 1576015071}
+  - 114: {fileID: 1576015072}
   m_Layer: 0
   m_Name: Block_Start
   m_TagString: Untagged
@@ -2101,19 +2101,19 @@ Transform:
   - {fileID: 295511217}
   m_Father: {fileID: 0}
   m_RootOrder: 11
---- !u!61 &1576015071
-BoxCollider2D:
+--- !u!114 &1576015072
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1576015069}
   m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_Offset: {x: 10.4999981, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 21.9999962, y: 1}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 0
+  widthSize: 22
 --- !u!1 &1590499155
 GameObject:
   m_ObjectHideFlags: 0
