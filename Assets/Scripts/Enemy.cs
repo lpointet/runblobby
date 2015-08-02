@@ -39,6 +39,19 @@ public class Enemy : MonoBehaviour {
 		myTransform = transform;
 	}
 
+	void Start() {
+		init();
+	}
+
+	void OnEnable() {
+		init();
+	}
+
+	private void init() {
+		// Init health
+		stats.healthPoint = stats.healhPointMax;
+	}
+
 	void Update () {
 		// On n'appelle ça que si l'ennemy bouge
 		if (movingEnemy) {
@@ -79,7 +92,7 @@ public class Enemy : MonoBehaviour {
 
 	public void HurtEnemy(int damage) {
 		stats.healthPoint -= damage;
-
+		
 		if (stats.healthPoint <= 0) {
 			Despawn();
 			ScoreManager.AddPoint (stats.pointScore);
