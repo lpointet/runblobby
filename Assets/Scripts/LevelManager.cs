@@ -41,13 +41,12 @@ public class LevelManager : MonoBehaviour {
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
-
-		GameObject obj = GameObject.FindGameObjectWithTag( "BackgroundContainer" );
-		if( null == obj ) {
-			Debug.LogError( "Conteneur de fond introuvable, ajoute le tag 'BackgroundContainer' !" );
+		
+		GameObject obj = GameObject.FindGameObjectWithTag("BackgroundContainer");
+		if(null == obj) {
+			Debug.LogError("Conteneur de fond introuvable, ajoute le tag 'BackgroundContainer' !");
 		}
 		background = obj.transform;
-
 	}
 
 	void Start () {
@@ -61,7 +60,7 @@ public class LevelManager : MonoBehaviour {
 		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
 		sizeLastBlock = blockList[0].GetComponent<Collider2D> ().bounds.size.x;
 		sizeFirstBlock = sizeLastBlock;
-
+		
 		GameObject obj = PoolingManager.current.Spawn("Background");
 		obj.transform.parent = background;
 		obj.SetActive(true);
@@ -117,11 +116,11 @@ public class LevelManager : MonoBehaviour {
 		// On cherche le dernier élément (vu qu'on place tout par rapport à lui)
 		GameObject lastBlock = blockList[blockList.Count-1];
 
-		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<Collider2D>().bounds.size.x;
+		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<BlockManager>().widthSize;
 		obj.transform.rotation = lastBlock.transform.rotation;
 		LevelManager.SetActiveRecursively(obj, true); // Normalement SetActive(true);
 
-		sizeLastBlock = obj.GetComponent<Collider2D> ().bounds.size.x;
+		sizeLastBlock = obj.GetComponent<BlockManager>().widthSize;
 
 		blockList.Add (obj); // On ajoute à la liste le bloc
 	}

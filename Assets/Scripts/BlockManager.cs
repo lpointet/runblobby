@@ -3,9 +3,10 @@ using System.Collections;
 
 public class BlockManager : MonoBehaviour {
 
-	void OnEnable() {
-		foreach (Renderer rend in GetComponentsInChildren<Renderer>()) {
-			rend.enabled = true;
-		}
+	public int difficulty;
+	public int widthSize;
+
+	void Start() {
+
 	}
 }
