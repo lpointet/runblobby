@@ -16,9 +16,7 @@ public class PoolingScript : MonoBehaviour {
 	public void Awake() {
 		if (poolName == "")
 			poolName = name;
-	}
 
-	void Start () {
 		pooledObjects = new List<GameObject> ();
 
 		for (int i = 0; i < pooledAmount; i++) {
