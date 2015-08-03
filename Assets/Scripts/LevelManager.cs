@@ -23,7 +23,7 @@ public class LevelManager : MonoBehaviour {
 
 	public GameObject blockStart;
 	public GameObject blockEnd;
-	public GameObject blockEnemy;
+	public GameObject[] blockEnemy;
 	private List<GameObject> blockList;
 
 	private float sizeLastBlock;
@@ -33,11 +33,11 @@ public class LevelManager : MonoBehaviour {
 	// Augmentation de la vitesse par palier
 	private float distanceTraveled;
 
-	//public int[] listStep;
-	//private int currentStep;
+	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
+	private int currentPhase;	// Phase en cours
 	private bool blockPhase;
-
-	bool premierok = false;
+	private bool premierBlock = false;
+	public Enemy[] ennemiMiddle;
 
 	void Awake() {
 		if (levelManager == null)
@@ -55,6 +55,7 @@ public class LevelManager : MonoBehaviour {
 
 	void Start () {
 		distanceTraveled = 0;
+		currentPhase = 0;
 		blockPhase = true;
 		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 1;
 		cameraEndPosition = kamera.transform.position.x + kamera.orthographicSize * kamera.aspect + 1;
@@ -94,32 +95,29 @@ public class LevelManager : MonoBehaviour {
 
 
 		// Définir dans quelle phase on se situe
-		if (distanceTraveled > 10) {
+		if (distanceTraveled > listPhase[currentPhase] && currentPhase < listPhase.Length) {
 			blockPhase = false;
 
-			if(!premierok) {
-				// On cherche le dernier élément (vu qu'on place tout par rapport à lui)
-				GameObject lastBlock = blockList[blockList.Count-1];
+			// On créé le premier bloc qui n'est pas un bloc du milieu
+			if(!premierBlock) {
+				GameObject firstTile = Instantiate(blockEnemy[0]);
+				PositionBlock(firstTile);
 
-				// On créé le premier bloc qui n'est pas un bloc du milieu
-				GameObject firstTile = GameObject.Find ("ground_left_end");
-				GameObject obj = Instantiate(firstTile, lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<BlockManager>().widthSize, lastBlock.transform.rotation) as GameObject;
-
-				sizeLastBlock = obj.GetComponent<BlockManager>().widthSize;
-				
-				blockList.Add (obj); // On ajoute à la liste le bloc
-
-				premierok = true;
-
-				// TODO OPTIMISER TOUT CA C'EST TRES SALE
+				premierBlock = true;
 			}
+
+			// On créé le dernier bloc qui n'est pas un bloc du milieu
+			// Quand l'ennemi est mort
+			/*if(ennemiMiddle[0].stats.isDead) {
+
+				currentPhase++;
+				premierBlock = false;
+			}*/
 		}
 		// Si on n'est pas dans une phase "ennemie", on est dans une phase "block"
 		else {
 			blockPhase = true;
 		}
-
-
 
 
 
@@ -134,7 +132,7 @@ public class LevelManager : MonoBehaviour {
 		
 		// Création du prochain bloc si le dernier bloc en cours approche de la fin de la caméra
 		if (blockList [blockList.Count - 1].transform.position.x + sizeLastBlock < cameraEndPosition) {
-			CreateOneBlockAhead ();
+			PositionBlock (GetNewBlock (blockPhase));
 		}
 
 		// Si le joueur n'est pas mort, on bouge le monde
@@ -146,27 +144,32 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void CreateOneBlockAhead() {
-		GameObject obj;
-		if (blockPhase) {
+
+	}
+
+	private GameObject GetNewBlock(bool _blockPhase) {
+		if (_blockPhase) {
 			//test random à mettre sous fonction
 			string randomBlock = PoolingManager.current.RandomNameOfPool ("Block");
 			// fin
-			obj = PoolingManager.current.Spawn (randomBlock);
+			return PoolingManager.current.Spawn (randomBlock);
 		}
 		else
-			obj = PoolingManager.current.Spawn ("BasiqueGround");
+			return PoolingManager.current.Spawn ("BasiqueGround");
+	}
 
+	private void PositionBlock(GameObject obj) {
 		if (obj == null) return;
-
+		
 		// On cherche le dernier élément (vu qu'on place tout par rapport à lui)
 		GameObject lastBlock = blockList[blockList.Count-1];
-
+		
 		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<BlockManager>().widthSize;
 		obj.transform.rotation = lastBlock.transform.rotation;
 		LevelManager.SetActiveRecursively(obj, true); // Normalement SetActive(true);
-
+		
 		sizeLastBlock = obj.GetComponent<BlockManager>().widthSize;
-
+		
 		blockList.Add (obj); // On ajoute à la liste le bloc
 	}
 
