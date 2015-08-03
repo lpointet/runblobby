@@ -1196,7 +1196,7 @@ MonoBehaviour:
     healthPoint: 3
     healhPointMax: 1
     moveSpeed: 5
-    initialMoveSpeed: 5
+    initialMoveSpeed: 10
     jumpHeight: 15
     isDead: 0
   healthText: {fileID: 319568506}
@@ -1327,9 +1327,11 @@ MonoBehaviour:
   blockEnd: {fileID: 0}
   blockEnemy:
   - {fileID: 102792, guid: 38e1e65a585ea9a4d8592918bf23cad3, type: 2}
-  - {fileID: 0}
-  listPhase: 1e0000003200000050000000
-  ennemiMiddle: []
+  - {fileID: 189542, guid: b298b3f9deeddaf4db4d88b862947c7f, type: 2}
+  listPhase: 1e000000f401000050000000
+  enemyMiddle:
+  - {fileID: 11432096, guid: fcb8a41f5733cf9478cae4e46cb07d98, type: 2}
+  spawnEnemyDelay: 5
 --- !u!4 &897286641
 Transform:
   m_ObjectHideFlags: 0
