@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour {
 
 	public GameObject blockStart;
 	public GameObject blockEnd;
+	public GameObject blockEnemy;
 	private List<GameObject> blockList;
 
 	private float sizeLastBlock;
@@ -34,6 +35,9 @@ public class LevelManager : MonoBehaviour {
 
 	//public int[] listStep;
 	//private int currentStep;
+	private bool blockPhase;
+
+	bool premierok = false;
 
 	void Awake() {
 		if (levelManager == null)
@@ -51,6 +55,7 @@ public class LevelManager : MonoBehaviour {
 
 	void Start () {
 		distanceTraveled = 0;
+		blockPhase = true;
 		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 1;
 		cameraEndPosition = kamera.transform.position.x + kamera.orthographicSize * kamera.aspect + 1;
 
@@ -75,41 +80,81 @@ public class LevelManager : MonoBehaviour {
 				currentStep++;
 			}
 		}*/
-
+		
 		// Augmentation de la vitesse progressive
-		if (!player.stats.isDead) {
+		//player.stats.moveSpeed = player.stats.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
+		//player.stats.moveSpeed = player.stats.initialMoveSpeed + player.stats.initialMoveSpeed * Time.time / 60f;	
+
+		// On actualise la distance parcourue si le joueur n'est pas mort
+		if (!player.stats.isDead)
 			distanceTraveled += player.stats.moveSpeed * Time.deltaTime;
-			//player.stats.moveSpeed = player.stats.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
-			//player.stats.moveSpeed = player.stats.initialMoveSpeed + player.stats.initialMoveSpeed * Time.time / 60f;
-			 
-			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m";
+
+
+
+
+
+		// Définir dans quelle phase on se situe
+		if (distanceTraveled > 10) {
+			blockPhase = false;
+
+			if(!premierok) {
+				// On cherche le dernier élément (vu qu'on place tout par rapport à lui)
+				GameObject lastBlock = blockList[blockList.Count-1];
+
+				// On créé le premier bloc qui n'est pas un bloc du milieu
+				GameObject firstTile = GameObject.Find ("ground_left_end");
+				GameObject obj = Instantiate(firstTile, lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<BlockManager>().widthSize, lastBlock.transform.rotation) as GameObject;
+
+				sizeLastBlock = obj.GetComponent<BlockManager>().widthSize;
+				
+				blockList.Add (obj); // On ajoute à la liste le bloc
+
+				premierok = true;
+
+				// TODO OPTIMISER TOUT CA C'EST TRES SALE
+			}
 		}
+		// Si on n'est pas dans une phase "ennemie", on est dans une phase "block"
+		else {
+			blockPhase = true;
+		}
+
+
+
+
+
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra
 		if (blockList [0].transform.position.x + sizeFirstBlock < cameraStartPosition) {
-			blockList [0].SetActive(false);
-			blockList.RemoveAt(0);
-
-			sizeFirstBlock = blockList[0].GetComponent<BlockManager>().widthSize;
+			blockList [0].SetActive (false);
+			blockList.RemoveAt (0);
+			
+			sizeFirstBlock = blockList [0].GetComponent<BlockManager> ().widthSize;
 		}
-
-		// Création du prochain bloc si le gros bloc en cours approche de la fin de la caméra
-		if (blockList[blockList.Count - 1].transform.position.x + sizeLastBlock < cameraEndPosition) {
-			CreateOneBlockAhead();
+		
+		// Création du prochain bloc si le dernier bloc en cours approche de la fin de la caméra
+		if (blockList [blockList.Count - 1].transform.position.x + sizeLastBlock < cameraEndPosition) {
+			CreateOneBlockAhead ();
 		}
 
 		// Si le joueur n'est pas mort, on bouge le monde
 		if (!player.stats.isDead) {
 			MoveWorld ();
 		}
+
+		meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
 	}
 
 	private void CreateOneBlockAhead() {
-		//test random à mettre sous fonction
-		string randomBlock = PoolingManager.current.RandomNameOfPool ("Block");
-		// fin
-
-		GameObject obj = PoolingManager.current.Spawn (randomBlock);
+		GameObject obj;
+		if (blockPhase) {
+			//test random à mettre sous fonction
+			string randomBlock = PoolingManager.current.RandomNameOfPool ("Block");
+			// fin
+			obj = PoolingManager.current.Spawn (randomBlock);
+		}
+		else
+			obj = PoolingManager.current.Spawn ("BasiqueGround");
 
 		if (obj == null) return;
 
