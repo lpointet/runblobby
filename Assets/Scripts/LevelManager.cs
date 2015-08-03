@@ -37,7 +37,8 @@ public class LevelManager : MonoBehaviour {
 	private int currentPhase;	// Phase en cours
 	private bool blockPhase;
 	private bool premierBlock = false;
-	public Enemy[] ennemiMiddle;
+	public Enemy[] enemyMiddle;
+	public float spawnEnemyDelay;
 
 	void Awake() {
 		if (levelManager == null)
@@ -100,19 +101,22 @@ public class LevelManager : MonoBehaviour {
 
 			// On créé le premier bloc qui n'est pas un bloc du milieu
 			if(!premierBlock) {
-				GameObject firstTile = Instantiate(blockEnemy[0]);
-				PositionBlock(firstTile);
-
+				PositionBlock(Instantiate(blockEnemy[0]));
 				premierBlock = true;
+
+				StartCoroutine(SpawnEnemyCo(enemyMiddle[0]));
 			}
 
 			// On créé le dernier bloc qui n'est pas un bloc du milieu
 			// Quand l'ennemi est mort
-			/*if(ennemiMiddle[0].stats.isDead) {
-
+			if(enemyMiddle[0].stats.isDead) {
+				PositionBlock(Instantiate(blockEnemy[1]));
+				Debug.Log ("coucou");
 				currentPhase++;
 				premierBlock = false;
-			}*/
+			}
+
+			Debug.Log (enemyMiddle[0].stats.isDead);
 		}
 		// Si on n'est pas dans une phase "ennemie", on est dans une phase "block"
 		else {
@@ -141,10 +145,6 @@ public class LevelManager : MonoBehaviour {
 		}
 
 		meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
-	}
-
-	private void CreateOneBlockAhead() {
-
 	}
 
 	private GameObject GetNewBlock(bool _blockPhase) {
@@ -185,6 +185,11 @@ public class LevelManager : MonoBehaviour {
 
 	public static void KillPlayer(PlayerController player) {
 		Destroy (player.gameObject);
+	}
+
+	private IEnumerator SpawnEnemyCo(Enemy enemy) {
+		yield return new WaitForSeconds (spawnEnemyDelay);
+		Instantiate (enemy, player.transform.position + Vector3.right * 10, player.transform.rotation);
 	}
 
 	public void RespawnPlayer(){

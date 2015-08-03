@@ -94,8 +94,9 @@ public class Enemy : MonoBehaviour {
 		stats.healthPoint -= damage;
 		
 		if (stats.healthPoint <= 0) {
-			Despawn();
+			stats.isDead = true;
 			ScoreManager.AddPoint (stats.pointScore);
+			Despawn();
 		}
 	}
 
