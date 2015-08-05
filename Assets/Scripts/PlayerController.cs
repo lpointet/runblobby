@@ -28,11 +28,6 @@ public class PlayerController : Character {
 	public LayerMask layerGround;
 
 	private bool doubleJumped;
-
-	public GameObject bullet;
-	public Transform bulletPoint;
-	public float shotDelay;
-	private float shotDelayCounter;
 	
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
@@ -44,8 +39,6 @@ public class PlayerController : Character {
 		stats.healthPoint = stats.healhPointMax;
 		stats.moveSpeed = stats.initialMoveSpeed;
 		//stats.moveSpeed /= 100f;
-		if (bulletPoint == null)
-			bulletPoint = transform;
 	}
 
 	void FixedUpdate(){

@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5774da8ddaed883469d2a877f0a8ba09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 10
   bulletPower: 1
   hitParticle: {fileID: 463800, guid: 26427447a69865c48849f663ccb86176, type: 2}
   layerCollision:
@@ -130,7 +130,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: moveSpeed
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: hitParticle

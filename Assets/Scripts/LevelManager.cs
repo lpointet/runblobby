@@ -33,12 +33,16 @@ public class LevelManager : MonoBehaviour {
 	// Augmentation de la vitesse par palier
 	private float distanceTraveled;
 
+	// Partie Ennemi intermédiaire
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
 	private int currentPhase;	// Phase en cours
 	private bool blockPhase;
 	private bool premierBlock = false;
 	public Enemy[] enemyMiddle;
+	private Enemy enemyEnCours;
 	public float spawnEnemyDelay;
+	public GameObject beginEnemyPhase;
+	// Fin partie ennemi intermédiaire
 
 	void Awake() {
 		if (levelManager == null)
@@ -96,7 +100,7 @@ public class LevelManager : MonoBehaviour {
 
 
 		// Définir dans quelle phase on se situe
-		if (distanceTraveled > listPhase[currentPhase] && currentPhase < listPhase.Length) {
+		if (currentPhase < listPhase.Length && distanceTraveled > listPhase[currentPhase]) {
 			blockPhase = false;
 
 			// On créé le premier bloc qui n'est pas un bloc du milieu
@@ -104,19 +108,18 @@ public class LevelManager : MonoBehaviour {
 				PositionBlock(Instantiate(blockEnemy[0]));
 				premierBlock = true;
 
-				StartCoroutine(SpawnEnemyCo(enemyMiddle[0]));
+				StartCoroutine(SpawnEnemyCo(enemyMiddle[currentPhase]));
 			}
 
 			// On créé le dernier bloc qui n'est pas un bloc du milieu
 			// Quand l'ennemi est mort
-			if(enemyMiddle[0].stats.isDead) {
+			if(enemyEnCours != null && enemyEnCours.stats.isDead) {
+				enemyEnCours = null;
 				PositionBlock(Instantiate(blockEnemy[1]));
-				Debug.Log ("coucou");
+
 				currentPhase++;
 				premierBlock = false;
 			}
-
-			Debug.Log (enemyMiddle[0].stats.isDead);
 		}
 		// Si on n'est pas dans une phase "ennemie", on est dans une phase "block"
 		else {
@@ -189,7 +192,8 @@ public class LevelManager : MonoBehaviour {
 
 	private IEnumerator SpawnEnemyCo(Enemy enemy) {
 		yield return new WaitForSeconds (spawnEnemyDelay);
-		Instantiate (enemy, player.transform.position + Vector3.right * 10, player.transform.rotation);
+		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
+		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
 	}
 
 	public void RespawnPlayer(){
@@ -204,7 +208,7 @@ public class LevelManager : MonoBehaviour {
 		yield return new WaitForSeconds (respawnDelay);
 		player.gameObject.SetActive (true);
 		//player.enabled = true;
-		player.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+		player.GetComponent<Rigidbody2D> ().velocity = new Vector2(5, 5);
 		player.transform.position = currentCheckPoint.transform.position;
 		player.FullHealth ();
 		player.stats.isDead = false;

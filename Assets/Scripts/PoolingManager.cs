@@ -29,6 +29,7 @@ public class PoolingManager : MonoBehaviour {
 	}
 	
 	// Retourne le nom de la PoolingScript si celle-ci correspond au type recherché
+	// TODO à améliorer vu que ça peut potentiellement rater sa pool pendant un bon moment...
 	public string RandomNameOfPool(string subname){
 		int random = Random.Range (0, pools.Count);
 

@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97564a1603567e7468676696e92f203b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolName: Block1Pool
+  poolName: Block_difficulty_1
   pooledObject: {fileID: 127378, guid: b46f01d38b6eb464c9b84c9f031edc56, type: 2}
   pooledAmount: 10
   willGrow: 1
@@ -757,7 +757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97564a1603567e7468676696e92f203b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolName: Block2Pool
+  poolName: Block_difficulty_2
   pooledObject: {fileID: 102780, guid: 84b6d324a8efcfe47b12f52c8321815f, type: 2}
   pooledAmount: 1
   willGrow: 1
@@ -1196,7 +1196,7 @@ MonoBehaviour:
     healthPoint: 3
     healhPointMax: 1
     moveSpeed: 5
-    initialMoveSpeed: 10
+    initialMoveSpeed: 7
     jumpHeight: 15
     isDead: 0
   healthText: {fileID: 319568506}
@@ -1205,9 +1205,6 @@ MonoBehaviour:
   layerGround:
     serializedVersion: 2
     m_Bits: 1024
-  bullet: {fileID: 155290, guid: 7028cf0818e54b747a8b8cd1f40b1902, type: 2}
-  bulletPoint: {fileID: 0}
-  shotDelay: .25
 --- !u!95 &830211157
 Animator:
   serializedVersion: 3
@@ -1328,10 +1325,13 @@ MonoBehaviour:
   blockEnemy:
   - {fileID: 102792, guid: 38e1e65a585ea9a4d8592918bf23cad3, type: 2}
   - {fileID: 189542, guid: b298b3f9deeddaf4db4d88b862947c7f, type: 2}
-  listPhase: 1e000000f401000050000000
+  listPhase: 1e000000c80000002c010000
   enemyMiddle:
   - {fileID: 11432096, guid: fcb8a41f5733cf9478cae4e46cb07d98, type: 2}
-  spawnEnemyDelay: 5
+  - {fileID: 11432096, guid: fcb8a41f5733cf9478cae4e46cb07d98, type: 2}
+  - {fileID: 11432096, guid: fcb8a41f5733cf9478cae4e46cb07d98, type: 2}
+  spawnEnemyDelay: 3
+  beginEnemyPhase: {fileID: 0}
 --- !u!4 &897286641
 Transform:
   m_ObjectHideFlags: 0
@@ -2273,7 +2273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 22
 --- !u!1 &1590499155
 GameObject:
@@ -2683,7 +2682,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 440956, guid: fcb8a41f5733cf9478cae4e46cb07d98, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 440956, guid: fcb8a41f5733cf9478cae4e46cb07d98, type: 2}
       propertyPath: m_LocalPosition.y
