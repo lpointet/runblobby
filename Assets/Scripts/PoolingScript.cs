@@ -10,6 +10,7 @@ public class PoolingScript : MonoBehaviour {
 
 	public bool willGrow = true;
 	public float despawnTimer = -1f;
+	public string poolIndex;
 
 	private List<GameObject> pooledObjects;
 
