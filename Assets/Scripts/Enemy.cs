@@ -6,9 +6,9 @@ public class Enemy : Character {
 	/**
 	 * Enemy Stats
 	 */
-	public float distanceToKill;
-	public int damageToGive;
-	public int pointScore;
+	[SerializeField] private float distanceToKill;
+	[SerializeField] private int damageToGive;
+	[SerializeField] private int pointScore;
 	/* End of Stats */
 
 	public bool movingEnemy;
@@ -27,7 +27,35 @@ public class Enemy : Character {
 	public float bouncePower;
 	
 	private Rigidbody2D herosRb;
-	
+
+	/**
+	 * Getters & Setters
+	 */
+	public float GetDistanceToKill() {
+		return distanceToKill;
+	}
+
+	public int GetDamageToGive() {
+		return damageToGive;
+	}
+
+	public int GetPointScore() {
+		return pointScore;
+	}
+
+	public void SetDistanceToKill( float value ) {
+		distanceToKill = value;
+	}
+
+	public void SetDamageToGive( int value ) {
+		damageToGive = value;
+	}
+
+	public void SetPointScore( int value ) {
+		pointScore = value;
+	}
+	/* End of Getters & Setters */
+
 	void OnEnable() {
 		Init();
 	}
@@ -64,19 +92,19 @@ public class Enemy : Character {
 				
 				if (other.transform.position.y - offsetCheckBounce > transform.position.y) {
 					herosRb.velocity = new Vector2 (herosRb.velocity.x, bouncePower);
-					ScoreManager.AddPoint (pointScore);
+					ScoreManager.AddPoint (GetPointScore());
 				} else {
-					LevelManager.getPlayer ().Hurt(damageToGive);
+					LevelManager.getPlayer ().Hurt(GetDamageToGive());
 				}
 				Despawn ();
 			} else {
-				LevelManager.getPlayer ().Hurt(damageToGive);
+				LevelManager.getPlayer ().Hurt(GetDamageToGive());
 			}
 		}
 	}
 
 	public override void OnKill() {
-		ScoreManager.AddPoint (pointScore);
+		ScoreManager.AddPoint (GetPointScore());
 		Despawn();
 	}
 

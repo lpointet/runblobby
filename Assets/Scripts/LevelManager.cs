@@ -149,7 +149,7 @@ public class LevelManager : MonoBehaviour {
 				meterText.color = Color.Lerp (warningTextColor, warningTextColorBis, Mathf.Sin (2f * enemyDistanceToKill)); // Variation entre deux couleurs
 
 				// Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
-				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.distanceToKill, 2)) * Mathf.Pow (enemyEnCours.distanceToKill - enemyDistanceToKill, 2) + 1;
+				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.GetDistanceToKill(), 2)) * Mathf.Pow (enemyEnCours.GetDistanceToKill() - enemyDistanceToKill, 2) + 1;
 				meterText.transform.localScale = new Vector2(scaleFonctionDistance, scaleFonctionDistance);
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
@@ -265,7 +265,7 @@ public class LevelManager : MonoBehaviour {
 		yield return new WaitForSeconds (spawnEnemyDelay);
 		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
 		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
-		enemyDistanceToKill = enemyEnCours.distanceToKill;
+		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
 
 	public void RespawnPlayer(){
