@@ -83,8 +83,7 @@ public class PlayerController : Character {
 		stats.healthPoint -= damage;
 
 		if (stats.healthPoint <= 0 && !stats.isDead) {
-			stats.healthPoint = 0;
-			stats.isDead = true;
+			LevelManager.Kill( this );
 			levelManager.RespawnPlayer ();
 		}
 	}
