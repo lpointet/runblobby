@@ -46,7 +46,7 @@ public class BulletManager : MonoBehaviour {
 
 			// Si on rencontre un ennemi
 			if(other.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
-				other.GetComponent<Enemy>().HurtEnemy(bulletPower);
+				other.GetComponent<Enemy>().Hurt(bulletPower);
 			}
 		}
 	}

@@ -12,6 +12,10 @@ public class Character : MonoBehaviour {
 	public float jumpHeight;
 	public bool isDead;
 	/* End of Stats */
+	
+	public virtual void OnKill() {
+		// On fait le deuil
+	}
 
 	public void Hurt(int damage) {
 		healthPoint -= damage;

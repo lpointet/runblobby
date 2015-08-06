@@ -149,12 +149,12 @@ public class LevelManager : MonoBehaviour {
 				meterText.color = Color.Lerp (warningTextColor, warningTextColorBis, Mathf.Sin (2f * enemyDistanceToKill)); // Variation entre deux couleurs
 
 				// Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
-				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.stats.distanceToKill, 2)) * Mathf.Pow (enemyEnCours.stats.distanceToKill - enemyDistanceToKill, 2) + 1;
+				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.distanceToKill, 2)) * Mathf.Pow (enemyEnCours.distanceToKill - enemyDistanceToKill, 2) + 1;
 				meterText.transform.localScale = new Vector2(scaleFonctionDistance, scaleFonctionDistance);
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
 				// Quand l'ennemi est mort
-				if(enemyEnCours.stats.isDead) {
+				if( enemyEnCours.isDead ) {
 					enemyEnCours = null;
 					PositionBlock(Instantiate(blockEnemy[1]));
 
@@ -258,16 +258,14 @@ public class LevelManager : MonoBehaviour {
 		character.healthPoint = 0;
 		character.isDead = true;
 
-		if( player == character ) {
-			levelManager.RespawnPlayer();
-		}
+		character.OnKill();
 	}
 
 	private IEnumerator SpawnEnemyCo(Enemy enemy) {
 		yield return new WaitForSeconds (spawnEnemyDelay);
 		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
 		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
-		enemyDistanceToKill = enemyEnCours.stats.distanceToKill;
+		enemyDistanceToKill = enemyEnCours.distanceToKill;
 	}
 
 	public void RespawnPlayer(){

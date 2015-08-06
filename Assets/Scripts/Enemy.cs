@@ -1,22 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : Character {
 
-	[System.Serializable]
-	public class Stats
-	{
-		public int healthPoint;
-		public int healthPointMax;
-		public float moveSpeed;
-		public float jumpHeight;
-		public bool isDead;
-		public float distanceToKill;
-
-		public int damageToGive;
-		public int pointScore;
-	}
-	public Stats stats = new Stats();
+	/**
+	 * Enemy Stats
+	 */
+	public float distanceToKill;
+	public int damageToGive;
+	public int pointScore;
+	/* End of Stats */
 
 	public bool movingEnemy;
 	public bool moveRight;
@@ -50,7 +43,7 @@ public class Enemy : MonoBehaviour {
 
 	private void init() {
 		// Init health
-		stats.healthPoint = stats.healthPointMax;
+		healthPoint = healthPointMax;
 	}
 
 	void Update () {
@@ -64,10 +57,10 @@ public class Enemy : MonoBehaviour {
 			// Position et échelle selon la direction
 			if (moveRight) {
 				myTransform.localScale = new Vector3 (-1f, 1f, 1f);
-				myRb.velocity = new Vector2 (stats.moveSpeed, myRb.velocity.y);
+				myRb.velocity = new Vector2 (moveSpeed, myRb.velocity.y);
 			} else {
 				myTransform.localScale = new Vector3 (1f, 1f, 1f);
-				myRb.velocity = new Vector2 (-stats.moveSpeed, myRb.velocity.y);
+				myRb.velocity = new Vector2 (-moveSpeed, myRb.velocity.y);
 			}
 		}
 	}
@@ -80,25 +73,20 @@ public class Enemy : MonoBehaviour {
 				
 				if (other.transform.position.y - offsetCheckBounce > transform.position.y) {
 					herosRb.velocity = new Vector2 (herosRb.velocity.x, bouncePower);
-					ScoreManager.AddPoint (stats.pointScore);
+					ScoreManager.AddPoint (pointScore);
 				} else {
-					LevelManager.getPlayer ().Hurt(stats.damageToGive);
+					LevelManager.getPlayer ().Hurt(damageToGive);
 				}
 				Despawn ();
 			} else {
-				LevelManager.getPlayer ().Hurt(stats.damageToGive);
+				LevelManager.getPlayer ().Hurt(damageToGive);
 			}
 		}
 	}
 
-	public void HurtEnemy(int damage) {
-		stats.healthPoint -= damage;
-		
-		if (stats.healthPoint <= 0) {
-			stats.isDead = true;
-			ScoreManager.AddPoint (stats.pointScore);
-			Despawn();
-		}
+	public override void OnKill() {
+		ScoreManager.AddPoint (pointScore);
+		Despawn();
 	}
 
 	private void Despawn() {

@@ -113,15 +113,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c94646f4e2a774ba9d964651184373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats:
-    healthPoint: 1
-    healthPointMax: 0
-    moveSpeed: 0
-    jumpHeight: 0
-    isDead: 0
-    distanceToKill: 50
-    damageToGive: 1
-    pointScore: 50
+  healthPoint: 1
+  healthPointMax: 0
+  moveSpeed: 0
+  jumpHeight: 0
+  isDead: 0
+  distanceToKill: 50
+  damageToGive: 1
+  pointScore: 50
   movingEnemy: 0
   moveRight: 0
   wallCheck: {fileID: 464780}

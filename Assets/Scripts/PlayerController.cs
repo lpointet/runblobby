@@ -14,6 +14,7 @@ public class PlayerController : Character {
 
 	private Rigidbody2D myRb;
 	private Animator anim;	
+	private LevelManager levelManager;
 
 	private bool grounded;
 	public Transform groundCheck;
@@ -25,6 +26,7 @@ public class PlayerController : Character {
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
+		levelManager = FindObjectOfType<LevelManager> ();
 	}
 
 	void Start() {
@@ -69,5 +71,9 @@ public class PlayerController : Character {
 
 	private void Jump() {
 		myRb.velocity = new Vector2(myRb.velocity.x, jumpHeight);
+	}
+
+	public override void OnKill() {
+		levelManager.RespawnPlayer();
 	}
 }
