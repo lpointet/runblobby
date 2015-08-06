@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour {
 	public Text meterText;
 	private Color defaultTextColor; // Couleur par défaut du meterText
 	private Color warningTextColor; // Couleur en alternance lors d'un ennemi
+	private Color warningTextColorBis;
 	private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
 
 	// Mort, Respawn
@@ -71,6 +72,8 @@ public class LevelManager : MonoBehaviour {
 
 		defaultTextColor = meterText.color;
 		warningTextColor = new Color (1, 0.588f, 0.588f);
+		warningTextColorBis = warningTextColor / 2;
+		warningTextColorBis.r = 1f;
 
 		// Autant de probabilité que de phases (voir listPhase)
 		probabiliteBlock = new int[listPhase.Length][];
@@ -145,7 +148,7 @@ public class LevelManager : MonoBehaviour {
 				}
 
 				meterText.text = Mathf.RoundToInt (enemyDistanceToKill) + "m"; // Mise à jour de la distance restante pour tuer le boss
-				meterText.color = Color.Lerp (defaultTextColor, warningTextColor, Mathf.Sin (2f * enemyDistanceToKill)); // Variation entre deux couleurs
+				meterText.color = Color.Lerp (warningTextColor, warningTextColorBis, Mathf.Sin (2f * enemyDistanceToKill)); // Variation entre deux couleurs
 
 				// Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
 				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.stats.distanceToKill, 2)) * Mathf.Pow (enemyEnCours.stats.distanceToKill - enemyDistanceToKill, 2) + 1;
