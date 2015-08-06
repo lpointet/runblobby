@@ -220,8 +220,9 @@ public class LevelManager : MonoBehaviour {
 		return player;
 	}
 
-	public static void KillPlayer(PlayerController player) {
-		Destroy (player.gameObject);
+	public static void Kill(PlayerController player) {
+		player.stats.healthPoint = 0;
+		player.stats.isDead = true;
 	}
 
 	private IEnumerator SpawnEnemyCo(Enemy enemy) {
