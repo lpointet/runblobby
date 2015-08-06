@@ -134,8 +134,6 @@ public class LevelManager : MonoBehaviour {
 			
 			if(enemyEnCours != null) {
 				// Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
-				if(enemyDistanceToKill <= 0)
-					enemyDistanceToKill = enemyEnCours.stats.distanceToKill;
 				enemyDistanceToKill -= localDistance;
 
 				if( enemyDistanceToKill <= 0 ) {
@@ -265,6 +263,7 @@ public class LevelManager : MonoBehaviour {
 		yield return new WaitForSeconds (spawnEnemyDelay);
 		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
 		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
+		enemyDistanceToKill = enemyEnCours.stats.distanceToKill;
 	}
 
 	public void RespawnPlayer(){
