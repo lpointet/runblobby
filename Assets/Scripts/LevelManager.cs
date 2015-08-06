@@ -11,6 +11,9 @@ public class LevelManager : MonoBehaviour {
 	private Transform background;
 
 	public Text meterText;
+	private Color defaultTextColor; // Couleur par défaut du meterText
+	private Color warningTextColor; // Couleur en alternance lors d'un ennemi
+	private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
 
 	// Mort, Respawn
 	public GameObject deathEffect;
@@ -30,8 +33,9 @@ public class LevelManager : MonoBehaviour {
 	private float sizeFirstBlock;
 	// Fin création du monde et déplacement
 
-	// Augmentation de la vitesse par palier
-	private float distanceTraveled;
+	// Distance parcourue
+	private float distanceTraveled; // pendant la phase bloc
+	private float localDistance; // variation permanente de la distance
 
 	// Partie Ennemi intermédiaire
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
@@ -40,6 +44,7 @@ public class LevelManager : MonoBehaviour {
 	private bool premierBlock = false;	// Instantier le premier bloc ennemi
 	public Enemy[] enemyMiddle;	// Liste des ennemis
 	private Enemy enemyEnCours;
+	private float enemyDistanceToKill;
 	public float spawnEnemyDelay;	// Délai avant apparition de l'ennemi suite à la création du premier bloc
 	public int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
 	// Fin partie ennemi intermédiaire
@@ -62,6 +67,10 @@ public class LevelManager : MonoBehaviour {
 		distanceTraveled = 0;
 		currentPhase = 0;
 		blockPhase = true;
+		enemyDistanceToKill = 0;
+
+		defaultTextColor = meterText.color;
+		warningTextColor = new Color (1, 0.588f, 0.588f);
 
 		// Autant de probabilité que de phases (voir listPhase)
 		probabiliteBlock = new int[listPhase.Length][];
@@ -90,7 +99,7 @@ public class LevelManager : MonoBehaviour {
 
 	void Update () {
 		// Distance parcourue depuis le dernier update
-		float localDistance = player.stats.moveSpeed * Time.deltaTime;
+		localDistance = player.stats.moveSpeed * Time.deltaTime;
 
 		/* Augmente la vitesse à chaque passage de x units (dans listStep)
 		distanceTraveled += player.stats.moveSpeed;
@@ -117,11 +126,16 @@ public class LevelManager : MonoBehaviour {
 				StartCoroutine(SpawnEnemyCo(enemyMiddle[currentPhase]));
 			}
 
+			// Faire clignoter le texte
+			meterText.color = Color.Lerp(defaultTextColor, Color.clear, Mathf.Abs(Mathf.Sin(Time.frameCount/15f)));
+			
 			if(enemyEnCours != null) {
-
 				// Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
-				enemyEnCours.stats.distanceToKill-= localDistance;
-				if( enemyEnCours.stats.distanceToKill <= 0 ) {
+				if(enemyDistanceToKill <= 0)
+					enemyDistanceToKill = enemyEnCours.stats.distanceToKill;
+				enemyDistanceToKill -= localDistance;
+
+				if( enemyDistanceToKill <= 0 ) {
 					LevelManager.Kill( player );
 					RespawnPlayer();
 
@@ -130,9 +144,16 @@ public class LevelManager : MonoBehaviour {
 					UnityEditor.EditorApplication.isPlaying = false;
 				}
 
+				meterText.text = Mathf.RoundToInt (enemyDistanceToKill) + "m"; // Mise à jour de la distance restante pour tuer le boss
+				meterText.color = Color.Lerp (defaultTextColor, warningTextColor, Mathf.Sin (2f * enemyDistanceToKill)); // Variation entre deux couleurs
+
+				// Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
+				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.stats.distanceToKill, 2)) * Mathf.Pow (enemyEnCours.stats.distanceToKill - enemyDistanceToKill, 2) + 1;
+				meterText.transform.localScale = new Vector2(scaleFonctionDistance, scaleFonctionDistance);
+
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
 				// Quand l'ennemi est mort
-				if( enemyEnCours.stats.isDead) {
+				if(enemyEnCours.stats.isDead) {
 					enemyEnCours = null;
 					PositionBlock(Instantiate(blockEnemy[1]));
 
@@ -143,10 +164,14 @@ public class LevelManager : MonoBehaviour {
 		}
 		// Si on n'est pas dans une phase "ennemie", on est dans une phase "block"
 		else {
+			blockPhase = true;
 			// On actualise la distance parcourue si le joueur n'est pas mort
 			if (!player.stats.isDead)
 				distanceTraveled += localDistance;
-			blockPhase = true;
+
+			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
+			meterText.color = defaultTextColor;
+			meterText.transform.localScale = Vector2.one;
 		}
 
 
@@ -168,8 +193,6 @@ public class LevelManager : MonoBehaviour {
 		if (!player.stats.isDead) {
 			MoveWorld ();
 		}
-
-		meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
 	}
 
 	private GameObject GetNewBlock(bool _blockPhase) {
@@ -253,7 +276,7 @@ public class LevelManager : MonoBehaviour {
 		yield return new WaitForSeconds (respawnDelay);
 		player.gameObject.SetActive (true);
 		//player.enabled = true;
-		player.GetComponent<Rigidbody2D> ().velocity = new Vector2(5, 5);
+		player.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 		player.transform.position = currentCheckPoint.transform.position;
 		player.FullHealth ();
 		player.stats.isDead = false;

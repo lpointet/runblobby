@@ -97,7 +97,7 @@ GameObject:
   - 4: {fileID: 106737975}
   - 212: {fileID: 106737974}
   - 61: {fileID: 106737973}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Rock_32_48_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
