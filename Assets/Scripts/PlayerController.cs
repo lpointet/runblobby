@@ -8,7 +8,7 @@ public class PlayerController : Character {
 	public class Stats
 	{
 		public int healthPoint;
-		public int healhPointMax;
+		public int healthPointMax;
 		public float moveSpeed;
 		public float initialMoveSpeed;
 		public float jumpHeight;
@@ -36,7 +36,7 @@ public class PlayerController : Character {
 	}
 
 	void Start() {
-		stats.healthPoint = stats.healhPointMax;
+		stats.healthPoint = stats.healthPointMax;
 		stats.moveSpeed = stats.initialMoveSpeed;
 		//stats.moveSpeed /= 100f;
 	}
@@ -90,6 +90,6 @@ public class PlayerController : Character {
 	}
 	
 	public void FullHealth() {
-		stats.healthPoint = stats.healhPointMax;;
+		stats.healthPoint = stats.healthPointMax;;
 	}
 }

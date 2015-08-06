@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour {
 	public class Stats
 	{
 		public int healthPoint;
-		public int healhPointMax;
+		public int healthPointMax;
 		public float moveSpeed;
 		public float jumpHeight;
 		public bool isDead;
@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour {
 
 	private void init() {
 		// Init health
-		stats.healthPoint = stats.healhPointMax;
+		stats.healthPoint = stats.healthPointMax;
 	}
 
 	void Update () {
