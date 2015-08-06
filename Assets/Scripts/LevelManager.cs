@@ -36,12 +36,12 @@ public class LevelManager : MonoBehaviour {
 	// Partie Ennemi intermédiaire
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
 	private int currentPhase;	// Phase en cours
-	private bool blockPhase;
-	private bool premierBlock = false;
-	public Enemy[] enemyMiddle;
+	private bool blockPhase;	// Phase avec des blocks ou avec un ennemi
+	private bool premierBlock = false;	// Instantier le premier bloc ennemi
+	public Enemy[] enemyMiddle;	// Liste des ennemis
 	private Enemy enemyEnCours;
-	public float spawnEnemyDelay;
-	public GameObject beginEnemyPhase;
+	public float spawnEnemyDelay;	// Délai avant apparition de l'ennemi suite à la création du premier bloc
+	public int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
 	// Fin partie ennemi intermédiaire
 
 	void Awake() {
@@ -62,6 +62,17 @@ public class LevelManager : MonoBehaviour {
 		distanceTraveled = 0;
 		currentPhase = 0;
 		blockPhase = true;
+
+		// Autant de probabilité que de phases (voir listPhase)
+		probabiliteBlock = new int[listPhase.Length][];
+		probabiliteBlock[0] = new int[5] {70, 30, 0, 0, 0};
+		probabiliteBlock[1] = new int[5] {0, 40, 50, 10, 0};
+		probabiliteBlock[2] = new int[5] {0, 0, 20, 60, 20};
+		// On met à 0 au cas où on dépasse les 3 phases et qu'on oublie
+		for (int i = 3; i < listPhase.Length; i++) {
+			probabiliteBlock [i] = new int[5] {0, 0, 0, 0, 0};
+		}
+
 		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 1;
 		cameraEndPosition = kamera.transform.position.x + kamera.orthographicSize * kamera.aspect + 1;
 
@@ -91,9 +102,7 @@ public class LevelManager : MonoBehaviour {
 		//player.stats.moveSpeed = player.stats.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
 		//player.stats.moveSpeed = player.stats.initialMoveSpeed + player.stats.initialMoveSpeed * Time.time / 60f;	
 
-		// On actualise la distance parcourue si le joueur n'est pas mort
-		if (!player.stats.isDead)
-			distanceTraveled += player.stats.moveSpeed * Time.deltaTime;
+
 
 
 
@@ -123,6 +132,9 @@ public class LevelManager : MonoBehaviour {
 		}
 		// Si on n'est pas dans une phase "ennemie", on est dans une phase "block"
 		else {
+			// On actualise la distance parcourue si le joueur n'est pas mort
+			if (!player.stats.isDead)
+				distanceTraveled += player.stats.moveSpeed * Time.deltaTime;
 			blockPhase = true;
 		}
 
@@ -153,12 +165,34 @@ public class LevelManager : MonoBehaviour {
 	private GameObject GetNewBlock(bool _blockPhase) {
 		if (_blockPhase) {
 			//test random à mettre sous fonction
-			string randomBlock = PoolingManager.current.RandomNameOfPool ("Block");
+			string randomBlock = PoolingManager.current.RandomNameOfPool ("Block", RandomDifficulty(currentPhase)); // Random Block de difficulté 1
 			// fin
 			return PoolingManager.current.Spawn (randomBlock);
 		}
 		else
 			return PoolingManager.current.Spawn ("BasiqueGround");
+	}
+
+	private string RandomDifficulty(int phase) {
+		int[] probabilite; // liste des probabilités d'appeler le choixDifficulte
+		string[] listeDifficulte = {"difficulty_1", "difficulty_2", "difficulty_3", "difficulty_4", "difficulty_5"};
+		int sum = 0;
+
+		// On retourne la difficulté la plus facile si jamais on envoie une valeur de phase incorrecte
+		if (phase >= listPhase.Length)
+			return "difficulty_1";
+
+		probabilite = probabiliteBlock[phase]; // Défini dans Start()
+
+		// On calcule la somme des proportions pour choisir un nombre aléatoire là-dedans
+		for(int i = 0; i < probabilite.Length; sum += probabilite[i++]);
+		int random = Random.Range (0, sum); // Nombre entre 0 et sum exclus
+
+		int k, choix;
+		// On ajoute à k la valeur de la proportion si jamais k est inférieur à random, et on incrémente choix
+		for(k = 0, choix = 0; k <= random; k += probabilite[choix++]);
+
+		return listeDifficulte [choix-1];
 	}
 
 	private void PositionBlock(GameObject obj) {

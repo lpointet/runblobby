@@ -7,7 +7,7 @@ public class PoolingManager : MonoBehaviour {
 	public static PoolingManager current;
 
 	public List<PoolingScript> poolCollection;
-	private Dictionary<string, List<PoolingScript>> indexedPools;
+	private Dictionary<string, List<PoolingScript>> indexedPools = new Dictionary<string, List<PoolingScript>>();
 	private static Dictionary<string, PoolingScript> pools = new Dictionary<string, PoolingScript>();
 	
 	void Awake() {
@@ -18,12 +18,11 @@ public class PoolingManager : MonoBehaviour {
 			pool.Init();
 			pools.Add(pool.poolName, pool);
 
+			// S'il y a un index, on ajoute dans un dictionnaire de listes
 			if( "" != pool.poolIndex ) {
-				if( null == indexedPools ) {
-					indexedPools = new Dictionary<string, List<PoolingScript>>();
-				}
 				List<PoolingScript> list;
 
+				// On vérifie si la valeur existe déjà, et on ajoute dans la bonne key
 				if( !indexedPools.TryGetValue( pool.poolIndex, out list ) ) {
 					list = new List<PoolingScript>();
 					indexedPools.Add( pool.poolIndex, list );
