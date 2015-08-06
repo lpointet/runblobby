@@ -1265,7 +1265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     healthPoint: 3
-    healhPointMax: 1
+    healthPointMax: 0
     moveSpeed: 5
     initialMoveSpeed: 7
     jumpHeight: 15

@@ -115,10 +115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     healthPoint: 1
-    healhPointMax: 1
+    healthPointMax: 0
     moveSpeed: 0
     jumpHeight: 0
     isDead: 0
+    distanceToKill: 50
     damageToGive: 1
     pointScore: 50
   movingEnemy: 0

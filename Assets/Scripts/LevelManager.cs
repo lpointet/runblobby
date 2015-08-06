@@ -89,6 +89,9 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Update () {
+		// Distance parcourue depuis le dernier update
+		float localDistance = player.stats.moveSpeed * Time.deltaTime;
+
 		/* Augmente la vitesse à chaque passage de x units (dans listStep)
 		distanceTraveled += player.stats.moveSpeed;
 		if (currentStep < listStep.Length) {
@@ -102,12 +105,6 @@ public class LevelManager : MonoBehaviour {
 		//player.stats.moveSpeed = player.stats.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
 		//player.stats.moveSpeed = player.stats.initialMoveSpeed + player.stats.initialMoveSpeed * Time.time / 60f;	
 
-
-
-
-
-
-
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && distanceTraveled > listPhase[currentPhase]) {
 			blockPhase = false;
@@ -120,24 +117,37 @@ public class LevelManager : MonoBehaviour {
 				StartCoroutine(SpawnEnemyCo(enemyMiddle[currentPhase]));
 			}
 
-			// On créé le dernier bloc qui n'est pas un bloc du milieu
-			// Quand l'ennemi est mort
-			if(enemyEnCours != null && enemyEnCours.stats.isDead) {
-				enemyEnCours = null;
-				PositionBlock(Instantiate(blockEnemy[1]));
+			if(enemyEnCours != null) {
 
-				currentPhase++;
-				premierBlock = false;
+				// Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
+				enemyEnCours.stats.distanceToKill-= localDistance;
+				if( enemyEnCours.stats.distanceToKill <= 0 ) {
+					LevelManager.Kill( player );
+					RespawnPlayer();
+
+					// Arrêter l'éditeur Unity pour empêcher la mort infinie
+					// TODO : A remplacer par autre chose
+					UnityEditor.EditorApplication.isPlaying = false;
+				}
+
+				// On créé le dernier bloc qui n'est pas un bloc du milieu
+				// Quand l'ennemi est mort
+				if( enemyEnCours.stats.isDead) {
+					enemyEnCours = null;
+					PositionBlock(Instantiate(blockEnemy[1]));
+
+					currentPhase++;
+					premierBlock = false;
+				}
 			}
 		}
 		// Si on n'est pas dans une phase "ennemie", on est dans une phase "block"
 		else {
 			// On actualise la distance parcourue si le joueur n'est pas mort
 			if (!player.stats.isDead)
-				distanceTraveled += player.stats.moveSpeed * Time.deltaTime;
+				distanceTraveled += localDistance;
 			blockPhase = true;
 		}
-
 
 
 

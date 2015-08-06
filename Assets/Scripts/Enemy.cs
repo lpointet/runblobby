@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour {
 		public float moveSpeed;
 		public float jumpHeight;
 		public bool isDead;
+		public float distanceToKill;
 
 		public int damageToGive;
 		public int pointScore;
