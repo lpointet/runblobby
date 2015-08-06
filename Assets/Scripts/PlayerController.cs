@@ -7,7 +7,7 @@ public class PlayerController : Character {
 	/**
 	 * Player Stats
 	 */
-	public float initialMoveSpeed;
+	[SerializeField] private float initialMoveSpeed;
 	/* End of Stats */
 
 	public Text healthText;
@@ -22,6 +22,18 @@ public class PlayerController : Character {
 	public LayerMask layerGround;
 
 	private bool doubleJumped;
+
+	/**
+	 * Getters & Setters
+	 */
+	public float GetInitialMoveSpeed() {
+		return initialMoveSpeed;
+	}
+	
+	public void SetInitialMoveSpeed( float value ) {
+		initialMoveSpeed = value;
+	}
+	/* End of Getters & Setters */
 	
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
@@ -31,7 +43,7 @@ public class PlayerController : Character {
 
 	protected override void Init() {
 		base.Init();
-		SetMoveSpeed( initialMoveSpeed );
+		SetMoveSpeed( GetInitialMoveSpeed() );
 		//moveSpeed /= 100f;
 	}
 
