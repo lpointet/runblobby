@@ -3,13 +3,25 @@ using System.Collections;
 
 public class Character : MonoBehaviour {
 
-	public class Stats {
-		public int pointsDeVie;
+	/**
+	 * Character Stats 
+	 */
+	public int healthPoint;
+	public int healthPointMax;
+	public float moveSpeed;
+	public float jumpHeight;
+	public bool isDead;
+	/* End of Stats */
+
+	public void Hurt(int damage) {
+		healthPoint -= damage;
+		
+		if (healthPoint <= 0 && !isDead) {
+			LevelManager.Kill( this );
+		}
 	}
-
-	private Stats stats = new Stats();
-
-	public void DamageCharacter(int damage) {
-		stats.pointsDeVie -= damage;
+	
+	public void FullHealth() {
+		healthPoint = healthPointMax;
 	}
 }

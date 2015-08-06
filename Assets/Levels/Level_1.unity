@@ -1263,13 +1263,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94954136ecda8dd438ca5a82e2f0d838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats:
-    healthPoint: 3
-    healthPointMax: 0
-    moveSpeed: 5
-    initialMoveSpeed: 7
-    jumpHeight: 15
-    isDead: 0
+  healthPoint: 3
+  healthPointMax: 1
+  moveSpeed: 5
+  jumpHeight: 15
+  isDead: 0
+  initialMoveSpeed: 7
   healthText: {fileID: 319568506}
   groundCheck: {fileID: 1686453329}
   groundCheckRadius: .100000001

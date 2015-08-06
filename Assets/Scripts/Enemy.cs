@@ -82,11 +82,11 @@ public class Enemy : MonoBehaviour {
 					herosRb.velocity = new Vector2 (herosRb.velocity.x, bouncePower);
 					ScoreManager.AddPoint (stats.pointScore);
 				} else {
-					LevelManager.getPlayer ().HurtPlayer (stats.damageToGive);
+					LevelManager.getPlayer ().Hurt(stats.damageToGive);
 				}
 				Despawn ();
 			} else {
-				LevelManager.getPlayer ().HurtPlayer (stats.damageToGive);
+				LevelManager.getPlayer ().Hurt(stats.damageToGive);
 			}
 		}
 	}

@@ -4,23 +4,16 @@ using UnityEngine.UI;
 
 public class PlayerController : Character {
 
-	[System.Serializable]
-	public class Stats
-	{
-		public int healthPoint;
-		public int healthPointMax;
-		public float moveSpeed;
-		public float initialMoveSpeed;
-		public float jumpHeight;
-		public bool isDead;
-	}
-	public Stats stats = new Stats();
+	/**
+	 * Player Stats
+	 */
+	public float initialMoveSpeed;
+	/* End of Stats */
 
 	public Text healthText;
 
 	private Rigidbody2D myRb;
 	private Animator anim;	
-	private LevelManager levelManager;
 
 	private bool grounded;
 	public Transform groundCheck;
@@ -32,13 +25,12 @@ public class PlayerController : Character {
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
-		levelManager = FindObjectOfType<LevelManager> ();
 	}
 
 	void Start() {
-		stats.healthPoint = stats.healthPointMax;
-		stats.moveSpeed = stats.initialMoveSpeed;
-		//stats.moveSpeed /= 100f;
+		healthPoint = healthPointMax;
+		moveSpeed = initialMoveSpeed;
+		//moveSpeed /= 100f;
 	}
 
 	void FixedUpdate(){
@@ -50,7 +42,7 @@ public class PlayerController : Character {
 
 	void Update () {
 		// Mise à jour de la GUI
-		healthText.text = stats.healthPoint.ToString();
+		healthText.text = healthPoint.ToString();
 
 		if (grounded) // Assure qu'on puisse doubleJump à partir du moment où on est au sol
 			doubleJumped = false;
@@ -76,19 +68,6 @@ public class PlayerController : Character {
 	}
 
 	private void Jump() {
-		myRb.velocity = new Vector2(myRb.velocity.x, stats.jumpHeight);
-	}
-
-	public void HurtPlayer(int damage) {
-		stats.healthPoint -= damage;
-
-		if (stats.healthPoint <= 0 && !stats.isDead) {
-			LevelManager.Kill( this );
-			levelManager.RespawnPlayer ();
-		}
-	}
-	
-	public void FullHealth() {
-		stats.healthPoint = stats.healthPointMax;;
+		myRb.velocity = new Vector2(myRb.velocity.x, jumpHeight);
 	}
 }

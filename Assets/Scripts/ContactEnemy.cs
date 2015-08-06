@@ -25,7 +25,7 @@ public class ContactEnemy : MonoBehaviour {
 				herosRb.velocity = new Vector2(herosRb.velocity.x, bouncePower);
 				ScoreManager.AddPoint(pointScore);
 			} else {
-				LevelManager.getPlayer().HurtPlayer(1);
+				LevelManager.getPlayer().Hurt(1);
 			}
 
 			myRend.enabled = false;

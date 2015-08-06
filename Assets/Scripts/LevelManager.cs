@@ -102,20 +102,20 @@ public class LevelManager : MonoBehaviour {
 
 	void Update () {
 		// Distance parcourue depuis le dernier update
-		localDistance = player.stats.moveSpeed * Time.deltaTime;
+		localDistance = player.moveSpeed * Time.deltaTime;
 
 		/* Augmente la vitesse à chaque passage de x units (dans listStep)
-		distanceTraveled += player.stats.moveSpeed;
+		distanceTraveled += player.moveSpeed;
 		if (currentStep < listStep.Length) {
 			if (distanceTraveled > listStep [currentStep]) {
-				player.stats.moveSpeed += augmentSpeed;
+				player.moveSpeed += augmentSpeed;
 				currentStep++;
 			}
 		}*/
 		
 		// Augmentation de la vitesse progressive
-		//player.stats.moveSpeed = player.stats.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
-		//player.stats.moveSpeed = player.stats.initialMoveSpeed + player.stats.initialMoveSpeed * Time.time / 60f;	
+		//player.moveSpeed = player.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
+		//player.moveSpeed = player.initialMoveSpeed + player.initialMoveSpeed * Time.time / 60f;	
 
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && distanceTraveled > listPhase[currentPhase]) {
@@ -167,7 +167,7 @@ public class LevelManager : MonoBehaviour {
 		else {
 			blockPhase = true;
 			// On actualise la distance parcourue si le joueur n'est pas mort
-			if (!player.stats.isDead)
+			if (!player.isDead)
 				distanceTraveled += localDistance;
 
 			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
@@ -191,7 +191,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
 		// Si le joueur n'est pas mort, on bouge le monde
-		if (!player.stats.isDead) {
+		if (!player.isDead) {
 			MoveWorld ();
 		}
 	}
@@ -246,7 +246,7 @@ public class LevelManager : MonoBehaviour {
 
 	private void MoveWorld() {
 		foreach(GameObject block in blockList) {
-			block.transform.Translate (Vector3.left * Time.deltaTime * player.stats.moveSpeed);
+			block.transform.Translate (Vector3.left * Time.deltaTime * player.moveSpeed);
 		}
 	}
 
@@ -254,9 +254,13 @@ public class LevelManager : MonoBehaviour {
 		return player;
 	}
 
-	public static void Kill(PlayerController player) {
-		player.stats.healthPoint = 0;
-		player.stats.isDead = true;
+	public static void Kill(Character character) {
+		character.healthPoint = 0;
+		character.isDead = true;
+
+		if( player == character ) {
+			levelManager.RespawnPlayer();
+		}
 	}
 
 	private IEnumerator SpawnEnemyCo(Enemy enemy) {
@@ -281,7 +285,7 @@ public class LevelManager : MonoBehaviour {
 		player.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 		player.transform.position = currentCheckPoint.transform.position;
 		player.FullHealth ();
-		player.stats.isDead = false;
+		player.isDead = false;
 		player.GetComponent<Renderer> ().enabled = true;
 	}
 	
