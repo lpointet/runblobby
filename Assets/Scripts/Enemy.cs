@@ -28,22 +28,13 @@ public class Enemy : Character {
 	
 	private Rigidbody2D herosRb;
 	
+	void OnEnable() {
+		Init();
+	}
+	
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
 		myTransform = transform;
-	}
-
-	void Start() {
-		init();
-	}
-
-	void OnEnable() {
-		init();
-	}
-
-	private void init() {
-		// Init health
-		healthPoint = healthPointMax;
 	}
 
 	void Update () {

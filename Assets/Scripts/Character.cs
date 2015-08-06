@@ -12,6 +12,15 @@ public class Character : MonoBehaviour {
 	public float jumpHeight;
 	public bool isDead;
 	/* End of Stats */
+
+	void Start() {
+		Init();
+	}
+	
+	protected virtual void Init() {
+		// Init health
+		FullHealth();
+	}
 	
 	public virtual void OnKill() {
 		// On fait le deuil

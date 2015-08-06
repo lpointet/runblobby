@@ -29,8 +29,8 @@ public class PlayerController : Character {
 		levelManager = FindObjectOfType<LevelManager> ();
 	}
 
-	void Start() {
-		healthPoint = healthPointMax;
+	protected override void Init() {
+		base.Init();
 		moveSpeed = initialMoveSpeed;
 		//moveSpeed /= 100f;
 	}
