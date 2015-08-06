@@ -51,7 +51,7 @@ public class PoolingManager : MonoBehaviour {
 			list = poolCollection;
 		}
 
-		int random = Random.Range (0, pools.Count);
+		int random = Random.Range (0, list.Count);
 
 		if (list[random].poolName.ToLower().Contains (subname.ToLower()))
 			return list[random].poolName;
