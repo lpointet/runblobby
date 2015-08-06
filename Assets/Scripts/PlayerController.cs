@@ -31,7 +31,7 @@ public class PlayerController : Character {
 
 	protected override void Init() {
 		base.Init();
-		moveSpeed = initialMoveSpeed;
+		SetMoveSpeed( initialMoveSpeed );
 		//moveSpeed /= 100f;
 	}
 
@@ -44,7 +44,7 @@ public class PlayerController : Character {
 
 	void Update () {
 		// Mise à jour de la GUI
-		healthText.text = healthPoint.ToString();
+		healthText.text = GetHealthPoint().ToString();
 
 		if (grounded) // Assure qu'on puisse doubleJump à partir du moment où on est au sol
 			doubleJumped = false;
@@ -70,7 +70,7 @@ public class PlayerController : Character {
 	}
 
 	private void Jump() {
-		myRb.velocity = new Vector2(myRb.velocity.x, jumpHeight);
+		myRb.velocity = new Vector2(myRb.velocity.x, GetJumpHeight());
 	}
 
 	public override void OnKill() {

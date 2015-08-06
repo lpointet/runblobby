@@ -6,12 +6,60 @@ public class Character : MonoBehaviour {
 	/**
 	 * Character Stats 
 	 */
-	public int healthPoint;
-	public int healthPointMax;
-	public float moveSpeed;
-	public float jumpHeight;
-	public bool isDead;
+	[SerializeField] private int healthPoint;
+	[SerializeField] private int healthPointMax;
+	[SerializeField] private float moveSpeed;
+	[SerializeField] private float jumpHeight;
+	[SerializeField] private bool isDead;
 	/* End of Stats */
+
+	/**
+	 * Getters & Setters
+	 */
+	public int GetHealthPoint() {
+		return healthPoint;
+	}
+
+	public int GetHealthPointMax() {
+		return healthPointMax;
+	}
+
+	public float GetMoveSpeed() {
+		return moveSpeed;
+	}
+
+	public float GetJumpHeight() {
+		return jumpHeight;
+	}
+
+	public bool IsDead() {
+		return isDead;
+	}
+
+	public void SetHealthPoint( int value ) {
+		healthPoint = Mathf.Clamp( value, 0, GetHealthPointMax() );
+	}
+
+	public void SetHealthPointMax( int value ) {
+		healthPointMax = value;
+	}
+
+	public void SetMoveSpeed( float value ) {
+		moveSpeed = value;
+	}
+
+	public void SetJumpHeight( float value ) {
+		jumpHeight = value;
+	}
+
+	// Créer 2 setters pour isDead parce que les noms sont plus cool :)
+	public void Die() {
+		isDead = true;
+	}
+	public void Resurrect() {
+		isDead = false;
+	}
+	/* End of Getters & Setters */
 
 	void Start() {
 		Init();
@@ -27,14 +75,14 @@ public class Character : MonoBehaviour {
 	}
 
 	public void Hurt(int damage) {
-		healthPoint -= damage;
+		SetHealthPoint( GetHealthPoint() - damage );
 		
-		if (healthPoint <= 0 && !isDead) {
+		if (GetHealthPoint() <= 0 && !IsDead()) {
 			LevelManager.Kill( this );
 		}
 	}
 	
 	public void FullHealth() {
-		healthPoint = healthPointMax;
+		SetHealthPoint( GetHealthPointMax() );
 	}
 }

@@ -48,10 +48,10 @@ public class Enemy : Character {
 			// Position et échelle selon la direction
 			if (moveRight) {
 				myTransform.localScale = new Vector3 (-1f, 1f, 1f);
-				myRb.velocity = new Vector2 (moveSpeed, myRb.velocity.y);
+				myRb.velocity = new Vector2 (GetMoveSpeed(), myRb.velocity.y);
 			} else {
 				myTransform.localScale = new Vector3 (1f, 1f, 1f);
-				myRb.velocity = new Vector2 (-moveSpeed, myRb.velocity.y);
+				myRb.velocity = new Vector2 (-GetMoveSpeed(), myRb.velocity.y);
 			}
 		}
 	}

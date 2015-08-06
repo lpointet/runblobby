@@ -102,7 +102,7 @@ public class LevelManager : MonoBehaviour {
 
 	void Update () {
 		// Distance parcourue depuis le dernier update
-		localDistance = player.moveSpeed * Time.deltaTime;
+		localDistance = player.GetMoveSpeed() * Time.deltaTime;
 
 		/* Augmente la vitesse à chaque passage de x units (dans listStep)
 		distanceTraveled += player.moveSpeed;
@@ -154,7 +154,7 @@ public class LevelManager : MonoBehaviour {
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
 				// Quand l'ennemi est mort
-				if( enemyEnCours.isDead ) {
+				if( enemyEnCours.IsDead() ) {
 					enemyEnCours = null;
 					PositionBlock(Instantiate(blockEnemy[1]));
 
@@ -167,7 +167,7 @@ public class LevelManager : MonoBehaviour {
 		else {
 			blockPhase = true;
 			// On actualise la distance parcourue si le joueur n'est pas mort
-			if (!player.isDead)
+			if (!player.IsDead())
 				distanceTraveled += localDistance;
 
 			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
@@ -191,7 +191,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
 		// Si le joueur n'est pas mort, on bouge le monde
-		if (!player.isDead) {
+		if (!player.IsDead()) {
 			MoveWorld ();
 		}
 	}
@@ -246,7 +246,7 @@ public class LevelManager : MonoBehaviour {
 
 	private void MoveWorld() {
 		foreach(GameObject block in blockList) {
-			block.transform.Translate (Vector3.left * Time.deltaTime * player.moveSpeed);
+			block.transform.Translate (Vector3.left * Time.deltaTime * player.GetMoveSpeed());
 		}
 	}
 
@@ -255,8 +255,8 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public static void Kill(Character character) {
-		character.healthPoint = 0;
-		character.isDead = true;
+		character.SetHealthPoint( 0 );
+		character.Die();
 
 		character.OnKill();
 	}
@@ -283,7 +283,7 @@ public class LevelManager : MonoBehaviour {
 		player.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 		player.transform.position = currentCheckPoint.transform.position;
 		player.FullHealth ();
-		player.isDead = false;
+		player.Resurrect();
 		player.GetComponent<Renderer> ().enabled = true;
 	}
 	
