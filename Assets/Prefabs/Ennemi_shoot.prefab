@@ -24,6 +24,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 442628}
   - 114: {fileID: 11474590}
+  - 114: {fileID: 11461172}
   m_Layer: 8
   m_Name: Weapon
   m_TagString: Untagged
@@ -159,6 +160,18 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
+--- !u!114 &11461172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade226370b91e0a48974350c008f9a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  follow: {fileID: 0}
 --- !u!114 &11474590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -170,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad76c34e6dab0f4b8f019765f9ae61b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 2
+  fireRate: .699999988
   weaponPower: 1
   whatToHit:
     serializedVersion: 2

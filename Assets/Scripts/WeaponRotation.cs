@@ -3,12 +3,26 @@ using System.Collections;
 
 public class WeaponRotation : MonoBehaviour {
 
-	// Permet à l'arme de suivre la souris (si jamais elle est visible, sinond donne le transform pour les balles au moins)
+	public Transform follow;
+
+	private Vector3 followPosition;
+	private Vector3 vecteurWeapon;
+	private float rotaZ;
+	private Transform myTransform;
+
+	void Awake() {
+		myTransform = transform;
+	}
+
+	// Permet à l'arme de suivre quelque chose dans la scène ou la souris (si jamais elle est visible, sinon donne le transform.rotation pour les balles au moins)
 	void Update () {
-		Vector3 vecteurWeapon = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+		followPosition = null == follow ? Camera.main.ScreenToWorldPoint(Input.mousePosition) : follow.transform.position;
+
+		vecteurWeapon = followPosition - myTransform.position;
 		vecteurWeapon.Normalize ();
 
-		float rotaZ = Mathf.Atan2 (vecteurWeapon.y, vecteurWeapon.x) * Mathf.Rad2Deg; // Angle entre l'horizontal et le vecteur calculé précédemment
-		transform.rotation = Quaternion.Euler (0f, 0f, rotaZ);
+		rotaZ = Mathf.Atan2 (vecteurWeapon.y, vecteurWeapon.x) * Mathf.Rad2Deg; // Angle entre l'horizontal et le vecteur calculé précédemment
+
+		myTransform.rotation = Quaternion.Euler (0f, 0f, rotaZ);
 	}
 }

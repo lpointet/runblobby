@@ -91,7 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 20
   bulletPower: 1
-  direction: 0
+  direction: 1
   hitParticle: {fileID: 463800, guid: 26427447a69865c48849f663ccb86176, type: 2}
   layerCollision:
     serializedVersion: 2

@@ -2194,11 +2194,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1434480389}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ade226370b91e0a48974350c008f9a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  follow: {fileID: 0}
 --- !u!4 &1453057328 stripped
 Transform:
   m_PrefabParentObject: {fileID: 477384, guid: 175a292de66fb104ea05a31971d70ada, type: 2}
