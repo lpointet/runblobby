@@ -15,6 +15,7 @@ public class BulletManager : MonoBehaviour {
 	public Transform hitParticle;
 
 	public LayerMask layerCollision;
+	public float despawnTimer;
 
 	void Awake() {
 		myRb = GetComponent<Rigidbody2D> ();
@@ -31,6 +32,8 @@ public class BulletManager : MonoBehaviour {
 		endOfScreen = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;// La fin de l'écran
 
 		myRb.velocity = myTransform.right * moveSpeed;
+
+		StartCoroutine(DespawnAfterDelay(this.gameObject));
 	}
 	
 	void Update () {
@@ -53,5 +56,12 @@ public class BulletManager : MonoBehaviour {
 
 	private void Despawn() {
 		gameObject.SetActive (false);
+	}
+
+	
+	private IEnumerator DespawnAfterDelay(GameObject obj)
+	{
+		yield return new WaitForSeconds (despawnTimer);
+		obj.SetActive(false);
 	}
 }

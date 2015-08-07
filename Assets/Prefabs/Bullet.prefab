@@ -95,6 +95,7 @@ MonoBehaviour:
   layerCollision:
     serializedVersion: 2
     m_Bits: 1536
+  despawnTimer: 2
 --- !u!212 &21276992
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -171,6 +172,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_TagString
       value: Bullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: despawnTimer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
