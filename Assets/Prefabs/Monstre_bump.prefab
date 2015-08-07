@@ -10,10 +10,10 @@ GameObject:
   - 4: {fileID: 443914}
   - 212: {fileID: 21297886}
   - 61: {fileID: 6152874}
-  - 114: {fileID: 11454932}
-  m_Layer: 9
+  - 114: {fileID: 11435626}
+  m_Layer: 0
   m_Name: Monstre_bump
-  m_TagString: Enemy_bumper
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43,7 +43,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
---- !u!114 &11454932
+--- !u!114 &11435626
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -51,27 +51,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 140160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c94646f4e2a774ba9d964651184373, type: 3}
+  m_Script: {fileID: 11500000, guid: 75f5f36abfa2ec64ba03faae7d18c30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats:
-    healthPoint: 1
-    healhPointMax: 1
-    moveSpeed: 0
-    jumpHeight: 0
-    isDead: 0
-    damageToGive: 1
-    pointScore: 50
-  movingEnemy: 0
-  moveRight: 0
-  wallCheck: {fileID: 0}
-  wallCheckRadius: 0
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 0
-  bouncableEnemy: 1
   offsetCheckBounce: .200000003
   bouncePower: 11
+  damageToGive: 1
+  scorePoint: 50
 --- !u!212 &21297886
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -136,6 +122,22 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: bouncableEnemy
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: damageToGive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scorePoint
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

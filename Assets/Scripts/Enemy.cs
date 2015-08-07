@@ -21,12 +21,6 @@ public class Enemy : Character {
 	public Transform wallCheck;
 	public float wallCheckRadius;
 	public LayerMask whatIsWall;
-	
-	public bool bouncableEnemy;
-	public float offsetCheckBounce;
-	public float bouncePower;
-	
-	private Rigidbody2D herosRb;
 
 	/**
 	 * Getters & Setters
@@ -85,22 +79,8 @@ public class Enemy : Character {
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
-		if (other.name == "Heros") {
-			// On ne rebondit que si l'ennemi est de bouncable
-			if (bouncableEnemy) {
-				herosRb = other.attachedRigidbody;
-				
-				if (other.transform.position.y - offsetCheckBounce > transform.position.y) {
-					herosRb.velocity = new Vector2 (herosRb.velocity.x, bouncePower);
-					ScoreManager.AddPoint (GetPointScore());
-				} else {
-					LevelManager.getPlayer ().Hurt(GetDamageToGive());
-				}
-				Despawn ();
-			} else {
-				LevelManager.getPlayer ().Hurt(GetDamageToGive());
-			}
-		}
+		if (other.name == "Heros")
+			LevelManager.getPlayer ().Hurt(GetDamageToGive());
 	}
 
 	public override void OnKill() {
@@ -108,7 +88,7 @@ public class Enemy : Character {
 		Despawn();
 	}
 
-	private void Despawn() {
+	protected void Despawn() {
 		gameObject.SetActive (false);
 	}
 }

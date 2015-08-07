@@ -599,7 +599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11407914
 MonoBehaviour:
@@ -612,7 +611,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 9
 --- !u!114 &11415522
 MonoBehaviour:
@@ -625,7 +623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11432954
 MonoBehaviour:
@@ -638,7 +635,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11436984
 MonoBehaviour:
@@ -651,7 +647,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11438422
 MonoBehaviour:
@@ -676,7 +671,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11455654
 MonoBehaviour:
@@ -689,7 +683,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11460146
 MonoBehaviour:
@@ -702,7 +695,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11470498
 MonoBehaviour:
@@ -715,7 +707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11471934
 MonoBehaviour:
@@ -740,7 +731,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!212 &21204052
 SpriteRenderer:
@@ -1052,7 +1042,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: baf6d291ac41e7f4eaabff276e4b0af7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3da33f8bd6d2a2f43bb7cb91441e02f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!212 &21291858
 SpriteRenderer:
@@ -1086,7 +1076,12 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3da33f8bd6d2a2f43bb7cb91441e02f5,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 189542}

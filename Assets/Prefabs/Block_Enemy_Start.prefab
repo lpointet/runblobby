@@ -171,7 +171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!114 &11440384
 MonoBehaviour:
@@ -184,7 +183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 2
 --- !u!114 &11441762
 MonoBehaviour:
@@ -209,7 +207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
   widthSize: 1
 --- !u!212 &21265900
 SpriteRenderer:
@@ -287,7 +284,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: baf6d291ac41e7f4eaabff276e4b0af7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3d3c307c65424d04d9c5a4b222251567, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
@@ -295,7 +292,12 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d3c307c65424d04d9c5a4b222251567,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 102792}
