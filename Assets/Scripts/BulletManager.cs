@@ -5,8 +5,11 @@ public class BulletManager : MonoBehaviour {
 	
 	public int moveSpeed;
 	public int bulletPower;
+	public enum bulletDirection { left, right }
+	public bulletDirection direction = bulletDirection.right;
 
 	private float endOfScreen;
+	private float startOfScreen;
 
 	private Rigidbody2D myRb;
 	private Weapon myWeapon;
@@ -29,16 +32,22 @@ public class BulletManager : MonoBehaviour {
 	}
 	
 	void OnEnable () {
-		endOfScreen = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;// La fin de l'écran
+		float camEdge = Camera.main.orthographicSize * Camera.main.aspect;
+		endOfScreen = Camera.main.transform.position.x + camEdge;// La fin de l'écran
+		startOfScreen = Camera.main.transform.position.x - camEdge;// Le début de l'écran
 
 		myRb.velocity = myTransform.right * moveSpeed;
+
+		if( direction == bulletDirection.left ) {
+			myRb.velocity*= -1;
+		}
 
 		StartCoroutine(DespawnAfterDelay(this.gameObject));
 	}
 	
 	void Update () {
-		if (transform.position.x > endOfScreen)
-			Despawn(); // on désactive s'il sort de l'écran à droite pour éviter qu'il touche des objets
+		if (transform.position.x > endOfScreen || transform.position.x < startOfScreen)
+			Despawn(); // on désactive s'il sort de l'écran pour éviter qu'il touche des objets
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -50,6 +59,11 @@ public class BulletManager : MonoBehaviour {
 			// Si on rencontre un ennemi
 			if(other.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
 				other.GetComponent<Enemy>().Hurt(bulletPower);
+			}
+
+			// Si on rencontre un joueur
+			if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+				other.GetComponent<PlayerController>().Hurt(bulletPower);
 			}
 		}
 	}

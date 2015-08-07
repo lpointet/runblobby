@@ -6,6 +6,8 @@ public class Weapon : MonoBehaviour {
 	public float fireRate = 0;
 	public int weaponPower = 1;
 	public LayerMask whatToHit; // Avec Raycast seulement
+	public string bulletName = "Bullet";
+	public bool autoFire = false;
 
 	private float timeToFire;
 	private Transform firePoint;
@@ -26,7 +28,7 @@ public class Weapon : MonoBehaviour {
 				Shoot ();
 			}
 		} else {
-			if (Input.GetMouseButton (0) && Time.time > timeToFire) {
+			if ( ( autoFire || Input.GetMouseButton (0) ) && Time.time > timeToFire ) {
 				timeToFire = Time.time + 1/fireRate;
 				Shoot();
 			}
@@ -47,7 +49,7 @@ public class Weapon : MonoBehaviour {
 
 		Effect ();
 
-		GameObject obj = PoolingManager.current.Spawn ("Bullet");
+		GameObject obj = PoolingManager.current.Spawn( bulletName );
 		
 		if (obj != null) {
 			obj.transform.position = firePoint.position;
