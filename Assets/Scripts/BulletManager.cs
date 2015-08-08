@@ -63,7 +63,7 @@ public class BulletManager : MonoBehaviour {
 
 			// Si on rencontre un joueur
 			if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
-				other.GetComponent<PlayerController>().Hurt(bulletPower);
+				LevelManager.getPlayer().Hurt(bulletPower);
 			}
 		}
 	}
