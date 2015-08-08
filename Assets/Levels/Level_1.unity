@@ -1333,7 +1333,7 @@ SpriteRenderer:
 --- !u!4 &896872245 stripped
 Transform:
   m_PrefabParentObject: {fileID: 462988, guid: 6ad0357e7643e3e42a96b27fc21fe913, type: 2}
-  m_PrefabInternal: {fileID: 1843154099}
+  m_PrefabInternal: {fileID: 1853065548}
 --- !u!1 &897286639
 GameObject:
   m_ObjectHideFlags: 0
@@ -2582,7 +2582,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 175a292de66fb104ea05a31971d70ada, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &1843154099
+--- !u!1001 &1853065548
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
