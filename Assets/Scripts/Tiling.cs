@@ -15,6 +15,9 @@ public class Tiling : MonoBehaviour {
 	private float spriteWidth = 0f;			// la largeur de l'élément
 	private Camera kamera;
 	private Transform myTransform;
+	private float camHorizontalExtend;
+	private float edgeVisiblePositionRight;
+	private float edgeVisiblePositionLeft;
 
 	void Awake() {
 		kamera = Camera.main;
@@ -24,16 +27,15 @@ public class Tiling : MonoBehaviour {
 	void Start () {
 		SpriteRenderer sRenderer = GetComponent<SpriteRenderer> ();
 		spriteWidth = sRenderer.sprite.bounds.size.x * Mathf.Abs(myTransform.localScale.x);
+		// calculer la vision de la caméra (moitié) de ce que la caméra voit dans les coordonnées réelles
+		camHorizontalExtend = kamera.orthographicSize * kamera.aspect;
 	}
 
 	void Update () {
 		if (!leftBuddy || !rightBuddy) { // on évite les calculs si ça existe déjà
-			// calculer la vision de la caméra (moitié) de ce que la caméra voit dans les coordonnées réelles
-			float camHorizontalExtend = kamera.orthographicSize * kamera.aspect;
-
 			if( !rightBuddy ) {
 				// calculer la position x où la caméra peut voir le bord du sprite
-				float edgeVisiblePositionRight = (myTransform.position.x + spriteWidth/2) - camHorizontalExtend;
+				edgeVisiblePositionRight = (myTransform.position.x + spriteWidth/2) - camHorizontalExtend;
 				// controle si on peut voir l'élément et on appelle de quoi le construire sinon
 				if (kamera.transform.position.x >= edgeVisiblePositionRight - offsetX) {
 					MakeNewBuddy();
@@ -41,7 +43,7 @@ public class Tiling : MonoBehaviour {
 			}
 
 			if( !leftBuddy ) {
-				float edgeVisiblePositionLeft = (myTransform.position.x + spriteWidth/2) + camHorizontalExtend;
+				edgeVisiblePositionLeft = (myTransform.position.x + spriteWidth/2) + camHorizontalExtend;
 
 				if (kamera.transform.position.x > edgeVisiblePositionLeft + offsetX) {
 					myTransform.gameObject.SetActive(false);
