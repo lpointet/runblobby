@@ -142,7 +142,9 @@ public class LevelManager : MonoBehaviour {
 
 					// Arrêter l'éditeur Unity pour empêcher la mort infinie
 					// TODO : A remplacer par autre chose
-					UnityEditor.EditorApplication.isPlaying = false;
+					#if UNITY_EDITOR
+						UnityEditor.EditorApplication.isPlaying = false;
+					#endif
 				}
 
 				meterText.text = Mathf.RoundToInt (enemyDistanceToKill) + "m"; // Mise à jour de la distance restante pour tuer le boss
