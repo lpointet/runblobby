@@ -5,9 +5,11 @@ public class Pickup : MonoBehaviour {
 	
 	public float lifeTime = 0;
 	private Renderer rdr;
+	private float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
 	
 	protected virtual void Awake() {
 		rdr = GetComponent<Renderer>();
+		timeToLive = lifeTime;
 	}
 	
 	protected virtual void OnPick() {
@@ -29,6 +31,14 @@ public class Pickup : MonoBehaviour {
 			}
 			
 			OnPick();
+		}
+	}
+
+	protected virtual void Update() {
+		if( lifeTime > 0 ) {
+			// Mettre à jour le temps qui reste à vivre
+			timeToLive-= Time.deltaTime;
+			Debug.Log( "Time to live " + timeToLive );
 		}
 	}
 

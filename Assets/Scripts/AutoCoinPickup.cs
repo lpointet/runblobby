@@ -8,13 +8,11 @@ public class AutoCoinPickup : Pickup {
 
 	private Transform myTransform; 		// Référence vers le transform du bonus
 	private Vector3 direction; 	 		// Vecteur entre le joueur et une pièce
-	private float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
 	private Transform initialParent;	// Référence vers le parent initial
 
 	protected override void Awake() {
 		base.Awake();
 		myTransform = transform;
-		timeToLive = lifeTime;
 		initialParent = myTransform.parent;
 	}
 	
@@ -31,13 +29,12 @@ public class AutoCoinPickup : Pickup {
 		myTransform.parent = initialParent;
 	}
 
-	void Update() {
+	protected override void Update() {
 		if( !picking ) {
 			return;
 		}
 
-		// Mettre à jour le temps qui reste à vivre
-		timeToLive-= Time.deltaTime;
+		base.Update();
 
 		// Attirer toutes les pièces vers le joueur
 		AttractCoins();
