@@ -17,6 +17,11 @@ public class CoinPickup : Pickup {
 		transform.localRotation = initialRotation;
 	}
 
+	void OnEnable() {
+		// Réinitialiser les positions
+		Reset();
+	}
+
 	protected override void OnPick() {
 		// Ajouter les points au joueur
 		ScoreManager.AddPoint(pointToAdd);
