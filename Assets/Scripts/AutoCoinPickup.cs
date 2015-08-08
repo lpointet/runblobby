@@ -44,6 +44,11 @@ public class AutoCoinPickup : Pickup {
 		coins = FindObjectsOfType<CoinPickup>();
 
 		for( int i = 0; i < coins.Length; i++ ) {
+			// Vérifier que la pièce est visible et pas derrière
+			if( !coins[i].GetComponent<Renderer>().isVisible || coins[i].transform.position.x < myTransform.position.x ) {
+				continue;
+			}
+
 			// Le vecteur direction nous donne la droite entre la pièce et le bonus, donc le joueur
 			direction = coins[i].transform.position - myTransform.position;
 			direction.Normalize();
