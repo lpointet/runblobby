@@ -38,7 +38,6 @@ public class Pickup : MonoBehaviour {
 		if( lifeTime > 0 ) {
 			// Mettre à jour le temps qui reste à vivre
 			timeToLive-= Time.deltaTime;
-			Debug.Log( "Time to live " + timeToLive );
 		}
 	}
 

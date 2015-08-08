@@ -22,6 +22,11 @@ public class CoinPickup : Pickup {
 		Reset();
 	}
 
+	void OnBecameInvisible() {
+		// On ne veut pas pouvoir interagir avec cette pièce si elle n'est plus visible (cf. AutoCoinPickup)
+		gameObject.SetActive( false );
+	}
+
 	protected override void OnPick() {
 		// Ajouter les points au joueur
 		ScoreManager.AddPoint(pointToAdd);

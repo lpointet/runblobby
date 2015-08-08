@@ -9,11 +9,14 @@ public class AutoCoinPickup : Pickup {
 	private Transform myTransform; 		// Référence vers le transform du bonus
 	private Vector3 direction; 	 		// Vecteur entre le joueur et une pièce
 	private Transform initialParent;	// Référence vers le parent initial
+	private Camera cam; 				// Référence vers la caméra
+	private float camHorizontalExtend;	// Offset vers le bord droit de l'écran
 
 	protected override void Awake() {
 		base.Awake();
 		myTransform = transform;
 		initialParent = myTransform.parent;
+		cam = Camera.main;
 	}
 	
 	protected override void OnPick() {
@@ -44,8 +47,8 @@ public class AutoCoinPickup : Pickup {
 		coins = FindObjectsOfType<CoinPickup>();
 
 		for( int i = 0; i < coins.Length; i++ ) {
-			// Vérifier que la pièce est visible et pas derrière
-			if( !coins[i].GetComponent<Renderer>().isVisible || coins[i].transform.position.x < myTransform.position.x ) {
+			camHorizontalExtend = cam.transform.position.x + cam.orthographicSize * cam.aspect;
+			if( coins[i].transform.position.x > myTransform.position.x + camHorizontalExtend ) {
 				continue;
 			}
 
