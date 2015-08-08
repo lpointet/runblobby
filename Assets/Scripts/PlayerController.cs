@@ -15,6 +15,7 @@ public class PlayerController : Character {
 	private Rigidbody2D myRb;
 	private Animator anim;	
 	private LevelManager levelManager;
+	private Transform weapon;
 
 	private bool grounded;
 	public Transform groundCheck;
@@ -33,12 +34,21 @@ public class PlayerController : Character {
 	public void SetInitialMoveSpeed( float value ) {
 		initialMoveSpeed = value;
 	}
+
+	public Transform GetWeapon() {
+		return weapon;
+	}
+
+	public void SetWeapon( Transform value ) {
+		weapon = value;
+	}
 	/* End of Getters & Setters */
 	
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
 		levelManager = FindObjectOfType<LevelManager> ();
+		SetWeapon( transform.FindChild( "Weapon" ) );
 	}
 
 	protected override void Init() {
@@ -87,5 +97,11 @@ public class PlayerController : Character {
 
 	public override void OnKill() {
 		levelManager.RespawnPlayer();
+	}
+
+	public void SetFireAbility( bool able ) {
+		if( null != weapon ) {
+			weapon.gameObject.SetActive( able );
+		}
 	}
 }

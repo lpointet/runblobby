@@ -274,15 +274,13 @@ public class LevelManager : MonoBehaviour {
 	private IEnumerator RespawnPlayerCo() {
 		Instantiate (deathEffect, player.transform.position, player.transform.rotation);
 		player.GetComponent<Renderer> ().enabled = false;
-		//player.enabled = false;
-		player.gameObject.SetActive (false);
+		player.SetFireAbility( false );
 		yield return new WaitForSeconds (respawnDelay);
-		player.gameObject.SetActive (true);
-		//player.enabled = true;
 		player.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 		player.transform.position = currentCheckPoint.transform.position;
 		player.FullHealth ();
 		player.Resurrect();
+		player.SetFireAbility( true );
 		player.GetComponent<Renderer> ().enabled = true;
 	}
 	
