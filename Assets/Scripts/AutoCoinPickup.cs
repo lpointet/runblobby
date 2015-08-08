@@ -22,6 +22,10 @@ public class AutoCoinPickup : Pickup {
 		initialParent = myTransform.parent;
 		cam = Camera.main;
 	}
+
+	void Start() {
+		camHorizontalExtend = cam.transform.position.x + cam.orthographicSize * cam.aspect;
+	}
 	
 	protected override void OnPick() {
 		// Attacher le bonus au joueur
@@ -51,7 +55,6 @@ public class AutoCoinPickup : Pickup {
 		nbCoins = Physics2D.OverlapCircleNonAlloc( myTransform.position, radius, coins, layerCoins );
 
 		for( int i = 0; i < nbCoins; i++ ) {
-			camHorizontalExtend = cam.transform.position.x + cam.orthographicSize * cam.aspect;
 			if( coins[i].transform.position.x > myTransform.position.x + camHorizontalExtend ) {
 				continue;
 			}
