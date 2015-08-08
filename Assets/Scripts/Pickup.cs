@@ -4,10 +4,10 @@ using System.Collections;
 public class Pickup : MonoBehaviour {
 	
 	public float lifeTime = 0;
-	private Renderer renderer;
+	private Renderer rdr;
 	
-	void Awake() {
-		renderer = GetComponent<Renderer>();
+	protected virtual void Awake() {
+		rdr = GetComponent<Renderer>();
 	}
 	
 	protected virtual void OnPick() {
@@ -27,9 +27,9 @@ public class Pickup : MonoBehaviour {
 			OnPick();
 		}
 	}
-	
+
 	private void Hide() {
-		renderer.enabled = false;
+		rdr.enabled = false;
 	}
 
 	private IEnumerator Despawn() {

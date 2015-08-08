@@ -291,6 +291,12 @@ public class LevelManager : MonoBehaviour {
 		
 		foreach (Transform childTransform in rootObject.transform)
 		{
+			// Si c'est une pièce, appeler Reset() pour réinitialiser les positions
+			CoinPickup coin = childTransform.GetComponent<CoinPickup>();
+			if( null != coin ) {
+				coin.Reset();
+			}
+
 			if (!childTransform.gameObject.activeInHierarchy)
 				SetActiveRecursively(childTransform.gameObject, active);
 		}
