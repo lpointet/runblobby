@@ -18,7 +18,7 @@ public class AutoCoinPickup : Pickup {
 	
 	protected override void OnPick() {
 		// Attacher le bonus au joueur
-		transform.parent = LevelManager.getPlayer().transform;
+		myTransform.parent = LevelManager.getPlayer().transform;
 
 		// Activer le ramassage
 		picking = true;
