@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade226370b91e0a48974350c008f9a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  follow: {fileID: 0}
+  followName: Heros
 --- !u!114 &11474590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -191,7 +191,7 @@ MonoBehaviour:
   bulletName: Bullet_Enemy
   autoFire: 1
   muzzleFlashPrefab: {fileID: 0}
-  bulletTrailPrefab: {fileID: 435126, guid: 7028cf0818e54b747a8b8cd1f40b1902, type: 2}
+  bulletTrailPrefab: {fileID: 0}
 --- !u!114 &11486904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -250,7 +250,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: bulletTrailPrefab
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 141708}

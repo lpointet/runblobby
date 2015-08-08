@@ -68,6 +68,8 @@ public class Character : MonoBehaviour {
 	protected virtual void Init() {
 		// Init health
 		FullHealth();
+		// Let it live
+		Resurrect();
 	}
 	
 	public virtual void OnKill() {
