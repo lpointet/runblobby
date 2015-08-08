@@ -12,7 +12,7 @@ GameObject:
   - 95: {fileID: 9550268}
   - 58: {fileID: 5880860}
   - 114: {fileID: 11411688}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Bronze Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

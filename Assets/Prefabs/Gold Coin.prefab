@@ -12,7 +12,7 @@ GameObject:
   - 95: {fileID: 9598870}
   - 58: {fileID: 5894442}
   - 114: {fileID: 11498390}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Gold Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

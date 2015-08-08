@@ -3,14 +3,18 @@ using System.Collections;
 
 public class AutoCoinPickup : Pickup {
 
-	private bool picking = false; 		// Est-ce qu'on a activé le ramassage automatique ?
-	private CoinPickup[] coins;   		// Liste des pièces existantes
+	public float radius = 0f;
+	public LayerMask layerCoins;
 
-	private Transform myTransform; 		// Référence vers le transform du bonus
-	private Vector3 direction; 	 		// Vecteur entre le joueur et une pièce
-	private Transform initialParent;	// Référence vers le parent initial
-	private Camera cam; 				// Référence vers la caméra
-	private float camHorizontalExtend;	// Offset vers le bord droit de l'écran
+	private bool picking = false; 							// Est-ce qu'on a activé le ramassage automatique ?
+	private Collider2D[] coins = new Collider2D[20];   		// Liste des pièces existantes
+
+	private Transform myTransform; 							// Référence vers le transform du bonus
+	private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
+	private Transform initialParent;						// Référence vers le parent initial
+	private Camera cam; 									// Référence vers la caméra
+	private float camHorizontalExtend;						// Offset vers le bord droit de l'écran
+	private int nbCoins = 0; 								// Nombre de pièces à ramasser
 
 	protected override void Awake() {
 		base.Awake();
@@ -44,9 +48,9 @@ public class AutoCoinPickup : Pickup {
 	}
 
 	private void AttractCoins() {
-		coins = FindObjectsOfType<CoinPickup>();
+		nbCoins = Physics2D.OverlapCircleNonAlloc( myTransform.position, radius, coins, layerCoins );
 
-		for( int i = 0; i < coins.Length; i++ ) {
+		for( int i = 0; i < nbCoins; i++ ) {
 			camHorizontalExtend = cam.transform.position.x + cam.orthographicSize * cam.aspect;
 			if( coins[i].transform.position.x > myTransform.position.x + camHorizontalExtend ) {
 				continue;
