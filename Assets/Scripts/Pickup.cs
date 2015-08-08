@@ -14,6 +14,10 @@ public class Pickup : MonoBehaviour {
 		// Que faut-il faire lorsque cet objet a été ramassé ?
 	}
 	
+	protected virtual void OnDespawn() {
+		// Que faut-il faire lorsque cet objet a fini sa vie ?
+	}
+	
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.name == "Heros") {
 			if( lifeTime > 0 ) {
@@ -35,5 +39,6 @@ public class Pickup : MonoBehaviour {
 	private IEnumerator Despawn() {
 		yield return new WaitForSeconds( lifeTime );
 		gameObject.SetActive( false );
+		OnDespawn();
 	}
 }

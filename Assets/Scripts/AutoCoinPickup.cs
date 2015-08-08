@@ -3,17 +3,19 @@ using System.Collections;
 
 public class AutoCoinPickup : Pickup {
 
-	private bool picking = false; 	// Est-ce qu'on a activé le ramassage automatique ?
-	private CoinPickup[] coins;   	// Liste des pièces existantes
+	private bool picking = false; 		// Est-ce qu'on a activé le ramassage automatique ?
+	private CoinPickup[] coins;   		// Liste des pièces existantes
 
-	private Transform myTransform; 	// Référence vers le transform du bonus
-	private Vector3 direction; 	 	// Vecteur entre le joueur et une pièce
-	private float timeToLive;		// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
+	private Transform myTransform; 		// Référence vers le transform du bonus
+	private Vector3 direction; 	 		// Vecteur entre le joueur et une pièce
+	private float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
+	private Transform initialParent;	// Référence vers le parent initial
 
 	protected override void Awake() {
 		base.Awake();
 		myTransform = transform;
 		timeToLive = lifeTime;
+		initialParent = myTransform.parent;
 	}
 	
 	protected override void OnPick() {
@@ -22,6 +24,11 @@ public class AutoCoinPickup : Pickup {
 
 		// Activer le ramassage
 		picking = true;
+	}
+	
+	protected override void OnDespawn() {
+		// Attacher le bonus à son parent initial
+		myTransform.parent = initialParent;
 	}
 
 	void Update() {
