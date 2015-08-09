@@ -46,7 +46,9 @@ public class AutoCoinPickup : Pickup {
 		}
 
 		base.Update();
+	}
 
+	void FixedUpdate() {
 		// Attirer toutes les pièces vers le joueur
 		AttractCoins();
 	}
