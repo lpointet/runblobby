@@ -21,7 +21,7 @@ public class Parallaxing : MonoBehaviour {
 	}
 
 	void Update () {
-		if (player.isActiveAndEnabled) {
+		if (!player.IsDead()) {
 			for (int i = 0; i < backgrounds.Length; i++) {
 				// la parallaxe est l'opposé du mouvement du joueur (scale < 0)
 				float parallax = (Time.deltaTime * player.GetMoveSpeed()) * parallaxScales [i];
