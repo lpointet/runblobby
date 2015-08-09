@@ -12,6 +12,8 @@ public class Character : MonoBehaviour {
 	[SerializeField] private float jumpHeight;
 	[SerializeField] private bool isDead;
 	/* End of Stats */
+	
+	private bool invincible = false;
 
 	/**
 	 * Getters & Setters
@@ -77,6 +79,10 @@ public class Character : MonoBehaviour {
 	}
 
 	public void Hurt(int damage) {
+		if( invincible ) {
+			return;
+		}
+
 		SetHealthPoint( GetHealthPoint() - damage );
 		
 		if (GetHealthPoint() <= 0 && !IsDead()) {
@@ -86,5 +92,16 @@ public class Character : MonoBehaviour {
 	
 	public void FullHealth() {
 		SetHealthPoint( GetHealthPointMax() );
+	}
+	
+	public void SetInvincible( float time ) {
+		invincible = true;
+		
+		CancelInvoke( "SetDamageable" );
+		Invoke( "SetDamageable", time );
+	}
+	
+	public void SetDamageable() {
+		invincible = false;
 	}
 }

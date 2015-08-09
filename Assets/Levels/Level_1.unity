@@ -456,7 +456,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c732973e83980d40aee3ac29b738339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageToGive: 10
 --- !u!61 &293442156
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2395,7 +2394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c732973e83980d40aee3ac29b738339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageToGive: 10
 --- !u!4 &1590499157
 Transform:
   m_ObjectHideFlags: 0
