@@ -33,17 +33,18 @@ public class CameraManager : MonoBehaviour {
 	}
 
 	void Start () {
-		FixeResolution ();
 
+		Camera.main.orthographicSize = Screen.height / 32.0f / 2.0f;
+		FixeResolution ();
 		// on place on offset en pourcentage par rapport à ce qui est calculé
-		xOffset = (unitsInWidth / 2f) * xOffsetPourcentage;
+		xOffset = (Camera.main.orthographicSize * Camera.main.aspect) * xOffsetPourcentage;
 		yOffset = Camera.main.orthographicSize * yOffsetPourcentage;
 		transform.position = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + yOffset, transform.position.z);
 	}
 
 	void Update () {
 		#if UNITY_EDITOR
-		FixeResolution();
+		//FixeResolution();
 		#endif
 
 		if (isFollowing) {
@@ -55,10 +56,10 @@ public class CameraManager : MonoBehaviour {
 		// calcul de la taille ortho (vertical en units / 2) à partir de la longueur demandée
 		if (unitsInWidth < widthMin)
 			unitsInWidth = widthMin;
-		Camera.main.orthographicSize = unitsInWidth / (2f * Camera.main.aspect);
+		//Camera.main.orthographicSize = unitsInWidth / (2f * Camera.main.aspect);
 
 		// placement des zones qui dépendent de l'écran (donc de la caméra)
-		backKiller.position = transform.position + Vector3.left * (unitsInWidth / 2f + backKillerCollider.bounds.size.x / 3f);
+		backKiller.position = transform.position + Vector3.left * (Camera.main.orthographicSize * Camera.main.aspect + backKillerCollider.bounds.size.x / 3f);
 		fallingKiller.position = transform.position + Vector3.down * (Camera.main.orthographicSize + fallingKillerCollider.bounds.size.y / 3f);
 	}
 }

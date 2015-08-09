@@ -776,8 +776,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   isFollowing: 0
-  unitsInWidth: 22
-  widthMin: 16
+  unitsInWidth: 24
+  widthMin: 20
   xOffsetPourcentage: .75
   yOffsetPourcentage: .200000003
 --- !u!1 &380668170
