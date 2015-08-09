@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Parallaxing : MonoBehaviour {
 
-	public Transform[] backgrounds;			// Array des backgrounds et foregrounds
+	private Transform[] backgrounds;			// Array des backgrounds et foregrounds
 	private float[] parallaxScales;			// Proportion du mouvement pour bouger les éléments du background
 	public float smoothing = 1f;			// La douceur du parallaxe, doit etre > 0
 
@@ -11,6 +11,7 @@ public class Parallaxing : MonoBehaviour {
 
 	void Awake() {
 		player = LevelManager.getPlayer ();
+		backgrounds = LevelManager.levelManager.GetBackgrounds();
 	}
 
 	void Start () {

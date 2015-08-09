@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour {
 	public static LevelManager levelManager;
 	private Camera kamera;
 	public static PlayerController player;
-	private Transform background;
+	public Transform[] backgrounds;			// Array des backgrounds et foregrounds
 
 	public Text meterText;
 	private Color defaultTextColor; // Couleur par défaut du meterText
@@ -56,12 +56,6 @@ public class LevelManager : MonoBehaviour {
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
-		
-		GameObject obj = GameObject.FindGameObjectWithTag("BackgroundContainer");
-		if(null == obj) {
-			Debug.LogError("Conteneur de fond introuvable, ajoute le tag 'BackgroundContainer' !");
-		}
-		background = obj.transform;
 	}
 
 	void Start () {
@@ -94,10 +88,13 @@ public class LevelManager : MonoBehaviour {
 		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
 		sizeLastBlock = blockList[0].GetComponent<BlockManager> ().widthSize;
 		sizeFirstBlock = sizeLastBlock;
-		
-		GameObject obj = PoolingManager.current.Spawn("Background");
-		obj.transform.parent = background;
-		obj.SetActive(true);
+
+		GameObject obj;
+		for(int i = 0; i < backgrounds.Length; i++) {
+			obj = PoolingManager.current.Spawn( backgrounds[i].GetComponent<PoolingScript>().poolName );
+			obj.transform.parent = backgrounds[i].transform;
+			obj.SetActive(true);
+		}
 	}
 
 	void Update () {
@@ -299,5 +296,9 @@ public class LevelManager : MonoBehaviour {
 			if (!childTransform.gameObject.activeInHierarchy)
 				SetActiveRecursively(childTransform.gameObject, active);
 		}
+	}
+
+	public Transform[] GetBackgrounds() {
+		return backgrounds;
 	}
 }

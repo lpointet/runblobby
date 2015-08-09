@@ -6,6 +6,7 @@ using System.Collections;
 public class Tiling : MonoBehaviour {
 
 	public int offsetX = 2;					// offset pour éviter les erreurs
+	public string poolName;
 
 	private Transform rightBuddy = null;		// pour éviter des calculs inutiles s'ils existent déjà
 	private Transform leftBuddy = null;
@@ -60,7 +61,7 @@ public class Tiling : MonoBehaviour {
 		Vector3 newPosition = new Vector3 (myTransform.position.x + spriteWidth, myTransform.position.y, myTransform.position.z);
 		
 		// instantiation du nouveau corps dans une variable
-		GameObject newBuddy = PoolingManager.current.Spawn("Background");
+		GameObject newBuddy = PoolingManager.current.Spawn( poolName );
 
 		if( null == newBuddy ) {
 			return;

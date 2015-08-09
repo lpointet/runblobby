@@ -1362,6 +1362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a923c13fd5ab5df489997ace3d4e56ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgrounds:
+  - {fileID: 555922723}
   meterText: {fileID: 2064347930}
   deathEffect: {fileID: 100004, guid: 9b26e1efdb8fd4d53b35c3c6b7f50cf5, type: 2}
   currentCheckPoint: {fileID: 0}
@@ -1400,8 +1402,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6dc79a86269f245a3a6662d5bbd50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgrounds:
-  - {fileID: 555922723}
   smoothing: 1
 --- !u!1 &912919319
 GameObject:
