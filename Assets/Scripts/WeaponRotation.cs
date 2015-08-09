@@ -18,7 +18,7 @@ public class WeaponRotation : MonoBehaviour {
 	// Permet à l'arme de suivre quelque chose dans la scène ou la souris (si jamais elle est visible, sinon donne le transform.rotation pour les balles au moins)
 	void Update () {
 		// On récupère l'objet à suivre à chaque Update pour etre sur qu'il est bien actif dans la scène
-		if( null != followName ) {
+		if( "" != followName ) {	
 			follow = GameObject.Find( followName );
 			if( null == follow ) {
 				return;
