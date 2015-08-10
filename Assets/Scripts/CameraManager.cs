@@ -33,8 +33,6 @@ public class CameraManager : MonoBehaviour {
 	}
 
 	void Start () {
-
-		Camera.main.orthographicSize = Screen.height / 32.0f / 2.0f;
 		FixeResolution ();
 		// on place on offset en pourcentage par rapport à ce qui est calculé
 		xOffset = (Camera.main.orthographicSize * Camera.main.aspect) * xOffsetPourcentage;
@@ -53,10 +51,17 @@ public class CameraManager : MonoBehaviour {
 	}
 
 	private void FixeResolution() {
+		float sizeCameraPixelPerfect;
+		float sizeCameraMinWidth;
+
 		// calcul de la taille ortho (vertical en units / 2) à partir de la longueur demandée
 		if (unitsInWidth < widthMin)
 			unitsInWidth = widthMin;
-		//Camera.main.orthographicSize = unitsInWidth / (2f * Camera.main.aspect);
+		sizeCameraMinWidth = unitsInWidth / (2f * Camera.main.aspect);
+		sizeCameraPixelPerfect = Screen.height / 64.0f / 2.0f; // 64 et non 32 pour éviter que ce soit trop petit sur un smartphone
+
+		// On ajuste l'ortho selon la logique : il vaut mieux déformer les pixels mais avoir une bonne vision devant soi
+		Camera.main.orthographicSize = sizeCameraMinWidth > sizeCameraPixelPerfect ? sizeCameraMinWidth : sizeCameraPixelPerfect;
 
 		// placement des zones qui dépendent de l'écran (donc de la caméra)
 		backKiller.position = transform.position + Vector3.left * (Camera.main.orthographicSize * Camera.main.aspect + backKillerCollider.bounds.size.x / 3f);

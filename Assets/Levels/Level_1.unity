@@ -777,7 +777,7 @@ MonoBehaviour:
   player: {fileID: 0}
   isFollowing: 0
   unitsInWidth: 24
-  widthMin: 20
+  widthMin: 24
   xOffsetPourcentage: .75
   yOffsetPourcentage: .200000003
 --- !u!1 &380668170
