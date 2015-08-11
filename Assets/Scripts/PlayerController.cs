@@ -10,7 +10,10 @@ public class PlayerController : Character {
 	[SerializeField] private float initialMoveSpeed;
 	/* End of Stats */
 
+	// GUI
 	public Text healthText;
+	public GameObject healthBar;
+	public Image fillHealthBar;
 
 	private Rigidbody2D myRb;
 	private Animator anim;	
@@ -54,7 +57,8 @@ public class PlayerController : Character {
 	protected override void Init() {
 		base.Init();
 		SetMoveSpeed( GetInitialMoveSpeed() );
-		//moveSpeed /= 100f;
+		// GUI
+		healthBar.SetActive (false);
 	}
 
 	void FixedUpdate(){
@@ -65,9 +69,6 @@ public class PlayerController : Character {
 	}
 
 	void Update () {
-		// Mise à jour de la GUI
-		healthText.text = GetHealthPoint().ToString();
-
 		if (grounded) // Assure qu'on puisse doubleJump à partir du moment où on est au sol
 			doubleJumped = false;
 
@@ -87,8 +88,18 @@ public class PlayerController : Character {
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myRb.gravityScale = -myRb.gravityScale;
 		}
+	}
 
-		// On tue le joueur s'il tombe trop bas
+	void OnGUI() {
+		healthText.text = GetHealthPoint().ToString();
+
+		if (!levelManager.GetBlockPhase ()) {
+			// On affiche la barre de vie qu'en phase ennemie, vu que tout le reste nous tue instantanément
+			healthBar.SetActive (true);
+			fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
+		} else {
+			healthBar.SetActive (false);
+		}
 	}
 
 	private void Jump() {

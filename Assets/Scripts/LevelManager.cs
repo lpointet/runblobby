@@ -140,7 +140,6 @@ public class LevelManager : MonoBehaviour {
 					// Arrêter l'éditeur Unity pour empêcher la mort infinie
 					// TODO : A remplacer par autre chose
 					enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
-
 				}
 
 				meterText.text = Mathf.RoundToInt (enemyDistanceToKill) + "m"; // Mise à jour de la distance restante pour tuer le boss
@@ -297,5 +296,9 @@ public class LevelManager : MonoBehaviour {
 
 	public Transform[] GetBackgrounds() {
 		return backgrounds;
+	}
+
+	public bool GetBlockPhase() {
+		return blockPhase;
 	}
 }

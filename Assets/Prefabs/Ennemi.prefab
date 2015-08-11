@@ -42,7 +42,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124310}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 464780}
@@ -113,8 +113,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c94646f4e2a774ba9d964651184373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 1
-  healthPointMax: 1
+  healthPoint: 3
+  healthPointMax: 5
+  widthHealthBar: 0
   moveSpeed: 0
   jumpHeight: 0
   isDead: 0
@@ -123,6 +124,8 @@ MonoBehaviour:
   pointScore: 100
   movingEnemy: 0
   moveRight: 0
+  healthBar: {fileID: 0}
+  fillHealthBar: {fileID: 0}
   wallCheck: {fileID: 464780}
   wallCheckRadius: .100000001
   whatIsWall:
@@ -175,11 +178,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: healthPoint
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: healthPointMax
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: distanceToKill

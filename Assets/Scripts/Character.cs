@@ -8,6 +8,7 @@ public class Character : MonoBehaviour {
 	 */
 	[SerializeField] private int healthPoint;
 	[SerializeField] private int healthPointMax;
+	[SerializeField] private float widthHealthBar;
 	[SerializeField] private float moveSpeed;
 	[SerializeField] private float jumpHeight;
 	[SerializeField] private bool isDead;
@@ -24,6 +25,10 @@ public class Character : MonoBehaviour {
 
 	public int GetHealthPointMax() {
 		return healthPointMax;
+	}
+
+	public float GetWidthHealthBar() {
+		return widthHealthBar;
 	}
 
 	public float GetMoveSpeed() {
@@ -44,6 +49,10 @@ public class Character : MonoBehaviour {
 
 	public void SetHealthPointMax( int value ) {
 		healthPointMax = value;
+	}
+
+	public void SetWidthHealthBar( int value ) {
+		widthHealthBar = value;
 	}
 
 	public void SetMoveSpeed( float value ) {

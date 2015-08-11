@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Enemy : Character {
 
@@ -14,8 +15,13 @@ public class Enemy : Character {
 	public bool movingEnemy;
 	public bool moveRight;
 
+	// GUI
+	public GameObject healthBar;
+	public Image fillHealthBar;
+
 	private Rigidbody2D myRb;
 	private Transform myTransform;
+	private LevelManager levelManager;
 
 	private bool hittingWall;
 	public Transform wallCheck;
@@ -56,7 +62,11 @@ public class Enemy : Character {
 	
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
+		levelManager = FindObjectOfType<LevelManager> ();
 		myTransform = transform;
+
+		healthBar = GameObject.Find ("HPBarEnemy"); // On prend l'enveloppe de la barre de vie qui n'est pas inactive
+		fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
 	}
 
 	void Update () {
@@ -78,12 +88,23 @@ public class Enemy : Character {
 		}
 	}
 
+	void OnGUI() {
+		// On affiche la barre de vie seulement quand il est là
+		foreach(Transform obj in healthBar.transform)
+			obj.gameObject.SetActive (true);
+		fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
+	}
+
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.name == "Heros")
 			LevelManager.getPlayer ().Hurt(GetDamageToGive());
 	}
 
 	public override void OnKill() {
+		// On enlève la GUI
+		foreach(Transform obj in healthBar.transform)
+			obj.gameObject.SetActive (false);
+
 		ScoreManager.AddPoint (GetPointScore());
 		Despawn();
 	}
