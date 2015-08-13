@@ -298,7 +298,18 @@ public class LevelManager : MonoBehaviour {
 		return backgrounds;
 	}
 
-	public bool GetBlockPhase() {
+	public bool IsBlockPhase() {
 		return blockPhase;
+	}
+
+	public static void MaybeKill( Transform transform ) {
+		Enemy enemy = transform.GetComponent<Enemy>();
+		
+		if( null != enemy ) {
+			LevelManager.Kill( enemy );
+		}
+		else {
+			transform.gameObject.SetActive(false);
+		}
 	}
 }

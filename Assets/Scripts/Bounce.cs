@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyBouncing : MonoBehaviour {
+public class Bounce : MonoBehaviour {
 
 	public float offsetCheckBounce;
 	public float bouncePower;
-
-	public int damageToGive;
-	public int scorePoint;
 
 	void OnTriggerEnter2D(Collider2D other) {
 		Rigidbody2D herosRb;
@@ -19,13 +16,8 @@ public class EnemyBouncing : MonoBehaviour {
 			if (other.transform.position.y - offsetCheckBounce > transform.position.y) {
 
 				herosRb.velocity = new Vector2 (herosRb.velocity.x, bouncePower);
-				ScoreManager.AddPoint (scorePoint);
 
-				gameObject.SetActive(false);
-			} 
-			// Si le contact se fait par le coté
-			else {
-				LevelManager.getPlayer ().Hurt (damageToGive);
+				LevelManager.MaybeKill( transform );
 			}
 		}
 	}

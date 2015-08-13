@@ -89,15 +89,12 @@ public class Enemy : Character {
 	}
 
 	void OnGUI() {
-		// On affiche la barre de vie seulement quand il est là
-		foreach(Transform obj in healthBar.transform)
-			obj.gameObject.SetActive (true);
-		fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
-	}
-
-	void OnTriggerEnter2D(Collider2D other){
-		if (other.name == "Heros")
-			LevelManager.getPlayer ().Hurt(GetDamageToGive());
+		if (!levelManager.IsBlockPhase ()) {
+			// On affiche la barre de vie seulement quand il est là, pendant la phase "ennemi"
+			foreach(Transform obj in healthBar.transform)
+				obj.gameObject.SetActive (true);
+			fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
+		}
 	}
 
 	public override void OnKill() {

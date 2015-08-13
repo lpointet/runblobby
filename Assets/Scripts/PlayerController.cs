@@ -93,7 +93,7 @@ public class PlayerController : Character {
 	void OnGUI() {
 		healthText.text = GetHealthPoint().ToString();
 
-		if (!levelManager.GetBlockPhase ()) {
+		if (!levelManager.IsBlockPhase ()) {
 			// On affiche la barre de vie qu'en phase ennemie, vu que tout le reste nous tue instantanément
 			healthBar.SetActive (true);
 			fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
