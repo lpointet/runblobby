@@ -6,8 +6,6 @@ public class CoinPickup : Pickup {
 	public int pointToAdd;
 	private Vector3 initialPosition;
 	private Quaternion initialRotation;
-
-	private float mouvement = 0;
 	
 	protected override void Awake() {
 		initialPosition = transform.localPosition;
@@ -31,8 +29,7 @@ public class CoinPickup : Pickup {
 
 	void Update() {
 		// Un mouvement de haut en bas
-		mouvement += Time.deltaTime * 4;
-		transform.localPosition = new Vector2(transform.localPosition.x, initialPosition.y + Mathf.Sin (mouvement) / 7f);
+		transform.localPosition = new Vector2(transform.localPosition.x, initialPosition.y + Mathf.Sin (4 * Time.time) / 20f);
 	}
 
 	protected override void OnPick() {
