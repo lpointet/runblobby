@@ -16,12 +16,11 @@ public class Enemy : Character {
 	public bool moveRight;
 
 	// GUI
-	public GameObject healthBar;
-	public Image fillHealthBar;
+	private GameObject healthBar;
+	private Image fillHealthBar;
 
 	private Rigidbody2D myRb;
 	private Transform myTransform;
-	private LevelManager levelManager;
 
 	private bool hittingWall;
 	public Transform wallCheck;
@@ -62,7 +61,6 @@ public class Enemy : Character {
 	
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
-		levelManager = FindObjectOfType<LevelManager> ();
 		myTransform = transform;
 
 		healthBar = GameObject.Find ("HPBarEnemy"); // On prend l'enveloppe de la barre de vie qui n'est pas inactive
@@ -89,12 +87,12 @@ public class Enemy : Character {
 	}
 
 	void OnGUI() {
-		if (!levelManager.IsBlockPhase ()) {
-			// On affiche la barre de vie seulement quand il est là, pendant la phase "ennemi"
-			foreach(Transform obj in healthBar.transform)
-				obj.gameObject.SetActive (true);
-			fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
-		}
+		fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
+	}
+
+	void OnTriggerEnter2D(Collider2D other){
+		if (other.name == "Heros")
+			LevelManager.getPlayer ().Hurt(GetDamageToGive());
 	}
 
 	public override void OnKill() {

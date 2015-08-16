@@ -38,17 +38,22 @@ public class LevelManager : MonoBehaviour {
 	private float distanceTraveled; // pendant la phase bloc
 	private float localDistance; // variation permanente de la distance
 
-	// Partie Ennemi intermédiaire
+	//* Partie Ennemi intermédiaire
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
 	private int currentPhase;	// Phase en cours
-	private bool blockPhase;	// Phase avec des blocks ou avec un ennemi
+	private bool blockPhase;	// Phase avec des blocs ou avec un ennemi
 	private bool premierBlock = false;	// Instantier le premier bloc ennemi
 	public Enemy[] enemyMiddle;	// Liste des ennemis
 	private Enemy enemyEnCours;
+	[HideInInspector] public bool enemyToSpawn = false;	// Bool modifiable pour savoir à quel moment il faut invoquer l'ennemi
+	public float enemySpawnDelay;
 	private float enemyDistanceToKill;
-	public float spawnEnemyDelay;	// Délai avant apparition de l'ennemi suite à la création du premier bloc
 	public int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
-	// Fin partie ennemi intermédiaire
+	// GUI
+	private GameObject healthBar;
+	private Image fillHealthBar;
+	private float lerpingTimeEnemyBar = 0;
+	//* Fin partie ennemi intermédiaire
 
 	void Awake() {
 		if (levelManager == null)
@@ -56,6 +61,10 @@ public class LevelManager : MonoBehaviour {
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
+
+		// On remplit la barre de vie en attendant que l'ennemi apparaisse
+		healthBar = GameObject.Find ("HPBarEnemy"); // On prend l'enveloppe de la barre de vie qui n'est pas inactive
+		fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
 	}
 
 	void Start () {
@@ -67,7 +76,7 @@ public class LevelManager : MonoBehaviour {
 		defaultTextColor = meterText.color;
 		warningTextColor = new Color (1, 0.588f, 0.588f);
 		warningTextColorBis = warningTextColor / 2;
-		warningTextColorBis.r = 1f;
+		warningTextColorBis.r = 1f; // rouge à fond
 
 		// Autant de probabilité que de phases (voir listPhase)
 		probabiliteBlock = new int[listPhase.Length][];
@@ -89,12 +98,12 @@ public class LevelManager : MonoBehaviour {
 		sizeLastBlock = blockList[0].GetComponent<BlockManager> ().widthSize;
 		sizeFirstBlock = sizeLastBlock;
 
-		GameObject obj;
+		/*GameObject obj;
 		for(int i = 0; i < backgrounds.Length; i++) {
 			obj = PoolingManager.current.Spawn( backgrounds[i].GetComponent<PoolingScript>().poolName );
 			obj.transform.parent = backgrounds[i].transform;
 			obj.SetActive(true);
-		}
+		}*/
 	}
 
 	void Update () {
@@ -109,7 +118,7 @@ public class LevelManager : MonoBehaviour {
 				currentStep++;
 			}
 		}*/
-		
+
 		// Augmentation de la vitesse progressive
 		//player.moveSpeed = player.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
 		//player.moveSpeed = player.initialMoveSpeed + player.initialMoveSpeed * Time.time / 60f;	
@@ -122,12 +131,29 @@ public class LevelManager : MonoBehaviour {
 			if(!premierBlock) {
 				PositionBlock(Instantiate(blockEnemy[0]));
 				premierBlock = true;
-
-				StartCoroutine(SpawnEnemyCo(enemyMiddle[currentPhase]));
 			}
 
-			// Faire clignoter le texte
-			meterText.color = Color.Lerp(defaultTextColor, Color.clear, Mathf.Abs(Mathf.Sin(Time.frameCount/15f)));
+			// Variable changée par la classe StartEnemyBlock sur le OnTriggerEnter2D, marque le début du compte à rebours pour le boss
+			if(enemyToSpawn) {
+				// On affiche la barre de vie vide, pour pouvoir la remplir le temps du spawn (= timer d'apparition)
+				foreach(Transform obj in healthBar.transform)
+					obj.gameObject.SetActive (true);
+
+				// On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
+				lerpingTimeEnemyBar += Time.deltaTime / enemySpawnDelay;
+				fillHealthBar.fillAmount = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
+
+				if(fillHealthBar.fillAmount == 1) {
+					// On fait apparaitre l'ennemi
+					SpawnEnemy(enemyMiddle[currentPhase]);
+
+					lerpingTimeEnemyBar = 0;
+					enemyToSpawn = false; // On sort de la boucle d'apparition
+				}
+			}
+
+			// Faire clignoter le texte avant que l'ennemi ne soit là
+			//meterText.color = Color.Lerp(defaultTextColor, Color.clear, Mathf.Abs(Mathf.Sin(Time.frameCount / 15f)));
 			
 			if(enemyEnCours != null) {
 				// Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
@@ -160,19 +186,20 @@ public class LevelManager : MonoBehaviour {
 				}
 			}
 		}
-		// Si on n'est pas dans une phase "ennemie", on est dans une phase "block"
+		// Si on n'est pas dans une phase "ennemie", on est dans une phase "bloc"
 		else {
 			blockPhase = true;
-			// On actualise la distance parcourue si le joueur n'est pas mort
-			if (!player.IsDead())
-				distanceTraveled += localDistance;
+		}
+
+		// On actualise la distance parcourue si le joueur n'est pas mort, et que l'ennemi n'est pas là
+		if (!player.IsDead () && !enemyToSpawn && enemyEnCours == null) {
+			distanceTraveled += localDistance;
 
 			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
 			meterText.color = defaultTextColor;
 			meterText.transform.localScale = Vector2.one;
 		}
-
-
+			
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra
 		if (blockList [0].transform.position.x + sizeFirstBlock < cameraStartPosition) {
@@ -247,8 +274,10 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	public static PlayerController getPlayer() {
-		return player;
+	private void SpawnEnemy(Enemy enemy) {
+		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
+		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
+		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
 
 	public static void Kill(Character character) {
@@ -256,13 +285,6 @@ public class LevelManager : MonoBehaviour {
 		character.Die();
 
 		character.OnKill();
-	}
-
-	private IEnumerator SpawnEnemyCo(Enemy enemy) {
-		yield return new WaitForSeconds (spawnEnemyDelay);
-		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
-		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
-		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
 
 	public void RespawnPlayer(){
@@ -280,6 +302,10 @@ public class LevelManager : MonoBehaviour {
 		player.Resurrect();
 		player.SetFireAbility( true );
 		player.GetComponent<Renderer> ().enabled = true;
+	}
+
+	public static PlayerController getPlayer() {
+		return player;
 	}
 	
 	// Fonction pour activer/désactiver tous les GameObjects dans un GameObject

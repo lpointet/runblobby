@@ -9,6 +9,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 409638}
   - 114: {fileID: 11440384}
+  - 58: {fileID: 5886210}
+  - 114: {fileID: 11487636}
   m_Layer: 0
   m_Name: Block_Enemy_Start
   m_TagString: Untagged
@@ -121,6 +123,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 409638}
   m_RootOrder: 2
+--- !u!58 &5886210
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102792}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: .5
 --- !u!61 &6102852
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -208,6 +223,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   widthSize: 1
+--- !u!114 &11487636
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e6c8259a1dfcf4e93046d91857fd5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &21265900
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -298,6 +324,10 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 3d3c307c65424d04d9c5a4b222251567,
         type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 102792}
