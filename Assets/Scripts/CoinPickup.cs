@@ -31,7 +31,9 @@ public class CoinPickup : Pickup {
 		gameObject.SetActive( false );
 	}
 
-	void Update() {
+	protected override void Update() {
+		base.Update();
+
 		// Un mouvement de haut en bas
 		myTransform.localPosition = new Vector2(myTransform.localPosition.x, initialPosition.y + Mathf.Sin (4 * Time.time) / 20f);
 		// Effets visuels (démarrés dans OnPick)
