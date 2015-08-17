@@ -27,7 +27,7 @@ public class Pickup : MonoBehaviour {
 				StartCoroutine( Despawn() );
 			}
 			else {
-				gameObject.SetActive(false);
+				//gameObject.SetActive(false);
 			}
 			
 			OnPick();

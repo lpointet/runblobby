@@ -6,10 +6,14 @@ public class CoinPickup : Pickup {
 	public int pointToAdd;
 	private Vector3 initialPosition;
 	private Quaternion initialRotation;
+	private Transform myTransform;
+
+	private bool picked = false;
 	
 	protected override void Awake() {
 		initialPosition = transform.localPosition;
 		initialRotation = transform.localRotation;
+		myTransform = transform;
 	}
 	
 	public void Reset() {
@@ -29,11 +33,18 @@ public class CoinPickup : Pickup {
 
 	void Update() {
 		// Un mouvement de haut en bas
-		transform.localPosition = new Vector2(transform.localPosition.x, initialPosition.y + Mathf.Sin (4 * Time.time) / 20f);
+		myTransform.localPosition = new Vector2(myTransform.localPosition.x, initialPosition.y + Mathf.Sin (4 * Time.time) / 20f);
+		// Effets visuels (démarrés dans OnPick)
+		if (picked) {
+			myTransform.Translate(Vector3.up * Time.deltaTime);
+		}
 	}
 
 	protected override void OnPick() {
 		// Ajouter les points au joueur
 		ScoreManager.AddPoint(pointToAdd);
+		// Déclenche les effets visuels
+		picked = true;
+		GetComponent<Animation> ().Play ("FadeOut_GoingUp");
 	}
 }
