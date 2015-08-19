@@ -8,17 +8,20 @@ public class CoinPickup : Pickup {
 	private Quaternion initialRotation;
 	private Transform myTransform;
 
-	private bool picked = false;
+	private Animator anim;
 	
 	protected override void Awake() {
 		initialPosition = transform.localPosition;
 		initialRotation = transform.localRotation;
 		myTransform = transform;
+
+		anim = GetComponent<Animator> ();
 	}
 	
 	public void Reset() {
-		transform.localPosition = initialPosition;
-		transform.localRotation = initialRotation;
+		myTransform.localPosition = initialPosition;
+		myTransform.localRotation = initialRotation;
+		//anim.SetBool ("picked", false);
 	}
 
 	void OnEnable() {
@@ -33,20 +36,12 @@ public class CoinPickup : Pickup {
 
 	protected override void Update() {
 		base.Update();
-
-		// Un mouvement de haut en bas
-		myTransform.localPosition = new Vector2(myTransform.localPosition.x, initialPosition.y + Mathf.Sin (4 * Time.time) / 20f);
-		// Effets visuels (démarrés dans OnPick)
-		if (picked) {
-			myTransform.Translate(Vector3.up * Time.deltaTime);
-		}
 	}
 
 	protected override void OnPick() {
 		// Ajouter les points au joueur
 		ScoreManager.AddPoint(pointToAdd);
-		// Déclenche les effets visuels
-		picked = true;
-		GetComponent<Animation> ().Play ("FadeOut_GoingUp");
+		// Déclenche les effets visuels dans l'animator
+		anim.SetBool ("picked", true);
 	}
 }

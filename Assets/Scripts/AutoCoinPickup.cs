@@ -16,6 +16,9 @@ public class AutoCoinPickup : Pickup {
 	private float camHorizontalExtend;						// Offset vers le bord droit de l'écran
 	private int nbCoins = 0; 								// Nombre de pièces à ramasser
 
+	public ParticleSystem tornadoEffect;
+	private ParticleSystem myParticle;
+
 	protected override void Awake() {
 		base.Awake();
 		myTransform = transform;
@@ -30,9 +33,13 @@ public class AutoCoinPickup : Pickup {
 	protected override void OnPick() {
 		// Attacher le bonus au joueur
 		myTransform.parent = LevelManager.getPlayer().transform;
+		myTransform.position = LevelManager.getPlayer ().transform.position;
 
 		// Activer le ramassage
 		picking = true;
+
+		myParticle = Instantiate (tornadoEffect, new Vector2(myTransform.position.x, myTransform.position.y - 6), tornadoEffect.transform.rotation) as ParticleSystem;
+		myParticle.transform.parent = myTransform; // Pourquoi il est à y = -1 ?
 	}
 	
 	protected override void OnDespawn() {
@@ -46,9 +53,16 @@ public class AutoCoinPickup : Pickup {
 		}
 
 		base.Update();
+		float mouvement = Random.Range(5, 10) * (1 + Mathf.Sin (Time.time) / Random.Range(2, 3));
+		myParticle.transform.Rotate (0, 0, mouvement); // Rotation sur l'axe Y
+		Debug.Log (mouvement);
 	}
 
 	void FixedUpdate() {
+		if( !picking ) {
+			return;
+		}
+
 		// Attirer toutes les pièces vers le joueur
 		AttractCoins();
 	}

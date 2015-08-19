@@ -47,8 +47,8 @@ GameObject:
   - 212: {fileID: 21217260}
   - 58: {fileID: 5895768}
   - 114: {fileID: 11425266}
-  - 111: {fileID: 11166166}
-  m_Layer: 0
+  - 95: {fileID: 9524552}
+  m_Layer: 13
   m_Name: Leaf5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -571,21 +571,23 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
---- !u!111 &11166166
-Animation:
+--- !u!95 &9524552
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 120762}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 88c239e05137e3540a900ec467ca2c5f, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 88c239e05137e3540a900ec467ca2c5f, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7544f8df9cb4c6a4db8df871a6582994, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &11403084
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1096,10 +1098,22 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Animation
       value: 
-      objectReference: {fileID: 7400000, guid: 88c239e05137e3540a900ec467ca2c5f, type: 2}
+      objectReference: {fileID: 7400000, guid: c1f756832060db84081ecb65e27da633, type: 2}
     - target: {fileID: 0}
       propertyPath: m_PlayAutomatically
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7544f8df9cb4c6a4db8df871a6582994, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

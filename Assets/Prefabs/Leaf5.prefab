@@ -11,8 +11,8 @@ GameObject:
   - 212: {fileID: 21269084}
   - 58: {fileID: 5897484}
   - 114: {fileID: 11424520}
-  - 111: {fileID: 11173116}
-  m_Layer: 0
+  - 95: {fileID: 9530896}
+  m_Layer: 13
   m_Name: Leaf5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,21 +44,23 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: .25
---- !u!111 &11173116
-Animation:
+--- !u!95 &9530896
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158448}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 88c239e05137e3540a900ec467ca2c5f, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 88c239e05137e3540a900ec467ca2c5f, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7544f8df9cb4c6a4db8df871a6582994, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &11424520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,7 +109,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: m_Animations.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: pointToAdd
@@ -116,10 +118,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Animation
       value: 
-      objectReference: {fileID: 7400000, guid: 88c239e05137e3540a900ec467ca2c5f, type: 2}
+      objectReference: {fileID: 7400000, guid: 5a5db0efc0225ce49b6f7b9ceade9ed3, type: 2}
     - target: {fileID: 0}
       propertyPath: m_PlayAutomatically
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Animations.Array.data[0]
+      value: 
+      objectReference: {fileID: 7400000, guid: 88c239e05137e3540a900ec467ca2c5f, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7544f8df9cb4c6a4db8df871a6582994, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
