@@ -6,6 +6,11 @@ public class Pickup : MonoBehaviour {
 	public float lifeTime = 0;
 	private Renderer rdr;
 	private float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
+	// TODO: On a besoin d'un 2ème timer ici :
+	//  - le premier sert pour la durée de vie de l'effet en lui-meme
+	//  - le deuxième sert pour le temps que le bonus met à disparaitre après la fin de sa vie, c'est utile pour :
+	//    - avoir une animation de despawn (qui dure un certain temps)
+	//    - avoir un fonctionnement différent entre la vie et la fin de vie du bonus (cf. autocoin qui finit ce qu'il a en cours et qui ralentit le mouvement)
 	
 	protected virtual void Awake() {
 		rdr = GetComponent<Renderer>();
