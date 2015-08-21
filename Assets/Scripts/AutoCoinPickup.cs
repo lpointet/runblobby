@@ -64,9 +64,9 @@ public class AutoCoinPickup : Pickup {
 		mouvement = Random.Range(2, 4) * (1 + Mathf.Sin (Time.time) / Random.Range(2, 3)); // Oscille entre 1,3 et 6 en gros.
 		myTornado.transform.Rotate (0, 0, mouvement); // Rotation sur l'axe Y
 
-		if (TimeToLive > lifeTime - 2)
+		if (timeToLive > lifeTime - 2)
 			_StaticFunction.AudioFadeIn (myWindSound, 0.5f, 2);
-		if (TimeToLive < 2) {
+		if (timeToLive < 2) {
 			_StaticFunction.AudioFadeOut (myWindSound, 0, 2);
 			myRay.Stop ();
 		}
