@@ -17,7 +17,11 @@ public class AutoCoinPickup : Pickup {
 	private int nbCoins = 0; 								// Nombre de pièces à ramasser
 
 	public ParticleSystem tornadoEffect;
-	private ParticleSystem myParticle;
+	public ParticleSystem tornadoRayEffect;
+	private ParticleSystem myTornado;
+	private ParticleSystem myRay;
+	private float mouvement;
+	private AudioSource myWindSound;
 
 	protected override void Awake() {
 		base.Awake();
@@ -38,13 +42,17 @@ public class AutoCoinPickup : Pickup {
 		// Activer le ramassage
 		picking = true;
 
-		myParticle = Instantiate (tornadoEffect, new Vector2(myTransform.position.x, myTransform.position.y - 6), tornadoEffect.transform.rotation) as ParticleSystem;
-		myParticle.transform.parent = myTransform; // Pourquoi il est à y = -1 ?
+		myTornado = Instantiate (tornadoEffect, new Vector2(myTransform.position.x, myTransform.position.y - 5), tornadoEffect.transform.rotation) as ParticleSystem;
+		myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
+		myWindSound = myRay.GetComponent<AudioSource> ();
+		//GetComponent<Animator> ().SetBool ("picked", picking);
 	}
 	
 	protected override void OnDespawn() {
 		// Attacher le bonus à son parent initial
 		myTransform.parent = initialParent;
+
+		myTornado.Stop ();
 	}
 
 	protected override void Update() {
@@ -53,9 +61,15 @@ public class AutoCoinPickup : Pickup {
 		}
 
 		base.Update();
-		float mouvement = Random.Range(5, 10) * (1 + Mathf.Sin (Time.time) / Random.Range(2, 3));
-		myParticle.transform.Rotate (0, 0, mouvement); // Rotation sur l'axe Y
-		Debug.Log (mouvement);
+		mouvement = Random.Range(2, 4) * (1 + Mathf.Sin (Time.time) / Random.Range(2, 3)); // Oscille entre 1,3 et 6 en gros.
+		myTornado.transform.Rotate (0, 0, mouvement); // Rotation sur l'axe Y
+
+		if (TimeToLive > lifeTime - 2)
+			_StaticFunction.AudioFadeIn (myWindSound, 0.5f, 2);
+		if (TimeToLive < 2) {
+			_StaticFunction.AudioFadeOut (myWindSound, 0, 2);
+			myRay.Stop ();
+		}
 	}
 
 	void FixedUpdate() {
@@ -77,10 +91,10 @@ public class AutoCoinPickup : Pickup {
 
 			// Le vecteur direction nous donne la droite entre la pièce et le bonus, donc le joueur
 			direction = coins[i].transform.position - myTransform.position;
-			direction.Normalize();
 
 			// Faire venir la pièce vers le joueur
-			coins[i].transform.Translate( -0.5f * direction );
+			// Vitesse inversement proportionelle à la distance, minimum 0.5
+			coins[i].transform.Translate(Mathf.Min (0.5f, 1 / direction.magnitude) * -direction.normalized);
 		}
 	}
 }

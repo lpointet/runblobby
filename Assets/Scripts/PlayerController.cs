@@ -95,16 +95,10 @@ public class PlayerController : Character {
 		//healthText.text = GetHealthPoint().ToString();
 		//fillHealthBar.fillAmount = Mathf.Lerp (fillHealthBar.fillAmount, GetHealthPoint () / (float)GetHealthPointMax (), Time.deltaTime * 2);
 
-		// Mapping de la valeur de HueShift en fonction de la couleur de la mort [Rouge = 205] et de la couleur du début HueShift = 0
-		// On utilise la fonction : newHue = (currentHP - minHP) * (MaxHUE - MinHUE) / (maxHP - minHP) + minHUE
-		// (currentHP - minHP) -> décalage sur l'axe des abscisses pour que le min corresponde à 0
-		// (MaxHUE - MinHUE) / (maxHP - minHP) -> Rapport de conversion entre les deux axes directeurs
-		//  + minHUE -> décalage sur l'axe des ordonnées pour que le minHUE soit à 0
-
 		// Rouge = 210 ou -160 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
 		lerpingHP = Mathf.Lerp (lerpingHP, GetHealthPoint (), Time.deltaTime * 3);
 		// sharedMaterial pour que les boules changent de couleur aussi
-		mySprite.sharedMaterial.SetFloat ("_HueShift", (lerpingHP - 0) * (0 - 210) / (GetHealthPointMax () - 0) + 210);
+		mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 210, 0));
 	}
 	
 	private void Jump() {

@@ -16,6 +16,12 @@ public class Pickup : MonoBehaviour {
 		rdr = GetComponent<Renderer>();
 		timeToLive = lifeTime;
 	}
+
+	protected float TimeToLive {
+		get {
+			return timeToLive;
+		}
+	}
 	
 	protected virtual void OnPick() {
 		// Que faut-il faire lorsque cet objet a été ramassé ?

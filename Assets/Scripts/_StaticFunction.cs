@@ -3,6 +3,50 @@ using System.Collections;
 
 public static class _StaticFunction {
 
+	// Mapping d'une valeur sur une échelle en fonction d'une autre échelle
+	// On utilise la fonction : outCurrent = (inCurrent - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
+	// (inCurrent - inMin) -> décalage sur l'axe des abscisses pour que le min corresponde à 0
+	// (outMax - outMin) / (inMax - inMin) -> Rapport de conversion entre les deux axes directeurs
+	// + outMin -> décalage sur l'axe des ordonnées pour que le outMin soit à 0
+	public static float MappingScale (float inCurrent, float inMin, float inMax, float outMin, float outMax) {
+		// On évite la division par 0
+		if (inMax == inMin)
+			return 0;
+
+		return (inCurrent - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+	}
+
+	// Fonction utilisée pour augmenter le volume d'un son progressivement
+	public static void AudioFadeIn(AudioSource audio, float volumeMax = 1, float delay = 1) {
+		if (audio == null || volumeMax < 0 || delay == 0)
+			return;
+		if (volumeMax > 1)
+			volumeMax = 1;
+		if (audio.volume > volumeMax)
+			return;
+
+		if (!audio.isPlaying) { // On démarre le son au volume le plus bas
+			audio.volume = 0;
+			audio.Play ();
+		}
+
+		audio.volume += Time.deltaTime / delay;
+	}
+
+	// Fonction utilisée pour diminuer le volume d'un son progressivement
+	public static void AudioFadeOut(AudioSource audio, float volumeMin = 0, float delay = 1) {
+		if (audio == null || volumeMin > 1 || delay == 0)
+			return;
+		if (volumeMin < 0)
+			volumeMin = 0;
+		if (audio.volume < volumeMin) { // On stoppe le son lorsqu'on est au min demandé
+			audio.Stop ();
+			return;
+		}
+
+		audio.volume -= Time.deltaTime / delay;
+	}
+
 	public static Color ColorFromHSV(float h, float s, float v, float a = 1)
 	{
 		// no saturation, we can return the value across the board (grayscale)
