@@ -6,7 +6,6 @@ public class AutoCoinPickup : Pickup {
 	public float radius = 0f;
 	public LayerMask layerCoins;
 
-	private bool picking = false; 							// Est-ce qu'on a activé le ramassage automatique ?
 	private Collider2D[] coins = new Collider2D[20];   		// Liste des pièces existantes
 
 	private Transform myTransform; 							// Référence vers le transform du bonus
@@ -39,9 +38,6 @@ public class AutoCoinPickup : Pickup {
 		myTransform.parent = LevelManager.getPlayer().transform;
 		myTransform.position = LevelManager.getPlayer ().transform.position;
 
-		// Activer le ramassage
-		picking = true;
-
 		myTornado = Instantiate (tornadoEffect, new Vector2(myTransform.position.x, myTransform.position.y - 5), tornadoEffect.transform.rotation) as ParticleSystem;
 		myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
 		myWindSound = myRay.GetComponent<AudioSource> ();
@@ -56,7 +52,7 @@ public class AutoCoinPickup : Pickup {
 	}
 
 	protected override void Update() {
-		if( !picking ) {
+		if( !picked ) {
 			return;
 		}
 
@@ -73,7 +69,7 @@ public class AutoCoinPickup : Pickup {
 	}
 
 	void FixedUpdate() {
-		if( !picking ) {
+		if( !picked ) {
 			return;
 		}
 

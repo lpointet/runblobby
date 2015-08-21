@@ -5,6 +5,7 @@ public class Pickup : MonoBehaviour {
 	
 	public float lifeTime = 0;
 	private Renderer rdr;
+	protected bool picked = false;
 	protected float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
 	// TODO: On a besoin d'un 2ème timer ici :
 	//  - le premier sert pour la durée de vie de l'effet en lui-meme
@@ -27,6 +28,7 @@ public class Pickup : MonoBehaviour {
 	
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.name == "Heros") {
+			picked = true;
 			if( lifeTime > 0 ) {
 				Hide();
 				StartCoroutine( Despawn() );
@@ -40,7 +42,7 @@ public class Pickup : MonoBehaviour {
 	}
 
 	protected virtual void Update() {
-		if( lifeTime > 0 ) {
+		if( picked && lifeTime > 0 ) {
 			// Mettre à jour le temps qui reste à vivre
 			timeToLive-= Time.deltaTime;
 		}
