@@ -4,6 +4,7 @@ using System.Collections;
 public class Pickup : MonoBehaviour {
 	
 	public float lifeTime = 0;
+	protected float despawnTime = 0; 	// protected parce qu'il doit etre réglé dans la classe fille directement, pas modifiable dans l'éditeur
 	private Renderer rdr;
 	protected bool picked = false;
 	protected float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
@@ -29,23 +30,32 @@ public class Pickup : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.name == "Heros") {
 			picked = true;
-			if( lifeTime > 0 ) {
-				Hide();
-				StartCoroutine( Despawn() );
-			}
-			else {
-				//gameObject.SetActive(false);
-			}
-			
+			PickEffect();
 			OnPick();
 		}
 	}
 
 	protected virtual void Update() {
-		if( picked && lifeTime > 0 ) {
+		if( !picked ) {
+			return;
+		}
+
+		if( timeToLive <= 0 ) {
+			StartCoroutine( Despawn() );
+		}
+
+		if( lifeTime > 0 ) {
 			// Mettre à jour le temps qui reste à vivre
 			timeToLive-= Time.deltaTime;
 		}
+	}
+
+	protected virtual void PickEffect() {
+		Hide();
+	}
+	
+	protected virtual void DespawnEffect() {
+		// L'effet de la mort
 	}
 
 	private void Hide() {
@@ -53,7 +63,8 @@ public class Pickup : MonoBehaviour {
 	}
 
 	private IEnumerator Despawn() {
-		yield return new WaitForSeconds( lifeTime );
+		DespawnEffect();
+		yield return new WaitForSeconds( despawnTime );
 		gameObject.SetActive( false );
 		OnDespawn();
 	}

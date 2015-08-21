@@ -27,6 +27,7 @@ public class AutoCoinPickup : Pickup {
 		myTransform = transform;
 		initialParent = myTransform.parent;
 		cam = Camera.main;
+		despawnTime = 2f;
 	}
 
 	void Start() {
@@ -37,35 +38,37 @@ public class AutoCoinPickup : Pickup {
 		// Attacher le bonus au joueur
 		myTransform.parent = LevelManager.getPlayer().transform;
 		myTransform.position = LevelManager.getPlayer ().transform.position;
+	}
 
+	protected override void PickEffect() {
 		myTornado = Instantiate (tornadoEffect, new Vector2(myTransform.position.x, myTransform.position.y - 5), tornadoEffect.transform.rotation) as ParticleSystem;
 		myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
 		myWindSound = myRay.GetComponent<AudioSource> ();
-		//GetComponent<Animator> ().SetBool ("picked", picking);
+	}
+
+	protected override void DespawnEffect() {
+		_StaticFunction.AudioFadeOut (myWindSound, 0, 2);
+		myRay.Stop ();
 	}
 	
 	protected override void OnDespawn() {
 		// Attacher le bonus à son parent initial
 		myTransform.parent = initialParent;
-
 		myTornado.Stop ();
 	}
 
 	protected override void Update() {
+		base.Update();
+
 		if( !picked ) {
 			return;
 		}
 
-		base.Update();
 		mouvement = Random.Range(2, 4) * (1 + Mathf.Sin (Time.time) / Random.Range(2, 3)); // Oscille entre 1,3 et 6 en gros.
 		myTornado.transform.Rotate (0, 0, mouvement); // Rotation sur l'axe Y
 
 		if (timeToLive > lifeTime - 2)
 			_StaticFunction.AudioFadeIn (myWindSound, 0.5f, 2);
-		if (timeToLive < 2) {
-			_StaticFunction.AudioFadeOut (myWindSound, 0, 2);
-			myRay.Stop ();
-		}
 	}
 
 	void FixedUpdate() {

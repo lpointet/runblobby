@@ -11,11 +11,13 @@ public class CoinPickup : Pickup {
 	private Animator anim;
 	
 	protected override void Awake() {
+		base.Awake();
 		initialPosition = transform.localPosition;
 		initialRotation = transform.localRotation;
 		myTransform = transform;
 
 		anim = GetComponent<Animator> ();
+		despawnTime = 1f;
 	}
 	
 	public void Reset() {
@@ -34,13 +36,12 @@ public class CoinPickup : Pickup {
 		gameObject.SetActive( false );
 	}
 
-	protected override void Update() {
-		base.Update();
-	}
-
 	protected override void OnPick() {
 		// Ajouter les points au joueur
 		ScoreManager.AddPoint(pointToAdd);
+	}
+
+	protected override void PickEffect() {
 		// Déclenche les effets visuels dans l'animator
 		anim.SetBool ("picked", true);
 	}
