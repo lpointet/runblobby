@@ -41,6 +41,7 @@ public class AutoCoinPickup : Pickup {
 	}
 
 	protected override void PickEffect() {
+		Hide();
 		myTornado = Instantiate (tornadoEffect, new Vector2(myTransform.position.x, myTransform.position.y - 5), tornadoEffect.transform.rotation) as ParticleSystem;
 		myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
 		myWindSound = myRay.GetComponent<AudioSource> ();

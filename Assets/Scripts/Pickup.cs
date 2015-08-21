@@ -58,7 +58,7 @@ public class Pickup : MonoBehaviour {
 		// L'effet de la mort
 	}
 
-	private void Hide() {
+	protected void Hide() {
 		rdr.enabled = false;
 	}
 
