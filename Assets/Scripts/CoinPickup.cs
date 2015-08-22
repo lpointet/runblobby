@@ -26,7 +26,9 @@ public class CoinPickup : Pickup {
 		//anim.SetBool ("picked", false);
 	}
 
-	void OnEnable() {
+	protected override void OnEnable() {
+		base.OnEnable();
+
 		// Réinitialiser les positions
 		Reset();
 	}

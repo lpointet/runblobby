@@ -16,6 +16,9 @@ public class Pickup : MonoBehaviour {
 	
 	protected virtual void Awake() {
 		rdr = GetComponent<Renderer>();
+	}
+
+	protected virtual void OnEnable() {
 		timeToLive = lifeTime;
 	}
 	
