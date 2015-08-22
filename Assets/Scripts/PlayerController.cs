@@ -89,6 +89,9 @@ public class PlayerController : Character {
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myRb.gravityScale = -myRb.gravityScale;
 		}
+
+		// Ajuster la vitesse d'animation du héros en fonction de sa vitesse de déplacement
+		anim.speed = GetMoveSpeed() / GetInitialMoveSpeed();
 	}
 	
 	void OnGUI() {
