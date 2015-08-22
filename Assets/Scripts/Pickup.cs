@@ -20,6 +20,7 @@ public class Pickup : MonoBehaviour {
 
 	protected virtual void OnEnable() {
 		timeToLive = lifeTime;
+		picked = false;
 	}
 	
 	protected virtual void OnPick() {
