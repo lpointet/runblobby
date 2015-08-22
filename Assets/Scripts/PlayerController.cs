@@ -68,6 +68,8 @@ public class PlayerController : Character {
 		grounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, layerGround);
 		anim.SetBool ("grounded", grounded);
 		anim.SetFloat ("verticalSpeed", myRb.velocity.y);
+		// Ajuster la vitesse d'animation du héros en fonction de sa vitesse de déplacement
+		anim.SetFloat("moveSpeed", GetMoveSpeed () / GetInitialMoveSpeed());
 	}
 	
 	void Update () {
@@ -89,9 +91,6 @@ public class PlayerController : Character {
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myRb.gravityScale = -myRb.gravityScale;
 		}
-
-		// Ajuster la vitesse d'animation du héros en fonction de sa vitesse de déplacement
-		anim.speed = GetMoveSpeed() / GetInitialMoveSpeed();
 	}
 	
 	void OnGUI() {
