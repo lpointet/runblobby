@@ -21,6 +21,7 @@ public class AutoCoinPickup : Pickup {
 	private ParticleSystem myRay;
 	private float mouvement;
 	private AudioSource myWindSound;
+	private float volumeMax;
 
 	protected override void Awake() {
 		base.Awake();
@@ -45,6 +46,7 @@ public class AutoCoinPickup : Pickup {
 		myTornado = Instantiate (tornadoEffect, new Vector2(myTransform.position.x, myTransform.position.y - 5), tornadoEffect.transform.rotation) as ParticleSystem;
 		myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
 		myWindSound = myRay.GetComponent<AudioSource> ();
+		volumeMax = myWindSound.volume;
 	}
 
 	protected override void DespawnEffect() {
@@ -69,7 +71,7 @@ public class AutoCoinPickup : Pickup {
 		myTornado.transform.Rotate (0, 0, mouvement); // Rotation sur l'axe Y
 
 		if (timeToLive > lifeTime - 2)
-			_StaticFunction.AudioFadeIn (myWindSound, 0.5f, 2);
+			_StaticFunction.AudioFadeIn (myWindSound, volumeMax, 2);
 	}
 
 	void FixedUpdate() {

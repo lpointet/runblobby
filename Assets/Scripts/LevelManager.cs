@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour {
 	public static PlayerController player;
 	public Transform[] backgrounds;			// Array des backgrounds et foregrounds
 
+	private AudioSource sourceSound;
+
 	public Text meterText;
 	private Color defaultTextColor; // Couleur par défaut du meterText
 	private Color warningTextColor; // Couleur en alternance lors d'un ennemi
@@ -61,6 +63,7 @@ public class LevelManager : MonoBehaviour {
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
+		sourceSound = GetComponent<AudioSource> ();
 
 		// On remplit la barre de vie en attendant que l'ennemi apparaisse
 		healthBar = GameObject.Find ("HPBarEnemy"); // On prend l'enveloppe de la barre de vie qui n'est pas inactive
@@ -107,6 +110,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Update () {
+		PlayBackgroundMusic ();
 		// Distance parcourue depuis le dernier update
 		localDistance = player.GetMoveSpeed() * Time.deltaTime;
 
@@ -337,5 +341,12 @@ public class LevelManager : MonoBehaviour {
 		else {
 			transform.gameObject.SetActive(false);
 		}
+	}
+
+	private void PlayBackgroundMusic() {
+		if (sourceSound.isPlaying)
+			return;
+
+		sourceSound.Play ();
 	}
 }

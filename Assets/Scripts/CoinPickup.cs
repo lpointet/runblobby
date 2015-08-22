@@ -9,6 +9,7 @@ public class CoinPickup : Pickup {
 	private Transform myTransform;
 
 	private Animator anim;
+	private AudioSource soundSource;
 	
 	protected override void Awake() {
 		base.Awake();
@@ -17,6 +18,7 @@ public class CoinPickup : Pickup {
 		myTransform = transform;
 
 		anim = GetComponent<Animator> ();
+		soundSource = GetComponent<AudioSource> ();
 		despawnTime = 1f;
 	}
 	
@@ -46,5 +48,9 @@ public class CoinPickup : Pickup {
 	protected override void PickEffect() {
 		// Déclenche les effets visuels dans l'animator
 		anim.SetBool ("picked", true);
+	}
+
+	private void PickupSound() {
+		soundSource.Play ();
 	}
 }
