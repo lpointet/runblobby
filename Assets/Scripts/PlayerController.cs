@@ -28,7 +28,7 @@ public class PlayerController : Character {
 	public LayerMask layerGround;
 	
 	private bool doubleJumped;
-	
+
 	/**
 	 * Getters & Setters
 	 */
