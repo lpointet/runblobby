@@ -92,7 +92,7 @@ public class Enemy : Character {
 
 	void OnTriggerEnter2D(Collider2D other){
 		// Si l'ennemi est déjà mort, il ne peut plus rien faire...
-		if( !isActiveAndEnabled ) {
+		if( IsDead() ) {
 			return;
 		}
 
