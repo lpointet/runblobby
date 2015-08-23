@@ -72,7 +72,8 @@ public class PlayerController : Character {
 		anim.SetFloat("moveSpeed", GetMoveSpeed () / GetInitialMoveSpeed());
 	}
 	
-	void Update () {
+	protected override void Update () {
+		base.Update();
 		if (grounded) // Assure qu'on puisse doubleJump à partir du moment où on est au sol
 			doubleJumped = false;
 		

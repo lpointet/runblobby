@@ -67,7 +67,8 @@ public class Enemy : Character {
 		fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
 	}
 
-	void Update () {
+	protected override void Update () {
+		base.Update();
 		// On n'appelle ça que si l'ennemy bouge
 		if (movingEnemy) {
 			// Vérifie que l'ennemi touche un mur ou non

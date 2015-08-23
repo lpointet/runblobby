@@ -11,6 +11,7 @@ public class Character : MonoBehaviour {
 	[SerializeField] private float moveSpeed;
 	[SerializeField] private float jumpHeight;
 	[SerializeField] private bool isDead;
+	[SerializeField] private float maxHeight = 7.5f;
 	/* End of Stats */
 	
 	private bool invincible = false;
@@ -37,6 +38,10 @@ public class Character : MonoBehaviour {
 	public bool IsDead() {
 		return isDead;
 	}
+
+	public float GetMaxHeight() {
+		return maxHeight;
+	}
 	
 	public void SetHealthPoint( int value ) {
 		healthPoint = Mathf.Clamp( value, 0, GetHealthPointMax() );
@@ -60,6 +65,10 @@ public class Character : MonoBehaviour {
 	}
 	public void Resurrect() {
 		isDead = false;
+	}
+
+	public void SetMaxHeight( float value ) {
+		maxHeight = value;
 	}
 	/* End of Getters & Setters */
 	
@@ -103,5 +112,11 @@ public class Character : MonoBehaviour {
 	
 	public void SetDamageable() {
 		invincible = false;
+	}
+
+	protected virtual void Update() {
+		if( transform.position.y >= GetMaxHeight() ) {
+			transform.position = new Vector3( transform.position.x, GetMaxHeight(), transform.position.z );
+		}
 	}
 }
