@@ -5,6 +5,12 @@ public class FlyPickup : Pickup {
 	private float initialGravityScale;
 	private Rigidbody2D playerBody;
 
+	protected override void Awake() {
+		base.Awake();
+
+		parentAttach = true;
+	}
+
 	void Start() {
 		playerBody = LevelManager.getPlayer().GetComponent<Rigidbody2D>();
 
@@ -16,6 +22,8 @@ public class FlyPickup : Pickup {
 	}
 
 	protected override void OnPick() {
+		base.OnPick();
+
 		// Abaisser la gravité
 		playerBody.gravityScale = 1.5f;
 
@@ -25,6 +33,8 @@ public class FlyPickup : Pickup {
 	}
 
 	protected override void OnDespawn() {
+		base.OnDespawn();
+
 		// Remettre la gravité
 		playerBody.gravityScale = initialGravityScale;
 

@@ -6,7 +6,6 @@ public class CoinPickup : Pickup {
 	public int pointToAdd;
 	private Vector3 initialPosition;
 	private Quaternion initialRotation;
-	private Transform myTransform;
 
 	private Animator anim;
 	private AudioSource soundSource;
@@ -15,7 +14,6 @@ public class CoinPickup : Pickup {
 		base.Awake();
 		initialPosition = transform.localPosition;
 		initialRotation = transform.localRotation;
-		myTransform = transform;
 
 		anim = GetComponent<Animator> ();
 		soundSource = GetComponent<AudioSource> ();
@@ -41,6 +39,8 @@ public class CoinPickup : Pickup {
 	}
 
 	protected override void OnPick() {
+		base.OnPick();
+
 		// Ajouter les points au joueur
 		ScoreManager.AddPoint(pointToAdd);
 	}
