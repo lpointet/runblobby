@@ -8,6 +8,7 @@ public class PlayerController : Character {
 	 * Player Stats
 	 */
 	[SerializeField] private float initialMoveSpeed;
+	[SerializeField] private int maxDoubleJump;
 	/* End of Stats */
 	
 	// GUI
@@ -28,7 +29,6 @@ public class PlayerController : Character {
 	public LayerMask layerGround;
 	
 	private int currentJump = 0;
-	public int maxDoubleJump;
 
 	/**
 	 * Getters & Setters
@@ -47,6 +47,14 @@ public class PlayerController : Character {
 	
 	public void SetWeapon( Transform value ) {
 		weapon = value;
+	}
+
+	public int GetMaxDoubleJump() {
+		return maxDoubleJump;
+	}
+
+	public void SetMaxDoubleJump( int value ) {
+		maxDoubleJump = value;
 	}
 	/* End of Getters & Setters */
 

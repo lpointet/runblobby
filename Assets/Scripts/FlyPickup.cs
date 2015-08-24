@@ -26,7 +26,7 @@ public class FlyPickup : Pickup {
 
 		initialGravityScale = playerBody.gravityScale;
 		initialJumpHeight = player.GetJumpHeight ();
-		initialMaxDoubleJump = player.maxDoubleJump;
+		initialMaxDoubleJump = player.GetMaxDoubleJump();
 	}
 
 	protected override void OnPick() {
@@ -39,7 +39,7 @@ public class FlyPickup : Pickup {
 		// TODO: Faire décoller le joueur
 
 		// Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
-		player.maxDoubleJump = 1000;
+		player.SetMaxDoubleJump( 1000 );
 	}
 
 	protected override void OnDespawn() {
@@ -50,6 +50,6 @@ public class FlyPickup : Pickup {
 		player.SetJumpHeight(initialJumpHeight);
 
 		// Remettre une limite au nombre de sauts
-		player.maxDoubleJump = initialMaxDoubleJump;
+		player.SetMaxDoubleJump( initialMaxDoubleJump );
 	}
 }
