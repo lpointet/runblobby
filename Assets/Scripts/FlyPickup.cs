@@ -5,7 +5,7 @@ public class FlyPickup : Pickup {
 
 	private float initialGravityScale;
 	private float initialJumpHeight;
-	private float initialMaxDoubleJump;
+	private int initialMaxDoubleJump;
 
 	private Rigidbody2D playerBody;
 	private PlayerController player;
@@ -33,8 +33,8 @@ public class FlyPickup : Pickup {
 		base.OnPick();
 
 		// Abaisser la gravité et la hauteur du saut
-		playerBody.gravityScale = 1.5f;
-		player.SetJumpHeight(1);
+		playerBody.gravityScale = 0.2f;
+		player.SetJumpHeight(2);
 
 		// TODO: Faire décoller le joueur
 

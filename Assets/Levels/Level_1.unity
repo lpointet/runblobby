@@ -1765,6 +1765,52 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 175a292de66fb104ea05a31971d70ada, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &763370893
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1576015070}
+    m_Modifications:
+    - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: .800000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: m_RootOrder
+      value: 43
+      objectReference: {fileID: 0}
+    - target: {fileID: 11425018, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: lifeTime
+      value: 50
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+  m_IsPrefabParent: 0
 --- !u!4 &774500338 stripped
 Transform:
   m_PrefabParentObject: {fileID: 477384, guid: 175a292de66fb104ea05a31971d70ada, type: 2}
@@ -1877,12 +1923,14 @@ MonoBehaviour:
   moveSpeed: 5
   jumpHeight: 15
   isDead: 0
+  maxHeight: 7.5
   initialMoveSpeed: 10
   groundCheck: {fileID: 1686453329}
   groundCheckRadius: .100000001
   layerGround:
     serializedVersion: 2
     m_Bits: 1024
+  maxDoubleJump: 1
 --- !u!95 &830211157
 Animator:
   serializedVersion: 3
@@ -3715,6 +3763,7 @@ Transform:
   - {fileID: 1589554494}
   - {fileID: 1759067124}
   - {fileID: 2007094946}
+  - {fileID: 1822952373}
   m_Father: {fileID: 0}
   m_RootOrder: 6
 --- !u!114 &1576015072
@@ -4115,6 +4164,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 175a292de66fb104ea05a31971d70ada, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1822952373 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+  m_PrefabInternal: {fileID: 763370893}
 --- !u!1001 &1861170604
 Prefab:
   m_ObjectHideFlags: 0
