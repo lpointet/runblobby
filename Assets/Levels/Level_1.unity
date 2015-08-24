@@ -1050,7 +1050,7 @@ MonoBehaviour:
   unitsInWidth: 24
   widthMin: 24
   xOffsetPourcentage: .75
-  yOffsetPourcentage: .200000003
+  yOffsetPourcentage: .5
 --- !u!1 &380668170
 GameObject:
   m_ObjectHideFlags: 0
@@ -1925,12 +1925,12 @@ MonoBehaviour:
   isDead: 0
   maxHeight: 7.5
   initialMoveSpeed: 10
+  maxDoubleJump: 0
   groundCheck: {fileID: 1686453329}
   groundCheckRadius: .100000001
   layerGround:
     serializedVersion: 2
     m_Bits: 1024
-  maxDoubleJump: 1
 --- !u!95 &830211157
 Animator:
   serializedVersion: 3
