@@ -2,8 +2,13 @@
 using System.Collections;
 
 public class FlyPickup : Pickup {
+
 	private float initialGravityScale;
+	private float initialJumpHeight;
+	private float initialMaxDoubleJump;
+
 	private Rigidbody2D playerBody;
+	private PlayerController player;
 
 	protected override void Awake() {
 		base.Awake();
@@ -12,32 +17,39 @@ public class FlyPickup : Pickup {
 	}
 
 	void Start() {
-		playerBody = LevelManager.getPlayer().GetComponent<Rigidbody2D>();
+		player = LevelManager.getPlayer ();
+		playerBody = player.GetComponent<Rigidbody2D>();
 
 		if( null == playerBody ) {
 			Debug.LogError( "Pas de Rigidbody2D sur le joueur ?!?" );
 		}
 
 		initialGravityScale = playerBody.gravityScale;
+		initialJumpHeight = player.GetJumpHeight ();
+		initialMaxDoubleJump = player.maxDoubleJump;
 	}
 
 	protected override void OnPick() {
 		base.OnPick();
 
-		// Abaisser la gravité
+		// Abaisser la gravité et la hauteur du saut
 		playerBody.gravityScale = 1.5f;
+		player.SetJumpHeight(1);
 
 		// TODO: Faire décoller le joueur
 
-		// TODO: Faire en sorte que le nombre de sauts soit illimité
+		// Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
+		player.maxDoubleJump = 1000;
 	}
 
 	protected override void OnDespawn() {
 		base.OnDespawn();
 
-		// Remettre la gravité
+		// Remettre la gravité et la hauteur du saut
 		playerBody.gravityScale = initialGravityScale;
+		player.SetJumpHeight(initialJumpHeight);
 
-		// TODO: Remettre une limite au nombre de sauts ?
+		// Remettre une limite au nombre de sauts
+		player.maxDoubleJump = initialMaxDoubleJump;
 	}
 }

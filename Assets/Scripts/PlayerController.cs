@@ -27,7 +27,8 @@ public class PlayerController : Character {
 	public float groundCheckRadius;
 	public LayerMask layerGround;
 	
-	private bool doubleJumped;
+	private int currentJump = 0;
+	public int maxDoubleJump;
 
 	/**
 	 * Getters & Setters
@@ -74,19 +75,20 @@ public class PlayerController : Character {
 	
 	protected override void Update () {
 		base.Update();
-		if (grounded) // Assure qu'on puisse doubleJump à partir du moment où on est au sol
-			doubleJumped = false;
-		
+		if (grounded) // Assure qu'on puisse faire plusieurs à partir du moment où on est au sol
+			currentJump = 0;
+
 		//rb.velocity = new Vector2 (moveSpeed * Input.GetAxisRaw ("Horizontal"), rb.velocity.y);
 		//rb.velocity = new Vector2 (moveSpeed, rb.velocity.y);
 		
 		// Gestion des sauts
 		if (Input.GetButtonDown ("Jump") && grounded) {
 			Jump ();
+
 		}
-		if (Input.GetButtonDown ("Jump") && !grounded && !doubleJumped) {
-			doubleJumped = true;
+		if (Input.GetButtonDown ("Jump") && !grounded && currentJump < maxDoubleJump) {
 			Jump ();
+			currentJump++;
 		}
 		
 		if (Input.GetKeyDown (KeyCode.A)) {
