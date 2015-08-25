@@ -37,7 +37,7 @@ public class FlyPickup : Pickup {
 		player.SetJumpHeight(2);
 
 		// Faire décoller le joueur
-		playerBody.velocity = new Vector2 (playerBody.velocity.x, player.GetJumpHeight());
+		player.Jump ();
 
 		// Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
 		player.SetMaxDoubleJump( 1000 );

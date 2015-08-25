@@ -114,7 +114,7 @@ public class PlayerController : Character {
 		mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 210, 0));
 	}
 	
-	private void Jump() {
+	public void Jump() {
 		myRb.velocity = new Vector2(myRb.velocity.x, GetJumpHeight());
 	}
 	
