@@ -49,7 +49,7 @@ public class ScoreManager : MonoBehaviour {
 		Multiplier newMult;
 		
 		newMult.value = multiplier;
-		newMult.endTime = Time.deltaTime + lifeTime;
+		newMult.endTime = Time.time + lifeTime;
 		
 		if( multipliers.TryGetValue( type, out initial ) ) {
 			newMult.value = Mathf.Max( multiplier, initial.value );
@@ -59,8 +59,14 @@ public class ScoreManager : MonoBehaviour {
 		multipliers.Add( type, newMult );
 	}
 	
-	public static void RemoveMultiplier( Types type = Types.All ) {
-		multipliers.Remove( type );
+	public static void MaybeRemoveMultiplier( Types type = Types.All ) {
+		Multiplier initial;
+
+		if( multipliers.TryGetValue( type, out initial ) ) {
+			if( initial.endTime <= Time.time + 0.05f ) {
+				multipliers.Remove( type );
+			}
+		}
 	}
 
 	public static void Reset(){

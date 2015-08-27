@@ -15,7 +15,7 @@ public class MultiplierPickup : Pickup {
 	protected override void OnDespawn() {
 		base.OnDespawn();
 
-		ScoreManager.RemoveMultiplier( type );
+		ScoreManager.MaybeRemoveMultiplier( type );
 	}
 
 }
