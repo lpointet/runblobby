@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour {
 
-	enum Types {
+	public enum Types {
 		All,
 		Coin,
 		Enemy
@@ -29,6 +29,9 @@ public class ScoreManager : MonoBehaviour {
 	public static void AddPoint(int numberPoint, int type = (int)Types.All){
 		int multiplier;
 		if( multipliers.TryGetValue( type, out multiplier ) ) {
+			numberPoint*= multiplier;
+		}
+		else if( Types.All != type && multipliers.TryGetValue( (int)Types.All, out multiplier ) ) {
 			numberPoint*= multiplier;
 		}
 		score += numberPoint;
