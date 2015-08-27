@@ -4,17 +4,23 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour {
-
+	
 	public enum Types {
 		All,
 		Coin,
 		Enemy
 	};
+	
+	public struct Multiplier {
+		public int value;
+		public float endTime;
+	}
+	
+	public static Dictionary<Types, Multiplier> multipliers = new Dictionary<Types, Multiplier>();
 
 	Text scoreText;
 
 	private static int score;
-	private static Dictionary<Types, int> multipliers = new Dictionary<Types, int>();
 
 	// Use this for initialization
 	void Start () {
@@ -26,27 +32,33 @@ public class ScoreManager : MonoBehaviour {
 		scoreText.text = score + "$";
 	}
 
-	public static void AddPoint(int numberPoint, Types type = Types.All){
-		int multiplier;
+	public static void AddPoint(int numberPoint, Types type){
+		Multiplier multiplier;
+
 		if( multipliers.TryGetValue( type, out multiplier ) ) {
-			numberPoint*= multiplier;
+			numberPoint*= multiplier.value;
 		}
 		else if( Types.All != type && multipliers.TryGetValue( Types.All, out multiplier ) ) {
-			numberPoint*= multiplier;
+			numberPoint*= multiplier.value;
 		}
 		score += numberPoint;
 	}
-
-	public static void AddMultiplier( int multiplier, Types type = Types.All ) {
-		int initial;
+	
+	public static void AddMultiplier( int multiplier, Types type, float lifeTime ) {
+		Multiplier initial;
+		Multiplier newMult;
+		
+		newMult.value = multiplier;
+		newMult.endTime = Time.deltaTime + lifeTime;
+		
 		if( multipliers.TryGetValue( type, out initial ) ) {
-			multiplier = Mathf.Max( multiplier, initial );
+			newMult.value = Mathf.Max( multiplier, initial.value );
 			multipliers.Remove( type );
 		}
-
-		multipliers.Add( type, multiplier );
+		
+		multipliers.Add( type, newMult );
 	}
-
+	
 	public static void RemoveMultiplier( Types type = Types.All ) {
 		multipliers.Remove( type );
 	}
