@@ -23,7 +23,7 @@ public class ContactEnemy : MonoBehaviour {
 
 			if(other.transform.position.y - offsetCheckBounce > transform.position.y){
 				herosRb.velocity = new Vector2(herosRb.velocity.x, bouncePower);
-				ScoreManager.AddPoint(pointScore);
+				ScoreManager.AddPoint(pointScore, ScoreManager.Types.Enemy);
 			} else {
 				LevelManager.getPlayer().Hurt(1);
 			}

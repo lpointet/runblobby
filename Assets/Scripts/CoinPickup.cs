@@ -42,7 +42,7 @@ public class CoinPickup : Pickup {
 		base.OnPick();
 
 		// Ajouter les points au joueur
-		ScoreManager.AddPoint(pointToAdd);
+		ScoreManager.AddPoint(pointToAdd, ScoreManager.Types.Coin);
 	}
 
 	protected override void PickEffect() {

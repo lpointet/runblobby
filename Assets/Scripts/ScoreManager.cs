@@ -14,7 +14,7 @@ public class ScoreManager : MonoBehaviour {
 	Text scoreText;
 
 	private static int score;
-	private static Dictionary<int, int> multipliers = new Dictionary<int, int>();
+	private static Dictionary<Types, int> multipliers = new Dictionary<Types, int>();
 
 	// Use this for initialization
 	void Start () {
@@ -26,18 +26,18 @@ public class ScoreManager : MonoBehaviour {
 		scoreText.text = score + "$";
 	}
 
-	public static void AddPoint(int numberPoint, int type = (int)Types.All){
+	public static void AddPoint(int numberPoint, Types type = Types.All){
 		int multiplier;
 		if( multipliers.TryGetValue( type, out multiplier ) ) {
 			numberPoint*= multiplier;
 		}
-		else if( Types.All != type && multipliers.TryGetValue( (int)Types.All, out multiplier ) ) {
+		else if( Types.All != type && multipliers.TryGetValue( Types.All, out multiplier ) ) {
 			numberPoint*= multiplier;
 		}
 		score += numberPoint;
 	}
 
-	public static void AddMultiplier( int multiplier, int type = (int)Types.All ) {
+	public static void AddMultiplier( int multiplier, Types type = Types.All ) {
 		int initial;
 		if( multipliers.TryGetValue( type, out initial ) ) {
 			multiplier = Mathf.Max( multiplier, initial );
@@ -47,7 +47,7 @@ public class ScoreManager : MonoBehaviour {
 		multipliers.Add( type, multiplier );
 	}
 
-	public static void RemoveMultiplier( int type = (int)Types.All ) {
+	public static void RemoveMultiplier( Types type = Types.All ) {
 		multipliers.Remove( type );
 	}
 

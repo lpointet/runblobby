@@ -106,7 +106,7 @@ public class Enemy : Character {
 		foreach(Transform obj in healthBar.transform)
 			obj.gameObject.SetActive (false);
 
-		ScoreManager.AddPoint (GetPointScore());
+		ScoreManager.AddPoint (GetPointScore(), ScoreManager.Types.Enemy);
 		Despawn();
 	}
 
