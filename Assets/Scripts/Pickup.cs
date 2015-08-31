@@ -11,12 +11,13 @@ public class Pickup : MonoBehaviour {
 	private Renderer rdr;
 	protected bool picked = false;
 	protected float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
+	public int weight = 0;			// Probabilité d'apparition relative du bonus
 	// TODO: On a besoin d'un 2ème timer ici :
 	//  - le premier sert pour la durée de vie de l'effet en lui-meme
 	//  - le deuxième sert pour le temps que le bonus met à disparaitre après la fin de sa vie, c'est utile pour :
 	//    - avoir une animation de despawn (qui dure un certain temps)
 	//    - avoir un fonctionnement différent entre la vie et la fin de vie du bonus (cf. autocoin qui finit ce qu'il a en cours et qui ralentit le mouvement)
-	
+
 	protected virtual void Awake() {
 		rdr = GetComponent<Renderer>();
 		myTransform = transform;
@@ -34,7 +35,7 @@ public class Pickup : MonoBehaviour {
 		if( parentAttach ) {
 			// Attacher le bonus au joueur
 			myTransform.parent = LevelManager.getPlayer().transform;
-			myTransform.position = LevelManager.getPlayer ().transform.position;
+			myTransform.position = myTransform.parent.position;
 		}
 	}
 	
@@ -45,6 +46,8 @@ public class Pickup : MonoBehaviour {
 			// Attacher le bonus à son parent initial
 			myTransform.parent = initialParent;
 		}
+
+		gameObject.SetActive( false );
 	}
 	
 	void OnTriggerEnter2D(Collider2D other){
@@ -85,7 +88,6 @@ public class Pickup : MonoBehaviour {
 	private IEnumerator Despawn() {
 		DespawnEffect();
 		yield return new WaitForSeconds( despawnTime );
-		gameObject.SetActive( false );
 		OnDespawn();
 	}
 }

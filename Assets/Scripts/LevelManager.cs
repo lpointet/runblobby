@@ -39,6 +39,7 @@ public class LevelManager : MonoBehaviour {
 	// Distance parcourue
 	private float distanceTraveled; // pendant la phase bloc
 	private float localDistance; // variation permanente de la distance
+	private float distanceSinceLastBonus; // distance depuis l'apparition du dernier bonus
 
 	//* Partie Ennemi intermédiaire
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
@@ -51,6 +52,7 @@ public class LevelManager : MonoBehaviour {
 	public float enemySpawnDelay;
 	private float enemyDistanceToKill;
 	public int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
+	private string[] listeDifficulte; // Liste des difficultés possibles
 	// GUI
 	private GameObject healthBar;
 	private Image fillHealthBar;
@@ -72,6 +74,7 @@ public class LevelManager : MonoBehaviour {
 
 	void Start () {
 		distanceTraveled = 0;
+		distanceSinceLastBonus = 0;
 		currentPhase = 0;
 		blockPhase = true;
 		enemyDistanceToKill = 0;
@@ -81,11 +84,12 @@ public class LevelManager : MonoBehaviour {
 		warningTextColorBis = warningTextColor / 2;
 		warningTextColorBis.r = 1f; // rouge à fond
 
+		listeDifficulte = new string[5] {"difficulty_1", "difficulty_2", "difficulty_3", "difficulty_4", "difficulty_5"};
 		// Autant de probabilité que de phases (voir listPhase)
 		probabiliteBlock = new int[listPhase.Length][];
-		probabiliteBlock[0] = new int[5] {70, 30, 0, 0, 0};
-		probabiliteBlock[1] = new int[5] {0, 40, 50, 10, 0};
-		probabiliteBlock[2] = new int[5] {0, 0, 20, 60, 20};
+		probabiliteBlock[0] = new int[5] {70, 30,  0,  0,  0};
+		probabiliteBlock[1] = new int[5] { 0, 40, 50, 10,  0};
+		probabiliteBlock[2] = new int[5] { 0, 0,  20, 60, 20};
 		// On met à 0 au cas où on dépasse les 3 phases et qu'on oublie
 		for (int i = 3; i < listPhase.Length; i++) {
 			probabiliteBlock [i] = new int[5] {0, 0, 0, 0, 0};
@@ -198,6 +202,7 @@ public class LevelManager : MonoBehaviour {
 		// On actualise la distance parcourue si le joueur n'est pas mort, et que l'ennemi n'est pas là
 		if (!player.IsDead () && !enemyToSpawn && enemyEnCours == null) {
 			distanceTraveled += localDistance;
+			distanceSinceLastBonus += localDistance;
 
 			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
 			meterText.color = defaultTextColor;
@@ -237,12 +242,11 @@ public class LevelManager : MonoBehaviour {
 
 	private string RandomDifficulty(int phase) {
 		int[] probabilite; // liste des probabilités d'appeler le choixDifficulte
-		string[] listeDifficulte = {"difficulty_1", "difficulty_2", "difficulty_3", "difficulty_4", "difficulty_5"};
 		int sum = 0;
 
 		// On retourne la difficulté la plus facile si jamais on envoie une valeur de phase incorrecte
 		if (phase >= listPhase.Length)
-			return "difficulty_1";
+			return listeDifficulte[0];
 
 		probabilite = probabiliteBlock[phase]; // Défini dans Start()
 
@@ -348,5 +352,13 @@ public class LevelManager : MonoBehaviour {
 			return;
 
 		sourceSound.Play ();
+	}
+
+	public void ResetBonusDistance() {
+		distanceSinceLastBonus = 0;
+	}
+
+	public float GetDistanceSinceLastBonus() {
+		return distanceSinceLastBonus;
 	}
 }
