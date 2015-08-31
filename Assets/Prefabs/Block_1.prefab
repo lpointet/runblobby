@@ -326,7 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 2
   widthSize: 6
 --- !u!212 &21210468
 SpriteRenderer:
@@ -508,7 +507,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6a0fca62c3105a545b6a0d2d39f30b1c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aec999542a39bc349abb3e57ac77f167, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
@@ -544,7 +543,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6a0fca62c3105a545b6a0d2d39f30b1c,
+      objectReference: {fileID: 21300000, guid: aec999542a39bc349abb3e57ac77f167,
         type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
