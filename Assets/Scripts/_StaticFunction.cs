@@ -3,6 +3,20 @@ using System.Collections;
 
 public static class _StaticFunction {
 
+	public static double MathPower(float number, int exposant) {
+		double result = 1.0;
+
+		while (exposant > 0)
+		{
+			if (exposant % 2 == 1)
+				result *= number;
+			exposant >>= 1;
+			number *= number;
+		}
+	
+		return result;
+	}
+
 	// Mapping d'une valeur sur une échelle en fonction d'une autre échelle
 	// On utilise la fonction : outCurrent = (inCurrent - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 	// (inCurrent - inMin) -> décalage sur l'axe des abscisses pour que le min corresponde à 0

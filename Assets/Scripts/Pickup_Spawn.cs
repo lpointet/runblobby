@@ -12,9 +12,11 @@ public class Pickup_Spawn : MonoBehaviour {
 	private int poidsTotal = 0;
 
 	private float calculusDistance = 0;
+	private Vector2 initialPosition;
 	
 	void Awake () {
 		levelManager = FindObjectOfType<LevelManager> ();
+		initialPosition = transform.localPosition;
 
 		Pickup tempPickup;
 		foreach (GameObject pickup in possibleBonus) {
@@ -26,11 +28,16 @@ public class Pickup_Spawn : MonoBehaviour {
 	}
 
 	void OnEnable () {
-		calculusDistance = levelManager.GetDistanceSinceLastBonus () / 800.0f;
+		// On remet le point à sa place, non mais.
+		transform.localPosition = initialPosition;
+
+		int distanceSansbonus = 200;
+		int distanceMaxBonus = 1000;
+		calculusDistance = (float)_StaticFunction.MathPower ((levelManager.GetDistanceSinceLastBonus () - distanceSansbonus) / (float)(distanceMaxBonus - distanceSansbonus), 3);
 		// Ajuster le calcul de la distance pour que :
-		// Entre 0 et 200m : rien
+		// Entre 0 et 200m : rien (pour assurer une distance mini sans bonus)
 		// Entre 200m et 1000m : on monte progressivement de 0 à 1, avec une valeur à 600m de 0.1
-		if (calculusDistance < Random.value) 
+		if (Mathf.Max (0, calculusDistance) < Random.value) 
 			return;
 
 		levelManager.ResetBonusDistance ();
