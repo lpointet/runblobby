@@ -12,11 +12,16 @@ public class LevelManager : MonoBehaviour {
 
 	private AudioSource sourceSound;
 
+	// GUI
 	public Text meterText;
 	private Color defaultTextColor; // Couleur par défaut du meterText
 	private Color warningTextColor; // Couleur en alternance lors d'un ennemi
 	private Color warningTextColorBis;
+	private float scaleInitial; // Echelle du texte au début
 	private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
+	private GameObject healthBar;
+	private Image fillHealthBar;
+	private float lerpingTimeEnemyBar = 0f;
 
 	// Mort, Respawn
 	public GameObject deathEffect;
@@ -53,23 +58,25 @@ public class LevelManager : MonoBehaviour {
 	private float enemyDistanceToKill;
 	public int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
 	private string[] listeDifficulte; // Liste des difficultés possibles
-	// GUI
-	private GameObject healthBar;
-	private Image fillHealthBar;
-	private float lerpingTimeEnemyBar = 0;
 	//* Fin partie ennemi intermédiaire
 
 	void Awake() {
 		if (levelManager == null)
-			levelManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<LevelManager>();
+			levelManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<LevelManager> ();
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
 		sourceSound = GetComponent<AudioSource> ();
 
-		// On remplit la barre de vie en attendant que l'ennemi apparaisse
-		healthBar = GameObject.Find ("HPBarEnemy"); // On prend l'enveloppe de la barre de vie qui n'est pas inactive
+		// GUI
+		healthBar = GameObject.Find ("HPBarEnemy");
 		fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
+		
+		defaultTextColor = meterText.color;
+		scaleInitial = meterText.rectTransform.localScale.x;
+		warningTextColor = new Color (1, 0.588f, 0.588f);
+		warningTextColorBis = warningTextColor / 2;
+		warningTextColorBis.r = 1f; // rouge à fond
 	}
 
 	void Start () {
@@ -78,11 +85,6 @@ public class LevelManager : MonoBehaviour {
 		currentPhase = 0;
 		blockPhase = true;
 		enemyDistanceToKill = 0;
-
-		defaultTextColor = meterText.color;
-		warningTextColor = new Color (1, 0.588f, 0.588f);
-		warningTextColorBis = warningTextColor / 2;
-		warningTextColorBis.r = 1f; // rouge à fond
 
 		listeDifficulte = new string[5] {"difficulty_1", "difficulty_2", "difficulty_3", "difficulty_4", "difficulty_5"};
 		// Autant de probabilité que de phases (voir listPhase)
@@ -180,8 +182,8 @@ public class LevelManager : MonoBehaviour {
 				meterText.color = Color.Lerp (warningTextColor, warningTextColorBis, Mathf.Sin (2f * enemyDistanceToKill)); // Variation entre deux couleurs
 
 				// Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
-				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.GetDistanceToKill(), 2)) * Mathf.Pow (enemyEnCours.GetDistanceToKill() - enemyDistanceToKill, 2) + 1;
-				meterText.transform.localScale = new Vector2(scaleFonctionDistance, scaleFonctionDistance);
+				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.GetDistanceToKill(), 2)) * _StaticFunction.MathPower (enemyEnCours.GetDistanceToKill() - enemyDistanceToKill, 2) + 1;
+				meterText.transform.localScale = new Vector2(scaleFonctionDistance, scaleFonctionDistance) * scaleInitial;
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
 				// Quand l'ennemi est mort
@@ -206,9 +208,8 @@ public class LevelManager : MonoBehaviour {
 
 			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
 			meterText.color = defaultTextColor;
-			meterText.transform.localScale = Vector2.one;
+			meterText.transform.localScale = new Vector2 (scaleInitial, scaleInitial);
 		}
-			
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra
 		if (blockList [0].transform.position.x + sizeFirstBlock < cameraStartPosition) {

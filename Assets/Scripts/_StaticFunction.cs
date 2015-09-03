@@ -3,8 +3,8 @@ using System.Collections;
 
 public static class _StaticFunction {
 
-	public static double MathPower(float number, int exposant) {
-		double result = 1.0;
+	public static float MathPower(float number, int exposant) {
+		float result = 1.0f;
 
 		while (exposant > 0)
 		{
