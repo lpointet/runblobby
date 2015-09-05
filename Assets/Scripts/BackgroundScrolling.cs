@@ -24,7 +24,7 @@ public class BackgroundScrolling : MonoBehaviour {
 
 	void Update () {
 		if (!player.IsDead ()) {
-			scrollSpeed = LevelManager.getPlayer ().GetMoveSpeed () / ratioVitesse;
+			scrollSpeed = player.GetMoveSpeed () / ratioVitesse;
 
 			float x = Mathf.Repeat (Time.time * scrollSpeed, 1);
 			Vector2 offset = new Vector2 (x, myMaterial.mainTextureOffset.y);
