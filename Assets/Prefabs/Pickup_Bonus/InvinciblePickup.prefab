@@ -8,9 +8,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 452822}
-  - 114: {fileID: 11497410}
   - 212: {fileID: 21290608}
   - 58: {fileID: 5899664}
+  - 114: {fileID: 11497410}
   m_Layer: 14
   m_Name: InvinciblePickup
   m_TagString: Untagged

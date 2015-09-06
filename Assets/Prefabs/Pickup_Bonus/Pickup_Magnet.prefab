@@ -8,10 +8,10 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 406666}
-  - 114: {fileID: 11480392}
   - 212: {fileID: 21280360}
   - 58: {fileID: 5886146}
   - 95: {fileID: 9549724}
+  - 114: {fileID: 11480392}
   m_Layer: 14
   m_Name: Pickup_Magnet
   m_TagString: Untagged

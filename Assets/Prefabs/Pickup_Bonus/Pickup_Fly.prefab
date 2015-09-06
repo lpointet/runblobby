@@ -9,8 +9,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 437840}
   - 212: {fileID: 21254070}
-  - 95: {fileID: 9545586}
   - 58: {fileID: 5845860}
+  - 95: {fileID: 9545586}
   - 114: {fileID: 11425018}
   m_Layer: 0
   m_Name: Pickup_Fly
