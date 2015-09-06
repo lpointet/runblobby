@@ -50,6 +50,8 @@ public class AutoCoinPickup : Pickup {
 	}
 	
 	protected override void OnDespawn() {
+		base.OnDespawn ();
+
 		myTornado.Stop ();
 	}
 
