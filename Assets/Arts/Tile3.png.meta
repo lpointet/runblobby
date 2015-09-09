@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: aca01a63ec0db5d49bce08c3e904a886
-timeCreated: 1439224274
+guid: dd6c70b585d83e14b97f757b0a420e23
+timeCreated: 1441734059
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -13,14 +13,6 @@ TextureImporter:
     21300012: Tile3_6
     21300014: Tile3_7
     21300016: Tile3_8
-    21300018: Tile3_9
-    21300020: Tile3_10
-    21300022: Tile3_11
-    21300024: Tile3_12
-    21300026: Tile3_13
-    21300028: Tile3_14
-    21300030: Tile3_15
-    21300032: Tile3_16
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -44,7 +36,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 256
+  maxTextureSize: 128
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -70,7 +62,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 160
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -80,7 +72,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 160
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -90,7 +82,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 160
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -99,8 +91,8 @@ TextureImporter:
     - name: Tile3_3
       rect:
         serializedVersion: 2
-        x: 96
-        y: 160
+        x: 0
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -110,7 +102,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 96
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -120,7 +112,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 96
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -129,8 +121,8 @@ TextureImporter:
     - name: Tile3_6
       rect:
         serializedVersion: 2
-        x: 96
-        y: 96
+        x: 0
+        y: 0
         width: 32
         height: 32
       alignment: 0
@@ -140,93 +132,13 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 64
+        y: 0
         width: 32
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Tile3_8
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Tile3_9
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Tile3_10
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Tile3_11
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Tile3_12
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 64
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Tile3_13
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Tile3_14
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Tile3_15
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Tile3_16
       rect:
         serializedVersion: 2
         x: 64
