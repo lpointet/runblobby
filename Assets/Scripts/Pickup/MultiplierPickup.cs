@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class MultiplierPickup : Pickup {
+﻿public class MultiplierPickup : Pickup {
 
 	public int multiplier;
 	public ScoreManager.Types type;

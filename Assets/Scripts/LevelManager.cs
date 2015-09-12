@@ -233,7 +233,7 @@ public class LevelManager : MonoBehaviour {
 	private GameObject GetNewBlock(bool _blockPhase) {
 		if (_blockPhase) {
 			//test random à mettre sous fonction
-			string randomBlock = PoolingManager.current.RandomNameOfPool ("Block", RandomDifficulty(currentPhase)); // Random Block de difficulté 1
+			string randomBlock = PoolingManager.current.RandomNameOfPool ("Block", RandomDifficulty(currentPhase)); // Random Block de difficulté adaptée à la currentPhase
 			// fin
 			return PoolingManager.current.Spawn (randomBlock);
 		}
@@ -279,7 +279,7 @@ public class LevelManager : MonoBehaviour {
 
 	private void MoveWorld() {
 		foreach(GameObject block in blockList) {
-			block.transform.Translate (Vector3.left * Time.deltaTime * player.GetMoveSpeed());
+			block.transform.Translate (Vector3.left * Time.smoothDeltaTime * player.GetMoveSpeed());
 		}
 	}
 

@@ -12,6 +12,7 @@ public class Pickup : MonoBehaviour {
 	protected bool picked = false;
 	protected float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
 	public int weight = 0;			// Probabilité d'apparition relative du bonus
+    protected Animator myAnim;
 	// TODO: On a besoin d'un 2ème timer ici :
 	//  - le premier sert pour la durée de vie de l'effet en lui-meme
 	//  - le deuxième sert pour le temps que le bonus met à disparaitre après la fin de sa vie, c'est utile pour :
@@ -22,6 +23,7 @@ public class Pickup : MonoBehaviour {
 		rdr = GetComponent<Renderer>();
 		myTransform = transform;
 		initialParent = myTransform.parent;
+        myAnim = GetComponent<Animator>();
 	}
 
 	protected virtual void OnEnable() {
@@ -75,6 +77,7 @@ public class Pickup : MonoBehaviour {
 
 	protected virtual void PickEffect() {
 		Hide();
+        myAnim.enabled = false;
 	}
 	
 	protected virtual void DespawnEffect() {

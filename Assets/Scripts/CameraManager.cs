@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 [RequireComponent (typeof (Camera))]
 public class CameraManager : MonoBehaviour {

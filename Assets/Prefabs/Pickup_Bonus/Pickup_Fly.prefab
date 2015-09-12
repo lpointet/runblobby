@@ -74,6 +74,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 10
   weight: 5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!212 &21254070
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -114,6 +117,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: lifeTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: groundMask.m_Bits
+      value: 1024
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

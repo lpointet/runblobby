@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class FlyPickup : Pickup {
 
@@ -10,7 +9,9 @@ public class FlyPickup : Pickup {
 	private Rigidbody2D playerBody;
 	private PlayerController player;
 
-	protected override void Awake() {
+    public LayerMask groundMask;
+
+    protected override void Awake() {
 		base.Awake();
 
 		parentAttach = true;
@@ -46,11 +47,12 @@ public class FlyPickup : Pickup {
 	protected override void OnDespawn() {
 		base.OnDespawn();
 
-		// Remettre la gravité et la hauteur du saut
+		// Remettre les paramètres initiaux
 		playerBody.gravityScale = initialGravityScale;
 		player.SetJumpHeight(initialJumpHeight);
-
-		// Remettre une limite au nombre de sauts
 		player.SetMaxDoubleJump( initialMaxDoubleJump );
-	}
+
+        // On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou
+        player.wasFlying = true;
+    }
 }

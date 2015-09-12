@@ -1109,6 +1109,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -2174,7 +2175,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Layer
-      value: 13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Volume

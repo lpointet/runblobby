@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class CloudPickup : Pickup {
+﻿public class CloudPickup : Pickup {
 
 	protected override void Awake() {
 		base.Awake();
@@ -21,14 +18,8 @@ public class CloudPickup : Pickup {
 	}
 	
 	protected override void OnDespawn() {
-		CloudBlock.nuageActif = false;
-	}
-	
-	protected override void Update() {
-		base.Update();
-		
-		if( !picked ) {
-			return;
-		}
+        base.OnDespawn();
+
+        CloudBlock.nuageActif = false;
 	}
 }

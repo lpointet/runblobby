@@ -166,7 +166,7 @@ MonoBehaviour:
   layerCollision:
     serializedVersion: 2
     m_Bits: 1536
-  despawnTimer: 2
+  despawnTimer: 2.5
 --- !u!212 &21276992
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -246,7 +246,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: despawnTimer
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Materials.Array.data[0]

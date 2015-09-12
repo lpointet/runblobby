@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Fallen_Plateform : MonoBehaviour {
 

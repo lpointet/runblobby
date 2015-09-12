@@ -13,7 +13,7 @@ GameObject:
   - 114: {fileID: 11498254}
   - 114: {fileID: 11420506}
   m_Layer: 10
-  m_Name: empty_space
+  m_Name: cloud_space
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,6 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd61d8d6cbfd5fe4fba3bd694f67a4ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thisNuageActif: 0
 --- !u!114 &11498254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,7 +92,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 5b4d74a6424023b4ca11e5f1a547eca2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
@@ -103,7 +104,8 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 21300000, guid: 5b4d74a6424023b4ca11e5f1a547eca2,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 129180}

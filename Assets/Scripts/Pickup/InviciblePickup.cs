@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public class InviciblePickup : Pickup {
+﻿public class InviciblePickup : Pickup {
 
 	protected override void Awake() {
 		base.Awake();

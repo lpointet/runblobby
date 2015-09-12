@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 
 public class PlayerController : Character {
 	
@@ -24,6 +22,7 @@ public class PlayerController : Character {
 	private SpriteRenderer mySprite;
 	
 	private bool grounded;
+    [HideInInspector] public bool wasFlying = false;
 	public Transform groundCheck;
 	public float groundCheckRadius;
 	public LayerMask layerGround;
@@ -70,7 +69,8 @@ public class PlayerController : Character {
 		base.Init();
 		SetMoveSpeed( GetInitialMoveSpeed() );
 		lerpingHP = GetHealthPoint ();
-	}
+        wasFlying = false;
+    }
 	
 	void FixedUpdate(){
 		// Assure qu'on soit au sol lorsqu'on est en contact
@@ -86,7 +86,7 @@ public class PlayerController : Character {
 		if (grounded) // Assure qu'on puisse faire plusieurs à partir du moment où on est au sol
 			currentJump = 0;
 
-		//rb.velocity = new Vector2 (moveSpeed * Input.GetAxisRaw ("Horizontal"), rb.velocity.y);
+        //myRb.velocity = new Vector2 (GetMoveSpeed() * Input.GetAxisRaw ("Horizontal"), myRb.velocity.y);
 		//rb.velocity = new Vector2 (moveSpeed, rb.velocity.y);
 		
 		// Gestion des sauts
@@ -98,10 +98,32 @@ public class PlayerController : Character {
 			Jump ();
 			currentJump++;
 		}
-		
-		if (Input.GetKeyDown (KeyCode.A)) {
-			myRb.gravityScale = -myRb.gravityScale;
-		}
+
+        // Appelé à la fin d'un vol si en l'air et jusqu'à l'atterrisage
+        if(!grounded && wasFlying)
+        {
+            RaycastHit2D hit;
+            CloudBlock cloudBlock;
+
+            hit = Physics2D.Raycast(transform.position, new Vector2(2, -4), 1, layerGround);
+
+            if (hit.collider != null)
+            {
+                Collider2D[] colliderHits = new Collider2D[5];
+                int nbCollider;
+                // Si on touche quelquec hose, on allume les 5 cases autour si ce sont des nuages
+                nbCollider = Physics2D.OverlapAreaNonAlloc(new Vector2(hit.point.x - 0.5f, hit.point.y - 0.4f), new Vector2(hit.point.x + 3.5f, hit.point.y + 0.4f), colliderHits, layerGround);
+                for (int j = 0; j < nbCollider; j++)
+                {
+                    cloudBlock = colliderHits[j].GetComponent<CloudBlock>();
+                    if (cloudBlock != null)
+                        cloudBlock.thisNuageActif = true;
+                }
+
+                // On réinitialise pour ne plus afficher les éventuels nuages
+                wasFlying = false;
+            }
+        }
 	}
 	
 	void OnGUI() {
@@ -115,8 +137,9 @@ public class PlayerController : Character {
 	}
 	
 	public void Jump() {
-		myRb.velocity = new Vector2(myRb.velocity.x, GetJumpHeight());
-	}
+		myRb.velocity = new Vector2(0, GetJumpHeight());
+        //myRb.velocity = new Vector2(myRb.velocity.x, GetJumpHeight());
+    }
 	
 	public override void OnKill() {
 		levelManager.RespawnPlayer();
