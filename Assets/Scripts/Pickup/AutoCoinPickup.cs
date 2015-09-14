@@ -88,6 +88,11 @@ public class AutoCoinPickup : Pickup {
 				continue;
 			}
 
+            // TODO : améliorer pour éviter d'avoir autant de GetComponent
+            if(coins[i].GetComponent<Animator>().GetBool("picked")) {
+                continue;
+            }
+
 			// Le vecteur direction nous donne la droite entre la pièce et le bonus, donc le joueur
 			direction = coins[i].transform.position - myTransform.position;
 

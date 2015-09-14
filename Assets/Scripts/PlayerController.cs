@@ -83,7 +83,12 @@ public class PlayerController : Character {
 	
 	protected override void Update () {
 		base.Update();
-		if (grounded) // Assure qu'on puisse faire plusieurs à partir du moment où on est au sol
+
+        // Empêcher que des choses se passent durant la pause
+        if (Time.timeScale == 0)
+            return;
+
+        if (grounded) // Assure qu'on puisse faire plusieurs à partir du moment où on est au sol
 			currentJump = 0;
 
         //myRb.velocity = new Vector2 (GetMoveSpeed() * Input.GetAxisRaw ("Horizontal"), myRb.velocity.y);

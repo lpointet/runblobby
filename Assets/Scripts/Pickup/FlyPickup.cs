@@ -54,5 +54,8 @@ public class FlyPickup : Pickup {
 
         // On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou
         player.wasFlying = true;
+
+        // On "force" le joueur à sauter avant l'atterrissage, signant en même temps la fin du vol
+        player.Jump();
     }
 }

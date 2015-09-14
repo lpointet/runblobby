@@ -22,7 +22,11 @@ public class Weapon : MonoBehaviour {
 	}
 
 	void Update () {
-		if (fireRate == 0) {
+        // Empêcher que des choses se passent durant la pause
+        if (Time.timeScale == 0)
+            return;
+
+        if (fireRate == 0) {
 			if (Input.GetMouseButtonDown (0)) {
 				Shoot ();
 			}

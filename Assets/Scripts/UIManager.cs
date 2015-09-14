@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour {
 	
 	public void ResumeGame() {
 		cdObject.SetActive (true);
-		cdAnim.SetBool ("powerOn", true);
+		cdAnim.SetBool ("powerOn", true); // Animation de compte à rebours
 		PauseUI.SetActive(false);
 		paused = false;
 		// A la fin de l'animation, le timeScale redevient 1

@@ -116,6 +116,10 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Update () {
+        // Empêcher que des choses se passent durant la pause
+        if (Time.timeScale == 0)
+            return;
+
 		PlayBackgroundMusic ();
 		// Distance parcourue depuis le dernier update
 		localDistance = player.GetMoveSpeed() * Time.deltaTime;
