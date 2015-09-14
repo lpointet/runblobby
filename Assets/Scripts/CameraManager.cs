@@ -3,7 +3,9 @@
 [RequireComponent (typeof (Camera))]
 public class CameraManager : MonoBehaviour {
 
-	public PlayerController player;
+    public static CameraManager cameraManager;
+
+    public PlayerController player;
 	public bool isFollowing;
 
 	public int unitsInWidth;
@@ -20,9 +22,13 @@ public class CameraManager : MonoBehaviour {
 	private Collider2D fallingKillerCollider;
 
 	public GameObject bgContainer;
+    public float camRightEnd;
 
-	void Awake() {
-		player = FindObjectOfType<PlayerController> ();
+    void Awake() {
+        if (cameraManager == null)
+            cameraManager = GetComponent<CameraManager>();
+
+        player = FindObjectOfType<PlayerController> ();
 
 		backKiller = transform.Find ("BackKiller");
 		fallingKiller = transform.Find ("FallingKiller");
@@ -45,7 +51,9 @@ public class CameraManager : MonoBehaviour {
 		//float xScale = Camera.main.orthographicSize * Camera.main.aspect * 2 / bg_sky.GetComponent<SpriteRenderer> ().bounds.size.x;
 		float yScale = Camera.main.orthographicSize * 2 / bgContainer.transform.GetChild (0).GetComponent<SpriteRenderer>().bounds.size.y;
 		bgContainer.transform.localScale = new Vector3 (yScale, yScale, bgContainer.transform.localScale.z);
-	}
+
+        camRightEnd = xOffset + Camera.main.orthographicSize * Camera.main.aspect;
+    }
 
 	void Update () {
 		#if UNITY_EDITOR

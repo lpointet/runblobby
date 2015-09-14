@@ -198,6 +198,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -247,6 +251,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (44)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -384,6 +392,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -539,6 +551,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (38)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -646,6 +662,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -755,6 +775,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (61)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -1298,6 +1322,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (51)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -1392,6 +1420,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (64)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -1442,6 +1474,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -1491,6 +1527,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -1667,6 +1707,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -2038,6 +2082,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -2287,6 +2335,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (60)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -2395,6 +2447,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -2448,6 +2504,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -2677,6 +2737,7 @@ MonoBehaviour:
   xOffsetPourcentage: .75
   yOffset: 0
   bgContainer: {fileID: 56625957}
+  camRightEnd: 0
 --- !u!1 &380668170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2763,6 +2824,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (46)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -2868,6 +2933,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (58)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -2972,6 +3041,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (41)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -3022,6 +3095,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (67)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -3071,6 +3148,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (69)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -3326,6 +3407,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -3639,6 +3724,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (45)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -3834,6 +3923,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -3883,6 +3976,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (39)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -4312,6 +4409,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -4416,6 +4517,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (59)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -4465,6 +4570,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (29)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -6150,6 +6259,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (62)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -6253,6 +6366,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (54)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -6506,6 +6623,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (43)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -6736,6 +6857,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -6785,6 +6910,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (33)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -7201,6 +7330,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (49)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -7812,6 +7945,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -7915,6 +8052,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -8196,6 +8337,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -8395,6 +8540,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (57)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -8629,6 +8778,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (34)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -8913,6 +9066,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (72)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -9013,6 +9170,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (36)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -9062,6 +9223,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -9113,6 +9278,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -9162,6 +9331,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (42)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -9267,6 +9440,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -9431,6 +9608,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -9760,6 +9941,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (53)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -9809,6 +9994,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -10130,6 +10319,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -10234,6 +10427,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -10333,6 +10530,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -10497,6 +10698,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (68)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -10546,6 +10751,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -10701,6 +10910,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -11047,6 +11260,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -11209,6 +11426,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -11312,6 +11533,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (40)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -11471,6 +11696,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (50)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -11645,6 +11874,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (56)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -11694,6 +11927,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (47)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -11745,6 +11982,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -11795,6 +12036,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (55)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -11844,6 +12089,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (48)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -11967,6 +12216,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -12075,6 +12328,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -12280,6 +12537,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (65)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -12392,6 +12653,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (63)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -12464,6 +12729,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (52)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -12711,6 +12980,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (66)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -12760,6 +13033,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (70)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -12811,6 +13088,10 @@ Prefab:
       propertyPath: m_Name
       value: cloud_space (71)
       objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_IsPrefabParent: 0
@@ -12860,6 +13141,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (32)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}
@@ -12952,6 +13237,10 @@ Prefab:
     - target: {fileID: 129180, guid: c339607079660bb4fb70649790f76d14, type: 2}
       propertyPath: m_Name
       value: cloud_space (37)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184552, guid: c339607079660bb4fb70649790f76d14, type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c339607079660bb4fb70649790f76d14, type: 2}

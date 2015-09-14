@@ -9,16 +9,25 @@ public class CloudBlock : MonoBehaviour {
 	private SpriteRenderer mySprite;
 	private BoxCollider2D myCollider;
 
-	void Awake() {
+    private float camRightLimit;
+
+    void Awake() {
 		mySprite = GetComponent<SpriteRenderer> ();
 		myCollider = GetComponent<BoxCollider2D> ();
 	}
 
-	void OnEnable () {
-		ActiverNuage (nuageActif);
-	}
+    void Start() {
+        camRightLimit = CameraManager.cameraManager.camRightEnd + 1;
+    }
+
+    void OnEnable() {
+        ActiverNuage(false);
+    }
 
 	void Update () {
+        if (transform.position.x > camRightLimit)
+            return;
+            
         // on ne met à jour que s'il y a un changement de la variable static
         if (nuageActif)
         {
@@ -36,9 +45,4 @@ public class CloudBlock : MonoBehaviour {
         //myCollider.enabled = actif;
         myCollider.isTrigger = !actif;
 	}
-
-    public static implicit operator CloudBlock(bool v)
-    {
-        throw new NotImplementedException();
-    }
 }

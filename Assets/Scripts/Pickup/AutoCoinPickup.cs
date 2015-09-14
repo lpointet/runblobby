@@ -8,7 +8,6 @@ public class AutoCoinPickup : Pickup {
 	private Collider2D[] coins = new Collider2D[20];   		// Liste des pièces existantes
 
 	private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
-	private Camera cam; 									// Référence vers la caméra
 	private float camHorizontalExtend;						// Offset vers le bord droit de l'écran
 	private int nbCoins = 0; 								// Nombre de pièces à ramasser
 
@@ -26,12 +25,11 @@ public class AutoCoinPickup : Pickup {
 	protected override void Awake() {
 		base.Awake();
 		parentAttach = true;
-		cam = Camera.main;
 		despawnTime = 2f;
 	}
 
 	void Start() {
-		camHorizontalExtend = cam.transform.position.x + cam.orthographicSize * cam.aspect;
+		camHorizontalExtend = CameraManager.cameraManager.camRightEnd;
 	}
 
 	protected override void PickEffect() {
@@ -57,7 +55,7 @@ public class AutoCoinPickup : Pickup {
 	protected override void Update() {
 		base.Update();
 
-		if( !picked ) {
+		if( !picked || Time.timeScale == 0) {
 			return;
 		}
 

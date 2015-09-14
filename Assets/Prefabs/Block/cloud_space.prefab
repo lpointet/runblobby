@@ -39,7 +39,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 129180}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -106,6 +106,10 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 5b4d74a6424023b4ca11e5f1a547eca2,
         type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 129180}
