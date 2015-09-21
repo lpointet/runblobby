@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Tiled2Unity;
 
 public class LevelManager : MonoBehaviour {
 
@@ -104,7 +105,7 @@ public class LevelManager : MonoBehaviour {
 		blockList = new List<GameObject> {blockStart};
 		// ICI : Instantiate si jamais c'est un prefab
 		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
-		sizeLastBlock = blockList[0].GetComponent<BlockManager> ().widthSize;
+		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().TileWidth;
 		sizeFirstBlock = sizeLastBlock;
 
 		/*GameObject obj;
@@ -220,7 +221,7 @@ public class LevelManager : MonoBehaviour {
 			blockList [0].SetActive (false);
 			blockList.RemoveAt (0);
 			
-			sizeFirstBlock = blockList [0].GetComponent<BlockManager> ().widthSize;
+			sizeFirstBlock = blockList [0].GetComponent<TiledMap> ().TileWidth;
 		}
 		
 		// Création du prochain bloc si le dernier bloc en cours approche de la fin de la caméra
@@ -272,11 +273,11 @@ public class LevelManager : MonoBehaviour {
 		// On cherche le dernier élément (vu qu'on place tout par rapport à lui)
 		GameObject lastBlock = blockList[blockList.Count-1];
 		
-		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<BlockManager>().widthSize;
+		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<TiledMap > ().TileWidth;
 		obj.transform.rotation = lastBlock.transform.rotation;
 		LevelManager.SetActiveRecursively(obj, true); // Normalement SetActive(true);
 		
-		sizeLastBlock = obj.GetComponent<BlockManager>().widthSize;
+		sizeLastBlock = obj.GetComponent<TiledMap>().TileWidth;
 		
 		blockList.Add (obj); // On ajoute à la liste le bloc
 	}
