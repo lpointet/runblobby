@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 3a0546a27cec53c49b6ec62f30897564
-timeCreated: 1442853586
+guid: 452b6c9a8e5b6084881e5da9ea05e56f
+timeCreated: 1442950110
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -74,8 +74,8 @@ TextureImporter:
         y: 36
         width: 32
         height: 36
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Mushroom_Bump_2
       rect:
@@ -84,8 +84,8 @@ TextureImporter:
         y: 36
         width: 32
         height: 36
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Mushroom_Bump_3
       rect:
@@ -94,8 +94,8 @@ TextureImporter:
         y: 36
         width: 32
         height: 36
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Mushroom_Bump_4
       rect:
@@ -104,8 +104,8 @@ TextureImporter:
         y: 0
         width: 32
         height: 36
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Mushroom_Bump_5
       rect:
@@ -114,8 +114,8 @@ TextureImporter:
         y: 0
         width: 32
         height: 36
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Mushroom_Bump_6
       rect:
@@ -124,8 +124,8 @@ TextureImporter:
         y: 0
         width: 32
         height: 36
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

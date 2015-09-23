@@ -81,6 +81,6 @@ public class CameraManager : MonoBehaviour {
 
 		// placement des zones qui dépendent de l'écran (donc de la caméra)
 		backKiller.position = transform.position + Vector3.left * (Camera.main.orthographicSize * Camera.main.aspect + backKillerCollider.bounds.size.x / 3f);
-		fallingKiller.position = transform.position + Vector3.down * (Camera.main.orthographicSize + fallingKillerCollider.bounds.size.y / 3f);
+		fallingKiller.position = transform.position + Vector3.down * (Camera.main.orthographicSize + fallingKillerCollider.bounds.size.y / 2f);
 	}
 }

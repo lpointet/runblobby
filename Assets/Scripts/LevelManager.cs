@@ -105,7 +105,7 @@ public class LevelManager : MonoBehaviour {
 		blockList = new List<GameObject> {blockStart};
 		// ICI : Instantiate si jamais c'est un prefab
 		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
-		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().TileWidth;
+		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().NumTilesWide;
 		sizeFirstBlock = sizeLastBlock;
 
 		/*GameObject obj;
@@ -221,7 +221,7 @@ public class LevelManager : MonoBehaviour {
 			blockList [0].SetActive (false);
 			blockList.RemoveAt (0);
 			
-			sizeFirstBlock = blockList [0].GetComponent<TiledMap> ().TileWidth;
+			sizeFirstBlock = blockList [0].GetComponent<TiledMap> ().NumTilesWide;
 		}
 		
 		// Création du prochain bloc si le dernier bloc en cours approche de la fin de la caméra
@@ -273,11 +273,11 @@ public class LevelManager : MonoBehaviour {
 		// On cherche le dernier élément (vu qu'on place tout par rapport à lui)
 		GameObject lastBlock = blockList[blockList.Count-1];
 		
-		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<TiledMap > ().TileWidth;
+		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<TiledMap > ().NumTilesWide;
 		obj.transform.rotation = lastBlock.transform.rotation;
-		LevelManager.SetActiveRecursively(obj, true); // Normalement SetActive(true);
+        SetActiveRecursively(obj, true); // Normalement SetActive(true);
 		
-		sizeLastBlock = obj.GetComponent<TiledMap>().TileWidth;
+		sizeLastBlock = obj.GetComponent<TiledMap>().NumTilesWide;
 		
 		blockList.Add (obj); // On ajoute à la liste le bloc
 	}
@@ -344,12 +344,16 @@ public class LevelManager : MonoBehaviour {
 
 	public static void MaybeKill( Transform transform ) {
 		Enemy enemy = transform.GetComponent<Enemy>();
-		
-		if( null != enemy ) {
-			LevelManager.Kill( enemy );
+        Animator deathAnim = transform.GetComponent<Animator>();
+
+        if ( null != enemy ) {
+            Kill( enemy );
 		}
 		else {
-			transform.gameObject.SetActive(false);
+            if (deathAnim)
+                deathAnim.SetTrigger("dead");
+            else
+			    transform.gameObject.SetActive(false);
 		}
 	}
 

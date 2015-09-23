@@ -42,6 +42,8 @@ public class FlyPickup : Pickup {
 
 		// Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
 		player.SetMaxDoubleJump( 1000 );
+
+        player.GetComponent<Animator>().SetBool("flying", true);
 	}
 
 	protected override void OnDespawn() {
@@ -57,5 +59,7 @@ public class FlyPickup : Pickup {
 
         // On "force" le joueur à sauter avant l'atterrissage, signant en même temps la fin du vol
         player.Jump();
+
+        player.GetComponent<Animator>().SetBool("flying", false);
     }
 }
