@@ -229,8 +229,8 @@ public class LevelManager : MonoBehaviour {
 			PositionBlock (GetNewBlock (blockPhase));
 		}
 
-		// Si le joueur n'est pas mort, on bouge le monde
-		if (!player.IsDead()) {
+        // Si le joueur n'est pas mort, on bouge le monde
+        if (!player.IsDead()) {
 			MoveWorld ();
 		}
 	}
@@ -306,16 +306,16 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private IEnumerator RespawnPlayerCo() {
-		Instantiate (deathEffect, player.transform.position, player.transform.rotation);
-		player.GetComponent<Renderer> ().enabled = false;
-		player.SetFireAbility( false );
+        //Instantiate (deathEffect, player.transform.position, player.transform.rotation);
+        //player.GetComponent<Renderer> ().enabled = false;
+        player.SetFireAbility( false );
 		yield return new WaitForSeconds (respawnDelay);
 		player.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 		player.transform.position = currentCheckPoint.transform.position;
 		player.FullHealth ();
 		player.Resurrect();
 		player.SetFireAbility( true );
-		player.GetComponent<Renderer> ().enabled = true;
+		//player.GetComponent<Renderer> ().enabled = true;
 	}
 
 	public static PlayerController getPlayer() {

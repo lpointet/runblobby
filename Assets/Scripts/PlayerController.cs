@@ -147,6 +147,7 @@ public class PlayerController : Character {
     }
 	
 	public override void OnKill() {
+        anim.SetTrigger("dead");
 		levelManager.RespawnPlayer();
 	}
 	

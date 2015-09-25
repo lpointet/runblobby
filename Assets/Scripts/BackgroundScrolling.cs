@@ -16,9 +16,7 @@ public class BackgroundScrolling : MonoBehaviour {
 		//transform.localScale = new Vector2 (Camera.main.orthographicSize * Camera.main.aspect * 2, Camera.main.orthographicSize * 2);
 
 		// La vitesse dépend du joueur et de ce ratio = la taille que doit parcourir l'objet et sa distance au joueur (z)
-		ratioVitesse = transform.localScale.x * transform.position.z;
-
-		//transform.localScale *= Screen.height / 1440f;
+		ratioVitesse = transform.localScale.x * transform.position.z * scrollSpeed;
 	}
 
 	void Update () {
