@@ -22,6 +22,7 @@ public class PlayerController : Character {
 	private SpriteRenderer mySprite;
 	
 	private bool grounded;
+    [HideInInspector] public bool bounced = false;
     [HideInInspector] public bool wasFlying = false;
 	public Transform groundCheck;
 	public float groundCheckRadius;
@@ -95,9 +96,9 @@ public class PlayerController : Character {
 		//rb.velocity = new Vector2 (moveSpeed, rb.velocity.y);
 		
 		// Gestion des sauts
-		if (Input.GetButtonDown ("Jump") && grounded) {
+		if (Input.GetButtonDown ("Jump") && (grounded || bounced)) {
 			Jump ();
-
+            bounced = false;
 		}
 		if (Input.GetButtonDown ("Jump") && !grounded && currentJump < maxDoubleJump) {
 			Jump ();
@@ -137,8 +138,8 @@ public class PlayerController : Character {
 
 		// Rouge = 210 ou -160 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
 		lerpingHP = Mathf.Lerp (lerpingHP, GetHealthPoint (), Time.deltaTime * 3);
-		// sharedMaterial pour que les boules changent de couleur aussi
-		mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 210, 0));
+        // sharedMaterial pour que les boules changent de couleur aussi
+        if (!IsDead()) mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 210, 0));
 	}
 	
 	public void Jump() {

@@ -88,6 +88,7 @@ public class Enemy : Character {
 
 	void OnGUI() {
 		fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
+        Debug.Log(GetHealthPoint());
 	}
 
 	void OnTriggerEnter2D(Collider2D other){

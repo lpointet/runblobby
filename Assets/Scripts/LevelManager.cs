@@ -309,14 +309,14 @@ public class LevelManager : MonoBehaviour {
         //Instantiate (deathEffect, player.transform.position, player.transform.rotation);
         //player.GetComponent<Renderer> ().enabled = false;
         player.SetFireAbility( false );
-		yield return new WaitForSeconds (respawnDelay);
+        yield return new WaitForSeconds (respawnDelay);
 		player.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
-		player.transform.position = currentCheckPoint.transform.position;
+        player.transform.position = currentCheckPoint.transform.position;
 		player.FullHealth ();
 		player.Resurrect();
 		player.SetFireAbility( true );
-		//player.GetComponent<Renderer> ().enabled = true;
-	}
+        //player.GetComponent<Renderer> ().enabled = true;
+    }
 
 	public static PlayerController getPlayer() {
 		return player;

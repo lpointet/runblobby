@@ -15,6 +15,9 @@ public class Bounce : MonoBehaviour {
                 herosRb.velocity = new Vector2(0, bouncePower * player.GetJumpHeight());
 
 				LevelManager.MaybeKill( transform );
+
+                // Permettre au héros de sauter même après un bounce
+                player.bounced = true;
 			}
 		}
 	}
