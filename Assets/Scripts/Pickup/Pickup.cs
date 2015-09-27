@@ -77,7 +77,9 @@ public class Pickup : MonoBehaviour {
 
 	protected virtual void PickEffect() {
 		Hide();
-        myAnim.enabled = false;
+        if( null != myAnim ) {
+            myAnim.enabled = false;
+        }
 	}
 	
 	protected virtual void DespawnEffect() {
