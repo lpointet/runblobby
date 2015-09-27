@@ -6,7 +6,6 @@ public class CoinPickup : Pickup {
 	private Vector3 initialPosition;
 	private Quaternion initialRotation;
 
-	private Animator anim;
 	private AudioSource soundSource;
 	
 	protected override void Awake() {
@@ -14,7 +13,6 @@ public class CoinPickup : Pickup {
 		initialPosition = transform.localPosition;
 		initialRotation = transform.localRotation;
 
-		anim = GetComponent<Animator> ();
 		soundSource = GetComponent<AudioSource> ();
 		despawnTime = 1f;
 	}
@@ -46,7 +44,7 @@ public class CoinPickup : Pickup {
 
 	protected override void PickEffect() {
 		// Déclenche les effets visuels dans l'animator
-		anim.SetBool ("picked", true);
+		myAnim.SetBool ("picked", true);
 	}
 
 	private void PickupSound() {
