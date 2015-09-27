@@ -14,7 +14,7 @@ public class StartEnemyBlock : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.name == "Heros") {
-			LevelManager.levelManager.enemyToSpawn = true; // Indique au levelManager d'invoquer l'ennemi
+			LevelManager.levelManager.SetEnemyToSpawn( true ); // Indique au levelManager d'invoquer l'ennemi
 		}
 	}
 }

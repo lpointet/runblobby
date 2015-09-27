@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
@@ -7,6 +8,16 @@ public class UIManager : MonoBehaviour {
 	private Animator cdAnim;
 	
 	private bool paused = false;
+    private GameObject healthBar;
+    private Image fillHealthBar;
+    private float lerpingTimeEnemyBar = 0f;
+    private Enemy EnemyEnCours = null;
+    private bool EnemyGUIActive = false;
+
+    void Awake() {
+        healthBar = GameObject.Find("HPBarEnemy");
+        fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
+    }
 
 	void Start() {
 		PauseUI.SetActive (false);
@@ -14,7 +25,18 @@ public class UIManager : MonoBehaviour {
 	}
 	
 	void Update() {
-		//* MENU PAUSE
+        //* MENU PAUSE
+        PauseManager();
+        //* FIN MENU PAUSE
+
+        EnemySpawnManager();
+    }
+    
+    void OnGUI() {
+        EnemyManager();
+    }
+
+    private void PauseManager() { 
 		if (Input.GetButtonDown ("Pause")) {
 			paused = !paused;
 
@@ -26,9 +48,46 @@ public class UIManager : MonoBehaviour {
 				Time.timeScale = 1;
 			}
 		}
-		//* FIN MENU PAUSE
-	}
-	
+    }
+
+    private void EnemySpawnManager() {
+        // Variable changée par la classe StartEnemyBlock sur le OnTriggerEnter2D, marque le début du compte à rebours pour le boss
+		if( LevelManager.levelManager.IsEnemyToSpawn() ) {
+			// On affiche la barre de vie vide, pour pouvoir la remplir le temps du spawn (= timer d'apparition)
+            if( !EnemyGUIActive ) {
+                ToggleEnemyGUI( true );
+            }
+
+            // On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
+            lerpingTimeEnemyBar += Time.deltaTime / LevelManager.levelManager.enemySpawnDelay;
+			fillHealthBar.fillAmount = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
+
+			if(fillHealthBar.fillAmount == 1) {
+				lerpingTimeEnemyBar = 0;
+                LevelManager.levelManager.SetEnemyToSpawn( false ); // On sort de la boucle d'apparition
+			}
+		}
+    }
+
+    private void EnemyManager() {
+        EnemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
+        if( null != EnemyEnCours ) {
+            if( !EnemyGUIActive ) {
+                ToggleEnemyGUI( true );
+            }
+           fillHealthBar.fillAmount = EnemyEnCours.GetHealthPoint() / (float)EnemyEnCours.GetHealthPointMax();
+        }
+        else if( !LevelManager.levelManager.IsEnemyToSpawn() && EnemyGUIActive ) {
+            ToggleEnemyGUI( false );
+        }
+    }
+
+    private void ToggleEnemyGUI( bool active ) {
+        EnemyGUIActive = active;
+        foreach (Transform obj in healthBar.transform)
+            obj.gameObject.SetActive( active );
+    }
+
 	public void ResumeGame() {
 		cdObject.SetActive (true);
 		cdAnim.SetBool ("powerOn", true); // Animation de compte à rebours

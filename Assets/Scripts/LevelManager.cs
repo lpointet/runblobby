@@ -20,9 +20,6 @@ public class LevelManager : MonoBehaviour {
 	private Color warningTextColorBis;
 	private float scaleInitial; // Echelle du texte au début
 	private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
-	private GameObject healthBar;
-	private Image fillHealthBar;
-	private float lerpingTimeEnemyBar = 0f;
 
 	// Mort, Respawn
 	public GameObject deathEffect;
@@ -54,12 +51,28 @@ public class LevelManager : MonoBehaviour {
 	private bool premierBlock = false;	// Instantier le premier bloc ennemi
 	public Enemy[] enemyMiddle;	// Liste des ennemis
 	private Enemy enemyEnCours;
-	[HideInInspector] public bool enemyToSpawn = false;	// Bool modifiable pour savoir à quel moment il faut invoquer l'ennemi
+	private bool enemyToSpawn = false;	// Bool modifiable pour savoir à quel moment il faut invoquer l'ennemi
+    private bool enemySpawnLaunched = false; // Bool pour savoir si l'appel du spawn a déjà été fait ou pas
 	public float enemySpawnDelay;
 	private float enemyDistanceToKill;
 	public int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
 	private string[] listeDifficulte; // Liste des difficultés possibles
 	//* Fin partie ennemi intermédiaire
+
+    public bool IsEnemyToSpawn() {
+        return enemyToSpawn;
+    }
+    
+    public void SetEnemyToSpawn( bool value ) {
+        enemyToSpawn = value;
+        if( value ) {
+            enemySpawnLaunched = false;
+        }
+    }
+
+    public Enemy GetEnemyEnCours() {
+        return enemyEnCours;
+    }
 
 	void Awake() {
 		if (levelManager == null)
@@ -68,10 +81,6 @@ public class LevelManager : MonoBehaviour {
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
 		sourceSound = GetComponent<AudioSource> ();
-
-		// GUI
-		healthBar = GameObject.Find ("HPBarEnemy");
-		fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
 		
 		defaultTextColor = meterText.color;
 		scaleInitial = meterText.rectTransform.localScale.x;
@@ -149,23 +158,10 @@ public class LevelManager : MonoBehaviour {
 			}
 
 			// Variable changée par la classe StartEnemyBlock sur le OnTriggerEnter2D, marque le début du compte à rebours pour le boss
-			if(enemyToSpawn) {
-				// On affiche la barre de vie vide, pour pouvoir la remplir le temps du spawn (= timer d'apparition)
-				foreach(Transform obj in healthBar.transform)
-					obj.gameObject.SetActive (true);
-
-				// On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
-				lerpingTimeEnemyBar += Time.deltaTime / enemySpawnDelay;
-				fillHealthBar.fillAmount = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
-
-				if(fillHealthBar.fillAmount == 1) {
-					// On fait apparaitre l'ennemi
-					SpawnEnemy(enemyMiddle[currentPhase]);
-
-					lerpingTimeEnemyBar = 0;
-					enemyToSpawn = false; // On sort de la boucle d'apparition
-				}
-			}
+			if( IsEnemyToSpawn() && !enemySpawnLaunched ) {
+                StartCoroutine( SpawnEnemy( enemyMiddle[currentPhase] ) );
+                enemySpawnLaunched = true;
+            }
 
 			// Faire clignoter le texte avant que l'ennemi ne soit là
 			//meterText.color = Color.Lerp(defaultTextColor, Color.clear, Mathf.Abs(Mathf.Sin(Time.frameCount / 15f)));
@@ -207,7 +203,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
 		// On actualise la distance parcourue si le joueur n'est pas mort, et que l'ennemi n'est pas là
-		if (!player.IsDead () && !enemyToSpawn && enemyEnCours == null) {
+		if (!player.IsDead () && !IsEnemyToSpawn() && enemyEnCours == null) {
 			distanceTraveled += localDistance;
 			distanceSinceLastBonus += localDistance;
 
@@ -288,7 +284,8 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	private void SpawnEnemy(Enemy enemy) {
+	private IEnumerator SpawnEnemy(Enemy enemy) {
+        yield return new WaitForSeconds( enemySpawnDelay );
 		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
 		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
 		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();

@@ -14,10 +14,6 @@ public class Enemy : Character {
 	public bool movingEnemy;
 	public bool moveRight;
 
-	// GUI
-	private GameObject healthBar;
-	private Image fillHealthBar;
-
 	private Rigidbody2D myRb;
 	private Transform myTransform;
 
@@ -61,9 +57,6 @@ public class Enemy : Character {
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
 		myTransform = transform;
-
-		healthBar = GameObject.Find ("HPBarEnemy"); // On prend l'enveloppe de la barre de vie qui n'est pas inactive
-		fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
 	}
 
 	protected override void Update () {
@@ -86,11 +79,6 @@ public class Enemy : Character {
 		}
 	}
 
-	void OnGUI() {
-		fillHealthBar.fillAmount = GetHealthPoint () / (float)GetHealthPointMax ();
-        Debug.Log(GetHealthPoint());
-	}
-
 	void OnTriggerEnter2D(Collider2D other){
 		// Si l'ennemi est déjà mort, il ne peut plus rien faire...
 		if( IsDead() ) {
@@ -102,10 +90,6 @@ public class Enemy : Character {
 	}
 
 	public override void OnKill() {
-		// On enlève la GUI
-		foreach(Transform obj in healthBar.transform)
-			obj.gameObject.SetActive (false);
-
 		ScoreManager.AddPoint (GetPointScore(), ScoreManager.Types.Enemy);
 		Despawn();
 	}
