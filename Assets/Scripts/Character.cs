@@ -11,9 +11,11 @@ public class Character : MonoBehaviour {
 	[SerializeField] private float jumpHeight;
 	[SerializeField] private bool isDead;
 	[SerializeField] private float maxHeight = 7.5f;
-	/* End of Stats */
-	
-	private bool invincible = false;
+    /* End of Stats */
+    [SerializeField] private Animator sfxFront;
+    [SerializeField] private Animator sfxBack;
+
+    private bool invincible = false;
 	
 	/**
 	 * Getters & Setters
@@ -41,8 +43,15 @@ public class Character : MonoBehaviour {
 	public float GetMaxHeight() {
 		return maxHeight;
 	}
-	
-	public void SetHealthPoint( int value ) {
+
+    public Animator GetSfxBack() {
+        return sfxBack;
+    }
+    public Animator GetSfxFront() {
+        return sfxFront;
+    }
+
+    public void SetHealthPoint( int value ) {
 		healthPoint = Mathf.Clamp( value, 0, GetHealthPointMax() );
 	}
 	
@@ -69,9 +78,16 @@ public class Character : MonoBehaviour {
 	public void SetMaxHeight( float value ) {
 		maxHeight = value;
 	}
-	/* End of Getters & Setters */
-	
-	void Start() {
+
+    public void SetSfxBack(Animator value) {
+        sfxBack = value;
+    }
+    public void SetSfxFront(Animator value) {
+        sfxFront = value;
+    }
+    /* End of Getters & Setters */
+
+    void Start() {
 		Init();
 	}
 	

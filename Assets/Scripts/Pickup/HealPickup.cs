@@ -10,5 +10,7 @@ public class HealPickup : Pickup {
 
 		// Ajouter la vie au joueur
         LevelManager.getPlayer().SetHealthPoint( LevelManager.getPlayer().GetHealthPoint() + heal );
-	}
+
+        LevelManager.getPlayer().PlayAnimation("healed");
+    }
 }

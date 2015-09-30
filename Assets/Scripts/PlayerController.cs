@@ -157,4 +157,10 @@ public class PlayerController : Character {
 			weapon.gameObject.SetActive( able );
 		}
 	}
+
+    public void PlayAnimation(string animation)
+    {
+        GetSfxFront().SetTrigger(animation);
+        GetSfxBack().SetTrigger(animation);
+    }
 }

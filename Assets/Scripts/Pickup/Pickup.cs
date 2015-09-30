@@ -38,6 +38,7 @@ public class Pickup : MonoBehaviour {
 			// Attacher le bonus au joueur
 			myTransform.parent = LevelManager.getPlayer().transform;
 			myTransform.position = myTransform.parent.position;
+            myAnim.SetBool("picked", true);
 		}
 	}
 	
