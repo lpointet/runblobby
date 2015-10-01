@@ -42,11 +42,6 @@ public class CoinPickup : Pickup {
 		ScoreManager.AddPoint(pointToAdd, ScoreManager.Types.Coin);
 	}
 
-	protected override void PickEffect() {
-		// Déclenche les effets visuels dans l'animator
-		myAnim.SetBool ("picked", true);
-	}
-
 	private void PickupSound() {
 		soundSource.Play ();
 	}

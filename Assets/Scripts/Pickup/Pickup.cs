@@ -38,7 +38,6 @@ public class Pickup : MonoBehaviour {
 			// Attacher le bonus au joueur
 			myTransform.parent = LevelManager.getPlayer().transform;
 			myTransform.position = myTransform.parent.position;
-            myAnim.SetBool("picked", true);
 		}
 	}
 	
@@ -77,18 +76,13 @@ public class Pickup : MonoBehaviour {
 	}
 
 	protected virtual void PickEffect() {
-		Hide();
         if( null != myAnim ) {
-            myAnim.enabled = false;
+            myAnim.SetBool("picked", true);
         }
 	}
 	
 	protected virtual void DespawnEffect() {
 		// L'effet de la mort
-	}
-
-	protected void Hide() {
-		rdr.enabled = false;
 	}
 
 	private IEnumerator Despawn() {
