@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerController : Character {
 	
@@ -29,6 +30,8 @@ public class PlayerController : Character {
 	public LayerMask layerGround;
 	
 	private int currentJump = 0;
+
+    private List<Collider2D> pickups = new List<Collider2D>();
 
 	/**
 	 * Getters & Setters
@@ -157,4 +160,16 @@ public class PlayerController : Character {
 			weapon.gameObject.SetActive( able );
 		}
 	}
+
+    public void AddPickup( Collider2D pickup ) {
+        pickups.Add( pickup );
+    }
+
+    public bool HasPickup( Collider2D pickup ) {
+        return pickups.Contains( pickup );
+    }
+
+    public void RemovePickup( Collider2D pickup ) {
+        pickups.Remove( pickup );
+    }
 }

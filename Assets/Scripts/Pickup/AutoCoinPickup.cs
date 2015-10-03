@@ -82,8 +82,8 @@ public class AutoCoinPickup : Pickup {
 				continue;
 			}
 
-            // TODO : améliorer pour éviter d'avoir autant de GetComponent
-            if(coins[i].GetComponent<Animator>().GetBool("picked")) {
+            // Vérifier que le joueur n'a pas déjà pris cette pièce
+            if( LevelManager.getPlayer().HasPickup( coins[i] ) ) {
                 continue;
             }
 

@@ -7,6 +7,7 @@ public class Pickup : MonoBehaviour {
 	protected bool parentAttach = false;
 	protected Transform initialParent;						// Référence vers le parent initial
 	protected Transform myTransform; 							// Référence vers le transform du bonus
+    protected Collider2D myCollider;
 	protected float despawnTime = 0; 	// protected parce qu'il doit etre réglé dans la classe fille directement, pas modifiable dans l'éditeur
 	private Renderer rdr;
 	protected bool picked = false;
@@ -26,6 +27,7 @@ public class Pickup : MonoBehaviour {
 		initialParent = myTransform.parent;
         myAnim = GetComponent<Animator>();
         soundSource = GetComponent<AudioSource>();
+        myCollider = GetComponent<Collider2D>();
     }
 
 	protected virtual void OnEnable() {
@@ -40,8 +42,10 @@ public class Pickup : MonoBehaviour {
 			// Attacher le bonus au joueur
 			myTransform.parent = LevelManager.getPlayer().transform;
 			myTransform.position = myTransform.parent.position;
-		}
-	}
+        }
+
+        LevelManager.getPlayer().AddPickup( myCollider );
+    }
 	
 	protected virtual void OnDespawn() {
 		// Que faut-il faire lorsque cet objet a fini sa vie ?
@@ -52,7 +56,8 @@ public class Pickup : MonoBehaviour {
 		}
 
 		gameObject.SetActive( false );
-	}
+        LevelManager.getPlayer().RemovePickup( myCollider );
+    }
 	
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.name == "Heros") {
