@@ -29,10 +29,13 @@ public class CoinPickup : Pickup {
 
 	void OnBecameInvisible() {
 		// On ne veut pas pouvoir interagir avec cette pièce si elle n'est plus visible (cf. AutoCoinPickup)
-		gameObject.SetActive( false );
-	}
+        // On vérifie que le despawn n'est pas déjà en cours
+        if( !despawnCalled ) {
+	    	gameObject.SetActive( false );
+        }
+    }
 
-	protected override void OnPick() {
+    protected override void OnPick() {
 		base.OnPick();
 
 		// Ajouter les points au joueur
