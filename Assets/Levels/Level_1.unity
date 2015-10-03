@@ -8719,7 +8719,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgrounds:
   - {fileID: 555922723}
-  meterText: {fileID: 2064347930}
   deathEffect: {fileID: 100004, guid: 9b26e1efdb8fd4d53b35c3c6b7f50cf5, type: 2}
   currentCheckPoint: {fileID: 0}
   respawnDelay: 1
@@ -11437,6 +11436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PauseUI: {fileID: 233532}
   cdObject: {fileID: 666496971}
+  meterText: {fileID: 2064347930}
 --- !u!1 &1219974422
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,15 +8,35 @@ public class UIManager : MonoBehaviour {
 	private Animator cdAnim;
 	
 	private bool paused = false;
+
+    // Barre de vie
     private GameObject healthBar;
     private Image fillHealthBar;
     private float lerpingTimeEnemyBar = 0f;
-    private Enemy EnemyEnCours = null;
+
+    // Compteur
+    public Text meterText;
+    private Color defaultTextColor; // Couleur par défaut du meterText
+    private float scaleInitial; // Echelle du texte au début
+    private Color warningTextColor; // Couleur en alternance lors d'un ennemi
+    private Color warningTextColorBis;
+    private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
+    private float enemyDistanceToKill;
+
+    private Enemy enemyEnCours = null;
     private bool EnemyGUIActive = false;
 
     void Awake() {
+        // Barre de vie
         healthBar = GameObject.Find("HPBarEnemy");
         fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
+
+        // Compteur
+        defaultTextColor = meterText.color;
+        scaleInitial = meterText.rectTransform.localScale.x;
+        warningTextColor = new Color( 1, 0.588f, 0.588f );
+        warningTextColorBis = warningTextColor / 2;
+        warningTextColorBis.r = 1f; // rouge à fond
     }
 
 	void Start() {
@@ -30,6 +50,9 @@ public class UIManager : MonoBehaviour {
         //* FIN MENU PAUSE
 
         EnemySpawnManager();
+
+        // Compteur
+        MeterTextManager();
     }
     
     void OnGUI() {
@@ -70,15 +93,33 @@ public class UIManager : MonoBehaviour {
     }
 
     private void EnemyManager() {
-        EnemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
-        if( null != EnemyEnCours ) {
+        enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
+        if( null != enemyEnCours ) {
             if( !EnemyGUIActive ) {
                 ToggleEnemyGUI( true );
             }
-           fillHealthBar.fillAmount = EnemyEnCours.GetHealthPoint() / (float)EnemyEnCours.GetHealthPointMax();
+           fillHealthBar.fillAmount = enemyEnCours.GetHealthPoint() / (float)enemyEnCours.GetHealthPointMax();
         }
         else if( !LevelManager.levelManager.IsEnemyToSpawn() && EnemyGUIActive ) {
             ToggleEnemyGUI( false );
+        }
+    }
+
+    private void MeterTextManager() {
+        enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
+        if( null != enemyEnCours ) {
+            enemyDistanceToKill = LevelManager.levelManager.GetEnemyDistanceToKill();
+            meterText.text = Mathf.RoundToInt( enemyDistanceToKill ) + "m"; // Mise à jour de la distance restante pour tuer le boss
+            meterText.color = Color.Lerp( warningTextColor, warningTextColorBis, Mathf.Sin( 2f * enemyDistanceToKill ) ); // Variation entre deux couleurs
+
+            // Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
+            scaleFonctionDistance = ( 2 / Mathf.Pow( enemyEnCours.GetDistanceToKill(), 2 ) ) * _StaticFunction.MathPower( enemyEnCours.GetDistanceToKill() - enemyDistanceToKill, 2 ) + 1;
+            meterText.transform.localScale = new Vector2( scaleFonctionDistance, scaleFonctionDistance ) * scaleInitial;
+        }
+        else if( !LevelManager.getPlayer().IsDead() && !LevelManager.levelManager.IsEnemyToSpawn() ) {
+            meterText.text = Mathf.RoundToInt( LevelManager.levelManager.GetDistanceTraveled() ) + "m"; // Mise à jour de la distance parcourue affichée
+            meterText.color = defaultTextColor;
+            meterText.transform.localScale = new Vector2( scaleInitial, scaleInitial );
         }
     }
 

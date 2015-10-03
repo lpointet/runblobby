@@ -13,14 +13,6 @@ public class LevelManager : MonoBehaviour {
 
 	private AudioSource sourceSound;
 
-	// GUI
-	public Text meterText;
-	private Color defaultTextColor; // Couleur par défaut du meterText
-	private Color warningTextColor; // Couleur en alternance lors d'un ennemi
-	private Color warningTextColorBis;
-	private float scaleInitial; // Echelle du texte au début
-	private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
-
 	// Mort, Respawn
 	public GameObject deathEffect;
 	public GameObject currentCheckPoint;
@@ -74,19 +66,25 @@ public class LevelManager : MonoBehaviour {
         return enemyEnCours;
     }
 
-	void Awake() {
+    public float GetEnemyDistanceToKill() {
+        return enemyDistanceToKill;
+    }
+
+    public void SetEnemyDistanceToKill( float value ) {
+        enemyDistanceToKill = value;
+    }
+
+    public float GetDistanceTraveled() {
+        return distanceTraveled;
+    }
+
+    void Awake() {
 		if (levelManager == null)
 			levelManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<LevelManager> ();
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
 		sourceSound = GetComponent<AudioSource> ();
-		
-		defaultTextColor = meterText.color;
-		scaleInitial = meterText.rectTransform.localScale.x;
-		warningTextColor = new Color (1, 0.588f, 0.588f);
-		warningTextColorBis = warningTextColor / 2;
-		warningTextColorBis.r = 1f; // rouge à fond
 	}
 
 	void Start () {
@@ -94,7 +92,7 @@ public class LevelManager : MonoBehaviour {
 		distanceSinceLastBonus = 0;
 		currentPhase = 0;
 		blockPhase = true;
-		enemyDistanceToKill = 0;
+        SetEnemyDistanceToKill( 0 );
 
 		listeDifficulte = new string[5] {"difficulty_1", "difficulty_2", "difficulty_3", "difficulty_4", "difficulty_5"};
 		// Autant de probabilité que de phases (voir listPhase)
@@ -148,7 +146,7 @@ public class LevelManager : MonoBehaviour {
 		//player.moveSpeed = player.initialMoveSpeed + player.initialMoveSpeed * Time.time / 60f;	
 
 		// Définir dans quelle phase on se situe
-		if (currentPhase < listPhase.Length && distanceTraveled > listPhase[currentPhase]) {
+		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
 			blockPhase = false;
 
 			// On créé le premier bloc qui n'est pas un bloc du milieu
@@ -167,24 +165,17 @@ public class LevelManager : MonoBehaviour {
 			//meterText.color = Color.Lerp(defaultTextColor, Color.clear, Mathf.Abs(Mathf.Sin(Time.frameCount / 15f)));
 			
 			if(enemyEnCours != null) {
-				// Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
-				enemyDistanceToKill -= localDistance;
+                // Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
+                SetEnemyDistanceToKill( GetEnemyDistanceToKill() - localDistance );
 
-				if( enemyDistanceToKill <= 0 ) {
+				if( GetEnemyDistanceToKill() <= 0 ) {
 					LevelManager.Kill( player );
 					RespawnPlayer();
 
-					// Arrêter l'éditeur Unity pour empêcher la mort infinie
-					// TODO : A remplacer par autre chose
-					enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
+                    // Arrêter l'éditeur Unity pour empêcher la mort infinie
+                    // TODO : A remplacer par autre chose
+                    SetEnemyDistanceToKill( enemyEnCours.GetDistanceToKill() );
 				}
-
-				meterText.text = Mathf.RoundToInt (enemyDistanceToKill) + "m"; // Mise à jour de la distance restante pour tuer le boss
-				meterText.color = Color.Lerp (warningTextColor, warningTextColorBis, Mathf.Sin (2f * enemyDistanceToKill)); // Variation entre deux couleurs
-
-				// Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
-				scaleFonctionDistance = (2 / Mathf.Pow (enemyEnCours.GetDistanceToKill(), 2)) * _StaticFunction.MathPower (enemyEnCours.GetDistanceToKill() - enemyDistanceToKill, 2) + 1;
-				meterText.transform.localScale = new Vector2(scaleFonctionDistance, scaleFonctionDistance) * scaleInitial;
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
 				// Quand l'ennemi est mort
@@ -206,10 +197,6 @@ public class LevelManager : MonoBehaviour {
 		if (!player.IsDead () && !IsEnemyToSpawn() && enemyEnCours == null) {
 			distanceTraveled += localDistance;
 			distanceSinceLastBonus += localDistance;
-
-			meterText.text = Mathf.RoundToInt (distanceTraveled) + "m"; // Mise à jour de la distance parcourue affichée
-			meterText.color = defaultTextColor;
-			meterText.transform.localScale = new Vector2 (scaleInitial, scaleInitial);
 		}
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra
