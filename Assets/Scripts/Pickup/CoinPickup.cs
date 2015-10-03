@@ -5,15 +5,12 @@ public class CoinPickup : Pickup {
 	public int pointToAdd;
 	private Vector3 initialPosition;
 	private Quaternion initialRotation;
-
-	private AudioSource soundSource;
 	
 	protected override void Awake() {
 		base.Awake();
 		initialPosition = transform.localPosition;
 		initialRotation = transform.localRotation;
 
-		soundSource = GetComponent<AudioSource> ();
 		despawnTime = 1f;
 	}
 	
@@ -40,9 +37,5 @@ public class CoinPickup : Pickup {
 
 		// Ajouter les points au joueur
 		ScoreManager.AddPoint(pointToAdd, ScoreManager.Types.Coin);
-	}
-
-	private void PickupSound() {
-		soundSource.Play ();
 	}
 }

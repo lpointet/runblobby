@@ -13,18 +13,20 @@ public class Pickup : MonoBehaviour {
 	protected float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
 	public int weight = 0;			// Probabilité d'apparition relative du bonus
     protected Animator myAnim;
-	// TODO: On a besoin d'un 2ème timer ici :
-	//  - le premier sert pour la durée de vie de l'effet en lui-meme
-	//  - le deuxième sert pour le temps que le bonus met à disparaitre après la fin de sa vie, c'est utile pour :
-	//    - avoir une animation de despawn (qui dure un certain temps)
-	//    - avoir un fonctionnement différent entre la vie et la fin de vie du bonus (cf. autocoin qui finit ce qu'il a en cours et qui ralentit le mouvement)
+    protected AudioSource soundSource;
+    // TODO: On a besoin d'un 2ème timer ici :
+    //  - le premier sert pour la durée de vie de l'effet en lui-meme
+    //  - le deuxième sert pour le temps que le bonus met à disparaitre après la fin de sa vie, c'est utile pour :
+    //    - avoir une animation de despawn (qui dure un certain temps)
+    //    - avoir un fonctionnement différent entre la vie et la fin de vie du bonus (cf. autocoin qui finit ce qu'il a en cours et qui ralentit le mouvement)
 
-	protected virtual void Awake() {
+    protected virtual void Awake() {
 		rdr = GetComponent<Renderer>();
 		myTransform = transform;
 		initialParent = myTransform.parent;
         myAnim = GetComponent<Animator>();
-	}
+        soundSource = GetComponent<AudioSource>();
+    }
 
 	protected virtual void OnEnable() {
 		timeToLive = lifeTime;
@@ -79,7 +81,9 @@ public class Pickup : MonoBehaviour {
         if( null != myAnim ) {
             myAnim.SetBool("picked", true);
         }
-	}
+        if (!myAnim.GetBool("picked")) // On cache directement ceux qui n'ont pas d'animation de ramassage
+            rdr.enabled = false;
+    }
 	
 	protected virtual void DespawnEffect() {
 		// L'effet de la mort
@@ -90,4 +94,8 @@ public class Pickup : MonoBehaviour {
 		yield return new WaitForSeconds( despawnTime );
 		OnDespawn();
 	}
+
+    protected void PickupSound() {
+        if (soundSource) soundSource.Play();
+    }
 }

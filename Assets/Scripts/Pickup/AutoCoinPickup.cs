@@ -38,7 +38,8 @@ public class AutoCoinPickup : Pickup {
 		myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
 		myWindSound = myRay.GetComponent<AudioSource> ();
 		volumeMax = myWindSound.volume;
-	}
+        LevelManager.getPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_begin");
+    }
 
 	protected override void DespawnEffect() {
 		_StaticFunction.AudioFadeOut (myWindSound, 0, 2);
@@ -50,7 +51,8 @@ public class AutoCoinPickup : Pickup {
 		base.OnDespawn ();
 
 		myTornado.Stop ();
-	}
+        LevelManager.getPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_end");
+    }
 
 	protected override void Update() {
 		base.Update();
