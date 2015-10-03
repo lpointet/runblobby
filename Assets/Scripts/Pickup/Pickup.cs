@@ -15,6 +15,7 @@ public class Pickup : MonoBehaviour {
 	public int weight = 0;			// Probabilité d'apparition relative du bonus
     protected Animator myAnim;
     protected AudioSource soundSource;
+    protected bool despawnCalled = false;
     // TODO: On a besoin d'un 2ème timer ici :
     //  - le premier sert pour la durée de vie de l'effet en lui-meme
     //  - le deuxième sert pour le temps que le bonus met à disparaitre après la fin de sa vie, c'est utile pour :
@@ -33,7 +34,8 @@ public class Pickup : MonoBehaviour {
 	protected virtual void OnEnable() {
 		timeToLive = lifeTime;
 		picked = false;
-	}
+        despawnCalled = false;
+    }
 	
 	protected virtual void OnPick() {
 		// Que faut-il faire lorsque cet objet a été ramassé ?
@@ -48,7 +50,7 @@ public class Pickup : MonoBehaviour {
     }
 	
 	protected virtual void OnDespawn() {
-		// Que faut-il faire lorsque cet objet a fini sa vie ?
+        // Que faut-il faire lorsque cet objet a fini sa vie ?
 
 		if( parentAttach ) {
 			// Attacher le bonus à son parent initial
@@ -72,7 +74,7 @@ public class Pickup : MonoBehaviour {
 			return;
 		}
 
-		if( timeToLive <= 0 ) {
+		if( timeToLive <= 0 && !despawnCalled ) {
 			StartCoroutine( Despawn() );
 		}
 
@@ -95,7 +97,8 @@ public class Pickup : MonoBehaviour {
 	}
 
 	private IEnumerator Despawn() {
-		DespawnEffect();
+        despawnCalled = true;
+        DespawnEffect();
 		yield return new WaitForSeconds( despawnTime );
 		OnDespawn();
 	}
