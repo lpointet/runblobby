@@ -41,7 +41,6 @@ public class AutoCoinPickup : Pickup {
     }
 
 	protected override void DespawnEffect() {
-		_StaticFunction.AudioFadeOut (myWindSound, 0, despawnTime);
 		//myRay.Stop ();
         LevelManager.getPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_end");
     }
@@ -70,6 +69,9 @@ public class AutoCoinPickup : Pickup {
 
 		if ( !despawnCalled ) {
 			_StaticFunction.AudioFadeIn (myWindSound, volumeMax, despawnTime);
+        }
+        else {
+            _StaticFunction.AudioFadeOut( myWindSound, 0, despawnTime );
         }
     }
 
