@@ -17,7 +17,6 @@ public class AutoCoinPickup : Pickup {
 	private ParticleSystem myRay;
 	private float mouvement;
 	private float mouvementFinal;
-	private bool finMouvement = false;
 	private float ralentissementMouvement;
 	private AudioSource myWindSound;
 	private float volumeMax;
@@ -44,7 +43,6 @@ public class AutoCoinPickup : Pickup {
 	protected override void DespawnEffect() {
 		_StaticFunction.AudioFadeOut (myWindSound, 0, despawnTime);
 		//myRay.Stop ();
-		finMouvement = true;
         LevelManager.getPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_end");
     }
 
@@ -70,11 +68,12 @@ public class AutoCoinPickup : Pickup {
 		}
 		myTornado.transform.Rotate (0, 0, mouvement); // Rotation sur l'axe Y*/
 
-		if (!finMouvement)
+		if ( !despawnCalled ) {
 			_StaticFunction.AudioFadeIn (myWindSound, volumeMax, despawnTime);
-	}
+        }
+    }
 
-	private void AttractCoins() {
+    private void AttractCoins() {
 		nbCoins = Physics2D.OverlapCircleNonAlloc( myTransform.position, radius, coins, layerCoins );
 
 		for( int i = 0; i < nbCoins; i++ ) {
