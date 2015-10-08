@@ -31,6 +31,10 @@ public class PlayerController : Character {
 	
 	private int currentJump = 0;
 
+    private float initialGravityScale;
+    private float initialJumpHeight;
+    private int initialMaxDoubleJump;
+
     private List<Collider2D> pickups = new List<Collider2D>();
 
 	/**
@@ -67,7 +71,10 @@ public class PlayerController : Character {
 		mySprite = GetComponent<SpriteRenderer> ();
 		levelManager = FindObjectOfType<LevelManager> ();
 		SetWeapon( transform.FindChild( "Weapon" ) );
-	}
+        initialGravityScale = myRb.gravityScale;
+        initialJumpHeight = GetJumpHeight();
+        initialMaxDoubleJump = GetMaxDoubleJump();
+    }
 	
 	protected override void Init() {
 		base.Init();
@@ -171,5 +178,34 @@ public class PlayerController : Character {
 
     public void RemovePickup( Collider2D pickup ) {
         pickups.Remove( pickup );
+    }
+
+    public void Fly() {
+        // Abaisser la gravité et la hauteur du saut
+        myRb.gravityScale = 0.2f;
+        SetJumpHeight( 2 );
+
+        // Faire décoller le joueur
+        Jump();
+
+        // Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
+        SetMaxDoubleJump( 1000 );
+
+        anim.SetBool( "flying", true );
+    }
+
+    public void Land() {
+        // Remettre les paramètres initiaux
+        myRb.gravityScale = initialGravityScale;
+        SetJumpHeight( initialJumpHeight );
+        SetMaxDoubleJump( initialMaxDoubleJump );
+
+        // On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou
+        wasFlying = true;
+
+        // On "force" le joueur à sauter avant l'atterrissage, signant en même temps la fin du vol
+        Jump();
+
+        anim.SetBool( "flying", false );
     }
 }
