@@ -5,12 +5,6 @@ public class AutoCoinPickup : Pickup {
 	public float radius = 0f;
 	public LayerMask layerCoins;
 
-	private Collider2D[] coins = new Collider2D[20];   		// Liste des pièces existantes
-
-	private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
-	private float camHorizontalExtend;						// Offset vers le bord droit de l'écran
-	private int nbCoins = 0; 								// Nombre de pièces à ramasser
-
 	public ParticleSystem tornadoEffect;
 	public ParticleSystem tornadoRayEffect;
 	private ParticleSystem myTornado;
@@ -25,10 +19,6 @@ public class AutoCoinPickup : Pickup {
 		base.Awake();
 		parentAttach = true;
 		despawnTime = 0.3f;
-	}
-
-	void Start() {
-		camHorizontalExtend = CameraManager.cameraManager.camRightEnd;
 	}
 
 	protected override void PickEffect() {
@@ -52,8 +42,8 @@ public class AutoCoinPickup : Pickup {
 			return;
 		}
 
-		// Attirer toutes les pièces vers le joueur
-		AttractCoins();
+        // Attirer toutes les pièces vers le joueur
+        LevelManager.getPlayer().AttractCoins( radius, layerCoins );
 
 		// Effet graphique de rotation de la tornade
 		/*if (!finMouvement) {
@@ -75,25 +65,5 @@ public class AutoCoinPickup : Pickup {
         }
     }
 
-    private void AttractCoins() {
-		nbCoins = Physics2D.OverlapCircleNonAlloc( myTransform.position, radius, coins, layerCoins );
-
-		for( int i = 0; i < nbCoins; i++ ) {
-			if( coins[i].transform.position.x > myTransform.position.x + camHorizontalExtend ) {
-				continue;
-			}
-
-            // Vérifier que le joueur n'a pas déjà pris cette pièce
-            if( LevelManager.getPlayer().HasPickup( coins[i] ) ) {
-                continue;
-            }
-
-			// Le vecteur direction nous donne la droite entre la pièce et le bonus, donc le joueur
-			direction = coins[i].transform.position - myTransform.position;
-
-			// Faire venir la pièce vers le joueur
-			// Vitesse inversement proportionelle à la distance, minimum 0.5
-			coins[i].transform.Translate(Mathf.Min (0.5f, 1 / direction.magnitude) * -direction.normalized);
-		}
-	}
+    
 }

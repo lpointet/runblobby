@@ -37,10 +37,15 @@ public class PlayerController : Character {
 
     private List<Collider2D> pickups = new List<Collider2D>();
 
-	/**
+    // Attract Coins
+    private int nbCoins = 0;                                // Nombre de pièces à ramasser
+    private Collider2D[] coins = new Collider2D[20];        // Liste des pièces existantes
+    private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
+
+    /**
 	 * Getters & Setters
 	 */
-	public float GetInitialMoveSpeed() {
+    public float GetInitialMoveSpeed() {
 		return initialMoveSpeed;
 	}
 	
@@ -209,5 +214,27 @@ public class PlayerController : Character {
         Jump();
 
         anim.SetBool( "flying", false );
+    }
+
+    public void AttractCoins( float radius, LayerMask layerCoins ) {
+        nbCoins = Physics2D.OverlapCircleNonAlloc( myTransform.position, radius, coins, layerCoins );
+
+        for( int i = 0; i < nbCoins; i++ ) {
+            if( coins[i].transform.position.x > myTransform.position.x + CameraManager.cameraManager.camRightEnd ) {
+                continue;
+            }
+
+            // Vérifier que le joueur n'a pas déjà pris cette pièce
+            if( LevelManager.getPlayer().HasPickup( coins[i] ) ) {
+                continue;
+            }
+
+            // Le vecteur direction nous donne la droite entre la pièce et le bonus, donc le joueur
+            direction = coins[i].transform.position - myTransform.position;
+
+            // Faire venir la pièce vers le joueur
+            // Vitesse inversement proportionelle à la distance, minimum 0.5
+            coins[i].transform.Translate( Mathf.Min( 0.5f, 1 / direction.magnitude ) * -direction.normalized );
+        }
     }
 }
