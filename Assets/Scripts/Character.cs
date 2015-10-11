@@ -13,6 +13,7 @@ public class Character : MonoBehaviour {
 	[SerializeField] private float maxHeight = 7.5f;
     /* End of Stats */
 
+    protected Transform myTransform;
     private bool invincible = false;
 
     /**
@@ -70,6 +71,10 @@ public class Character : MonoBehaviour {
 		maxHeight = value;
 	}
     /* End of Getters & Setters */
+
+    protected virtual void Awake() {
+        myTransform = transform;
+    }
 
     void Start() {
 		Init();

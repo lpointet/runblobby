@@ -63,9 +63,11 @@ public class PlayerController : Character {
 	public void SetMaxDoubleJump( int value ) {
 		maxDoubleJump = value;
 	}
-	/* End of Getters & Setters */
+    /* End of Getters & Setters */
 
-	void Awake () {
+    protected override void Awake() {
+        base.Awake();
+
 		myRb = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
 		mySprite = GetComponent<SpriteRenderer> ();

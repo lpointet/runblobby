@@ -15,7 +15,6 @@ public class Enemy : Character {
 	public bool moveRight;
 
 	private Rigidbody2D myRb;
-	private Transform myTransform;
 
 	private bool hittingWall;
 	public Transform wallCheck;
@@ -54,9 +53,10 @@ public class Enemy : Character {
 		Init();
 	}
 	
-	void Awake () {
+	protected override void Awake () {
+        base.Awake();
+
 		myRb = GetComponent<Rigidbody2D> ();
-		myTransform = transform;
 	}
 
 	protected override void Update () {
