@@ -108,8 +108,8 @@ public class LevelManager : MonoBehaviour {
 		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 1;
 		cameraEndPosition = kamera.transform.position.x + kamera.orthographicSize * kamera.aspect + 1;
 
-		// Initialisation avec le Block Start
-		blockList = new List<GameObject> {blockStart};
+        // Initialisation avec le Block Start
+        blockList = new List<GameObject> {blockStart};
 		// ICI : Instantiate si jamais c'est un prefab
 		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
 		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().NumTilesWide;
@@ -213,7 +213,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
         // Si le joueur n'est pas mort, on bouge le monde
-        if (!player.IsDead()) {
+        if (!player.IsDead() || player.HasLastWish()) {
 			MoveWorld ();
 		}
 	}

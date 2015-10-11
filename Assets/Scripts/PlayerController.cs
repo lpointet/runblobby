@@ -36,6 +36,7 @@ public class PlayerController : Character {
     private int initialMaxDoubleJump;
 
     private List<Collider2D> pickups = new List<Collider2D>();
+    private bool lastWish = false;
 
     // Attract Coins
     private int nbCoins = 0;                                // Nombre de pièces à ramasser
@@ -68,6 +69,14 @@ public class PlayerController : Character {
 	public void SetMaxDoubleJump( int value ) {
 		maxDoubleJump = value;
 	}
+
+    public bool HasLastWish() {
+        return lastWish;
+    }
+
+    public void SetLastWish( bool value ) {
+        lastWish = value;
+    }
     /* End of Getters & Setters */
 
     protected override void Awake() {
@@ -165,6 +174,9 @@ public class PlayerController : Character {
     }
 	
 	public override void OnKill() {
+        if( HasLastWish() ) {
+            return;
+        }
         anim.SetTrigger("dead");
 		levelManager.RespawnPlayer();
 	}
