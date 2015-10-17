@@ -21,6 +21,10 @@ public class LastWishPickup : Pickup {
     protected override void Update() {
         base.Update();
 
+        if( !picked ) {
+            return;
+        }
+
         if( player.IsDead() ) {
             if( !effectOnGoing ) {
                 Effect();
