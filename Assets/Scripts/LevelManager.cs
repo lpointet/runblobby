@@ -115,12 +115,15 @@ public class LevelManager : MonoBehaviour {
 		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().NumTilesWide;
 		sizeFirstBlock = sizeLastBlock;
 
-		/*GameObject obj;
+        /*GameObject obj;
 		for(int i = 0; i < backgrounds.Length; i++) {
 			obj = PoolingManager.current.Spawn( backgrounds[i].GetComponent<PoolingScript>().poolName );
 			obj.transform.parent = backgrounds[i].transform;
 			obj.SetActive(true);
 		}*/
+
+        // On commence le niveau dans une phase "block" et non une phase "ennemi", le joueur ne peut donc pas tirer
+        player.SetFireAbility( false );
 	}
 
 	void Update () {
@@ -159,6 +162,9 @@ public class LevelManager : MonoBehaviour {
 			if( IsEnemyToSpawn() && !enemySpawnLaunched ) {
                 StartCoroutine( SpawnEnemy( enemyMiddle[currentPhase] ) );
                 enemySpawnLaunched = true;
+
+                // Le joueur peut tirer
+                player.SetFireAbility( true );
             }
 
 			// Faire clignoter le texte avant que l'ennemi ne soit là
@@ -185,6 +191,9 @@ public class LevelManager : MonoBehaviour {
 
 					currentPhase++;
 					premierBlock = false;
+
+                    // Le joueur ne peut plus tirer
+                    player.SetFireAbility( false );
 				}
 			}
 		}
@@ -193,8 +202,8 @@ public class LevelManager : MonoBehaviour {
 			blockPhase = true;
 		}
 
-		// On actualise la distance parcourue si le joueur n'est pas mort, et que l'ennemi n'est pas là
-		if (!player.IsDead () && !IsEnemyToSpawn() && enemyEnCours == null) {
+        // On actualise la distance parcourue si le joueur n'est pas mort, et que l'ennemi n'est pas là
+        if (!player.IsDead () && !IsEnemyToSpawn() && enemyEnCours == null) {
 			distanceTraveled += localDistance;
 			distanceSinceLastBonus += localDistance;
 		}
