@@ -2,7 +2,26 @@
 
 public static class _StaticFunction {
 
-	public static float MathPower(float number, int exposant) {
+	// Renvoie une Color32 à aprtir d'un code HEX, avec une opacité maximale
+	public static Color32 ToColor(int HexVal)
+	{
+		byte R = (byte)((HexVal >> 16) & 0xFF);
+		byte G = (byte)((HexVal >> 8) & 0xFF);
+		byte B = (byte)((HexVal) & 0xFF);
+		return new Color32(R, G, B, 255);
+	}
+
+    // Fonction pour activer/désactiver tous les GameObjects dans un GameObject
+    public static void SetActiveRecursively( GameObject rootObject, bool active ) {
+        rootObject.SetActive(active);
+
+        foreach (Transform childTransform in rootObject.transform) {
+            if (!childTransform.gameObject.activeInHierarchy)
+                SetActiveRecursively(childTransform.gameObject, active);
+        }
+    }
+
+    public static float MathPower(float number, int exposant) {
 		float result = 1.0f;
 
 		while (exposant > 0)
