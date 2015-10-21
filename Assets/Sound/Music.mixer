@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Music
+  m_OutputGroup: {fileID: 0}
+  m_MasterGroup: {fileID: 24300001}
+  m_Snapshots:
+  - {fileID: 24500003}
+  m_StartSnapshot: {fileID: 24500003}
+  m_SuspendThreshold: -80
+  m_EnableSuspend: 1
+  m_ExposedParameters:
+  - guid: 5fd9ca5aaa207d14b908081c3d522c87
+    name: musicVolume
+  m_AudioMixerGroupViews:
+  - guids:
+    - cad7696a6fa7a0c4185ab550e987a3b2
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 24500003}
+--- !u!243 &24300001
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: cad7696a6fa7a0c4185ab550e987a3b2
+  m_Children: []
+  m_Volume: 5fd9ca5aaa207d14b908081c3d522c87
+  m_Pitch: 8e13cde10fefb104288b6c75970ed869
+  m_Effects:
+  - {fileID: 24400002}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400002
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: ef912ea80f6399548aa802248e4df3c2
+  m_EffectName: Attenuation
+  m_MixLevel: 4338b59ff95a8fd469262ca6ebcf7689
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &24500003
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Normal
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: f1e7726d06f12cb46b098790e815f904
+  m_FloatValues:
+    8e13cde10fefb104288b6c75970ed869: 1
+    9e396ed7548c22b40b0d2ce1de792ec6: .584999979
+    2a18c2e760d2f8842941f1073d78a220: 0
+    5fd9ca5aaa207d14b908081c3d522c87: 0
+    205ae56c94475e842b17ac608e475f2e: 1
+    8b5cd4fc83a6a34498be7569fda4ef06: 0
+    a9c548dea2bcbbb43911b2ddad971d8b: 100
+    644c503fe37f22148a3ab7ac25427126: 1
+    80f0de8f409ff7844ae5b298984a722f: .414999992
+    e5e906ffd9fbf214eb6df27dad2d4832: .995000005
+  m_TransitionOverrides: {}

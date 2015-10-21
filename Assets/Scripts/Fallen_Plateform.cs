@@ -20,9 +20,9 @@ public class Fallen_Plateform : MonoBehaviour {
 		if (blockAppeared) {
 			fallenObject.Translate(Vector3.down * Time.deltaTime * player.GetMoveSpeed() * chuteMultiplier);
 
-			if (fallenObject.position.y - 1 <= pointFallen.position.y) {
+			if (fallenObject.position.y <= pointFallen.position.y) {
 				blockAppeared = false; // on arrete le mouvement de chute
-				fallenObject.position = new Vector2(pointFallen.position.x, pointFallen.position.y + 1);
+				fallenObject.position = new Vector2(pointFallen.position.x, pointFallen.position.y);
 			}
 		}
 	}

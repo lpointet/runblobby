@@ -80,11 +80,11 @@ public class Pickup : MonoBehaviour {
 	}
 
 	protected virtual void PickEffect() {
-        if( null != myAnim ) {
+        if (!myAnim.GetBool( "picked" )) // On cache directement ceux qui n'ont pas d'animation de ramassage
+            rdr.enabled = false;
+        if ( null != myAnim ) {
             myAnim.SetBool("picked", true);
         }
-        if (!myAnim.GetBool("picked")) // On cache directement ceux qui n'ont pas d'animation de ramassage
-            rdr.enabled = false;
     }
 	
 	protected virtual void DespawnEffect() {

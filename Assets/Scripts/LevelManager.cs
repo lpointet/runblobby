@@ -267,7 +267,7 @@ public class LevelManager : MonoBehaviour {
 		
 		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<TiledMap > ().NumTilesWide;
 		obj.transform.rotation = lastBlock.transform.rotation;
-        SetActiveRecursively(obj, true); // Normalement SetActive(true);
+        _StaticFunction.SetActiveRecursively(obj, true); // Normalement SetActive(true);
 		
 		sizeLastBlock = obj.GetComponent<TiledMap>().NumTilesWide;
 		
@@ -314,18 +314,6 @@ public class LevelManager : MonoBehaviour {
 	public static PlayerController getPlayer() {
 		return player;
 	}
-	
-	// Fonction pour activer/désactiver tous les GameObjects dans un GameObject
-	public static void SetActiveRecursively(GameObject rootObject, bool active)
-	{
-		rootObject.SetActive(active);
-		
-		foreach (Transform childTransform in rootObject.transform)
-		{
-			if (!childTransform.gameObject.activeInHierarchy)
-				SetActiveRecursively(childTransform.gameObject, active);
-		}
-	}
 
 	public Transform[] GetBackgrounds() {
 		return backgrounds;
@@ -344,7 +332,7 @@ public class LevelManager : MonoBehaviour {
 		}
 		else {
             if (deathAnim)
-                deathAnim.SetTrigger("dead");
+                deathAnim.SetBool("dead", true);
             else
 			    transform.gameObject.SetActive(false);
 		}
