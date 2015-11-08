@@ -3904,8 +3904,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1590499157}
-  - 114: {fileID: 1590499156}
   - 61: {fileID: 1590499158}
+  - 114: {fileID: 1590499156}
+  - 61: {fileID: 1590499159}
   m_Layer: 0
   m_Name: FallingKiller
   m_TagString: Untagged
@@ -3944,11 +3945,24 @@ BoxCollider2D:
   m_GameObject: {fileID: 1590499155}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 30, y: 5}
+--- !u!61 &1590499159
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1590499155}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 30, y: 5.5}
 --- !u!1001 &1675585449
 Prefab:
   m_ObjectHideFlags: 0

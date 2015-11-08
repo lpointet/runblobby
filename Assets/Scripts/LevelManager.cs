@@ -287,13 +287,6 @@ public class LevelManager : MonoBehaviour {
 		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
 
-	public static void Kill(Character character) {
-		character.SetHealthPoint( 0 );
-		character.Die();
-
-		character.OnKill();
-	}
-
 	public void RespawnPlayer(){
 		StartCoroutine ("RespawnPlayerCo");
 	}
@@ -321,6 +314,13 @@ public class LevelManager : MonoBehaviour {
 
 	public bool IsBlockPhase() {
 		return blockPhase;
+	}
+
+	public static void Kill(Character character) {
+		character.SetHealthPoint( 0 );
+		character.Die();
+		
+		character.OnKill();
 	}
 
 	public static void MaybeKill( Transform transform ) {

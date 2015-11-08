@@ -176,7 +176,11 @@ public class PlayerController : Character {
         if( HasLastWish() ) {
             return;
         }
-        anim.SetTrigger("dead");
+		if (transform.position.y < 3.5f) // Si on est en dessous du bas de l'écran
+			anim.SetTrigger("dead_fall");
+		else
+        	anim.SetTrigger("dead");
+
 		levelManager.RespawnPlayer();
 	}
 	
