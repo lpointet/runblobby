@@ -8,6 +8,8 @@ public class EnemyFlying : MonoBehaviour {
 	private Transform myTransform;
 	private Transform player;
 
+	private AudioSource sound;
+
 	public float flySpeed = 1f;
 	
 	public bool isSinus = false;		// vole en sinus
@@ -16,31 +18,36 @@ public class EnemyFlying : MonoBehaviour {
 
 	private float enemyPositionY;	// Pour savoir selon qu'elle ligne se diriger selon l'effet
 	private float mouvement = 0;	// Permet de toujours commencer de la meme façon le mouvement non-linéaire
-	
+
+	bool isOver;
+	bool isOverPrevious;
+
 	void Start () {
+		sound = GetComponent<AudioSource> ();
 		player = LevelManager.getPlayer ().transform;
 		myTransform = transform;
 	}
 
 	void Update () {
 		if (enemyIsHere && !enemyIsOnPlayerY) {
-			// On donne une vitesse ascendante/descendante à l'ennemi dès qu'il apparait, selon sa position au joueur
-			// Puis, dès qu'on dépasse le joueur dans un sens ou l'autre, on considère etre à sa hauteur
-			if (myTransform.position.y > player.position.y) {
-				myTransform.Translate (Vector3.down * Time.deltaTime * flySpeed / 2.0f);
-				if(myTransform.position.y <= player.position.y ) {
-					enemyIsOnPlayerY = true;
-					enemyPositionY = myTransform.position.y;
-				}
+			
+			// On fait bouger l'ennemi vers le bas ou vers le haut, selon sa position par rapport au joueur
+			if (isOver)
+				myTransform.Translate (new Vector2(-1,-2).normalized * Time.fixedDeltaTime * flySpeed / 2.0f);
+			else
+				myTransform.Translate (new Vector2(-1,2).normalized * Time.fixedDeltaTime * flySpeed / 2.0f);
+			
+			IsOverPlayer ();
+			
+			// Si, par rapport à la dernière frame, il est toujours au meme endroit, on ne fait rien
+			if (isOver != isOverPrevious) {
+				enemyIsOnPlayerY = true;
+				enemyPositionY = myTransform.position.y;
 			}
-			else if (myTransform.position.y < player.position.y) {
-				myTransform.Translate (Vector3.up * Time.deltaTime * flySpeed / 2.0f);
-				if(myTransform.position.y >= player.position.y ) {
-					enemyIsOnPlayerY = true;
-					enemyPositionY = myTransform.position.y;
-				}
-			}
+			
+			isOverPrevious = isOver;
 		}
+
 		if (enemyIsOnPlayerY) {
 			if(isSinus || isPingPong) {
 				if(isSinus) // On donne une vitesse sinusoidale
@@ -56,8 +63,26 @@ public class EnemyFlying : MonoBehaviour {
 		}
 	}
 
+	private void IsOverPlayer() {
+		if(myTransform.position.y > player.position.y)
+			isOver = true;
+		else
+			isOver = false;
+	}
+
 	void OnBecameVisible() {
+		IsOverPlayer ();
+		isOverPrevious = isOver;
+
 		// Déclencher le mouvement de l'ennemi
 		enemyIsHere = true;
+
+		if (sound)
+			sound.Play ();
+	}
+
+	void OnBecameInvisible() {
+		if (sound)
+			sound.Stop ();
 	}
 }

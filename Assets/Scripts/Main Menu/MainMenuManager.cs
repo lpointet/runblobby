@@ -7,6 +7,7 @@ public class MainMenuManager : MonoBehaviour {
 
 	public static MainMenuManager mainMenuManager;
 	private bool existingGame = false;
+	private SFXMenu sfxSound;
 
 	/******************/
 	/* Menu d'accueil */
@@ -62,6 +63,8 @@ public class MainMenuManager : MonoBehaviour {
     void Awake() {
 		if (mainMenuManager == null)
 			mainMenuManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<MainMenuManager> ();
+
+		sfxSound = GetComponentInChildren<SFXMenu> ();
         //tCentral.text = "";
 
 		/*texteAffichable = "To travel deep down into the heart of a history with maaaany rebounds.\n\nLiterally.";
@@ -81,13 +84,9 @@ public class MainMenuManager : MonoBehaviour {
 		AjusterVolume(aMusicMixer, "musicVolume", sMusic);
 
 		tSfxValue.text = sSfx.value.ToString ();
-		AjusterVolume(aSfxMixer, "sfxVolume", sSfx);
+		AjusterVolume(aSfxMixer, "sfxVolume", sSfx, -21, 3);
 
 		ClearMenu();
-	}
-
-	void Update() {
-
 	}
 
     public void Everywhere_Click() {
@@ -104,7 +103,10 @@ public class MainMenuManager : MonoBehaviour {
 
 		// TODO vrai lancement, on ne passe pas par l'autre menu lors d'une nouvelle partie
 		//StartCoroutine (LoadLevelWithBar(1));
+		//sfxSound.ButtonYesClick ();
+
 		ChangeMainScreen ();
+		Level_Click ();
     }
 
     public void Option_Click() {
@@ -121,7 +123,7 @@ public class MainMenuManager : MonoBehaviour {
 			tMusicValue.color = colorOptionValue;
 		else {
 			tMusicValue.color = colorOptionNulle;
-			AjusterVolume(aMusicMixer, "musicVolume", sMusic, true);
+			MuteSound(aMusicMixer, "musicVolume");
 		}
 	}
 
@@ -129,14 +131,16 @@ public class MainMenuManager : MonoBehaviour {
 		tSfxValue.text = sSfx.value.ToString ();
 		_GameData.gameData.sfxVolume = sSfx.value;
 
-		AjusterVolume(aSfxMixer, "sfxVolume", sSfx);
+		AjusterVolume(aSfxMixer, "sfxVolume", sSfx, -21, 3);
 
 		if (sSfx.value > 0)
 			tSfxValue.color = colorOptionValue;
 		else {
 			tSfxValue.color = colorOptionNulle;
-			AjusterVolume(aSfxMixer, "sfxVolume", sSfx, true);
+			MuteSound(aSfxMixer, "sfxVolume");
 		}
+
+		sfxSound.ButtonYesClick ();
 	}
 
     public void Quit_Click() {
@@ -147,6 +151,7 @@ public class MainMenuManager : MonoBehaviour {
 
 	public void Quit_Yes_Click() {
 		_GameData.gameData.Save ();
+
 #if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
 #elif UNITY_STANDALONE
@@ -155,11 +160,15 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	public void Quit_No_Click() {
+		sfxSound.ButtonNoClick ();
+
 		wQuit.SetActive (false);
 		ClearMenu ();
 	}
 
 	public void Player_Back() {
+		sfxSound.ButtonNoClick ();
+
 		ChangeMainScreen ();
 	}
 
@@ -169,8 +178,17 @@ public class MainMenuManager : MonoBehaviour {
 		levelScrollView.SetActive (true);
 	}
 
+	public void LevelUp_Click() {
+		levelScrollView.GetComponent<LevelScrollList> ().MonterLevel();
+	}
+
+	public void LevelDown_Click() {
+		levelScrollView.GetComponent<LevelScrollList> ().DescendreLevel();
+	}
+
 	private void SetMenuActive(Button menu, Button submenu = null) {
         ClearMenu();
+		sfxSound.ButtonYesClick ();
 
 		menu.GetComponentInChildren<Text> ().color = colorMenuSelect;
 
@@ -205,7 +223,7 @@ public class MainMenuManager : MonoBehaviour {
     }
 
 	private void ChangeMainScreen() {
-		ClearMenu();
+		ClearMenu(); // On nettoie l'ancien
 		if (wMainMenu.activeInHierarchy) {
 			wMainMenu.SetActive (false);
 			wPlayerMenu.SetActive (true);
@@ -213,7 +231,7 @@ public class MainMenuManager : MonoBehaviour {
 			wMainMenu.SetActive (true);
 			wPlayerMenu.SetActive (false);
 		}
-		ClearMenu();
+		ClearMenu(); // Et le nouveau
 	}
 
     /*private void AfficherTexte(string texte) {
@@ -245,11 +263,12 @@ public class MainMenuManager : MonoBehaviour {
 		}
 	}
 
-	private void AjusterVolume(AudioMixer audioSource, string valueName, Slider curseur, bool mute = false) {
-		if (mute)
-			audioSource.SetFloat (valueName, -80);
-		else
-			audioSource.SetFloat (valueName, _StaticFunction.MappingScale(curseur.value, curseur.minValue, curseur.maxValue, -24, 0));
+	private void AjusterVolume(AudioMixer audioSource, string valueName, Slider curseur, int valeurMin = -24, int valeurMax = 0) {
+		audioSource.SetFloat (valueName, _StaticFunction.MappingScale(curseur.value, curseur.minValue, curseur.maxValue, valeurMin, valeurMax));
+	}
+
+	private void MuteSound(AudioMixer audiosource, string valueName) {
+		audiosource.SetFloat (valueName, -80);
 	}
 
     /* Ecrire les lettres l'une après l'autre

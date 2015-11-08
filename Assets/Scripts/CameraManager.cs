@@ -22,6 +22,7 @@ public class CameraManager : MonoBehaviour {
 	private Collider2D fallingKillerCollider;
 
 	public GameObject bgContainer;
+
     public float camRightEnd;
 
     void Awake() {

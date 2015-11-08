@@ -39,13 +39,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: e1e949219430c3c469230fc594735407, type: 3}
+      value: {fileID: 21300000, guid: ba18b446f7b3b214184154a99af66d33, type: 3}
     - time: .200000003
-      value: {fileID: 21300002, guid: e1e949219430c3c469230fc594735407, type: 3}
+      value: {fileID: 21300002, guid: ba18b446f7b3b214184154a99af66d33, type: 3}
     - time: .400000006
-      value: {fileID: 21300004, guid: e1e949219430c3c469230fc594735407, type: 3}
+      value: {fileID: 21300004, guid: ba18b446f7b3b214184154a99af66d33, type: 3}
     - time: .600000024
-      value: {fileID: 21300006, guid: e1e949219430c3c469230fc594735407, type: 3}
+      value: {fileID: 21300006, guid: ba18b446f7b3b214184154a99af66d33, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -56,8 +56,42 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings: []
-    pptrCurveMapping: []
+    genericBindings:
+    - path: 0
+      attribute: 1
+      script: {fileID: 0}
+      classID: 4
+      customType: 0
+      isPPtrCurve: 0
+    - path: 0
+      attribute: 1
+      script: {fileID: 0}
+      classID: 95
+      customType: 8
+      isPPtrCurve: 0
+    - path: 0
+      attribute: 0
+      script: {fileID: 0}
+      classID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - path: 0
+      attribute: 0
+      script: {fileID: 0}
+      classID: 95
+      customType: 8
+      isPPtrCurve: 0
+    - path: 0
+      attribute: 2
+      script: {fileID: 0}
+      classID: 95
+      customType: 8
+      isPPtrCurve: 0
+    pptrCurveMapping:
+    - {fileID: 21300000, guid: ba18b446f7b3b214184154a99af66d33, type: 3}
+    - {fileID: 21300002, guid: ba18b446f7b3b214184154a99af66d33, type: 3}
+    - {fileID: 21300004, guid: ba18b446f7b3b214184154a99af66d33, type: 3}
+    - {fileID: 21300006, guid: ba18b446f7b3b214184154a99af66d33, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_StartTime: 0

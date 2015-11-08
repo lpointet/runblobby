@@ -60,6 +60,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -169,7 +170,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300018, guid: 39df4b426ddf19448b35b52254cad2e9, type: 3}
+  m_Sprite: {fileID: 21300002, guid: 793e10cc8ba0d7d4687436ff2ab6a49d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
@@ -222,6 +223,11 @@ Prefab:
       propertyPath: m_Volume
       value: .800000012
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300002, guid: 793e10cc8ba0d7d4687436ff2ab6a49d,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 157248}

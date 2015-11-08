@@ -18,6 +18,9 @@ public class LevelScrollList : MonoBehaviour {
 	
 	public RectTransform contentPanel;
 
+	public Button upLevel;
+	public Button downLevel;
+
 	public GameObject levelItem;
 	public List<Level> levelList;
 	
@@ -31,9 +34,17 @@ public class LevelScrollList : MonoBehaviour {
 
 	private float currentLerpTime;
 	private float lerpTime = 1f; // Temps pour se "caler"
+
+	private SFXMenu sfxSound;
+	private int recordMinButton = 0;
+
+	void Awake() {
+		// TODO j'aime pas un tag juste pour ça... à voir
+		sfxSound = GameObject.FindGameObjectWithTag ("SFX").GetComponent<SFXMenu> ();
+	}
 	
 	void Start () {
-		GetComponent<Image> ().color = new Color (0, 0, 0, 0); // On cache la liste avant peuplement (alpha = 0)
+		GetComponent<Image> ().color = new Color (255, 255, 255, 0); // On cache la liste avant peuplement (alpha = 0)
 
 		PopulateList ();
 
@@ -53,10 +64,11 @@ public class LevelScrollList : MonoBehaviour {
 		// Distance entre les boutons (ils sont placés à la fin de la première frame seulement)
 		buttonDistance = (int)Mathf.Abs (levelButton[1].GetComponent<RectTransform> ().anchoredPosition.y - levelButton[0].GetComponent<RectTransform> ().anchoredPosition.y);
 
+		currentLerpTime = lerpTime; // Pour éviter de rendre visible le déplacement (instantané du coup)
 		PlacerLevel (0);
 
 		// On remonte le alpha de 1 pour réaffiche la liste une fois peuplée
-		GetComponent<Image> ().color = new Color32 (0, 0, 0, 1);
+		GetComponent<Image> ().color = new Color32 (255, 255, 255, 1);
 	}
 
 	void Update() {
@@ -65,35 +77,27 @@ public class LevelScrollList : MonoBehaviour {
 			distance [i] = Mathf.Abs (center.transform.position.y - levelButton [i].transform.position.y);
 		}
 		float minDistance = Mathf.Min (distance);
-		// On récupère l'index du level le plus proche du centre
-		for (int j = 0; j < levelButton.Length; j++) {
-			if (minDistance == distance [j]) 
-				minButtonNum = j;
-		}
+
+		if (dragging) {
+			// On récupère l'index du level le plus proche du centre
+			for (int j = 0; j < levelButton.Length; j++) {
+				if (minDistance == distance [j]) 
+					minButtonNum = j;
+			}
 		
-		// On "glisse" vers la position centrale quand on arrete de tirer
-		if (dragging)
+			// On "glisse" vers la position centrale quand on arrete de tirer
 			currentLerpTime = 0;
+		}
 		else {
 			// On approche de la fin du positionnement une fois par image
 			currentLerpTime += Time.deltaTime;
 			if(currentLerpTime > lerpTime)
 				currentLerpTime = lerpTime;
-			// On calcule la nouvelle position : index du bouton * hauteur - taille totale des boutons / 2
-			float decallage = minButtonNum * buttonDistance - (levelButton.Length-1) * buttonDistance / 2;
-			float newY = Mathf.Lerp (contentPanel.anchoredPosition.y, decallage, currentLerpTime / lerpTime);
-			
-			contentPanel.anchoredPosition = new Vector2 (contentPanel.anchoredPosition.x, newY);
+
+			PlacerLevel(minButtonNum);
 		}
 
-		// On rend inactifs les boutons qui sont loin du centre
-		for (int i = 0; i < levelButton.Length; i++) {
-
-			if (distance[i] > buttonDistance * 1.5f)
-				levelButton[i].interactable = false;
-			else
-				levelButton[i].interactable = true;
-		}
+		RafraichirImageLevel ();
 	}
 
 	private void PopulateList() {
@@ -129,7 +133,7 @@ public class LevelScrollList : MonoBehaviour {
 		dragging = false;
 	}
 
-	// Remet en place du level qui a les boutons actifs si l'on bouge
+	// Remet en place le level qui a les boutons actifs si l'on bouge
 	public void ResetLevel() {
 		for (int i = 0; i < levelButton.Length; i++) {
 			if (!levelButton[i].GetComponent<SampleLevel>().progress.gameObject.activeInHierarchy) {
@@ -139,10 +143,63 @@ public class LevelScrollList : MonoBehaviour {
 	}
 
 	// Positionner le level de son choix au milieu
-	public void PlacerLevel(int level) {
+	public void PlacerLevel(int level, bool resetLerping = false) {
+		// Afin de remettre le timer à 0 si on appelle depuis ailleurs
+		if (resetLerping)
+			currentLerpTime = 0;
+
 		// On calcule la nouvelle position : index du bouton * hauteur - taille totale des boutons / 2
-		float newY = level * buttonDistance - (levelButton.Length-1) * buttonDistance / 2;
+		float decallage = level * buttonDistance - (levelButton.Length-1) * buttonDistance / 2;
+		float newY = Mathf.Lerp (contentPanel.anchoredPosition.y, decallage, currentLerpTime / lerpTime);
 		
 		contentPanel.anchoredPosition = new Vector2 (contentPanel.anchoredPosition.x, newY);
+	}
+
+	public void MonterLevel() {
+		if (minButtonNum == 0)
+			return;
+
+		ResetLevel ();
+
+		minButtonNum--;
+		PlacerLevel (minButtonNum, true);
+	}
+
+	public void DescendreLevel() {
+		if (minButtonNum == levelButton.Length - 1)
+			return;
+
+		ResetLevel ();
+
+		minButtonNum++;
+		PlacerLevel (minButtonNum, true);
+	}
+	
+	private void RafraichirImageLevel() {
+		// On rend inactifs les boutons qui sont loin du centre
+		for (int i = 0; i < levelButton.Length; i++) {
+			
+			if (distance[i] > buttonDistance * 1.6f)
+				levelButton[i].interactable = false;
+			else
+				levelButton[i].interactable = true;
+		}
+
+		// On cache les boutons pour aller vers le haut ou le bas
+		if (minButtonNum == levelButton.Length-1)
+			upLevel.interactable = false;
+		else
+			upLevel.interactable = true;
+		
+		if(minButtonNum == 0)
+			downLevel.interactable = false;
+		else
+			downLevel.interactable = true;
+
+		// On joue un son quand le level actuellement sélectionné est différent du précédent (quand ça bouge en gros)
+		if (recordMinButton != minButtonNum && !sfxSound.IsPlaying()) {
+			recordMinButton = minButtonNum;
+			sfxSound.ChangeLevel();
+		}
 	}
 }
