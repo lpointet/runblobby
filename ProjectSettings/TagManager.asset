@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameMaster
+  - SFX
   - BackgroundContainer
   - Bullet
   layers:
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Obstacle
+    uniqueID: 4012524679
     locked: 0
   - name: Player
     uniqueID: 538642153
