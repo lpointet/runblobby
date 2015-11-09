@@ -176,7 +176,6 @@ public class LevelManager : MonoBehaviour {
 
 				if( GetEnemyDistanceToKill() <= 0 ) {
 					LevelManager.Kill( player );
-					RespawnPlayer();
 
                     // Arrêter l'éditeur Unity pour empêcher la mort infinie
                     // TODO : A remplacer par autre chose
