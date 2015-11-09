@@ -193,6 +193,16 @@ public class PlayerController : Character {
 			weapon.gameObject.SetActive( able );
 		}
 	}
+	
+	public bool GetFireAbility() {
+		bool active = false;
+
+		if( null != weapon ) {
+			active = weapon.gameObject.activeSelf;
+		}
+
+		return active;
+	}
 
     public void AddPickup( Collider2D pickup ) {
         pickups.Add( pickup );
