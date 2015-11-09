@@ -1,42 +1,42 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &102886
+--- !u!1 &159458
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 452822}
-  - 212: {fileID: 21290608}
-  - 58: {fileID: 5899664}
-  - 95: {fileID: 9582496}
-  - 114: {fileID: 11497410}
+  - 4: {fileID: 447086}
+  - 212: {fileID: 21287524}
+  - 58: {fileID: 5886038}
+  - 114: {fileID: 11429064}
+  - 95: {fileID: 9527474}
   m_Layer: 14
-  m_Name: Pickup_Shield
+  m_Name: Pickup_LastWish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &452822
+--- !u!4 &447086
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102886}
+  m_GameObject: {fileID: 159458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18, y: .25, z: 0}
+  m_LocalPosition: {x: 19.0763168, y: .330828607, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!58 &5899664
+--- !u!58 &5886038
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102886}
+  m_GameObject: {fileID: 159458}
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -44,16 +44,16 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: .25
---- !u!95 &9582496
+--- !u!95 &9527474
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102886}
+  m_GameObject: {fileID: 159458}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 643b7dd27b87d234d93478425a0d8b9a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 954a1577264538e4497d882b33e4309b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -61,25 +61,29 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11497410
+--- !u!114 &11429064
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102886}
+  m_GameObject: {fileID: 159458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7f8495432620c4fb1d2ad28c86da17, type: 3}
+  m_Script: {fileID: 11500000, guid: 01876c1b8ce6a834daa339a1c0a38592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 3
-  weight: 20
---- !u!212 &21290608
+  lifeTime: 10
+  weight: 5
+  radiusMagnet: 10
+  layerCoins:
+    serializedVersion: 2
+    m_Bits: 2048
+--- !u!212 &21287524
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102886}
+  m_GameObject: {fileID: 159458}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -96,9 +100,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 10
-  m_Sprite: {fileID: 21300006, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
+  m_SortingLayerID: 538642153
+  m_SortingOrder: 6
+  m_Sprite: {fileID: 21300000, guid: c9fdb14bcab92c147a750ac9bf77c16f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
@@ -108,23 +112,26 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
-      propertyPath: m_SortingOrder
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: lifeTime
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300006, guid: 315d7d8bccc613942bbafbce24868b00,
-        type: 3}
-    - target: {fileID: 0}
       propertyPath: weight
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
-      propertyPath: m_Radius
-      value: .25
+      propertyPath: radiusMagnet
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: layerCoins.m_Bits
+      value: 2048
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 102886}
+  m_RootGameObject: {fileID: 159458}
   m_IsPrefabParent: 1

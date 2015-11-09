@@ -2,6 +2,16 @@
 
 public static class _StaticFunction {
 
+	// Vérifier qu'une animation possède un paramètre précis
+	public static bool HasParameter(string paramName, Animator animator)
+	{
+		foreach (AnimatorControllerParameter param in animator.parameters)
+		{
+			if (param.name == paramName) return true;
+		}
+		return false;
+	}
+
 	// Renvoie une Color32 à aprtir d'un code HEX, avec une opacité maximale
 	public static Color32 ToColor(int HexVal)
 	{

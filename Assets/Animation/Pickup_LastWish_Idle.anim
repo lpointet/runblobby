@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Pickup_Shield_Idle
+  m_Name: Pickup_LastWish_Idle
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -39,17 +39,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
-    - time: .0666666701
-      value: {fileID: 21300002, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
+      value: {fileID: 21300000, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
     - time: .200000003
-      value: {fileID: 21300004, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
-    - time: .333333343
-      value: {fileID: 21300006, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
+      value: {fileID: 21300002, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
+    - time: .400000006
+      value: {fileID: 21300004, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
     - time: .600000024
-      value: {fileID: 21300004, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
-    - time: .733333349
-      value: {fileID: 21300002, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
+      value: {fileID: 21300006, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -92,12 +88,10 @@ AnimationClip:
       customType: 8
       isPPtrCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
-    - {fileID: 21300002, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
-    - {fileID: 21300004, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
-    - {fileID: 21300006, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
-    - {fileID: 21300004, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
-    - {fileID: 21300002, guid: 315d7d8bccc613942bbafbce24868b00, type: 3}
+    - {fileID: 21300000, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
+    - {fileID: 21300002, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
+    - {fileID: 21300004, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
+    - {fileID: 21300006, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_StartTime: 0
@@ -173,6 +167,11 @@ AnimationClip:
         outSlope: 0
         tangentMode: 10
       - time: .400000006
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 10
+      - time: .800000012
         value: 0
         inSlope: 0
         outSlope: 0

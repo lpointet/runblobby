@@ -19,7 +19,7 @@ public class LevelManager : MonoBehaviour {
 	public float respawnDelay;
 
 	// Création du monde et déplacement
-	private float cameraStartPosition;
+	public float cameraStartPosition;
 	private float cameraEndPosition;
 
 	public GameObject blockStart;

@@ -59,8 +59,8 @@ public class Pickup : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.name == "Heros") {
 			picked = true;
-			PickEffect();
 			OnPick();
+			PickEffect();
 		}
 	}
 
@@ -75,15 +75,16 @@ public class Pickup : MonoBehaviour {
 
 		if( lifeTime > 0 ) {
 			// Mettre à jour le temps qui reste à vivre
-			timeToLive-= Time.deltaTime;
+			timeToLive -= Time.deltaTime;
 		}
 	}
 
 	protected virtual void PickEffect() {
-        if (!myAnim.GetBool( "picked" )) // On cache directement ceux qui n'ont pas d'animation de ramassage
-            rdr.enabled = false;
         if ( null != myAnim ) {
-            myAnim.SetBool("picked", true);
+			if (!_StaticFunction.HasParameter ("picked", myAnim)) // On cache directement ceux qui n'ont pas d'animation de ramassage
+				rdr.enabled = false;
+			else
+            	myAnim.SetBool("picked", true);
         }
     }
 	

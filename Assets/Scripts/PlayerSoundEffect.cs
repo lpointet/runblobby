@@ -16,7 +16,7 @@ public class PlayerSoundEffect : MonoBehaviour {
 		soundSource.PlayOneShot (moveSfx);
 	}
 	
-	private void JumpSound() {
+	public void JumpSound() {
 		soundSource.Stop ();
 		soundSource.volume = 0.4f;
 		soundSource.PlayOneShot (jumpSfx);

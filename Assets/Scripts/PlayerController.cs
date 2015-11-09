@@ -17,7 +17,8 @@ public class PlayerController : Character {
 	private float lerpingHP;
 	
 	private Rigidbody2D myRb;
-	private Animator anim;	
+	private Animator anim;
+	private PlayerSoundEffect myAudio;
 	private LevelManager levelManager;
 	private Transform weapon;
 	private SpriteRenderer mySprite;
@@ -84,8 +85,10 @@ public class PlayerController : Character {
 
 		myRb = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
+		myAudio = GetComponent<PlayerSoundEffect> ();
 		mySprite = GetComponent<SpriteRenderer> ();
 		levelManager = FindObjectOfType<LevelManager> ();
+
 		SetWeapon( transform.FindChild( "Weapon" ) );
         initialGravityScale = myRb.gravityScale;
         initialJumpHeight = GetJumpHeight();
@@ -170,13 +173,14 @@ public class PlayerController : Character {
 	public void Jump() {
 		myRb.velocity = new Vector2(0, GetJumpHeight());
         //myRb.velocity = new Vector2(myRb.velocity.x, GetJumpHeight());
+		myAudio.JumpSound ();
     }
 	
 	public override void OnKill() {
         if( HasLastWish() ) {
             return;
         }
-		if (transform.position.y < 3.5f) // Si on est en dessous du bas de l'écran
+		if (transform.position.y < -3.5f) // Si on est en dessous du bas de l'écran
 			anim.SetTrigger("dead_fall");
 		else
         	anim.SetTrigger("dead");
