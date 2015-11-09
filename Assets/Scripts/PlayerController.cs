@@ -37,7 +37,7 @@ public class PlayerController : Character {
     private int initialMaxDoubleJump;
 
     private List<Collider2D> pickups = new List<Collider2D>();
-    private bool lastWish = false;
+    private LastWishPickup lastWish = null;
 
     // Attract Coins
     private int nbCoins = 0;                                // Nombre de pièces à ramasser
@@ -72,11 +72,16 @@ public class PlayerController : Character {
 	}
 
     public bool HasLastWish() {
-        return lastWish;
+        return lastWish != null;
     }
 
-    public void SetLastWish( bool value ) {
-        lastWish = value;
+    public void SetLastWish( LastWishPickup value ) {
+		if( value ) {
+			lastWish = value;
+		}
+		else {
+        	lastWish = null;
+		}
     }
     /* End of Getters & Setters */
 
@@ -178,6 +183,7 @@ public class PlayerController : Character {
 	
 	public override void OnKill() {
         if( HasLastWish() ) {
+			lastWish.Launch();
             return;
         }
 		if (transform.position.y < -3.5f) // Si on est en dessous du bas de l'écran

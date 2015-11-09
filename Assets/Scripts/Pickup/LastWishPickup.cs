@@ -8,6 +8,7 @@ public class LastWishPickup : Pickup {
     private PlayerController player;
 	private Transform playerTransform;
     private bool effectOnGoing = false;
+    private bool launched = false;
 
 	private float distancetoPlayer = 0f;
 	private float offsetYToPlayer = 0f;
@@ -23,7 +24,12 @@ public class LastWishPickup : Pickup {
     void Start() {
         player = LevelManager.getPlayer();
 		playerTransform = player.transform;
-    }
+	}
+	
+	public void Launch() {
+		player.Resurrect();
+		launched = true;
+	}
 
     protected override void Update() {
 		base.Update ();
@@ -32,13 +38,13 @@ public class LastWishPickup : Pickup {
 			return;
 		}
 
-		if (player.IsDead ()) {
-			if (!effectOnGoing) {
-				Effect ();
+		if ( launched ) {
+			if ( !effectOnGoing ) {
+				Effect();
 			}
 
 			// T'as un magnet
-			player.AttractCoins (radiusMagnet, layerCoins);
+			player.AttractCoins( radiusMagnet, layerCoins );
 		} else {
 			// Ce pickup ne doit jamais disparaitre jusqu'à la mort du joueur
 			timeToLive = lifeTime;
@@ -63,7 +69,7 @@ public class LastWishPickup : Pickup {
             timeToLive = 0;
         }
         else {
-            player.SetLastWish( true );
+            player.SetLastWish( this );
         }
     }
 
@@ -73,7 +79,7 @@ public class LastWishPickup : Pickup {
         if( effectOnGoing ) {
             // Désactiver le vol
             player.Land();
-            player.SetLastWish( false );
+            player.SetLastWish( null );
             player.OnKill();
         }
     }
