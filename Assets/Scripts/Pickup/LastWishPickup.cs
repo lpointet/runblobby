@@ -33,8 +33,13 @@ public class LastWishPickup : Pickup {
 	
 	public void Launch() {
 		player.Resurrect();
+		Effect();
 		launched = true;
 	}
+
+	public bool IsLaunched() {
+		return launched;
+	} 
 
     protected override void Update() {
 		base.Update ();
@@ -45,10 +50,6 @@ public class LastWishPickup : Pickup {
 
 		// Effet commence
 		if ( launched ) {
-			if ( !effectOnGoing ) {
-				Effect();
-			}
-
 			// T'as un magnet
 			player.AttractCoins( radiusMagnet, layerCoins );
 		} else {
@@ -93,7 +94,9 @@ public class LastWishPickup : Pickup {
         if( effectOnGoing ) {
             // Désactiver le vol
             player.SetLastWish( null );
-            player.OnKill();
+
+			// Tuer le joueur, vraiment.
+            LevelManager.Kill( player );
         }
     }
 
@@ -128,7 +131,7 @@ public class LastWishPickup : Pickup {
 	protected override void DespawnEffect() {
 		effectEnding = true;
 
-		player.Die (); // Le joueur est mort au début de l'effet, on ne peut pas utilisation d'animation pour cela
+		player.Die (); // Le joueur est mort au début de l'effet, on ne peut pas utiliser d'animation pour cela
 
 		myTransform.parent = playerTransform;
 		myTransform.position = new Vector2 (myTransform.position.x, myTransform.position.y + 4 / 32f); // Léger décalage de 4 pixels

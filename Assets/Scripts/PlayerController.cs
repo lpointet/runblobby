@@ -181,7 +181,7 @@ public class PlayerController : Character {
     }
 	
 	public override void OnKill() {
-        if( HasLastWish() ) {
+        if( HasLastWish() && !lastWish.IsLaunched() ) {
 			lastWish.Launch();
             return;
         }
