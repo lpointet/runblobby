@@ -199,7 +199,8 @@ public class PlayerController : Character {
 			yield return null;
 		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1);
 
-		Die ();
+		//Die ();
+		Time.timeScale = 0;
 		Application.LoadLevelAdditive (1);
 	}
 	

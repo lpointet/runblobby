@@ -88,6 +88,8 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Start () {
+		Time.timeScale = 1;
+
 		distanceTraveled = 0;
 		distanceSinceLastBonus = 0;
 		currentPhase = 0;
@@ -286,7 +288,7 @@ public class LevelManager : MonoBehaviour {
 		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
 
-	public void KillPlayer(){
+	/*public void KillPlayer(){
 		StartCoroutine ("RespawnPlayerCo");
 	}
 
@@ -302,7 +304,7 @@ public class LevelManager : MonoBehaviour {
 		player.Resurrect();
 		player.SetFireAbility( fireAbility );
         //player.GetComponent<Renderer> ().enabled = true;
-    }
+    }*/
 
 	public static PlayerController GetPlayer() {
 		return player;
@@ -317,7 +319,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public static void Kill(Character character) {
-		character.SetHealthPoint( 0 );
+		//character.SetHealthPoint( 0 );
 		character.Die();
 		
 		character.OnKill();

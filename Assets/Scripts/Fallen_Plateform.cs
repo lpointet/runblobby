@@ -29,7 +29,7 @@ public class Fallen_Plateform : MonoBehaviour {
 
 	void OnBecameVisible() {
 		// On le place au-dessus du point d'impact et hors de l'écran (en prenant en compte l'yOffset)
-		float heightOverScreen = 2 * Camera.main.orthographicSize - Camera.main.GetComponent<CameraManager>().yOffset + Mathf.Abs(pointFallen.position.y);
+		float heightOverScreen = Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager>().yOffset + 1;
 		fallenObject.position = new Vector2(pointFallen.position.x, heightOverScreen);
 
 		// On attend la distance que l'on souhaite adaptée à la vitesse du joueur

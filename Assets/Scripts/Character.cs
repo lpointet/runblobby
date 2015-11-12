@@ -78,6 +78,7 @@ public class Character : MonoBehaviour {
 
     void Start() {
 		Init();
+		SetMaxHeight(Camera.main.orthographicSize
 	}
 	
 	protected virtual void Init() {

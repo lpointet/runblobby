@@ -9,6 +9,10 @@ public class LastWishPickup : Pickup {
 	private Transform playerTransform;
     private bool effectOnGoing = false;
     private bool launched = false;
+	private bool effectEnding = false;
+	private float lerpTimeEnding;
+	private float deathPlayerPosition;
+	private float endingPlayerPosition;
 
 	private float distancetoPlayer = 0f;
 	private float offsetYToPlayer = 0f;
@@ -19,6 +23,7 @@ public class LastWishPickup : Pickup {
         base.Awake();
 
         parentAttach = true;
+		despawnTime = 2.0f;
     }
 
     void Start() {
@@ -38,6 +43,7 @@ public class LastWishPickup : Pickup {
 			return;
 		}
 
+		// Effet commence
 		if ( launched ) {
 			if ( !effectOnGoing ) {
 				Effect();
@@ -53,11 +59,19 @@ public class LastWishPickup : Pickup {
 
 	void LateUpdate() {
 		// Effet visuel de l'ange qui se rapproche jusqu'à la mort
-		if (effectOnGoing) {
+		if (effectOnGoing && !effectEnding) {
 			offsetYToPlayer = Mathf.SmoothDamp (myTransform.position.y, playerTransform.position.y, ref dampVelocity, (timeToLive / lifeTime) * followDelay);
 			distancetoPlayer = _StaticFunction.MappingScale (timeToLive, lifeTime, 0, Mathf.Abs (LevelManager.levelManager.cameraStartPosition), 0);
 
 			myTransform.position = new Vector2 (playerTransform.position.x - distancetoPlayer, offsetYToPlayer);
+		}
+
+		// Effet de l'ange qui amène le joueur au ciel
+		if (effectEnding) {
+			lerpTimeEnding += Time.deltaTime / despawnTime;
+			
+			//player.SetMoveSpeed (Mathf.Lerp (player.GetInitialMoveSpeed (), 0, lerpTimeEnding));
+			playerTransform.position = new Vector2(playerTransform.position.x, Mathf.Lerp(deathPlayerPosition, endingPlayerPosition, lerpTimeEnding));
 		}
     }
 
@@ -96,7 +110,7 @@ public class LastWishPickup : Pickup {
         // T'es invul
         player.SetInvincible( lifeTime );
 
-		// Effet visuel
+		// Effet visuel au moment d'activer l'objet
 		myTransform.position = new Vector2 (myTransform.position.x - Mathf.Abs (LevelManager.levelManager.cameraStartPosition), playerTransform.position.y);
 		myTransform.parent = LevelManager.levelManager.transform; // Pour permettre à l'objet de suivre le joueur
 
@@ -104,6 +118,7 @@ public class LastWishPickup : Pickup {
 		myAnim.SetBool("actif", true);
     }
 
+	// Effet visuel au moment où on ramasse l'item
 	protected override void PickEffect() {
 		base.PickEffect();
 		
@@ -111,6 +126,15 @@ public class LastWishPickup : Pickup {
 	}
 
 	protected override void DespawnEffect() {
+		effectEnding = true;
 
+		player.Die (); // Le joueur est mort au début de l'effet, on ne peut pas utilisation d'animation pour cela
+
+		myTransform.parent = playerTransform;
+		myTransform.position = new Vector2 (myTransform.position.x, myTransform.position.y + 4 / 32f); // Léger décalage de 4 pixels
+
+		lerpTimeEnding = 0f;
+		deathPlayerPosition = playerTransform.position.y;
+		endingPlayerPosition = Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager>().yOffset + 1; // Pour etre au-dessus
 	}
 }
