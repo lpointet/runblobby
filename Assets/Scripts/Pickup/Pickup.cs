@@ -102,4 +102,8 @@ public class Pickup : MonoBehaviour {
     protected void PickupSound() {
         if (soundSource) soundSource.Play();
     }
+
+	public void Disable() {
+		timeToLive = 0;
+	}
 }

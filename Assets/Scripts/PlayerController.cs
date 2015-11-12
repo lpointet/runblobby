@@ -75,6 +75,10 @@ public class PlayerController : Character {
         return lastWish != null;
     }
 
+	public LastWishPickup GetLastWish() {
+		return lastWish;
+	}
+
     public void SetLastWish( LastWishPickup value ) {
 		if( value ) {
 			lastWish = value;

@@ -318,7 +318,18 @@ public class LevelManager : MonoBehaviour {
 		return blockPhase;
 	}
 
-	public static void Kill(Character character) {
+	public static void Kill( Character character ) {
+		if( character == player ) {
+			Pickup[] pickups = character.GetComponentsInChildren<Pickup>();
+			LastWishPickup lastWish = player.GetLastWish();
+			
+			foreach( Pickup pickup in pickups ) {
+				if( pickup != lastWish || lastWish.IsLaunched() ) {
+					pickup.Disable();
+				}
+			}
+		}
+
 		//character.SetHealthPoint( 0 );
 		character.Die();
 		
