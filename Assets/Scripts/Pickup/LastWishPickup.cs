@@ -92,15 +92,17 @@ public class LastWishPickup : Pickup {
         base.OnDespawn();
 
         if( effectOnGoing ) {
-            // Désactiver le vol
-            player.SetLastWish( null );
+			if( timeToLive <= 0 ) {
+				// Tuer le joueur, vraiment.
+	            LevelManager.Kill( player );
+			}
 
-			// Tuer le joueur, vraiment.
-            LevelManager.Kill( player );
-        }
-    }
-
-    public void Effect() {
+			// Supprimer la référence dans le joueur
+			player.SetLastWish( null );
+		}
+	}
+	
+	public void Effect() {
         effectOnGoing = true;
 
         // C'est pour l'instant le seul moyen que j'ai trouvé pour ne pas rester dans la position de la mort (qui peut être bloquante)
