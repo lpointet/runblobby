@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 
 public class Parallaxing : MonoBehaviour {
 
@@ -9,7 +9,7 @@ public class Parallaxing : MonoBehaviour {
 	private PlayerController player;
 
 	void Awake() {
-		player = LevelManager.getPlayer ();
+		player = LevelManager.GetPlayer ();
 		backgrounds = LevelManager.levelManager.GetBackgrounds();
 	}
 
@@ -34,4 +34,4 @@ public class Parallaxing : MonoBehaviour {
 			}
 		}
 	}
-}
+}*/

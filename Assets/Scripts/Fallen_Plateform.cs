@@ -12,7 +12,7 @@ public class Fallen_Plateform : MonoBehaviour {
 	private bool blockAppeared = false;
 
 	void Start () {
-		player = LevelManager.getPlayer ();
+		player = LevelManager.GetPlayer ();
 		pointFallen = transform;
 	}
 

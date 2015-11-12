@@ -116,7 +116,7 @@ public class UIManager : MonoBehaviour {
             scaleFonctionDistance = ( 2 / Mathf.Pow( enemyEnCours.GetDistanceToKill(), 2 ) ) * _StaticFunction.MathPower( enemyEnCours.GetDistanceToKill() - enemyDistanceToKill, 2 ) + 1;
             meterText.transform.localScale = new Vector2( scaleFonctionDistance, scaleFonctionDistance ) * scaleInitial;
         }
-        else if( !LevelManager.getPlayer().IsDead() && !LevelManager.levelManager.IsEnemyToSpawn() ) {
+        else if( !LevelManager.GetPlayer().IsDead() && !LevelManager.levelManager.IsEnemyToSpawn() ) {
             meterText.text = Mathf.RoundToInt( LevelManager.levelManager.GetDistanceTraveled() ) + "m"; // Mise à jour de la distance parcourue affichée
             meterText.color = defaultTextColor;
             meterText.transform.localScale = new Vector2( scaleInitial, scaleInitial );

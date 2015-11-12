@@ -37,11 +37,11 @@ public class Pickup : MonoBehaviour {
 
 		if( parentAttach ) {
 			// Attacher le bonus au joueur
-			myTransform.parent = LevelManager.getPlayer().transform;
+			myTransform.parent = LevelManager.GetPlayer().transform;
 			myTransform.position = myTransform.parent.position;
         }
 
-        LevelManager.getPlayer().AddPickup( myCollider );
+        LevelManager.GetPlayer().AddPickup( myCollider );
     }
 	
 	protected virtual void OnDespawn() {
@@ -53,7 +53,7 @@ public class Pickup : MonoBehaviour {
 		}
 
 		gameObject.SetActive( false );
-        LevelManager.getPlayer().RemovePickup( myCollider );
+        LevelManager.GetPlayer().RemovePickup( myCollider );
     }
 	
 	void OnTriggerEnter2D(Collider2D other){

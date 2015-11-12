@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : Character {
@@ -19,7 +20,6 @@ public class PlayerController : Character {
 	private Rigidbody2D myRb;
 	private Animator anim;
 	private PlayerSoundEffect myAudio;
-	private LevelManager levelManager;
 	private Transform weapon;
 	private SpriteRenderer mySprite;
 	
@@ -92,7 +92,6 @@ public class PlayerController : Character {
 		anim = GetComponent<Animator> ();
 		myAudio = GetComponent<PlayerSoundEffect> ();
 		mySprite = GetComponent<SpriteRenderer> ();
-		levelManager = FindObjectOfType<LevelManager> ();
 
 		SetWeapon( transform.FindChild( "Weapon" ) );
         initialGravityScale = myRb.gravityScale;
@@ -119,10 +118,10 @@ public class PlayerController : Character {
 	protected override void Update () {
 		base.Update();
         // Empêcher que des choses se passent durant la pause
-        if (Time.timeScale == 0)
+		if (Time.timeScale == 0 || IsDead ())
             return;
 
-        if (grounded) // Assure qu'on puisse faire plusieurs à partir du moment où on est au sol
+        if (grounded) // Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
 			currentJump = 0;
 
         //myRb.velocity = new Vector2 (GetMoveSpeed() * Input.GetAxisRaw ("Horizontal"), myRb.velocity.y);
@@ -191,7 +190,17 @@ public class PlayerController : Character {
 		else
         	anim.SetTrigger("dead");
 
-		levelManager.RespawnPlayer();
+		StartCoroutine (WaitForDeadAnim (anim));
+	}
+
+	private IEnumerator WaitForDeadAnim(Animator animation) {
+		// On attend que l'animation de mort (quelle qu'elle soit) se termine
+		do {
+			yield return null;
+		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1);
+
+		Die ();
+		Application.LoadLevelAdditive (1);
 	}
 	
 	public void SetFireAbility( bool able ) {
@@ -260,7 +269,7 @@ public class PlayerController : Character {
             }
 
             // Vérifier que le joueur n'a pas déjà pris cette pièce
-            if( LevelManager.getPlayer().HasPickup( coins[i] ) ) {
+            if( LevelManager.GetPlayer().HasPickup( coins[i] ) ) {
                 continue;
             }
 

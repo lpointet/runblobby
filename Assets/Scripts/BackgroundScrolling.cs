@@ -18,7 +18,7 @@ public class BackgroundScrolling : MonoBehaviour {
 
 	void Start() {
 		myMaterial = GetComponent<Renderer> ().material;
-		player = LevelManager.getPlayer ();
+		player = LevelManager.GetPlayer ();
 
 		// Adapater l'échelle à la taille de l'écran pour qu'on voit tout à chaque fois
 		//transform.localScale = new Vector2 (Camera.main.orthographicSize * Camera.main.aspect * 2, Camera.main.orthographicSize * 2);

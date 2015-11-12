@@ -12,7 +12,7 @@ public class LastWishPickup : Pickup {
 
 	private float distancetoPlayer = 0f;
 	private float offsetYToPlayer = 0f;
-	private float followDelay = 0.5f;
+	private float followDelay = 1f;
 	private float dampVelocity = 0f;
 
     protected override void Awake() {
@@ -22,7 +22,7 @@ public class LastWishPickup : Pickup {
     }
 
     void Start() {
-        player = LevelManager.getPlayer();
+        player = LevelManager.GetPlayer();
 		playerTransform = player.transform;
 	}
 	
@@ -78,7 +78,6 @@ public class LastWishPickup : Pickup {
 
         if( effectOnGoing ) {
             // Désactiver le vol
-            player.Land();
             player.SetLastWish( null );
             player.OnKill();
         }
@@ -100,6 +99,9 @@ public class LastWishPickup : Pickup {
 		// Effet visuel
 		myTransform.position = new Vector2 (myTransform.position.x - Mathf.Abs (LevelManager.levelManager.cameraStartPosition), playerTransform.position.y);
 		myTransform.parent = LevelManager.levelManager.transform; // Pour permettre à l'objet de suivre le joueur
+
+		myAnim.SetBool("picked", false);
+		myAnim.SetBool("actif", true);
     }
 
 	protected override void PickEffect() {

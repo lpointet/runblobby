@@ -27,12 +27,12 @@ public class AutoCoinPickup : Pickup {
 		//myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
 		myWindSound = GetComponent<AudioSource> ();
 		volumeMax = myWindSound.volume;
-        LevelManager.getPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_begin");
+        LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_begin");
     }
 
 	protected override void DespawnEffect() {
 		//myRay.Stop ();
-        LevelManager.getPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_end");
+        LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_end");
     }
 
 	protected override void Update() {
@@ -43,7 +43,7 @@ public class AutoCoinPickup : Pickup {
 		}
 
         // Attirer toutes les pièces vers le joueur
-        LevelManager.getPlayer().AttractCoins( radius, layerCoins );
+        LevelManager.GetPlayer().AttractCoins( radius, layerCoins );
 
 		// Effet graphique de rotation de la tornade
 		/*if (!finMouvement) {

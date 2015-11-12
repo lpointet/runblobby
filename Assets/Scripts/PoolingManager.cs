@@ -4,17 +4,27 @@ using System.Collections.Generic;
 public class PoolingManager : MonoBehaviour {
 	
 	public static PoolingManager current;
+	public Transform pooledObjectParent;
 
 	public List<PoolingScript> poolCollection;
 	private Dictionary<string, List<PoolingScript>> indexedPools = new Dictionary<string, List<PoolingScript>>();
 	private static Dictionary<string, PoolingScript> pools = new Dictionary<string, PoolingScript>();
-	
+
 	void Awake() {
-		current = this;
-		
+		if (current == null) {
+			current = this;
+			DontDestroyOnLoad (gameObject);
+		} else if (current != this) {
+			Destroy (gameObject);
+		}
+
+		indexedPools.Clear ();
+		pools.Clear ();
+
 		foreach(PoolingScript pool in poolCollection)
 		{
 			pool.Init();
+
 			pools.Add(pool.poolName, pool);
 
 			// S'il y a un index, on ajoute dans un dictionnaire de listes

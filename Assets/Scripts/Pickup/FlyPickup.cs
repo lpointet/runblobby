@@ -13,7 +13,7 @@ public class FlyPickup : Pickup {
 	}
 
 	void Start() {
-		player = LevelManager.getPlayer ();
+		player = LevelManager.GetPlayer ();
 	}
 
 	protected override void OnPick() {

@@ -9,12 +9,12 @@ public class HealPickup : Pickup {
 		base.OnPick();
 
 		// Ajouter la vie au joueur
-        LevelManager.getPlayer().SetHealthPoint( LevelManager.getPlayer().GetHealthPoint() + heal );
+        LevelManager.GetPlayer().SetHealthPoint( LevelManager.GetPlayer().GetHealthPoint() + heal );
     }
 
 	protected override void PickEffect() {
 		base.PickEffect();
 
-		LevelManager.getPlayer().GetComponent<CharacterSFX>().PlayAnimation("healed");
+		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("healed");
 	}
 }

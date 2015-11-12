@@ -65,6 +65,7 @@ public class MainMenuManager : MonoBehaviour {
 			mainMenuManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<MainMenuManager> ();
 
 		sfxSound = GetComponentInChildren<SFXMenu> ();
+		//loadingBar = loadingScreen.GetComponentInChildren<Slider>();
         //tCentral.text = "";
 
 		/*texteAffichable = "To travel deep down into the heart of a history with maaaany rebounds.\n\nLiterally.";
@@ -255,8 +256,10 @@ public class MainMenuManager : MonoBehaviour {
 
 	IEnumerator LoadLevelWithBar(int level) {
 		AsyncOperation asyncOp;
-		loadingScreen.SetActive(true);
 		asyncOp = Application.LoadLevelAsync (level);
+
+		loadingScreen.SetActive(true);
+
 		while (!asyncOp.isDone) {
 			loadingBar.value = asyncOp.progress;
 			yield return null;

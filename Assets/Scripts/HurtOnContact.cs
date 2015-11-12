@@ -6,7 +6,7 @@ public class HurtOnContact : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.name == "Heros") {
-			LevelManager.getPlayer().Hurt(damageToGive);
+			LevelManager.GetPlayer().Hurt(damageToGive);
 		}
 	}
 }

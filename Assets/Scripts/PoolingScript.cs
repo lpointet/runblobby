@@ -25,6 +25,7 @@ public class PoolingScript : MonoBehaviour {
 		for (int i = 0; i < pooledAmount; i++) {
 			GameObject obj = (GameObject)Instantiate (pooledObject);
 			obj.SetActive (false);
+			obj.transform.parent = PoolingManager.current.pooledObjectParent;
 			pooledObjects.Add (obj);
 		}
 	}
@@ -39,6 +40,7 @@ public class PoolingScript : MonoBehaviour {
 		if (willGrow) {
 			GameObject obj = (GameObject)Instantiate (pooledObject);
 			pooledObjects.Add (obj);
+			obj.transform.parent = PoolingManager.current.pooledObjectParent;
 			return obj;
 		}
 		return null;

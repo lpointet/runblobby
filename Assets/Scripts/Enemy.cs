@@ -86,7 +86,7 @@ public class Enemy : Character {
 		}
 
 		if (other.name == "Heros")
-			LevelManager.getPlayer ().Hurt(GetDamageToGive());
+			LevelManager.GetPlayer ().Hurt(GetDamageToGive());
 	}
 
 	public override void OnKill() {

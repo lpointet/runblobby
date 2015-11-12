@@ -24,7 +24,7 @@ public class EnemyFlying : MonoBehaviour {
 
 	void Start () {
 		sound = GetComponent<AudioSource> ();
-		player = LevelManager.getPlayer ().transform;
+		player = LevelManager.GetPlayer ().transform;
 		myTransform = transform;
 	}
 

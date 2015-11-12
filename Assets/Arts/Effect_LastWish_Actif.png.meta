@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 37e0e54f099e8fe418d0f0d9ade3cfc7
-timeCreated: 1447192762
+guid: b438821d268beb741822af5c4ac7bae5
+timeCreated: 1447194149
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Effect_LastWish_0
-    21300002: Effect_LastWish_1
-    21300004: Effect_LastWish_2
-    21300006: Effect_LastWish_3
+    21300000: Effect_LastWish_Actif_0
+    21300002: Effect_LastWish_Actif_1
+    21300004: Effect_LastWish_Actif_2
+    21300006: Effect_LastWish_Actif_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,43 +54,43 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Effect_LastWish_0
+    - name: Effect_LastWish_Actif_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 16
+        y: 32
         width: 32
-        height: 16
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Effect_LastWish_1
+    - name: Effect_LastWish_Actif_1
       rect:
         serializedVersion: 2
         x: 32
-        y: 16
+        y: 32
         width: 32
-        height: 16
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Effect_LastWish_2
+    - name: Effect_LastWish_Actif_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 32
-        height: 16
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Effect_LastWish_3
+    - name: Effect_LastWish_Actif_3
       rect:
         serializedVersion: 2
         x: 32
         y: 0
         width: 32
-        height: 16
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

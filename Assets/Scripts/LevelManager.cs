@@ -9,12 +9,12 @@ public class LevelManager : MonoBehaviour {
 	public static LevelManager levelManager;
 	private Camera kamera;
 	public static PlayerController player;
-	public Transform[] backgrounds;			// Array des backgrounds et foregrounds
+	//public Transform[] backgrounds;			// Array des backgrounds et foregrounds
 
 	private AudioSource sourceSound;
 
 	// Mort, Respawn
-	public GameObject deathEffect;
+	//public GameObject deathEffect;
 	public GameObject currentCheckPoint;
 	public float respawnDelay;
 
@@ -128,7 +128,7 @@ public class LevelManager : MonoBehaviour {
 
 	void Update () {
         // Empêcher que des choses se passent durant la pause
-        if (Time.timeScale == 0)
+		if (Time.timeScale == 0 || player.IsDead ())
             return;
 
 		PlayBackgroundMusic ();
@@ -286,7 +286,7 @@ public class LevelManager : MonoBehaviour {
 		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
 
-	public void RespawnPlayer(){
+	public void KillPlayer(){
 		StartCoroutine ("RespawnPlayerCo");
 	}
 
@@ -304,13 +304,13 @@ public class LevelManager : MonoBehaviour {
         //player.GetComponent<Renderer> ().enabled = true;
     }
 
-	public static PlayerController getPlayer() {
+	public static PlayerController GetPlayer() {
 		return player;
 	}
 
-	public Transform[] GetBackgrounds() {
+	/*public Transform[] GetBackgrounds() {
 		return backgrounds;
-	}
+	}*/
 
 	public bool IsBlockPhase() {
 		return blockPhase;

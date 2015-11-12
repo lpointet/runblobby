@@ -7,7 +7,7 @@ public class Bounce : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.name == "Heros") {
-			PlayerController player = LevelManager.getPlayer();
+			PlayerController player = LevelManager.GetPlayer();
             Rigidbody2D herosRb = other.attachedRigidbody;
 		
 			// Dans le cas où le contact se fait par dessus
