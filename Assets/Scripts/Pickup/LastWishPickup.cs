@@ -88,6 +88,13 @@ public class LastWishPickup : Pickup {
         }
     }
 
+	public void Cancel() {
+		base.OnDespawn();
+
+		// Supprimer la référence dans le joueur
+		player.SetLastWish( null );
+	}
+
     protected override void OnDespawn() {
         base.OnDespawn();
 

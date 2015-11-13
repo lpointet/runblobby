@@ -177,7 +177,7 @@ public class LevelManager : MonoBehaviour {
                 SetEnemyDistanceToKill( GetEnemyDistanceToKill() - localDistance );
 
 				if( GetEnemyDistanceToKill() <= 0 ) {
-					LevelManager.Kill( player );
+					LevelManager.Kill( player, true );
 
                     // Arrêter l'éditeur Unity pour empêcher la mort infinie
                     // TODO : A remplacer par autre chose
@@ -318,7 +318,7 @@ public class LevelManager : MonoBehaviour {
 		return blockPhase;
 	}
 
-	public static void Kill( Character character ) {
+	public static void Kill( Character character, bool ignoreLastWish = false ) {
 		if( character == player ) {
 			Pickup[] pickups = character.GetComponentsInChildren<Pickup>();
 			LastWishPickup lastWish = player.GetLastWish();
@@ -327,6 +327,10 @@ public class LevelManager : MonoBehaviour {
 				if( pickup != lastWish || lastWish.IsLaunched() ) {
 					pickup.Disable();
 				}
+			}
+
+			if( ignoreLastWish && lastWish != null ) {
+				lastWish.Cancel();
 			}
 		}
 
