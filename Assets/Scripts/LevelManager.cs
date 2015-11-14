@@ -153,10 +153,6 @@ public class LevelManager : MonoBehaviour {
 
 				if( GetEnemyDistanceToKill() <= 0 ) {
 					LevelManager.Kill( player, true );
-
-                    // Arrêter l'éditeur Unity pour empêcher la mort infinie
-                    // TODO : A remplacer par autre chose
-                    SetEnemyDistanceToKill( enemyEnCours.GetDistanceToKill() );
 				}
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
