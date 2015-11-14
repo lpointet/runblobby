@@ -201,7 +201,7 @@ public class PlayerController : Character {
 		// On attend que l'animation de mort (quelle qu'elle soit) se termine
 		do {
 			yield return null;
-		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1);
+		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.9f);
 
 		//Die ();
 		Time.timeScale = 0;

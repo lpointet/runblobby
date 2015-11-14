@@ -944,7 +944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .558620691, g: 1, b: .5, a: 1}
+  m_Color: {r: 1, g: .909127831, b: .529411793, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4715,7 +4715,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11429064, guid: ab0b8650ddfe268439aefcbb7d2e4f30, type: 2}
       propertyPath: lifeTime
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab0b8650ddfe268439aefcbb7d2e4f30, type: 2}
@@ -4872,7 +4872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: .909127831, b: .529411793, a: 1}
+  m_Color: {r: .558620691, g: 1, b: .5, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5062,7 +5062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .890196085, g: .890196085, b: .890196085, a: 1}
+  m_Color: {r: .301960796, g: .674509823, b: .97647059, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

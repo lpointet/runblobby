@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour {
-	
+
 	public enum Types {
 		All,
 		Coin,
@@ -17,16 +17,18 @@ public class ScoreManager : MonoBehaviour {
 	
 	public static Dictionary<Types, Multiplier> multipliers = new Dictionary<Types, Multiplier>();
 
-	Text scoreText;
+	private Text scoreText;
 
 	private static int score;
 
-	// Use this for initialization
-	void Start () {
-		scoreText = GetComponent<Text> ();
+	public static int GetScore() {
+		return score;
 	}
 	
-	// Update is called once per frame
+	void Awake () {
+		scoreText = GetComponent<Text> ();
+	}
+
 	void Update () {
 		scoreText.text = score + "$";
 	}
