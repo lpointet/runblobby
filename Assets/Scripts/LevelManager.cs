@@ -9,12 +9,10 @@ public class LevelManager : MonoBehaviour {
 	public static LevelManager levelManager;
 	private Camera kamera;
 	public static PlayerController player;
-	//public Transform[] backgrounds;			// Array des backgrounds et foregrounds
 
 	private AudioSource sourceSound;
 
 	// Mort, Respawn
-	//public GameObject deathEffect;
 	public GameObject currentCheckPoint;
 	public float respawnDelay;
 
@@ -117,13 +115,6 @@ public class LevelManager : MonoBehaviour {
 		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().NumTilesWide;
 		sizeFirstBlock = sizeLastBlock;
 
-        /*GameObject obj;
-		for(int i = 0; i < backgrounds.Length; i++) {
-			obj = PoolingManager.current.Spawn( backgrounds[i].GetComponent<PoolingScript>().poolName );
-			obj.transform.parent = backgrounds[i].transform;
-			obj.SetActive(true);
-		}*/
-
         // On commence le niveau dans une phase "block" et non une phase "ennemi", le joueur ne peut donc pas tirer
         player.SetFireAbility( false );
 	}
@@ -136,19 +127,6 @@ public class LevelManager : MonoBehaviour {
 		PlayBackgroundMusic ();
 		// Distance parcourue depuis le dernier update
 		localDistance = player.GetMoveSpeed() * Time.deltaTime;
-
-		/* Augmente la vitesse à chaque passage de x units (dans listStep)
-		distanceTraveled += player.moveSpeed;
-		if (currentStep < listStep.Length) {
-			if (distanceTraveled > listStep [currentStep]) {
-				player.moveSpeed += augmentSpeed;
-				currentStep++;
-			}
-		}*/
-
-		// Augmentation de la vitesse progressive
-		//player.moveSpeed = player.initialMoveSpeed + Mathf.Log (distanceTraveled) / Mathf.Log(2);
-		//player.moveSpeed = player.initialMoveSpeed + player.initialMoveSpeed * Time.time / 60f;	
 
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
@@ -168,20 +146,13 @@ public class LevelManager : MonoBehaviour {
                 // Le joueur peut tirer
                 player.SetFireAbility( true );
             }
-
-			// Faire clignoter le texte avant que l'ennemi ne soit là
-			//meterText.color = Color.Lerp(defaultTextColor, Color.clear, Mathf.Abs(Mathf.Sin(Time.frameCount / 15f)));
 			
 			if(enemyEnCours != null) {
                 // Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
                 SetEnemyDistanceToKill( GetEnemyDistanceToKill() - localDistance );
 
 				if( GetEnemyDistanceToKill() <= 0 ) {
-					LevelManager.Kill( player );
-
-                    // Arrêter l'éditeur Unity pour empêcher la mort infinie
-                    // TODO : A remplacer par autre chose
-                    SetEnemyDistanceToKill( enemyEnCours.GetDistanceToKill() );
+					LevelManager.Kill( player, true );
 				}
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
@@ -288,37 +259,15 @@ public class LevelManager : MonoBehaviour {
 		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
 
-	/*public void KillPlayer(){
-		StartCoroutine ("RespawnPlayerCo");
-	}
-
-	private IEnumerator RespawnPlayerCo() {
-        //Instantiate (deathEffect, player.transform.position, player.transform.rotation);
-        //player.GetComponent<Renderer> ().enabled = false;
-		bool fireAbility = player.GetFireAbility();
-        player.SetFireAbility( false );
-        yield return new WaitForSeconds (respawnDelay);
-		player.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
-        player.transform.position = currentCheckPoint.transform.position;
-		player.FullHealth ();
-		player.Resurrect();
-		player.SetFireAbility( fireAbility );
-        //player.GetComponent<Renderer> ().enabled = true;
-    }*/
-
 	public static PlayerController GetPlayer() {
 		return player;
 	}
-
-	/*public Transform[] GetBackgrounds() {
-		return backgrounds;
-	}*/
 
 	public bool IsBlockPhase() {
 		return blockPhase;
 	}
 
-	public static void Kill( Character character ) {
+	public static void Kill( Character character, bool ignoreLastWish = false ) {
 		if( character == player ) {
 			Pickup[] pickups = character.GetComponentsInChildren<Pickup>();
 			LastWishPickup lastWish = player.GetLastWish();
@@ -328,9 +277,12 @@ public class LevelManager : MonoBehaviour {
 					pickup.Disable();
 				}
 			}
+
+			if( ignoreLastWish && lastWish != null ) {
+				lastWish.Cancel();
+			}
 		}
 
-		//character.SetHealthPoint( 0 );
 		character.Die();
 		
 		character.OnKill();

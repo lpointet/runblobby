@@ -2489,7 +2489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75f5f36abfa2ec64ba03faae7d18c30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetCheckBounce: 0
+  offsetCheckBounce: -.5
   bouncePower: .75
 --- !u!61 &839773481
 BoxCollider2D:
@@ -4035,7 +4035,7 @@ GameObject:
   - 68: {fileID: 1686453330}
   m_Layer: 8
   m_Name: GroundCheck
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: -1089502233064743932, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

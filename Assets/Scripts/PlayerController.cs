@@ -12,9 +12,6 @@ public class PlayerController : Character {
 	/* End of Stats */
 	
 	// GUI
-	//public Text healthText;
-	//public GameObject healthBar;
-	//public Image fillHealthBar;
 	private float lerpingHP;
 	
 	private Rigidbody2D myRb;
@@ -127,9 +124,6 @@ public class PlayerController : Character {
 
         if (grounded) // Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
 			currentJump = 0;
-
-        //myRb.velocity = new Vector2 (GetMoveSpeed() * Input.GetAxisRaw ("Horizontal"), myRb.velocity.y);
-		//rb.velocity = new Vector2 (moveSpeed, rb.velocity.y);
 		
 		// Gestion des sauts
 		if (Input.GetButtonDown ("Jump") && (grounded || bounced)) {
@@ -169,9 +163,6 @@ public class PlayerController : Character {
 	}
 	
 	void OnGUI() {
-		//healthText.text = GetHealthPoint().ToString();
-		//fillHealthBar.fillAmount = Mathf.Lerp (fillHealthBar.fillAmount, GetHealthPoint () / (float)GetHealthPointMax (), Time.deltaTime * 2);
-
 		// Rouge = 210 ou -160 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
 		lerpingHP = Mathf.Lerp (lerpingHP, GetHealthPoint (), Time.deltaTime * 3);
         // sharedMaterial pour que les boules changent de couleur aussi
@@ -180,7 +171,6 @@ public class PlayerController : Character {
 	
 	public void Jump() {
 		myRb.velocity = new Vector2(0, GetJumpHeight());
-        //myRb.velocity = new Vector2(myRb.velocity.x, GetJumpHeight());
 		myAudio.JumpSound ();
     }
 	
@@ -203,7 +193,6 @@ public class PlayerController : Character {
 			yield return null;
 		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.9f);
 
-		//Die ();
 		Time.timeScale = 0;
 		Application.LoadLevelAdditive (1);
 	}
