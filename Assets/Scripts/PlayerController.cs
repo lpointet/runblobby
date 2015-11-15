@@ -168,9 +168,12 @@ public class PlayerController : Character {
             }
         }
 
-		if (isFlying && speedBeforeFly != speedInFly) {
+		if (speedBeforeFly != speedInFly) {
 			acceleration += Time.deltaTime;
-			SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration/2));
+			if (isFlying)
+				SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration));
+			else
+				SetMoveSpeed (Mathf.Lerp (speedInFly, speedBeforeFly, acceleration * 2));
 		}
 	}
 	
@@ -254,11 +257,11 @@ public class PlayerController : Character {
         SetMaxDoubleJump( 1000 );
 
 		// Augmenter la vitesse
-		/*acceleration = 0;
+		acceleration = 0;
 		speedBeforeFly = GetMoveSpeed ();
-		speedInFly = GetMoveSpeed() * flySpeedCoeff;*/
+		speedInFly = GetMoveSpeed() * flySpeedCoeff;
 
-		SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
+		//SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
 
 		anim.SetBool( "flying", isFlying );
     }
@@ -278,7 +281,7 @@ public class PlayerController : Character {
         Jump();
 
 		// Diminuer la vitesse
-		SetMoveSpeed( GetMoveSpeed() / flySpeedCoeff );
+		acceleration = 0;
 
 		anim.SetBool( "flying", isFlying );
     }
