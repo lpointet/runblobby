@@ -120,7 +120,7 @@ public class Character : MonoBehaviour {
 	}
 
 	protected virtual void Update() {
-		if( transform.position.y >= GetMaxHeight() ) {
+		if( transform.position.y >= GetMaxHeight() && !IsDead() ) {
 			transform.position = new Vector3( transform.position.x, GetMaxHeight(), transform.position.z );
 		}
 	}
