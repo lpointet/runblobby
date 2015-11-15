@@ -41,6 +41,8 @@ public class PlayerController : Character {
     private Collider2D[] coins = new Collider2D[20];        // Liste des pièces existantes
     private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
 
+	private float flySpeedCoeff = 1.2f;
+
     /**
 	 * Getters & Setters
 	 */
@@ -239,6 +241,9 @@ public class PlayerController : Character {
         // Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
         SetMaxDoubleJump( 1000 );
 
+		// Augmenter la vitesse
+		SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
+
         anim.SetBool( "flying", true );
     }
 
@@ -253,6 +258,9 @@ public class PlayerController : Character {
 
         // On "force" le joueur à sauter avant l'atterrissage, signant en même temps la fin du vol
         Jump();
+
+		// Diminuer la vitesse
+		SetMoveSpeed( GetMoveSpeed() / flySpeedCoeff );
 
         anim.SetBool( "flying", false );
     }
