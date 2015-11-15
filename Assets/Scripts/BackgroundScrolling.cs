@@ -3,6 +3,8 @@
 public class BackgroundScrolling : MonoBehaviour {
 
 	public float scrollSpeed;
+	private float previousScrollSpeed;
+	private float decalage = 0;
 
 	public bool isVariable;
 	public float baseCutoff = 0f;
@@ -25,14 +27,19 @@ public class BackgroundScrolling : MonoBehaviour {
 
 		// La vitesse dépend du joueur et de ce ratio = la taille que doit parcourir l'objet et sa distance au joueur (z)
 		ratioVitesse = transform.localScale.x * transform.position.z * scrollSpeed;
+
+		scrollSpeed = player.GetMoveSpeed () / ratioVitesse;
+		previousScrollSpeed = scrollSpeed;
 	}
 
 	void Update () {
 		if (!player.IsDead ()) {
 			scrollSpeed = player.GetMoveSpeed () / ratioVitesse;
 
+			decalage += scrollSpeed - previousScrollSpeed;
+
 			// Décallage permanent dans le sens inverse du joueur
-			float x = Mathf.Repeat (Time.time * scrollSpeed, 1);
+			float x = Mathf.Repeat (Time.time * scrollSpeed - decalage, 1);
 			float y = myMaterial.mainTextureOffset.y;
 
 			// Si on a décidé que c'était à taille variable, on modifie ici
@@ -45,6 +52,8 @@ public class BackgroundScrolling : MonoBehaviour {
 
 			Vector2 offset = new Vector2 (x, y);
 			myMaterial.mainTextureOffset = offset;
+
+			previousScrollSpeed = scrollSpeed;
 		}
 	}
 

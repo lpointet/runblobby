@@ -41,7 +41,11 @@ public class PlayerController : Character {
     private Collider2D[] coins = new Collider2D[20];        // Liste des pièces existantes
     private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
 
-	private float flySpeedCoeff = 1.2f;
+	private float flySpeedCoeff = 2f;
+	private float speedBeforeFly;
+	private float speedInFly;
+	private float acceleration = 0f;
+	private bool isFlying = false;
 
     /**
 	 * Getters & Setters
@@ -106,6 +110,7 @@ public class PlayerController : Character {
 		base.Init();
 		SetMoveSpeed( GetInitialMoveSpeed() );
 		lerpingHP = GetHealthPoint ();
+		isFlying = false;
         wasFlying = false;
     }
 	
@@ -149,7 +154,7 @@ public class PlayerController : Character {
             {
                 Collider2D[] colliderHits = new Collider2D[5];
                 int nbCollider;
-                // Si on touche quelquec hose, on allume les 5 cases autour si ce sont des nuages
+                // Si on touche quelque chose, on allume les 5 cases autour si ce sont des nuages
                 nbCollider = Physics2D.OverlapAreaNonAlloc(new Vector2(hit.point.x - 0.5f, hit.point.y - 0.4f), new Vector2(hit.point.x + 3.5f, hit.point.y + 0.4f), colliderHits, layerGround);
                 for (int j = 0; j < nbCollider; j++)
                 {
@@ -162,6 +167,11 @@ public class PlayerController : Character {
                 wasFlying = false;
             }
         }
+
+		if (isFlying && speedBeforeFly != speedInFly) {
+			acceleration += Time.deltaTime;
+			SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration/2));
+		}
 	}
 	
 	void OnGUI() {
@@ -198,7 +208,7 @@ public class PlayerController : Character {
 			yield return null;
 		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.9f);
 
-		Time.timeScale = 0;
+		//Time.timeScale = 0;
 		Application.LoadLevelAdditive (1);
 	}
 	
@@ -231,6 +241,8 @@ public class PlayerController : Character {
     }
 
     public void Fly() {
+		isFlying = true;
+
         // Abaisser la gravité et la hauteur du saut
         myRb.gravityScale = 0.2f;
         SetJumpHeight( 2 );
@@ -242,12 +254,18 @@ public class PlayerController : Character {
         SetMaxDoubleJump( 1000 );
 
 		// Augmenter la vitesse
+		/*acceleration = 0;
+		speedBeforeFly = GetMoveSpeed ();
+		speedInFly = GetMoveSpeed() * flySpeedCoeff;*/
+
 		SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
 
-        anim.SetBool( "flying", true );
+		anim.SetBool( "flying", isFlying );
     }
 
     public void Land() {
+		isFlying = false;
+
         // Remettre les paramètres initiaux
         myRb.gravityScale = initialGravityScale;
         SetJumpHeight( initialJumpHeight );
@@ -262,7 +280,7 @@ public class PlayerController : Character {
 		// Diminuer la vitesse
 		SetMoveSpeed( GetMoveSpeed() / flySpeedCoeff );
 
-        anim.SetBool( "flying", false );
+		anim.SetBool( "flying", isFlying );
     }
 
     public void AttractCoins( float radius, LayerMask layerCoins ) {
