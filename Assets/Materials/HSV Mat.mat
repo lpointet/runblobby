@@ -130,7 +130,7 @@ Material:
       data:
         first:
           name: _HueShift
-        second: 0
+        second: 41.9998207
       data:
         first:
           name: _Sat

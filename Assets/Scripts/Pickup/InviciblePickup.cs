@@ -15,10 +15,10 @@
 	protected override void PickEffect() {
 		base.PickEffect();
 		
-		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("shield_begin");
+		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("shield_begin", false);
 	}
 	
 	protected override void DespawnEffect() {
-		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("shield_end");
+		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("shield_end", false);
 	}
 }

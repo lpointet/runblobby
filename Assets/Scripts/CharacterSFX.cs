@@ -15,13 +15,8 @@ public class CharacterSFX : MonoBehaviour {
         sfxFrontAnim = sfxFront.GetComponent<Animator>();
         sfxBackAnim = sfxBack.GetComponent<Animator>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
-    public void PlayAnimation(string animation)
+    public void PlayAnimation(string animation, bool back = true, bool front = true)
     {
         // On ajuste la position selon les besoins de l'animation
         switch (animation)
@@ -36,8 +31,10 @@ public class CharacterSFX : MonoBehaviour {
         }
 
         // On joue l'animation
-        sfxFrontAnim.SetTrigger(animation);
-        sfxBackAnim.SetTrigger(animation);
+        if (front)
+			sfxFrontAnim.SetTrigger(animation);
+        if (back)
+			sfxBackAnim.SetTrigger(animation);
     }
 
     private void AdjustPosition(float animSize = 32f, float decallage = 0f)
