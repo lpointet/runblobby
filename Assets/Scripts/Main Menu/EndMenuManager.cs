@@ -21,4 +21,8 @@ public class EndMenuManager : MonoBehaviour {
 		Application.UnloadLevel(1);
 		Application.LoadLevel (Application.loadedLevel);
 	}
+
+	public void Home_Click() {
+		Application.LoadLevel (0);
+	}
 }
