@@ -212,7 +212,8 @@ public class PlayerController : Character {
 		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.9f);
 
 		//Time.timeScale = 0;
-		Application.LoadLevelAdditive (1);
+		//Application.LoadLevelAdditive (1);
+		UIManager.uiManager.ToggleEndMenu (true);
 	}
 	
 	public void SetFireAbility( bool able ) {

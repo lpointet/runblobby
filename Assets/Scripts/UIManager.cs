@@ -3,33 +3,47 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-	public GameObject PauseUI;
+	public static UIManager uiManager;
+
+	[Header("UI standard")]
+	public GameObject standardUI;
+
+	// Compteur
+	public Text meterText;
+	private Color defaultTextColor; // Couleur par défaut du meterText
+	private float scaleInitial; // Echelle du texte au début
+	private Color warningTextColor; // Couleur en alternance lors d'un ennemi
+	private Color warningTextColorBis;
+	private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
+	private float enemyDistanceToKill;
+	
+	private Enemy enemyEnCours = null;
+	private bool EnemyGUIActive = false;
+
+	// Barre de vie
+	public GameObject healthBar;
+	public Image fillHealthBar;
+	private float lerpingTimeEnemyBar = 0f;
+
+	[Header("Pause Menu")]
+	public GameObject pauseUI;
 	public GameObject cdObject;
 	private Animator cdAnim;
 	
 	private bool paused = false;
 
-    // Barre de vie
-    private GameObject healthBar;
-    private Image fillHealthBar;
-    private float lerpingTimeEnemyBar = 0f;
+	[Header("End Menu")]
+	public GameObject endUI;
+	private SFXMenu sfxSound;
 
-    // Compteur
-    public Text meterText;
-    private Color defaultTextColor; // Couleur par défaut du meterText
-    private float scaleInitial; // Echelle du texte au début
-    private Color warningTextColor; // Couleur en alternance lors d'un ennemi
-    private Color warningTextColorBis;
-    private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
-    private float enemyDistanceToKill;
-
-    private Enemy enemyEnCours = null;
-    private bool EnemyGUIActive = false;
+	public Text distance;
+	public Text money;
+	public Text experience;
+	public Text playerLevel;
 
     void Awake() {
-        // Barre de vie
-        healthBar = GameObject.Find("HPBarEnemy");
-        fillHealthBar = healthBar.GetComponent<RectTransform>().FindChild("HPBarEnemyFill").GetComponent<Image>();
+		if (uiManager == null)
+			uiManager = GameObject.FindGameObjectWithTag ("LevelCanvas").GetComponent<UIManager> ();
 
         // Compteur
         defaultTextColor = meterText.color;
@@ -40,8 +54,10 @@ public class UIManager : MonoBehaviour {
     }
 
 	void Start() {
-		PauseUI.SetActive (false);
+		pauseUI.SetActive (false);
 		cdAnim = cdObject.GetComponent<Animator> ();
+
+		endUI.SetActive (false);
 	}
 	
 	void Update() {
@@ -63,11 +79,13 @@ public class UIManager : MonoBehaviour {
 		if (Input.GetButtonDown ("Pause")) {
 			paused = !paused;
 
-			if (paused) {
-				PauseUI.SetActive (true);
+			if (paused && !endUI.activeInHierarchy) {
+				pauseUI.SetActive (true);
+				standardUI.SetActive (false);
 				Time.timeScale = 0;
 			} else {
-				PauseUI.SetActive(false);
+				pauseUI.SetActive(false);
+				standardUI.SetActive (true);
 				Time.timeScale = 1;
 			}
 		}
@@ -129,17 +147,31 @@ public class UIManager : MonoBehaviour {
             obj.gameObject.SetActive( active );
     }
 
+	public void ToggleEndMenu(bool active) {
+		standardUI.SetActive (false);
+
+		distance.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
+		money.text = Mathf.RoundToInt (ScoreManager.GetScore ()).ToString ();
+
+		endUI.SetActive (active);
+	}
+
 	public void ResumeGame() {
 		cdObject.SetActive (true);
 		cdAnim.SetBool ("powerOn", true); // Animation de compte à rebours
-		PauseUI.SetActive(false);
+		pauseUI.SetActive(false);
 		paused = false;
 		// A la fin de l'animation, le timeScale redevient 1
 		// S'il faut passer un paramètre de timeScale (si jamais il n'est pas à 1), il faudra passer un "faux" paramètre d'animator
 	}
+
+	public void Rejouer_Click() {
+		//endUI.SetActive (false);
+		Application.LoadLevel (Application.loadedLevel);
+	}
 	
-	public void MainMenu() {
-		
+	public void Home_Click() {
+		Application.LoadLevel (0);
 	}
 	
 	public void Quit() {

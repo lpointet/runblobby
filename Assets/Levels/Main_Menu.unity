@@ -1061,7 +1061,7 @@ MonoBehaviour:
     distance: 123
     maxDistance: 840
     isBoss: 1
-    sceneNumber: 2
+    sceneNumber: 1
   - background: {fileID: 21300000, guid: 599525e27d9e97b468e7bf921775adc4, type: 3}
     name: La grotte de glace
     distance: 0
@@ -3917,14 +3917,14 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300001, guid: 8f8fdddf438a4004998d4d5df6f04448,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: c4e6038887077864f9789104e94ea1b0, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ac29c5548aaeca24a8cf742035d51a0f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

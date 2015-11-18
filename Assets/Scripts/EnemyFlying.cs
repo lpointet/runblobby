@@ -8,8 +8,6 @@ public class EnemyFlying : MonoBehaviour {
 	private Transform myTransform;
 	private Transform player;
 
-	private AudioSource sound;
-
 	public float flySpeed = 1f;
 	
 	public bool isSinus = false;		// vole en sinus
@@ -23,7 +21,6 @@ public class EnemyFlying : MonoBehaviour {
 	bool isOverPrevious;
 
 	void Start () {
-		sound = GetComponent<AudioSource> ();
 		player = LevelManager.GetPlayer ().transform;
 		myTransform = transform;
 	}
@@ -76,13 +73,5 @@ public class EnemyFlying : MonoBehaviour {
 
 		// Déclencher le mouvement de l'ennemi
 		enemyIsHere = true;
-
-		if (sound)
-			sound.Play ();
-	}
-
-	void OnBecameInvisible() {
-		if (sound)
-			sound.Stop ();
 	}
 }

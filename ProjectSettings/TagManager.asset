@@ -6,7 +6,7 @@ TagManager:
   tags:
   - GameMaster
   - SFX
-  - BackgroundContainer
+  - LevelCanvas
   - Bullet
   layers:
   - Default

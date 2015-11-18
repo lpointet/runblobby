@@ -117,14 +117,19 @@ public class LevelManager : MonoBehaviour {
 
         // On commence le niveau dans une phase "block" et non une phase "ennemi", le joueur ne peut donc pas tirer
         player.SetFireAbility( false );
+
+		PlayBackgroundMusic ();
 	}
 
 	void Update () {
         // Empêcher que des choses se passent durant la pause
-		if (Time.timeScale == 0 || player.IsDead ())
-            return;
+		if (Time.timeScale == 0 || player.IsDead ()) {
+			sourceSound.volume = 0.1f;
+			return;
+		}
 
-		PlayBackgroundMusic ();
+		sourceSound.volume = 1;
+
 		// Distance parcourue depuis le dernier update
 		localDistance = player.GetMoveSpeed() * Time.deltaTime;
 
