@@ -5,6 +5,16 @@ public class Bounce : MonoBehaviour {
 	public float offsetCheckBounce;
 	public float bouncePower;
 
+	private Collider2D myCollider;
+
+	private void Awake() {
+		myCollider = GetComponent<Collider2D>();
+	}
+
+	private void OnEnable() {
+		myCollider.enabled = true;
+	}
+
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Player") {
 			PlayerController player = LevelManager.GetPlayer();
@@ -20,7 +30,7 @@ public class Bounce : MonoBehaviour {
                 player.bounced = true;
 
 				// Ne pas déclencher d'autres actions avec ce collider, il a fait son job
-				GetComponent<Collider2D>().enabled = false;
+				myCollider.enabled = false;
 			}
 		}
 	}
