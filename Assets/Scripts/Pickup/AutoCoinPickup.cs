@@ -5,20 +5,25 @@ public class AutoCoinPickup : Pickup {
 	public float radius = 0f;
 	public LayerMask layerCoins;
 
-	public ParticleSystem tornadoEffect;
+	/*public ParticleSystem tornadoEffect;
 	public ParticleSystem tornadoRayEffect;
 	private ParticleSystem myTornado;
 	private ParticleSystem myRay;
 	private float mouvement;
 	private float mouvementFinal;
-	private float ralentissementMouvement;
+	private float ralentissementMouvement;*/
 	private AudioSource myWindSound;
 	private float volumeMax;
 
+	private Animator backAnim;
+
 	protected override void Awake() {
 		base.Awake();
+
 		parentAttach = true;
 		despawnTime = 0.3f;
+
+		backAnim = transform.Find ("Magnet_Back").GetComponent<Animator> ();
 	}
 
 	protected override void PickEffect() {
@@ -27,12 +32,20 @@ public class AutoCoinPickup : Pickup {
 		//myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
 		myWindSound = GetComponent<AudioSource> ();
 		volumeMax = myWindSound.volume;
-        LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_begin");
+        //LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_begin");
+
+		if (_StaticFunction.ExistsAndHasParameter ("picked", backAnim))
+			backAnim.SetBool("picked", true);
+
+		transform.localPosition = new Vector2(0, 0.875f); // 4 pixels sous le joueur
     }
 
 	protected override void DespawnEffect() {
+		base.DespawnEffect ();
 		//myRay.Stop ();
-        LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_end");
+        //LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_end");
+		if (_StaticFunction.ExistsAndHasParameter ("end", backAnim)) // On cache directement ceux qui n'ont pas d'animation de fin
+			backAnim.SetBool ("end", true);
     }
 
 	protected override void Update() {
@@ -64,6 +77,4 @@ public class AutoCoinPickup : Pickup {
             _StaticFunction.AudioFadeOut( myWindSound, 0, despawnTime );
         }
     }
-
-    
 }

@@ -4,6 +4,7 @@
 		base.Awake();
 
 		parentAttach = true;
+		despawnTime = 0.3f;
 	}
 	
 	protected override void OnPick() {
@@ -12,7 +13,7 @@
 		LevelManager.GetPlayer().SetInvincible( lifeTime );
 	}
 
-	protected override void PickEffect() {
+	/*protected override void PickEffect() {
 		base.PickEffect();
 		
 		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("shield_begin", false);
@@ -20,5 +21,5 @@
 	
 	protected override void DespawnEffect() {
 		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("shield_end", false);
-	}
+	}*/
 }

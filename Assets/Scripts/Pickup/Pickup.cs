@@ -8,7 +8,7 @@ public class Pickup : MonoBehaviour {
 	protected Transform initialParent;						// Référence vers le parent initial
 	protected Transform myTransform; 							// Référence vers le transform du bonus
     protected Collider2D myCollider;
-	protected float despawnTime = 0; 	// protected parce qu'il doit etre réglé dans la classe fille directement, pas modifiable dans l'éditeur
+	protected float despawnTime = 0; 	// protected parce qu'il doit etre réglé dans la classe fille directement, pas modifiable dans l'éditeur, dans Awake
 	private Renderer rdr;
 	protected bool picked = false;
 	protected float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
@@ -80,22 +80,30 @@ public class Pickup : MonoBehaviour {
 	}
 
 	protected virtual void PickEffect() {
-        if ( null != myAnim ) {
-			if (!_StaticFunction.HasParameter ("picked", myAnim)) // On cache directement ceux qui n'ont pas d'animation de ramassage
-				rdr.enabled = false;
-			else
-            	myAnim.SetBool("picked", true);
-        }
+		if (!_StaticFunction.ExistsAndHasParameter ("picked", myAnim)) // On cache directement ceux qui n'ont pas d'animation de ramassage
+			rdr.enabled = false;
+		else
+        	myAnim.SetBool("picked", true);
     }
 	
 	protected virtual void DespawnEffect() {
 		// L'effet de la mort
+		if (_StaticFunction.ExistsAndHasParameter ("end", myAnim)) // On cache directement ceux qui n'ont pas d'animation de fin
+			myAnim.SetBool ("end", true);
 	}
 
 	private IEnumerator Despawn() {
         despawnCalled = true;
         DespawnEffect();
-		yield return new WaitForSeconds( despawnTime );
+		/*if ( null != myAnim && despawnTime == 0 ) {
+			if (_StaticFunction.ExistsAndHasParameter ("end", myAnim)) {
+				do {
+					yield return null;
+				} while (myAnim.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f || myAnim.IsInTransition(0)); // On attend que l'animation se termine
+			}
+		}
+		else*/
+		yield return new WaitForSeconds (despawnTime);
 		OnDespawn();
 	}
 

@@ -74,6 +74,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 10
   weight: 5
+  endAnim: {fileID: 0}
   radiusMagnet: 10
   layerCoins:
     serializedVersion: 2
@@ -101,7 +102,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 538642153
-  m_SortingOrder: 6
+  m_SortingOrder: 55
   m_Sprite: {fileID: 21300000, guid: ac7bd505ce3b94247a96ccf76a6c7c52, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000

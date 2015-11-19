@@ -12,8 +12,8 @@ public class Weapon : MonoBehaviour {
 	private Transform firePoint;
 	private float timeToSpanwEffect; // Avec Raycast seulement
 
-	public Transform muzzleFlashPrefab;
-	public Transform bulletTrailPrefab;
+	/*public Transform muzzleFlashPrefab;
+	public Transform bulletTrailPrefab;*/
 
 	void Awake() {
 		firePoint = transform.FindChild ("FirePoint");

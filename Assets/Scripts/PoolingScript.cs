@@ -39,8 +39,9 @@ public class PoolingScript : MonoBehaviour {
 		// si on permet à la pool de s'agrandir, on instantie des nouveaux objets
 		if (willGrow) {
 			GameObject obj = (GameObject)Instantiate (pooledObject);
-			pooledObjects.Add (obj);
+			obj.SetActive (false);
 			obj.transform.parent = PoolingManager.current.pooledObjectParent;
+			pooledObjects.Add (obj);
 			return obj;
 		}
 		return null;

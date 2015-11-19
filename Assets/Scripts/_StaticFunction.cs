@@ -2,12 +2,14 @@
 
 public static class _StaticFunction {
 
-	// Vérifier qu'une animation possède un paramètre précis
-	public static bool HasParameter(string paramName, Animator animator)
+	// Vérifier qu'une animation existe et possède un paramètre précis
+	public static bool ExistsAndHasParameter(string paramName, Animator animator)
 	{
-		foreach (AnimatorControllerParameter param in animator.parameters)
-		{
-			if (param.name == paramName) return true;
+		if (animator != null) {
+			foreach (AnimatorControllerParameter param in animator.parameters) {
+				if (param.name == paramName)
+					return true;
+			}
 		}
 		return false;
 	}

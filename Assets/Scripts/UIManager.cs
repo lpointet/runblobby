@@ -27,6 +27,9 @@ public class UIManager : MonoBehaviour {
 
 	[Header("Pause Menu")]
 	public GameObject pauseUI;
+	public Text distancePause;
+	public Text moneyPause;
+
 	public GameObject cdObject;
 	private Animator cdAnim;
 	
@@ -36,8 +39,8 @@ public class UIManager : MonoBehaviour {
 	public GameObject endUI;
 	private SFXMenu sfxSound;
 
-	public Text distance;
-	public Text money;
+	public Text distanceEnd;
+	public Text moneyEnd;
 	public Text experience;
 	public Text playerLevel;
 
@@ -78,6 +81,8 @@ public class UIManager : MonoBehaviour {
     private void PauseManager() { 
 		if (Input.GetButtonDown ("Pause")) {
 			paused = !paused;
+
+			UpdateValueScore (distancePause, moneyPause);
 
 			if (paused && !endUI.activeInHierarchy) {
 				pauseUI.SetActive (true);
@@ -150,16 +155,21 @@ public class UIManager : MonoBehaviour {
 	public void ToggleEndMenu(bool active) {
 		standardUI.SetActive (false);
 
-		distance.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
-		money.text = Mathf.RoundToInt (ScoreManager.GetScore ()).ToString ();
+		UpdateValueScore (distanceEnd, moneyEnd);
 
 		endUI.SetActive (active);
+	}
+
+	private void UpdateValueScore(Text distance, Text money) {
+		distance.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
+		money.text = Mathf.RoundToInt (ScoreManager.GetScore ()).ToString ();
 	}
 
 	public void ResumeGame() {
 		cdObject.SetActive (true);
 		cdAnim.SetBool ("powerOn", true); // Animation de compte à rebours
 		pauseUI.SetActive(false);
+		standardUI.SetActive (true);
 		paused = false;
 		// A la fin de l'animation, le timeScale redevient 1
 		// S'il faut passer un paramètre de timeScale (si jamais il n'est pas à 1), il faudra passer un "faux" paramètre d'animator

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class PoolingManager : MonoBehaviour {
 	
 	public static PoolingManager current;
-	public Transform pooledObjectParent;
+	public Transform pooledObjectParent; // TODO : corriger sa disparition quand on relance le level
 
 	public List<PoolingScript> poolCollection;
 	private Dictionary<string, List<PoolingScript>> indexedPools = new Dictionary<string, List<PoolingScript>>();
