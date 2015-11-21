@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour {
 	public static PlayerController player;
 
 	private AudioSource sourceSound;
+	private float soundVolumeInit;
 
 	// Mort, Respawn
 	public GameObject currentCheckPoint;
@@ -118,6 +119,7 @@ public class LevelManager : MonoBehaviour {
         // On commence le niveau dans une phase "block" et non une phase "ennemi", le joueur ne peut donc pas tirer
         player.SetFireAbility( false );
 
+		soundVolumeInit = sourceSound.volume;
 		PlayBackgroundMusic ();
 	}
 
@@ -128,7 +130,7 @@ public class LevelManager : MonoBehaviour {
 			return;
 		}
 
-		sourceSound.volume = 1;
+		sourceSound.volume = soundVolumeInit;
 
 		// Distance parcourue depuis le dernier update
 		localDistance = player.GetMoveSpeed() * Time.deltaTime;

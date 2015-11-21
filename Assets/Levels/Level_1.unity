@@ -2257,6 +2257,140 @@ Transform:
   - {fileID: 471437456}
   m_Father: {fileID: 462231674}
   m_RootOrder: 1
+--- !u!1 &814211537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 814211540}
+  - 82: {fileID: 814211539}
+  - 114: {fileID: 814211538}
+  m_Layer: 0
+  m_Name: SFX_Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &814211538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 814211537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a8ae5487cf503d45ae7496c49a88db0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minIntervalleBird: 7
+  maxIntervalleBird: 15
+  minVolumeBird: .300000012
+  maxVolumeBird: 1
+  birdBank:
+  - {fileID: 8300000, guid: c6815b389873abb49b046e544c0074c5, type: 3}
+  - {fileID: 8300000, guid: a2e22b818b64f564980bbe157ea507a3, type: 3}
+  - {fileID: 8300000, guid: 23fcd41f280fc1e4f8b1c2fccfa9368d, type: 3}
+  - {fileID: 8300000, guid: ac6521e01170f424abc7d574e1c9273f, type: 3}
+  - {fileID: 8300000, guid: 382ccd17a9d32454f801e4fce6adf3ec, type: 3}
+  - {fileID: 8300000, guid: 4cb8fbde9cdff594fbda951abdb9963e, type: 3}
+  - {fileID: 8300000, guid: f6dd876c80d336240a0b763e8755f0cc, type: 3}
+  - {fileID: 8300000, guid: d588524f32acfcf47905c9bcb943e899, type: 3}
+  minIntervalleCricket: 5
+  maxIntervalleCricket: 8
+  minVolumeCricket: .400000006
+  maxVolumeCricket: .699999988
+  cricketBank:
+  - {fileID: 8300000, guid: b273566dabdb7644a931237a7b93b250, type: 3}
+  - {fileID: 8300000, guid: 9d86ecb3ed50b5d498f45055bdc55b99, type: 3}
+  - {fileID: 8300000, guid: 4fd8d4f5b3eeb7546b7464cde45025cf, type: 3}
+  - {fileID: 8300000, guid: e847d63d809c78e4fb818a262247c5f8, type: 3}
+  - {fileID: 8300000, guid: fe5fa75735975954c8f1fa4a2ded8bca, type: 3}
+--- !u!82 &814211539
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 814211537}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300001, guid: 327b8b3b218a7f644a2b7efc7f9a656c,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: .800000012
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 256
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+--- !u!4 &814211540
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 814211537}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 897286641}
+  m_RootOrder: 0
 --- !u!1 &830211151
 GameObject:
   m_ObjectHideFlags: 0
@@ -2765,7 +2899,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 814211540}
   m_Father: {fileID: 0}
   m_RootOrder: 1
 --- !u!82 &897286643
@@ -2780,7 +2915,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: ac29c5548aaeca24a8cf742035d51a0f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: .5
   m_Pitch: 1
   Loop: 1
   Mute: 0

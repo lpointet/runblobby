@@ -3,24 +3,48 @@
 public class PlayerSoundEffect : MonoBehaviour {
 
 	private AudioSource soundSource;
+	private PlayerController player;
 
 	public AudioClip jumpSfx;
 	public float jumpVolume;
+
+
 	public AudioClip moveSfx;
 	public float moveVolume;
+	private float timeToMove;
+
 	public AudioClip splashSfx;
 	public float splashVolume;
+	private bool wasGrounded = true;
 
 	void Awake() {
 		soundSource = GetComponent<AudioSource> ();
+		player = LevelManager.GetPlayer ();
 	}
 
 	void Start() {
-		NormalizeSound (ref jumpVolume);
-		NormalizeSound (ref moveVolume);
-		NormalizeSound (ref splashVolume);
+		timeToMove = 0f;
 	}
-	
+
+	void Update() {
+		if (!player.IsDead ()) {
+			// Saut appelé par le PlayerController
+
+			// Ecrasement
+			if (!wasGrounded && player.IsGrounded()) {
+				SplashSound();
+			}
+
+			// Déplacement
+			else if (!soundSource.isPlaying && player.IsGrounded () && Time.time > timeToMove) {
+				FootStepSound();
+
+				timeToMove = Time.time + 4 / 7f;
+			}
+		}
+		wasGrounded = player.IsGrounded (); // Connaitre l'état de la précédente frame
+	}
+
 	private void FootStepSound() {
 		PlaySound (moveSfx, moveVolume);
 	}
@@ -30,18 +54,13 @@ public class PlayerSoundEffect : MonoBehaviour {
 	}
 
 	public void SplashSound() {
-		//PlaySound (splashSfx, splashVolume);
+		PlaySound (splashSfx, splashVolume);
 	}
 
 	private void PlaySound(AudioClip sound, float volume) {
-		soundSource.Stop ();
-		soundSource.PlayOneShot (sound, volume);
-	}
-
-	private void NormalizeSound(ref float volume) {
-		if (volume > 1)
-			volume = 1;
-		if (volume < 0)
-			volume = 0;
+		//soundSource.Stop ();
+		soundSource.clip = sound;
+		soundSource.volume = volume;
+		soundSource.Play ();
 	}
 }

@@ -7,6 +7,8 @@ public class LastWishPickup : Pickup {
 
     private PlayerController player;
 	private Transform playerTransform;
+	private AudioSource myAudio;
+
     private bool effectOnGoing = false;
     private bool launched = false;
 	private bool effectEnding = false;
@@ -19,11 +21,22 @@ public class LastWishPickup : Pickup {
 	private float followDelay = 1f;
 	private float dampVelocity = 0f;
 
+	private GameObject divineMesh;
+	public LayerMask layerGround;
+
     protected override void Awake() {
         base.Awake();
 
         parentAttach = true;
 		despawnTime = 2.0f;
+
+		// Manip stupide pour pouvoir désactiver l'objet par défaut (le but étant d'éviter de jouer la musique)
+		Transform divineRay;
+		divineRay = transform.FindChild ("DivineRay");
+		divineMesh = divineRay.gameObject;
+		divineMesh.SetActive (false);
+
+		myAudio = GetComponent<AudioSource> ();
     }
 
     void Start() {
@@ -73,6 +86,9 @@ public class LastWishPickup : Pickup {
 			
 			//player.SetMoveSpeed (Mathf.Lerp (player.GetInitialMoveSpeed (), 0, lerpTimeEnding));
 			playerTransform.position = new Vector2(playerTransform.position.x, Mathf.Lerp(deathPlayerPosition, endingPlayerPosition, lerpTimeEnding));
+
+			// Rayon divin qui grossit
+			divineMesh.transform.localScale = new Vector2( Mathf.Lerp(0.1f, 2, lerpTimeEnding * 3), 20 );
 		}
     }
 
@@ -85,6 +101,7 @@ public class LastWishPickup : Pickup {
         }
         else {
             player.SetLastWish( this );
+			myAudio.enabled = true;
         }
     }
 
@@ -128,6 +145,8 @@ public class LastWishPickup : Pickup {
 
 		myAnim.SetBool("picked", false);
 		myAnim.SetBool("actif", true);
+
+		myAudio.volume = 1;
     }
 
 	// Effet visuel au moment où on ramasse l'item
@@ -142,11 +161,25 @@ public class LastWishPickup : Pickup {
 
 		player.Die (); // Le joueur est mort au début de l'effet, on ne peut pas utiliser d'animation pour cela
 
+		// On désactive ses colliders pour éviter les obstacles quand il remonte
+		Collider2D[] playerCollider = player.GetComponentsInChildren<Collider2D> ();
+		foreach (Collider2D col in playerCollider)
+			col.enabled = false;
+
+		// On réattribue le pickup au joueur
 		myTransform.parent = playerTransform;
 		myTransform.position = new Vector2 (myTransform.position.x, myTransform.position.y + 4 / 32f); // Léger décalage de 4 pixels
 
 		lerpTimeEnding = 0f;
 		deathPlayerPosition = playerTransform.position.y;
 		endingPlayerPosition = Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager>().yOffset + 1; // Pour etre au-dessus
+
+		// Rayon divin
+		// Il change de parent pour ne pas bouger
+		divineMesh.transform.parent = LevelManager.levelManager.transform;
+
+		divineMesh.transform.position = new Vector2(divineMesh.transform.position.x, 5);
+		divineMesh.transform.localScale = new Vector2 (0.1f, 20); // On affiche une mince ligne au début
+		divineMesh.SetActive (true);
 	}
 }

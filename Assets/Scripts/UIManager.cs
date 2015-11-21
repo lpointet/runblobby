@@ -153,7 +153,7 @@ public class UIManager : MonoBehaviour {
     }
 
 	public void ToggleEndMenu(bool active) {
-		standardUI.SetActive (false);
+		standardUI.SetActive (!active);
 
 		UpdateValueScore (distanceEnd, moneyEnd);
 

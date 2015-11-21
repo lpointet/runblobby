@@ -90,6 +90,10 @@ public class PlayerController : Character {
         	lastWish = null;
 		}
     }
+
+	public bool IsGrounded() {
+		return grounded;
+	}
     /* End of Getters & Setters */
 
     protected override void Awake() {
