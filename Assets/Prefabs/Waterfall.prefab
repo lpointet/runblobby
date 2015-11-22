@@ -43,7 +43,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: d6f6c93b61114d44999a9aa4d7c6c828, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: .5
+  m_Volume: .25
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -166,7 +166,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Volume
+      value: .25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 137574}

@@ -31,6 +31,29 @@ public class Pickup : MonoBehaviour {
 		picked = false;
         despawnCalled = false;
     }
+
+	protected virtual void Update() {
+		if( !picked ) {
+			return;
+		}
+		
+		if( timeToLive <= 0 && !despawnCalled ) {
+			StartCoroutine( Despawn() );
+		}
+		
+		if( lifeTime > 0 ) {
+			// Mettre à jour le temps qui reste à vivre
+			timeToLive -= Time.deltaTime;
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D other){
+		if (other.name == "Heros") {
+			picked = true;
+			OnPick();
+			PickEffect();
+		}
+	}
 	
 	protected virtual void OnPick() {
 		// Que faut-il faire lorsque cet objet a été ramassé ?
@@ -55,31 +78,10 @@ public class Pickup : MonoBehaviour {
 		gameObject.SetActive( false );
         LevelManager.GetPlayer().RemovePickup( myCollider );
     }
-	
-	void OnTriggerEnter2D(Collider2D other){
-		if (other.name == "Heros") {
-			picked = true;
-			OnPick();
-			PickEffect();
-		}
-	}
-
-	protected virtual void Update() {
-		if( !picked ) {
-			return;
-		}
-
-		if( timeToLive <= 0 && !despawnCalled ) {
-			StartCoroutine( Despawn() );
-		}
-
-		if( lifeTime > 0 ) {
-			// Mettre à jour le temps qui reste à vivre
-			timeToLive -= Time.deltaTime;
-		}
-	}
 
 	protected virtual void PickEffect() {
+		PickupSound ();
+
 		if (!_StaticFunction.ExistsAndHasParameter ("picked", myAnim)) // On cache directement ceux qui n'ont pas d'animation de ramassage
 			rdr.enabled = false;
 		else

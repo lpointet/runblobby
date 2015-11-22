@@ -7,7 +7,6 @@ public class LastWishPickup : Pickup {
 
     private PlayerController player;
 	private Transform playerTransform;
-	private AudioSource myAudio;
 
     private bool effectOnGoing = false;
     private bool launched = false;
@@ -35,8 +34,6 @@ public class LastWishPickup : Pickup {
 		divineRay = transform.FindChild ("DivineRay");
 		divineMesh = divineRay.gameObject;
 		divineMesh.SetActive (false);
-
-		myAudio = GetComponent<AudioSource> ();
     }
 
     void Start() {
@@ -101,7 +98,7 @@ public class LastWishPickup : Pickup {
         }
         else {
             player.SetLastWish( this );
-			myAudio.enabled = true;
+			//myAudio.enabled = true;
         }
     }
 
@@ -146,7 +143,7 @@ public class LastWishPickup : Pickup {
 		myAnim.SetBool("picked", false);
 		myAnim.SetBool("actif", true);
 
-		myAudio.volume = 1;
+		soundSource.volume = 1;
     }
 
 	// Effet visuel au moment où on ramasse l'item

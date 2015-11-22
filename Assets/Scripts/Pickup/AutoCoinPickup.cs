@@ -12,7 +12,7 @@ public class AutoCoinPickup : Pickup {
 	private float mouvement;
 	private float mouvementFinal;
 	private float ralentissementMouvement;*/
-	private AudioSource myWindSound;
+	//private AudioSource myWindSound;
 	private float volumeMax;
 
 	private Animator backAnim;
@@ -30,8 +30,8 @@ public class AutoCoinPickup : Pickup {
 		base.PickEffect ();
 		//myTornado = Instantiate (tornadoEffect, new Vector2(myTransform.position.x, myTransform.position.y - 5), tornadoEffect.transform.rotation) as ParticleSystem;
 		//myRay = Instantiate (tornadoRayEffect, new Vector2(myTransform.position.x + 3.5f, myTransform.position.y - 5), tornadoRayEffect.transform.rotation) as ParticleSystem;
-		myWindSound = GetComponent<AudioSource> ();
-		volumeMax = myWindSound.volume;
+		//myWindSound = GetComponent<AudioSource> ();
+		volumeMax = soundSource.volume;
         //LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("magnet_begin");
 
 		if (_StaticFunction.ExistsAndHasParameter ("picked", backAnim))
@@ -71,10 +71,10 @@ public class AutoCoinPickup : Pickup {
 		myTornado.transform.Rotate (0, 0, mouvement); // Rotation sur l'axe Y*/
 
 		if ( !despawnCalled ) {
-			_StaticFunction.AudioFadeIn (myWindSound, volumeMax, despawnTime);
+			_StaticFunction.AudioFadeIn (soundSource, volumeMax, despawnTime);
         }
         else {
-            _StaticFunction.AudioFadeOut( myWindSound, 0, despawnTime );
+			_StaticFunction.AudioFadeOut( soundSource, 0, despawnTime * 5 );
         }
     }
 }

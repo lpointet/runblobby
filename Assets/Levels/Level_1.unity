@@ -2288,7 +2288,7 @@ MonoBehaviour:
   minIntervalleBird: 7
   maxIntervalleBird: 15
   minVolumeBird: .300000012
-  maxVolumeBird: 1
+  maxVolumeBird: .800000012
   birdBank:
   - {fileID: 8300000, guid: c6815b389873abb49b046e544c0074c5, type: 3}
   - {fileID: 8300000, guid: a2e22b818b64f564980bbe157ea507a3, type: 3}
@@ -2300,7 +2300,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d588524f32acfcf47905c9bcb943e899, type: 3}
   minIntervalleCricket: 5
   maxIntervalleCricket: 8
-  minVolumeCricket: .400000006
+  minVolumeCricket: .5
   maxVolumeCricket: .699999988
   cricketBank:
   - {fileID: 8300000, guid: b273566dabdb7644a931237a7b93b250, type: 3}
@@ -2308,6 +2308,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4fd8d4f5b3eeb7546b7464cde45025cf, type: 3}
   - {fileID: 8300000, guid: e847d63d809c78e4fb818a262247c5f8, type: 3}
   - {fileID: 8300000, guid: fe5fa75735975954c8f1fa4a2ded8bca, type: 3}
+  minIntervalleCow: 30
+  maxIntervalleCow: 60
+  minVolumeCow: .400000006
+  maxVolumeCow: .600000024
+  cowBank:
+  - {fileID: 8300000, guid: 4afe363a31429484787c68a101cd7e1d, type: 3}
+  - {fileID: 8300000, guid: 3757e1f8c3db1d14ab8ae016fd920617, type: 3}
+  - {fileID: 8300000, guid: eaa826e8c9373304d8552a87c73bccac, type: 3}
+  - {fileID: 8300000, guid: 44131c6c3abaabc41b0cac36def829c7, type: 3}
 --- !u!82 &814211539
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2536,12 +2545,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a69bb227d864784f886eb861b45bd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSfx: {fileID: 8300000, guid: b1a3d57a4a9edd64ea83e6d4d6ac665f, type: 3}
-  jumpVolume: .899999976
-  moveSfx: {fileID: 8300000, guid: 3b8435e3c05a0274fb7921ab4c4491f1, type: 3}
-  moveVolume: .449999988
-  splashSfx: {fileID: 8300000, guid: 246053bcfa8bc784c8379b5e01222c61, type: 3}
-  splashVolume: .400000006
+  jumpSfx: {fileID: 8300000, guid: 1384381218de9374785243c75b2485ea, type: 3}
+  jumpVolume: .349999994
+  moveSfx: {fileID: 8300000, guid: e03c375e50a075145b147805ae38a07c, type: 3}
+  moveVolume: .5
+  splashSfx: {fileID: 8300000, guid: ee8a54c909c6df74f887579c5c316d4c, type: 3}
+  splashVolume: .300000012
+  deathSfx: {fileID: 8300000, guid: 950b5be5d5e79694da7e73b0320e45d6, type: 3}
+  deathVolume: 1
+  fallDeathSfx: {fileID: 8300000, guid: 1c99a1fd59a2a404cb07db2cdb3fe7ec, type: 3}
+  fallDeathVolume: 1
 --- !u!82 &830211161
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5178,6 +5191,81 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 30, y: 5.19999981}
+--- !u!1 &1663097139 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 102886, guid: ad8dc1acaca92094594282ae051f5e4c, type: 2}
+  m_PrefabInternal: {fileID: 2145230710}
+--- !u!82 &1663097140
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1663097139}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300001, guid: 327b8b3b218a7f644a2b7efc7f9a656c,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: b795369af3874364f97de6d497534ed1, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: .5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 10
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1001 &1675585449
 Prefab:
   m_ObjectHideFlags: 0

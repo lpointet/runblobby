@@ -8,7 +8,6 @@ public class PlayerSoundEffect : MonoBehaviour {
 	public AudioClip jumpSfx;
 	public float jumpVolume;
 
-
 	public AudioClip moveSfx;
 	public float moveVolume;
 	private float timeToMove;
@@ -16,6 +15,12 @@ public class PlayerSoundEffect : MonoBehaviour {
 	public AudioClip splashSfx;
 	public float splashVolume;
 	private bool wasGrounded = true;
+
+	public AudioClip deathSfx;
+	public float deathVolume;
+
+	public AudioClip fallDeathSfx;
+	public float fallDeathVolume;
 
 	void Awake() {
 		soundSource = GetComponent<AudioSource> ();
@@ -53,8 +58,16 @@ public class PlayerSoundEffect : MonoBehaviour {
 		PlaySound (jumpSfx, jumpVolume);
 	}
 
-	public void SplashSound() {
+	private void SplashSound() {
 		PlaySound (splashSfx, splashVolume);
+	}
+
+	public void DeathSound() {
+		PlaySound (deathSfx, deathVolume);
+	}
+
+	public void FallDeathSound() {
+		PlaySound (fallDeathSfx, fallDeathVolume);
 	}
 
 	private void PlaySound(AudioClip sound, float volume) {

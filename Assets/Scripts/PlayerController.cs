@@ -92,7 +92,7 @@ public class PlayerController : Character {
     }
 
 	public bool IsGrounded() {
-		return grounded;
+		return grounded && !isFlying;
 	}
     /* End of Getters & Setters */
 
@@ -201,10 +201,14 @@ public class PlayerController : Character {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 
-		if (transform.position.y < -3.5f) // Si on est en dessous du bas de l'écran
-			anim.SetTrigger("dead_fall");
-		else
-        	anim.SetTrigger("dead");
+		if (transform.position.y < -3.5f) {// Si on est en dessous du bas de l'écran
+			anim.SetTrigger ("dead_fall");
+			myAudio.FallDeathSound ();
+		}
+		else {
+			anim.SetTrigger ("dead");
+			myAudio.DeathSound ();
+		}
 
 		StartCoroutine (WaitForDeadAnim (anim));
 	}
@@ -213,7 +217,7 @@ public class PlayerController : Character {
 		// On attend que l'animation de mort (quelle qu'elle soit) se termine
 		do {
 			yield return null;
-		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.9f);
+		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f);
 
 		//Time.timeScale = 0;
 		//Application.LoadLevelAdditive (1);

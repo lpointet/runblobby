@@ -25,6 +25,14 @@ public class SFXBackground : MonoBehaviour {
 	public float maxVolumeCricket = 0.7f;
 	public AudioClip[] cricketBank;
 	private float timeToCrick = 2f;
+
+	[Header("Cow/Goat")]
+	public int minIntervalleCow = 30;
+	public int maxIntervalleCow = 60;
+	public float minVolumeCow = 0.5f;
+	public float maxVolumeCow = 0.7f;
+	public AudioClip[] cowBank;
+	private float timeToMoo = 45f;
 	
 	void Awake () {
 		myAudio = GetComponent<AudioSource> ();
@@ -34,6 +42,7 @@ public class SFXBackground : MonoBehaviour {
 	void Start () {
 		timeToSing = Time.time + Random.Range (minIntervalleBird, maxIntervalleBird);
 		timeToCrick = Time.time + Random.Range (minIntervalleCricket, maxIntervalleCricket);
+		timeToMoo = Time.time + Random.Range (minIntervalleCow, maxIntervalleCow);
 	}
 
 	void Update () {
@@ -43,7 +52,7 @@ public class SFXBackground : MonoBehaviour {
 		if (!myAudio.isPlaying && !player.IsDead () && Time.time > timeToNextSound) {
 
 			// Birds
-			if (Time.time > timeToSing) {
+			if (Time.time > timeToSing && birdBank.Length > 0) {
 				randSound = Random.Range (0, birdBank.Length);
 
 				PlaySound (birdBank [randSound], Random.Range (minVolumeBird, maxVolumeBird));
@@ -52,12 +61,21 @@ public class SFXBackground : MonoBehaviour {
 			}
 
 			// Crickets
-			else if (Time.time > timeToCrick) {
+			else if (Time.time > timeToCrick && cricketBank.Length > 0) {
 				randSound = Random.Range (0, cricketBank.Length);
 				
 				PlaySound (cricketBank [randSound], Random.Range (minVolumeCricket, maxVolumeCricket));
 				
 				timeToCrick = Time.time + Random.Range (minIntervalleCricket, maxIntervalleCricket);
+			}
+
+			// Cows/Goats
+			else if (Time.time > timeToMoo && cowBank.Length > 0) {
+				randSound = Random.Range (0, cowBank.Length);
+				
+				PlaySound (cowBank [randSound], Random.Range (minVolumeCow, maxVolumeCow));
+				
+				timeToMoo = Time.time + Random.Range (minIntervalleCow, maxIntervalleCow);
 			}
 		}
 	}

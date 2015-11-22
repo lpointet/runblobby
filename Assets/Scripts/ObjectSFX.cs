@@ -5,6 +5,7 @@ using System.Collections;
 public class ObjectSFX : MonoBehaviour {
 
 	private AudioSource sound;
+	private float soundVolume;
 
 	public bool clearPlay;
 	public float delayPlay;
@@ -16,6 +17,7 @@ public class ObjectSFX : MonoBehaviour {
 	
 	void Awake () {
 		sound = GetComponent<AudioSource> ();
+		soundVolume = sound.volume;
 	}
 
 	void OnEnable() {
@@ -25,7 +27,7 @@ public class ObjectSFX : MonoBehaviour {
 
 	void Update () {
 		if (goPlay)
-			_StaticFunction.AudioFadeIn (sound, sound.volume, delayPlay);
+			_StaticFunction.AudioFadeIn (sound, soundVolume, delayPlay);
 
 		if (goStop)
 			_StaticFunction.AudioFadeOut (sound, 0, delayStop);
