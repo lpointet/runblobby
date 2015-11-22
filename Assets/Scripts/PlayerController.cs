@@ -219,7 +219,7 @@ public class PlayerController : Character {
 			yield return null;
 		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f);
 
-		//Time.timeScale = 0;
+		myRb.Sleep();
 		//Application.LoadLevelAdditive (1);
 		UIManager.uiManager.ToggleEndMenu (true);
 	}
