@@ -92,6 +92,8 @@ public class Pickup : MonoBehaviour {
 		// L'effet de la mort
 		if (_StaticFunction.ExistsAndHasParameter ("end", myAnim)) // On cache directement ceux qui n'ont pas d'animation de fin
 			myAnim.SetBool ("end", true);
+
+		_StaticFunction.AudioFadeOut (soundSource, 0, despawnTime);
 	}
 
 	private IEnumerator Despawn() {

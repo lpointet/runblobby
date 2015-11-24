@@ -12,6 +12,7 @@ GameObject:
   - 58: {fileID: 5899664}
   - 95: {fileID: 9582496}
   - 114: {fileID: 11497410}
+  - 82: {fileID: 8261220}
   m_Layer: 14
   m_Name: Pickup_Shield
   m_TagString: Untagged
@@ -44,6 +45,77 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: .25
+--- !u!82 &8261220
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102886}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300001, guid: 327b8b3b218a7f644a2b7efc7f9a656c,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: b795369af3874364f97de6d497534ed1, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: .300000012
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 10
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!95 &9582496
 Animator:
   serializedVersion: 3
@@ -74,6 +146,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 10
   weight: 20
+  soundActif: {fileID: 8300000, guid: 656f9ccc970f3044fa2081b1cb8f427f, type: 3}
+  soundActifVolume: .300000012
+  soundEnd: {fileID: 8300000, guid: 0180a7e236f2ef24e9f124a34ebb29d4, type: 3}
+  soundEndVolume: .800000012
 --- !u!212 &21290608
 SpriteRenderer:
   m_ObjectHideFlags: 1

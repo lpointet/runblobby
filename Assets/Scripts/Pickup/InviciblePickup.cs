@@ -1,4 +1,12 @@
-﻿public class InviciblePickup : Pickup {
+﻿using UnityEngine;
+using System.Collections;
+
+public class InviciblePickup : Pickup {
+
+	public AudioClip soundActif;
+	public float soundActifVolume = 0.4f;
+	public AudioClip soundEnd;
+	public float soundEndVolume = 0.8f;
 
 	protected override void Awake() {
 		base.Awake();
@@ -13,13 +21,28 @@
 		LevelManager.GetPlayer().SetInvincible( lifeTime );
 	}
 
-	/*protected override void PickEffect() {
+	protected override void PickEffect() {
 		base.PickEffect();
-		
-		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("shield_begin", false);
+
+		StartCoroutine (PlayActifSound (soundSource.clip.length));
+		Debug.Log (soundSource.clip.length);
 	}
 	
 	protected override void DespawnEffect() {
-		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("shield_end", false);
-	}*/
+		base.DespawnEffect();
+
+		soundSource.clip = soundEnd;
+		soundSource.volume = soundEndVolume;
+		soundSource.loop = false;
+		soundSource.Play ();
+	}
+
+	private IEnumerator PlayActifSound(float delay) {
+		yield return new WaitForSeconds(delay);
+
+		soundSource.clip = soundActif;
+		soundSource.volume = soundActifVolume;
+		soundSource.loop = true;
+		soundSource.Play ();
+	}
 }
