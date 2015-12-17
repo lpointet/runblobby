@@ -90,7 +90,7 @@ public class Enemy : Character {
 	}
 
 	public override void OnKill() {
-		ScoreManager.AddPoint (GetPointScore(), ScoreManager.Types.Enemy);
+		ScoreManager.AddPoint (GetPointScore(), ScoreManager.Types.Experience);
 		Despawn();
 	}
 

@@ -197,7 +197,7 @@ public class PlayerController : Character {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 
-		if (transform.position.y < -3.5f) {// Si on est en dessous du bas de l'écran
+		if (transform.position.y < -3.5f) { // Si on est en dessous du bas de l'écran
 			anim.SetTrigger ("dead_fall");
 			myAudio.FallDeathSound ();
 		}
@@ -206,6 +206,8 @@ public class PlayerController : Character {
 			myAudio.DeathSound ();
 		}
 
+		Debug.Log (GameData.gameData);
+		_StaticFunction.Save ();
 		StartCoroutine (WaitForDeadAnim (anim));
 	}
 

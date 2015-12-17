@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using System.Collections;
@@ -6,7 +7,6 @@ using System.Collections;
 public class MainMenuManager : MonoBehaviour {
 
 	public static MainMenuManager mainMenuManager;
-	private bool existingGame = false;
 	private SFXMenu sfxSound;
 
 	/******************/
@@ -71,14 +71,12 @@ public class MainMenuManager : MonoBehaviour {
 		/*texteAffichable = "To travel deep down into the heart of a history with maaaany rebounds.\n\nLiterally.";
         AfficherTexte(texteAffichable);*/
 		/*texteAffichable = "Runner's classic mode!\n\nRun.\nJump.\nDie.\n\nTry again.";
-        AfficherTexte(texteAffichable);*/
+		AfficherTexte(texteAffichable);*/
     }
 
 	void Start() {
-		if (existingGame = _GameData.gameData.Load ()) {
-			sMusic.value = _GameData.gameData.musicVolume;
-			sSfx.value = _GameData.gameData.sfxVolume;
-		}
+		sMusic.value = GameData.gameData.musicVolume;
+		sSfx.value = GameData.gameData.sfxVolume;
 
 		// On initialise les valeurs des textes et du son
 		tMusicValue.text = sMusic.value.ToString ();
@@ -116,7 +114,7 @@ public class MainMenuManager : MonoBehaviour {
 
 	public void SliderMusic_Change() {
 		tMusicValue.text = sMusic.value.ToString ();
-		_GameData.gameData.musicVolume = sMusic.value;
+		GameData.gameData.musicVolume = sMusic.value;
 
 		AjusterVolume(aMusicMixer, "musicVolume", sMusic);
 
@@ -130,7 +128,7 @@ public class MainMenuManager : MonoBehaviour {
 
 	public void SliderSFX_Change() {
 		tSfxValue.text = sSfx.value.ToString ();
-		_GameData.gameData.sfxVolume = sSfx.value;
+		GameData.gameData.sfxVolume = sSfx.value;
 
 		AjusterVolume(aSfxMixer, "sfxVolume", sSfx, -21, 3);
 
@@ -151,7 +149,7 @@ public class MainMenuManager : MonoBehaviour {
     }
 
 	public void Quit_Yes_Click() {
-		_GameData.gameData.Save ();
+		_StaticFunction.Save ();
 
 #if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
@@ -212,7 +210,7 @@ public class MainMenuManager : MonoBehaviour {
 			tMusic.gameObject.SetActive (false);
 			tSfx.gameObject.SetActive (false);
 
-			if (!existingGame)
+			if (!GameData.gameData.existingGame)
 				bContinue.gameObject.SetActive (false);
 			else
 				bContinue.GetComponentInChildren<Text> ().color = colorMenuNormal;
@@ -250,13 +248,13 @@ public class MainMenuManager : MonoBehaviour {
 	public void LoadLevel(int level) {
 		// On vérifie que le level est au moins dans ce qui est existant
 		// TODO on peut rajouter un controle en précisant les scènes précises existantes
-		if (level < Application.levelCount && level > 0)
+		if (level < SceneManager.sceneCountInBuildSettings && level > 0)
 			StartCoroutine (LoadLevelWithBar (level));
 	}
 
 	IEnumerator LoadLevelWithBar(int level) {
 		AsyncOperation asyncOp;
-		asyncOp = Application.LoadLevelAsync (level);
+		asyncOp = SceneManager.LoadSceneAsync (level);
 
 		loadingScreen.SetActive(true);
 

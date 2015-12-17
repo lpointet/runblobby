@@ -7,7 +7,7 @@ public class ScoreManager : MonoBehaviour {
 	public enum Types {
 		All,
 		Coin,
-		Enemy
+		Experience
 	};
 	
 	public struct Multiplier {
@@ -19,30 +19,41 @@ public class ScoreManager : MonoBehaviour {
 
 	private Text scoreText;
 
-	private static int score;
+	private static int score; // Score de la session - PlayerData pour le score total
+	private static int experience; // Expérience de la session - PlayerData pour l'exp totale
 
 	public static int GetScore() {
 		return score;
+	}
+
+	public static int GetExperience() {
+		return experience;
 	}
 	
 	void Awake () {
 		scoreText = GetComponent<Text> ();
 	}
 
-	void Update () {
+	void OnGUI () {
 		scoreText.text = score.ToString ();
 	}
 
 	public static void AddPoint(int numberPoint, Types type){
 		Multiplier multiplier;
 
+		// On multiplie s'il y a lieu
 		if( multipliers.TryGetValue( type, out multiplier ) ) {
-			numberPoint*= multiplier.value;
+			numberPoint *= multiplier.value;
 		}
 		else if( Types.All != type && multipliers.TryGetValue( Types.All, out multiplier ) ) {
-			numberPoint*= multiplier.value;
+			numberPoint *= multiplier.value;
 		}
-		score += numberPoint;
+
+		// On ajoute les points au bon endroit
+		if (Types.Coin == type)
+			score += numberPoint;
+		else if (Types.Experience == type)
+			experience += numberPoint;
 	}
 	
 	public static void AddMultiplier( int multiplier, Types type, float lifeTime ) {
@@ -70,7 +81,8 @@ public class ScoreManager : MonoBehaviour {
 		}
 	}
 
-	public static void Reset(){
+	public static void Reset() {
 		score = 0;
+		experience = 0;
 	}
 }

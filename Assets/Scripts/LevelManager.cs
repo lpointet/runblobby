@@ -17,9 +17,15 @@ public class LevelManager : MonoBehaviour {
 	public GameObject currentCheckPoint;
 	public float respawnDelay;
 
+	[Header("Reset divers")]
+	public Material moneyMat;
+	public Color BaseColor;
+
 	// Création du monde et déplacement
-	public float cameraStartPosition;
-	private float cameraEndPosition;
+	[Header("Création du monde")]
+	private int currentLevel;
+	private int currentDifficulty;
+	private bool isStory;
 
 	public GameObject blockStart;
 	public GameObject blockEnd;
@@ -28,6 +34,9 @@ public class LevelManager : MonoBehaviour {
 
 	private float sizeLastBlock;
 	private float sizeFirstBlock;
+
+	[HideInInspector] public float cameraStartPosition;
+	private float cameraEndPosition;
 	// Fin création du monde et déplacement
 
 	// Distance parcourue
@@ -36,6 +45,7 @@ public class LevelManager : MonoBehaviour {
 	private float distanceSinceLastBonus; // distance depuis l'apparition du dernier bonus
 
 	//* Partie Ennemi intermédiaire
+	[Header("Ennemis/Boss")]
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
 	private int currentPhase;	// Phase en cours
 	private bool blockPhase;	// Phase avec des blocs ou avec un ennemi
@@ -49,6 +59,10 @@ public class LevelManager : MonoBehaviour {
 	public int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
 	private string[] listeDifficulte; // Liste des difficultés possibles
 	//* Fin partie ennemi intermédiaire
+
+	public static PlayerController GetPlayer() {
+		return player;
+	}
 
     public bool IsEnemyToSpawn() {
         return enemyToSpawn;
@@ -73,9 +87,33 @@ public class LevelManager : MonoBehaviour {
         enemyDistanceToKill = value;
     }
 
-    public float GetDistanceTraveled() {
-        return distanceTraveled;
+    public int GetDistanceTraveled() {
+		return Mathf.RoundToInt(distanceTraveled);
     }
+
+	public int GetCurrentLevel() {
+		return currentLevel;
+	}
+
+	public void SetCurrentLevel(int value) {
+		currentLevel = value;
+	}
+
+	public int GetCurrentDifficulty() {
+		return currentDifficulty;
+	}
+
+	public void SetCurrentDifficulty(int value) {
+		currentDifficulty = value;
+	}
+
+	public bool IsStory() {
+		return isStory;
+	}
+
+	public void SetStoryMode(bool value) {
+		isStory = value;
+	}
 
     void Awake() {
 		if (levelManager == null)
@@ -87,7 +125,9 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Start () {
+		// Reset divers
 		Time.timeScale = 1;
+		ScoreManager.Reset ();
 
 		distanceTraveled = 0;
 		distanceSinceLastBonus = 0;
@@ -95,15 +135,23 @@ public class LevelManager : MonoBehaviour {
 		blockPhase = true;
         SetEnemyDistanceToKill( 0 );
 
+		SetCurrentLevel (1); // TODO l'information doit venir du MainMenuManager
+		SetStoryMode (true); // TODO idem
+		SetCurrentDifficulty (0); // TODO idem
+
+		moneyMat.SetColor("_BaseColor", BaseColor);
+		moneyMat.SetColor("_TargetColor", BaseColor);
+		// Fin reset divers
+
 		listeDifficulte = new string[5] {"difficulty_1", "difficulty_2", "difficulty_3", "difficulty_4", "difficulty_5"};
 		// Autant de probabilité que de phases (voir listPhase)
 		probabiliteBlock = new int[listPhase.Length][];
 		probabiliteBlock[0] = new int[5] {70, 30,  0,  0,  0};
 		probabiliteBlock[1] = new int[5] { 0, 40, 50, 10,  0};
 		probabiliteBlock[2] = new int[5] { 0, 0,  20, 60, 20};
-		// On met à 0 au cas où on dépasse les 3 phases et qu'on oublie
+		// On met à 20 au cas où on dépasse les 3 phases et qu'on oublie
 		for (int i = 3; i < listPhase.Length; i++) {
-			probabiliteBlock [i] = new int[5] {0, 0, 0, 0, 0};
+			probabiliteBlock [i] = new int[5] {20, 20, 20, 20, 20};
 		}
 
 		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 1;
@@ -264,10 +312,6 @@ public class LevelManager : MonoBehaviour {
 		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
 		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
 		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
-	}
-
-	public static PlayerController GetPlayer() {
-		return player;
 	}
 
 	public bool IsBlockPhase() {

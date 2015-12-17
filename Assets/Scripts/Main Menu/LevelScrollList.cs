@@ -5,14 +5,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class Level {
+/*public class Level {
 	public Sprite background;
 	public string name;
 	public int distance;
 	public int maxDistance;
 	public bool isBoss;
 	public int sceneNumber;
-}
+}*/
 
 public class LevelScrollList : MonoBehaviour {
 	
@@ -22,7 +22,7 @@ public class LevelScrollList : MonoBehaviour {
 	public Button downLevel;
 
 	public GameObject levelItem;
-	public List<Level> levelList;
+	//public List<Level> levelList;
 	
 	private Button[] levelButton;
 	public RectTransform center; // Centre du contentPanel pour comparer la distance au bouton
@@ -62,7 +62,10 @@ public class LevelScrollList : MonoBehaviour {
 		yield return new WaitForEndOfFrame();
 		
 		// Distance entre les boutons (ils sont placés à la fin de la première frame seulement)
-		buttonDistance = (int)Mathf.Abs (levelButton[1].GetComponent<RectTransform> ().anchoredPosition.y - levelButton[0].GetComponent<RectTransform> ().anchoredPosition.y);
+		if (levelButton.Length > 1)
+			buttonDistance = (int)Mathf.Abs (levelButton [1].GetComponent<RectTransform> ().anchoredPosition.y - levelButton [0].GetComponent<RectTransform> ().anchoredPosition.y);
+		else
+			buttonDistance = 0;
 
 		currentLerpTime = lerpTime; // Pour éviter de rendre visible le déplacement (instantané du coup)
 		PlacerLevel (0);
@@ -100,30 +103,26 @@ public class LevelScrollList : MonoBehaviour {
 		RafraichirImageLevel ();
 	}
 
+	// Permet de remplir la levelList
 	private void PopulateList() {
-		foreach (Level item in levelList) {
+		foreach (LevelData item in GameData.gameData.playerData.levelData) {
 			GameObject newLevel = Instantiate(levelItem) as GameObject;
 			SampleLevel level = newLevel.GetComponent<SampleLevel>();
 			
-			level.name = item.name;
-			level.background.sprite = item.background;
-			level.levelName.text = item.name;
-			if(item.maxDistance > 0)
-				level.progress.value = item.distance / (float)item.maxDistance;
+			level.name = item.levelName;
+			level.background.sprite = Resources.Load <Sprite> ("Level" + item.levelNumber + "_Selection");
+			level.levelName.text = item.levelName;
+			if(item.storyData[0].distanceMax > 0)
+				level.progress.value = item.storyData[0].distanceRecord / (float)item.storyData[0].distanceMax;
 			else
 				level.progress.value = 0;
-			level.distance.text = item.distance.ToString();
-			level.deadBoss.SetActive(item.isBoss);
-			level.sceneNumber = item.sceneNumber;
+			level.distance.text = item.storyData[0].distanceRecord.ToString();
+			level.deadBoss.SetActive(item.storyData[0].isBossDead);
+			level.sceneNumber = item.levelNumber;
 
 			level.transform.SetParent (contentPanel);
 			level.transform.localScale = Vector3.one; // Corrige un bug que je n'explique pas...
 		}
-	}
-
-	// Permet de remplir la levelList
-	private void GetPlayerLevel() {
-
 	}
 
 	public void StartDragging() {
@@ -176,6 +175,9 @@ public class LevelScrollList : MonoBehaviour {
 	}
 	
 	private void RafraichirImageLevel() {
+		if (buttonDistance <= 0)
+			return;
+		
 		// On rend inactifs les boutons qui sont loin du centre
 		for (int i = 0; i < levelButton.Length; i++) {
 			

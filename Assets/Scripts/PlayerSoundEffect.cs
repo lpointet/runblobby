@@ -44,7 +44,7 @@ public class PlayerSoundEffect : MonoBehaviour {
 			else if (!soundSource.isPlaying && player.IsGrounded () && Time.time > timeToMove) {
 				FootStepSound();
 
-				timeToMove = Time.time + 4 / 7f;
+				timeToMove = Time.time + (player.GetInitialMoveSpeed () / player.GetMoveSpeed()) * (4 / 7f); // Infinity si MoveSpeed = 0
 			}
 		}
 		wasGrounded = player.IsGrounded (); // Connaitre l'état de la précédente frame

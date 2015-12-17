@@ -1,75 +1,99 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 using System;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 
 public class _GameData : MonoBehaviour {
 
-	public static _GameData gameData;
+	public static _GameData current;
 
-	private string saveFile;
+	public List<LevelData> levelList;
+	public static string saveFile;
 
-	/* Les valeurs entrées sont les valeurs par défaut s'il n'y a pas de sauvegarde */
-	/* PARAMETRES DU JEU */
-	public float musicVolume = 2;
-	public float sfxVolume = 3;
-
-	/* STATISTIQUES DU JOUEUR */
-	public string playerName = "";
-	public int currentLevel = 1;
-	public bool isStory = true;
-
-	void Awake () {
-		if (gameData == null) {
-			gameData = this;
-			DontDestroyOnLoad (gameObject);
-			Load ();
-		} else if (gameData != this)
-			DestroyObject (gameObject);
-	}
-
-	void Start() {
-		saveFile = Application.persistentDataPath + "/param.dat";
-	}
-
-	public void Save() {
-		BinaryFormatter bf = new BinaryFormatter();
-		FileStream file = File.Create (saveFile);
-
-		PlayerData data = new PlayerData ();
-		data.musicVolume = musicVolume;
-		data.sfxVolume = sfxVolume;
-
-		bf.Serialize (file, data);
-		file.Close ();
-
-		Debug.Log ("Save successful.");
-	}
-
-	public bool Load() {
-		if (File.Exists (saveFile)) {
-			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (saveFile, FileMode.Open);
-
-			PlayerData data = bf.Deserialize (file) as PlayerData;
-			file.Close ();
-
-			musicVolume = data.musicVolume;
-			sfxVolume = data.sfxVolume;
-
-			Debug.Log ("Load successful.");
-			return true;
+	void Awake() {
+		if (current == null) {
+			current = this;
+			DontDestroyOnLoad (current);
 		} else
-			return false;
+			DestroyObject (this);
+
+		saveFile = Application.persistentDataPath + "/param.dat";
+
+		GameData.gameData = new GameData ();
+		if (!_StaticFunction.Load ())
+			Debug.Log ("Erreur de chargement du fichier de sauvegarde.");
 	}
 }
 
 [Serializable]
-class PlayerData {
+public class GameData {
+
+	public static GameData gameData;
+
+	public bool existingGame = false; // Modifier à true à la sauvegarde
+
 	/* PARAMETRES DU JEU */
-	public float musicVolume;
-	public float sfxVolume;
+	public float musicVolume = 2;
+	public float sfxVolume = 3;
+
+	public int firstLevel = 1; // Correspond au numéro de la scène du premier level, permet de corriger le numéro du level dans certaines fonctions
+	public int lastLevel = 1; // Numéro de la dernière scène (corriger dans le constructeur, ceci est un fallback)
+
+	/* PARAMETRES DU JOUEUR */
+	public PlayerData playerData;
+
+	public GameData() {
+		lastLevel = SceneManager.sceneCountInBuildSettings;
+
+		playerData = new PlayerData ();
+	}
+}
+
+[Serializable]
+public class PlayerData {
+
+	public string name; // Servira si un jour on doit différencier des joueurs
+
+	/* ETAT COURANT DU JEU */
+	public bool isStory = true;
+	public int currentLevel = 1;
 	
-	/* STATISTIQUES DU JOUEUR */
+	/* STATISTIQUES GLOBALES DU JOUEUR */
+	public int experience = 0;
+	public int level = 1;
+	public long distanceTotal = 0; // distance totale parcourue, tout confondu
+	public int enemyKilled = 0; // nombre d'ennemis tués
+
+	/* STATISTIQUES DES LEVELS */
+	public List<LevelData> levelData = new List<LevelData>();
+
+	public PlayerData(string nom = "") {
+		name = nom;
+
+		levelData = _GameData.current.levelList;
+	}
+}
+
+[Serializable]
+public class LevelData {
+	public int levelNumber; // Premier level = 1...
+	public string levelName;
+	//public Sprite background;
+	public ArcadeData[] arcadeData; // Tableau des données selon la difficulté en mode Arcade : 0 = normal, 1 = hard, 2 = hell
+	public StoryData[] storyData; // Tableau des données selon la difficulté en mode Story : 0 = normal, 1 = hard, 2 = hell
+}
+
+[Serializable]
+public class ArcadeData {
+	public int scoreRecord; // score maximum obtenu
+	public int distanceRecord; // distance maximum parcourue
+}
+
+[Serializable]
+public class StoryData {
+	public int scoreRecord; // score maximum obtenu
+	public int distanceRecord; // distance maximum parcourue
+	public int distanceMax; // distance maximum du niveau
+	public bool isBossDead; // true = boss mort
 }

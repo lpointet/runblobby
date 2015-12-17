@@ -47,7 +47,7 @@ public class Pickup : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
+	void OnTriggerEnter2D(Collider2D other) {
 		if (other.name == "Heros") {
 			picked = true;
 			OnPick();
@@ -90,7 +90,7 @@ public class Pickup : MonoBehaviour {
 	
 	protected virtual void DespawnEffect() {
 		// L'effet de la mort
-		if (_StaticFunction.ExistsAndHasParameter ("end", myAnim)) // On cache directement ceux qui n'ont pas d'animation de fin
+		if (_StaticFunction.ExistsAndHasParameter ("end", myAnim)) // On joue une animation pour ceux qui ont une fin
 			myAnim.SetBool ("end", true);
 
 		_StaticFunction.AudioFadeOut (soundSource, 0, despawnTime);
@@ -99,14 +99,6 @@ public class Pickup : MonoBehaviour {
 	private IEnumerator Despawn() {
         despawnCalled = true;
         DespawnEffect();
-		/*if ( null != myAnim && despawnTime == 0 ) {
-			if (_StaticFunction.ExistsAndHasParameter ("end", myAnim)) {
-				do {
-					yield return null;
-				} while (myAnim.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f || myAnim.IsInTransition(0)); // On attend que l'animation se termine
-			}
-		}
-		else*/
 		yield return new WaitForSeconds (despawnTime);
 		OnDespawn();
 	}

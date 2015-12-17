@@ -1,6 +1,6 @@
 ﻿Shader "Custom/HSVShader" {
     Properties {
-        _MainTex ("Texture", 2D) = "white" {}
+        [PerRendererData] _MainTex ("Texture", 2D) = "white" {}
         _HueShift("HueShift", Float ) = 0
         _Sat("Saturation", Float) = 1
         _Val("Value", Float) = 1

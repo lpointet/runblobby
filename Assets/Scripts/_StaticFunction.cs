@@ -1,6 +1,81 @@
 ﻿using UnityEngine;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 public static class _StaticFunction {
+	
+	/** 
+	 * PARTIE SAUVEGARDE
+	 */ 
+	public static void Save() {
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create (_GameData.saveFile);
+
+		TraitementData ();
+
+		bf.Serialize (file, GameData.gameData);
+		file.Close ();
+
+		Debug.Log ("Save successful in: " + _GameData.saveFile);
+	}
+
+	public static bool Load() {
+		if (File.Exists (_GameData.saveFile)) {
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Open (_GameData.saveFile, FileMode.Open);
+
+			GameData tempData = new GameData ();
+			tempData = bf.Deserialize (file) as GameData;
+
+			// Copie des données GameData
+			if (tempData.existingGame != null) GameData.gameData.existingGame = tempData.existingGame;
+			if (tempData.musicVolume != null) GameData.gameData.musicVolume = tempData.musicVolume;
+			if (tempData.sfxVolume != null) GameData.gameData.sfxVolume = tempData.sfxVolume;
+			if (tempData.firstLevel != null) GameData.gameData.firstLevel = tempData.firstLevel;
+			if (tempData.lastLevel != null) GameData.gameData.lastLevel = tempData.lastLevel;
+
+
+			// Copie des données PlayerData
+			if (tempData.playerData.name != null) GameData.gameData.playerData.name = tempData.playerData.name;
+			if (tempData.playerData.isStory != null) GameData.gameData.playerData.isStory = tempData.playerData.isStory;
+			if (tempData.playerData.currentLevel != null) GameData.gameData.playerData.currentLevel = tempData.playerData.currentLevel;
+			if (tempData.playerData.experience != null) GameData.gameData.playerData.experience = tempData.playerData.experience;
+			if (tempData.playerData.level != null) GameData.gameData.playerData.level = tempData.playerData.level;
+			if (tempData.playerData.distanceTotal != null) GameData.gameData.playerData.distanceTotal = tempData.playerData.distanceTotal;
+			if (tempData.playerData.enemyKilled != null) GameData.gameData.playerData.enemyKilled = tempData.playerData.enemyKilled;
+
+			// Permet d'ajouter des levels si jamais certains sont nouveaux depuis la sauvegarde
+			// On n'efface pas de GameData.gameData ceux qui sont supérieurs à tempData.playerData.levelData.Count
+			// On n'ajoute pas des levels à GameData.gameData si ceux-ci n'existent plus
+			for (int i = 0; i < Mathf.Min(GameData.gameData.playerData.levelData.Count, tempData.playerData.levelData.Count); i++) {
+				if (GameData.gameData.playerData.levelData [i] != null)
+					GameData.gameData.playerData.levelData [i] = tempData.playerData.levelData [i];
+			}
+
+			Debug.Log ("Load successful from: " + _GameData.saveFile);
+			return true;
+		} else
+			return false;
+	}
+
+	private static void TraitementData() {
+		GameData.gameData.existingGame = true;
+
+		GameData.gameData.playerData.experience += ScoreManager.GetExperience ();
+		GameData.gameData.playerData.level = Mathf.FloorToInt (GameData.gameData.playerData.experience / 100.0f); // TODO adapter la règle en fonction de l'xp
+
+		// Sauvegardes spécifiques au level
+		LevelData levelCourant = GameData.gameData.playerData.levelData[LevelManager.levelManager.GetCurrentLevel()];
+		int difficulty = LevelManager.levelManager.GetCurrentDifficulty ();
+
+		if (LevelManager.levelManager.IsStory()) {
+			levelCourant.storyData [difficulty].distanceRecord = Mathf.Max(levelCourant.storyData [difficulty].distanceRecord, LevelManager.levelManager.GetDistanceTraveled());
+		}
+		Debug.Log (levelCourant.storyData [difficulty].distanceRecord);
+	}
+	/** 
+	 * FIN PARTIE SAUVEGARDE
+	 */ 
 
 	// Vérifier qu'une animation existe et possède un paramètre précis
 	public static bool ExistsAndHasParameter(string paramName, Animator animator)

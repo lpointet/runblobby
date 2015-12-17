@@ -4,6 +4,7 @@ public class Bounce : MonoBehaviour {
 
 	public float offsetCheckBounce;
 	public float bouncePower;
+	public int experienceToGive = 1;
 
 	private Collider2D myCollider;
 
@@ -31,6 +32,9 @@ public class Bounce : MonoBehaviour {
 
 				// Ne pas déclencher d'autres actions avec ce collider, il a fait son job
 				myCollider.enabled = false;
+
+				// On fournit l'xp au joueur
+				ScoreManager.AddPoint(experienceToGive, ScoreManager.Types.Experience);
 			}
 		}
 	}

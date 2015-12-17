@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
@@ -177,11 +178,11 @@ public class UIManager : MonoBehaviour {
 
 	public void Rejouer_Click() {
 		//endUI.SetActive (false);
-		Application.LoadLevel (Application.loadedLevel);
+		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
 	}
 	
 	public void Home_Click() {
-		Application.LoadLevel (0);
+		SceneManager.LoadScene (0);
 	}
 	
 	public void Quit() {
