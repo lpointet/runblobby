@@ -45,6 +45,10 @@ public class UIManager : MonoBehaviour {
 	public Text experience;
 	public Text playerLevel;
 
+	public AudioClip endFailure;
+	public AudioClip endVictory;
+	private AudioSource endAudio;
+
     void Awake() {
 		if (uiManager == null)
 			uiManager = GameObject.FindGameObjectWithTag ("LevelCanvas").GetComponent<UIManager> ();
@@ -65,6 +69,8 @@ public class UIManager : MonoBehaviour {
 	}
 	
 	void Update() {
+		enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
+
         //* MENU PAUSE
         PauseManager();
         //* FIN MENU PAUSE
@@ -80,19 +86,14 @@ public class UIManager : MonoBehaviour {
     }
 
     private void PauseManager() { 
-		if (Input.GetButtonDown ("Pause")) {
+		if (Input.GetButtonDown ("Pause") && !endUI.activeInHierarchy) {
 			paused = !paused;
 
-			UpdateValueScore (distancePause, moneyPause);
-
-			if (paused && !endUI.activeInHierarchy) {
-				pauseUI.SetActive (true);
-				standardUI.SetActive (false);
-				Time.timeScale = 0;
+			if (paused) {
+				TogglePauseMenu (true);
+				UpdateValueScore ("pause");
 			} else {
-				pauseUI.SetActive(false);
-				standardUI.SetActive (true);
-				Time.timeScale = 1;
+				TogglePauseMenu (false);
 			}
 		}
     }
@@ -117,7 +118,6 @@ public class UIManager : MonoBehaviour {
     }
 
     private void EnemyManager() {
-        enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
         if( null != enemyEnCours ) {
             if( !EnemyGUIActive ) {
                 ToggleEnemyGUI( true );
@@ -130,7 +130,6 @@ public class UIManager : MonoBehaviour {
     }
 
     private void MeterTextManager() {
-        enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
         if( null != enemyEnCours ) {
             enemyDistanceToKill = LevelManager.levelManager.GetEnemyDistanceToKill();
             meterText.text = Mathf.RoundToInt( enemyDistanceToKill ) + "m"; // Mise à jour de la distance restante pour tuer le boss
@@ -147,6 +146,13 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+	private void TogglePauseMenu(bool active) {
+		pauseUI.SetActive (active);
+		standardUI.SetActive (!active);
+
+		Time.timeScale = active == true ? 0 : 1;
+	}
+
     private void ToggleEnemyGUI( bool active ) {
         EnemyGUIActive = active;
         foreach (Transform obj in healthBar.transform)
@@ -154,16 +160,21 @@ public class UIManager : MonoBehaviour {
     }
 
 	public void ToggleEndMenu(bool active) {
+		endUI.SetActive (active);
 		standardUI.SetActive (!active);
 
-		UpdateValueScore (distanceEnd, moneyEnd);
-
-		endUI.SetActive (active);
+		UpdateValueScore ("end");
 	}
 
-	private void UpdateValueScore(Text distance, Text money) {
-		distance.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
-		money.text = Mathf.RoundToInt (ScoreManager.GetScore ()).ToString ();
+	private void UpdateValueScore(string ecran) {
+		if (ecran == "pause") {
+			distancePause.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
+			moneyPause.text = ScoreManager.GetScore ().ToString ();
+		} else {
+			distanceEnd.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
+			moneyEnd.text = ScoreManager.GetScore ().ToString ();
+			experience.text = ScoreManager.GetExperience ().ToString ();
+		}
 	}
 
 	public void ResumeGame() {
@@ -186,10 +197,10 @@ public class UIManager : MonoBehaviour {
 	}
 	
 	public void Quit() {
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
-		#elif UNITY_STANDALONE
+#elif UNITY_STANDALONE
 		Application.Quit ();
-		#endif
+#endif
 	}
 }

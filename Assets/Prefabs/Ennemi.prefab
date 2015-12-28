@@ -55,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 174762}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 440956}
@@ -67,9 +67,10 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124310}
+  m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0.05
   m_GravityScale: 5
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -83,12 +84,13 @@ CircleCollider2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124310}
   m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: .5
+  m_Radius: 0.5
 --- !u!61 &6193614
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -96,6 +98,7 @@ BoxCollider2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124310}
   m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
@@ -115,22 +118,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPoint: 3
   healthPointMax: 5
-  widthHealthBar: 0
   moveSpeed: 0
   jumpHeight: 0
   isDead: 0
+  maxHeight: 7.5
   distanceToKill: 50
   damageToGive: 1
   pointScore: 100
   movingEnemy: 0
   moveRight: 0
-  healthBar: {fileID: 0}
-  fillHealthBar: {fileID: 0}
   wallCheck: {fileID: 464780}
-  wallCheckRadius: .100000001
+  wallCheckRadius: 0.1
   whatIsWall:
     serializedVersion: 2
     m_Bits: 1024
+  frequence: 0.02
+  coins:
+  - {fileID: 157248, guid: c46dcd20b7baa99459eb60f44616cfbd, type: 2}
+  - {fileID: 190520, guid: 98d82e343c0754f4880eee7fab4f364e, type: 2}
+  - {fileID: 104304, guid: ef4806b266ce2234b9efd7a2869fb2f5, type: 2}
+  - {fileID: 196070, guid: d6f870646451e6e48b27c1e807bcec5e, type: 2}
+  - {fileID: 158448, guid: e8be6b5927c4a1d4a94735fcd1392574, type: 2}
+  - {fileID: 176916, guid: 73a83410038a7274c8489eb79d756313, type: 2}
+  - {fileID: 153172, guid: da19e621afeb1e4439322c92b1acfee6, type: 2}
+  layerGround:
+    serializedVersion: 2
+    m_Bits: 1024
+  intervalleDrop: 0.5
 --- !u!212 &21219996
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -149,14 +163,18 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 02d46b7322b75174496cec4c65485e0a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -164,6 +182,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: coins.Array.size
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: bouncePower
       value: 10
@@ -207,6 +229,50 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: whatIsWall.m_Bits
       value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_FlipY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: coins.Array.data[0]
+      value: 
+      objectReference: {fileID: 157248, guid: c46dcd20b7baa99459eb60f44616cfbd, type: 2}
+    - target: {fileID: 0}
+      propertyPath: coins.Array.data[1]
+      value: 
+      objectReference: {fileID: 190520, guid: 98d82e343c0754f4880eee7fab4f364e, type: 2}
+    - target: {fileID: 0}
+      propertyPath: coins.Array.data[2]
+      value: 
+      objectReference: {fileID: 104304, guid: ef4806b266ce2234b9efd7a2869fb2f5, type: 2}
+    - target: {fileID: 0}
+      propertyPath: coins.Array.data[3]
+      value: 
+      objectReference: {fileID: 196070, guid: d6f870646451e6e48b27c1e807bcec5e, type: 2}
+    - target: {fileID: 0}
+      propertyPath: coins.Array.data[4]
+      value: 
+      objectReference: {fileID: 158448, guid: e8be6b5927c4a1d4a94735fcd1392574, type: 2}
+    - target: {fileID: 0}
+      propertyPath: coins.Array.data[5]
+      value: 
+      objectReference: {fileID: 176916, guid: 73a83410038a7274c8489eb79d756313, type: 2}
+    - target: {fileID: 0}
+      propertyPath: coins.Array.data[6]
+      value: 
+      objectReference: {fileID: 153172, guid: da19e621afeb1e4439322c92b1acfee6, type: 2}
+    - target: {fileID: 0}
+      propertyPath: layerGround.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: frequence
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

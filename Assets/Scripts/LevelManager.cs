@@ -31,6 +31,8 @@ public class LevelManager : MonoBehaviour {
 	public GameObject blockEnd;
 	public GameObject[] blockEnemy;
 	private List<GameObject> blockList;
+	private int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
+	private string[] listeDifficulte; // Liste des difficultés possibles pour les blocs
 
 	private float sizeLastBlock;
 	private float sizeFirstBlock;
@@ -49,6 +51,7 @@ public class LevelManager : MonoBehaviour {
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
 	private int currentPhase;	// Phase en cours
 	private bool blockPhase;	// Phase avec des blocs ou avec un ennemi
+	public LayerMask layerCoins; // Permet de supprimer les pièces que les ennemis "perdent"
 	private bool premierBlock = false;	// Instantier le premier bloc ennemi
 	public Enemy[] enemyMiddle;	// Liste des ennemis
 	private Enemy enemyEnCours;
@@ -56,8 +59,6 @@ public class LevelManager : MonoBehaviour {
     private bool enemySpawnLaunched = false; // Bool pour savoir si l'appel du spawn a déjà été fait ou pas
 	public float enemySpawnDelay;
 	private float enemyDistanceToKill;
-	public int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
-	private string[] listeDifficulte; // Liste des difficultés possibles
 	//* Fin partie ennemi intermédiaire
 
 	public static PlayerController GetPlayer() {
@@ -115,6 +116,10 @@ public class LevelManager : MonoBehaviour {
 		isStory = value;
 	}
 
+	public float GetLocalDistance() {
+		return localDistance;
+	}
+
     void Awake() {
 		if (levelManager == null)
 			levelManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<LevelManager> ();
@@ -163,6 +168,7 @@ public class LevelManager : MonoBehaviour {
 		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
 		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().NumTilesWide;
 		sizeFirstBlock = sizeLastBlock;
+		//layerCoins = LayerMask.NameToLayer ("Coins");
 
         // On commence le niveau dans une phase "block" et non une phase "ennemi", le joueur ne peut donc pas tirer
         player.SetFireAbility( false );
@@ -172,16 +178,22 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Update () {
-        // Empêcher que des choses se passent durant la pause
+		// Empêcher que des choses se passent durant la pause
 		if (Time.timeScale == 0 || player.IsDead ()) {
 			sourceSound.volume = 0.1f;
 			return;
 		}
 
-		sourceSound.volume = soundVolumeInit;
+		// Faire apparaître le menu de fin si on est en mode histoire et qu'on a tué le dernier boss
+		if (currentPhase >= listPhase.Length && IsStory()) {
+			FinDuMonde ();
+		}
 
+		sourceSound.volume = soundVolumeInit;
+	
 		// Distance parcourue depuis le dernier update
-		localDistance = player.GetMoveSpeed() * Time.deltaTime;
+		//localDistance = player.GetMoveSpeed() * Time.smoothDeltaTime;
+		localDistance = player.GetMoveSpeed () / 40f; // TODO choisir un des deux, celui-ci a l'air plus fluide et caler le reste en fonction de cette distance
 
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
@@ -237,6 +249,15 @@ public class LevelManager : MonoBehaviour {
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra
 		if (blockList [0].transform.position.x + sizeFirstBlock < cameraStartPosition) {
+			// On supprime les objets de la couche "Coins" si on est sur les blocks du boss (les pièces que drop le boss)
+			if(blockList[0].name.Contains(blockEnemy[1].name)) {
+				foreach (Transform t in blockList[0].GetComponentsInChildren(typeof(Transform), true)) {
+					if ((1 << t.gameObject.layer & layerCoins) != 0) {
+						t.parent = null;
+						t.gameObject.SetActive (false);
+					}
+				}
+			}
 			blockList [0].SetActive (false);
 			blockList.RemoveAt (0);
 			
@@ -256,7 +277,7 @@ public class LevelManager : MonoBehaviour {
 
 	private GameObject GetNewBlock(bool _blockPhase) {
 		if (_blockPhase) {
-			//test random à mettre sous fonction
+			// TODO test random à mettre sous fonction
 			string randomBlock = PoolingManager.current.RandomNameOfPool ("Block", RandomDifficulty(currentPhase)); // Random Block de difficulté adaptée à la currentPhase
 			// fin
 			return PoolingManager.current.Spawn (randomBlock);
@@ -292,7 +313,7 @@ public class LevelManager : MonoBehaviour {
 		// On cherche le dernier élément (vu qu'on place tout par rapport à lui)
 		GameObject lastBlock = blockList[blockList.Count-1];
 		
-		obj.transform.position = lastBlock.transform.position + Vector3.right * lastBlock.GetComponent<TiledMap > ().NumTilesWide;
+		obj.transform.position = lastBlock.transform.position + Vector3.right * sizeLastBlock;
 		obj.transform.rotation = lastBlock.transform.rotation;
         _StaticFunction.SetActiveRecursively(obj, true); // Normalement SetActive(true);
 		
@@ -303,13 +324,13 @@ public class LevelManager : MonoBehaviour {
 
 	private void MoveWorld() {
 		foreach(GameObject block in blockList) {
-			block.transform.Translate (Vector3.left * Time.smoothDeltaTime * player.GetMoveSpeed());
+			block.transform.Translate (Vector2.left * localDistance);
 		}
 	}
 
 	private IEnumerator SpawnEnemy(Enemy enemy) {
         yield return new WaitForSeconds( enemySpawnDelay );
-		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 10, player.transform.position.y + 2);
+		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 12, player.transform.position.y);
 		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
 		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
@@ -318,20 +339,15 @@ public class LevelManager : MonoBehaviour {
 		return blockPhase;
 	}
 
-	public static void Kill( Character character, bool ignoreLastWish = false ) {
-		if( character == player ) {
-			Pickup[] pickups = character.GetComponentsInChildren<Pickup>();
-			LastWishPickup lastWish = player.GetLastWish();
-			
-			foreach( Pickup pickup in pickups ) {
-				if( pickup != lastWish || lastWish.IsLaunched() ) {
-					pickup.Disable();
-				}
-			}
+	private void FinDuMonde () {
+		//LevelManager.Kill( player, true ); // TODO adapter le code pour la fin du niveau en mode histoire
+		UIManager.uiManager.ToggleEndMenu(true);
+		CleanPickup (true);
+	}
 
-			if( ignoreLastWish && lastWish != null ) {
-				lastWish.Cancel();
-			}
+	public static void Kill( Character character, bool ignoreLastWish = false ) {
+		if( character == GetPlayer() ) {
+			CleanPickup (ignoreLastWish);
 		}
 
 		character.Die();
@@ -351,6 +367,21 @@ public class LevelManager : MonoBehaviour {
                 deathAnim.SetBool("dead", true);
             else
 			    transform.gameObject.SetActive(false);
+		}
+	}
+
+	private static void CleanPickup (bool ignoreLastWish = false) {
+		Pickup[] pickups = GetPlayer().GetComponentsInChildren<Pickup>();
+		LastWishPickup lastWish = GetPlayer().GetLastWish();
+
+		foreach( Pickup pickup in pickups ) {
+			if( pickup != lastWish || lastWish.IsLaunched() ) {
+				pickup.Disable();
+			}
+		}
+
+		if( ignoreLastWish && lastWish != null ) {
+			lastWish.Cancel();
 		}
 	}
 

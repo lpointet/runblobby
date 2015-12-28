@@ -36,8 +36,13 @@ public class PoolingManager : MonoBehaviour {
 					list = new List<PoolingScript>();
 					indexedPools.Add( pool.poolIndex, list );
 				}
-				list.Add( pool );
+				list.Add( pool ); // TODO à quoi ça sert ?
 			}
+		}
+			
+		// On mélange une première fois les listes indexées
+		foreach (KeyValuePair<string, List<PoolingScript>> entry in indexedPools) {
+			ShuffleList (entry.Value, true);
 		}
 	}
 
@@ -64,5 +69,29 @@ public class PoolingManager : MonoBehaviour {
 		if (list[random].poolName.ToLower().Contains (subname.ToLower()))
 			return list[random].poolName;
 		return "";
+	}
+
+	public string RandomPoolName(string subname, string index = null) {
+		return "";
+	}
+
+	// Mélange d'une liste de PoolingScript
+	private void ShuffleList(List<PoolingScript> list, bool firstTime = false) {
+		PoolingScript temp;
+		int longueur = list.Count;
+		int interdit = firstTime ? 0 : Mathf.RoundToInt (longueur * 0.5f); // Tous les nombres sont mélangés la première fois | Sinon, on empêche 50% de la liste d'êtré réutilisée
+
+		if (longueur > 1) { // On ne procède a un mélange que s'il y a au moins 2 valeurs
+			for (int i = 0; i < longueur; i++) {
+				int randNumber = Random.Range (i, longueur - interdit); // Borne inf incluse, borne sup excluse
+
+				temp = list [i];
+				list [i] = list [randNumber];
+				list [randNumber] = temp;
+
+				if (interdit > 0)
+					interdit--;
+			}
+		}
 	}
 }

@@ -118,7 +118,7 @@ public class LevelScrollList : MonoBehaviour {
 				level.progress.value = 0;
 			level.distance.text = item.storyData[0].distanceRecord.ToString();
 			level.deadBoss.SetActive(item.storyData[0].isBossDead);
-			level.sceneNumber = item.levelNumber;
+			level.sceneNumber = item.levelNumber + (GameData.gameData.firstLevel - 1); // Correction du level par rapport à la scène du premier level
 
 			level.transform.SetParent (contentPanel);
 			level.transform.localScale = Vector3.one; // Corrige un bug que je n'explique pas...

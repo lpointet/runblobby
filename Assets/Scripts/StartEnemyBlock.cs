@@ -15,6 +15,7 @@ public class StartEnemyBlock : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.name == "Heros") {
 			LevelManager.levelManager.SetEnemyToSpawn( true ); // Indique au levelManager d'invoquer l'ennemi
+			circleStartingPhase.enabled = false; // Empêche l'apparition de multiples ennemis sur les configurations trop lentes
 		}
 	}
 }

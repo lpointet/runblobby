@@ -37,8 +37,8 @@ public class GameData {
 	public float musicVolume = 2;
 	public float sfxVolume = 3;
 
-	public int firstLevel = 1; // Correspond au numéro de la scène du premier level, permet de corriger le numéro du level dans certaines fonctions
-	public int lastLevel = 1; // Numéro de la dernière scène (corriger dans le constructeur, ceci est un fallback)
+	public int firstLevel = 1; // Correspond au numéro de scène du premier level, permet de corriger le numéro du level dans certaines fonctions (chargement level depuis le menu)
+	public int lastLevel = 1; // Numéro de scène du dernier level (corriger dans le constructeur, ceci est un fallback)
 
 	/* PARAMETRES DU JOUEUR */
 	public PlayerData playerData;

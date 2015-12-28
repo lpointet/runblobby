@@ -21,6 +21,13 @@ public class Enemy : Character {
 	public float wallCheckRadius;
 	public LayerMask whatIsWall;
 
+	public float frequence = 0.01f;
+	public GameObject[] coins;
+	public LayerMask layerGround;
+	private float distanceParcourue = 0;
+	private float pointLastDropCheck = 0;
+	public float intervalleDrop = 0.5f;
+
 	/**
 	 * Getters & Setters
 	 */
@@ -57,10 +64,12 @@ public class Enemy : Character {
         base.Awake();
 
 		myRb = GetComponent<Rigidbody2D> ();
+		frequence = Mathf.Clamp01 (frequence);
 	}
 
 	protected override void Update () {
 		base.Update();
+
 		// On n'appelle ça que si l'ennemy bouge
 		if (movingEnemy) {
 			// Vérifie que l'ennemi touche un mur ou non
@@ -77,6 +86,10 @@ public class Enemy : Character {
 				myRb.velocity = new Vector2 (-GetMoveSpeed(), myRb.velocity.y);
 			}
 		}
+
+		// Laché de feuilles aléatoires
+		if (!LevelManager.GetPlayer ().IsDead ())
+			MoneyDrop ();
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
@@ -96,5 +109,29 @@ public class Enemy : Character {
 
 	protected void Despawn() {
 		gameObject.SetActive (false);
+	}
+
+	/* Fonction qui permet de déposer des feuilles à la suite du boss
+	 * Dépend de la difficulté, de la fréquence souhaitée
+	 * Possibilité de régler la valeur moyenne des feuilles qui tombent */
+	protected void MoneyDrop() {
+		distanceParcourue += LevelManager.levelManager.GetLocalDistance ();
+
+		if (distanceParcourue > pointLastDropCheck + intervalleDrop) { // On ne propose de poser une feuille que tous les intervalleDrop parcourus
+			pointLastDropCheck = distanceParcourue;
+
+			if (Random.Range (0f, 1f) <= frequence) { // On pose une pièce en respectant la fréquence
+				RaycastHit2D hit;
+				hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround); // On essaye de trouver le sol, sinon on ne fait rien
+				if (hit.collider != null) {
+					GameObject coin = PoolingManager.current.Spawn ("Leaf1");
+
+					coin.gameObject.SetActive (true);
+
+					coin.transform.position = new Vector2 (myTransform.position.x, hit.transform.position.y + 0.25f);
+					coin.transform.parent = hit.transform;
+				}
+			}
+		}
 	}
 }

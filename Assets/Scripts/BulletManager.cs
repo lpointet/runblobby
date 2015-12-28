@@ -19,6 +19,8 @@ public class BulletManager : MonoBehaviour {
 
 	public LayerMask layerCollision;
 	public float despawnTimer;
+	private LayerMask layerEnemy;
+	private LayerMask layerPlayer;
 
 	void Awake() {
 		myRb = GetComponent<Rigidbody2D> ();
@@ -29,6 +31,8 @@ public class BulletManager : MonoBehaviour {
 
 	void Start() {
 		bulletPower += myWeapon.weaponPower; // On ajoute la puissance de l'arme à la balle
+		layerEnemy = LayerMask.NameToLayer("Enemy");
+		layerPlayer = LayerMask.NameToLayer ("Player");
 	}
 	
 	void OnEnable () {
@@ -53,16 +57,17 @@ public class BulletManager : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		if ((1 << other.gameObject.layer & layerCollision) != 0) {
 			Despawn();
+			// TODO améliorer l'effet en pixel art
 			Transform particle = Instantiate(hitParticle, transform.position, Quaternion.FromToRotation(Vector3.down, transform.right)) as Transform; // Effet vers la balle... :(
 			particle.parent = other.transform; // On rattache l'effet au point d'impact pour qu'il suive le mouvement
 
 			// Si on rencontre un ennemi
-			if(other.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+			if(other.gameObject.layer == layerEnemy) {
 				other.GetComponent<Enemy>().Hurt(bulletPower);
 			}
 
 			// Si on rencontre un joueur
-			if(other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+			if(other.gameObject.layer == layerPlayer) {
 				LevelManager.GetPlayer().Hurt(bulletPower);
 			}
 		}

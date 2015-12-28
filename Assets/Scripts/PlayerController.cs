@@ -168,6 +168,7 @@ public class PlayerController : Character {
             }
         }
 
+		// Accélération et décélération au début et à la fin du vol
 		if (speedBeforeFly != speedInFly) {
 			acceleration += Time.deltaTime;
 			if (isFlying)
@@ -205,8 +206,7 @@ public class PlayerController : Character {
 			anim.SetTrigger ("dead");
 			myAudio.DeathSound ();
 		}
-
-		Debug.Log (GameData.gameData);
+			
 		_StaticFunction.Save ();
 		StartCoroutine (WaitForDeadAnim (anim));
 	}
@@ -219,6 +219,15 @@ public class PlayerController : Character {
 
 		myRb.Sleep();
 		//Application.LoadLevelAdditive (1);
+		UIManager.uiManager.ToggleEndMenu (true);
+	}
+
+	public void OnVictory() {
+		// On ne peut plus tirer...
+		SetFireAbility( false );
+
+		// TODO il faut enlever tous les pickups
+
 		UIManager.uiManager.ToggleEndMenu (true);
 	}
 	
