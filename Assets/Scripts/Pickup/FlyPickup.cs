@@ -25,6 +25,7 @@ public class FlyPickup : Pickup {
 	protected override void OnDespawn() {
 		base.OnDespawn();
 
-        player.Land();
+		if (!player.IsDead ())
+			player.Land ();
     }
 }

@@ -19,6 +19,9 @@ public class PlayerSoundEffect : MonoBehaviour {
 	public AudioClip deathSfx;
 	public float deathVolume;
 
+	public AudioClip airDeathSfx;
+	public float airDeathVolume;
+
 	public AudioClip fallDeathSfx;
 	public float fallDeathVolume;
 
@@ -32,7 +35,7 @@ public class PlayerSoundEffect : MonoBehaviour {
 	}
 
 	void Update() {
-		if (!player.IsDead ()) {
+		if (Time.timeScale > 0 && !player.IsDead ()) {
 			// Saut appelé par le PlayerController
 
 			// Ecrasement
@@ -64,6 +67,10 @@ public class PlayerSoundEffect : MonoBehaviour {
 
 	public void DeathSound() {
 		PlaySound (deathSfx, deathVolume);
+	}
+
+	public void AirDeathSound() {
+		PlaySound (airDeathSfx, airDeathVolume);
 	}
 
 	public void FallDeathSound() {

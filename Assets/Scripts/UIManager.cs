@@ -91,7 +91,7 @@ public class UIManager : MonoBehaviour {
 
 			if (paused) {
 				TogglePauseMenu (true);
-				UpdateValueScore ("pause");
+				UpdateValueScore ();
 			} else {
 				TogglePauseMenu (false);
 			}
@@ -163,18 +163,17 @@ public class UIManager : MonoBehaviour {
 		endUI.SetActive (active);
 		standardUI.SetActive (!active);
 
-		UpdateValueScore ("end");
+		UpdateValueScore ();
 	}
 
-	private void UpdateValueScore(string ecran) {
-		if (ecran == "pause") {
-			distancePause.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
-			moneyPause.text = ScoreManager.GetScore ().ToString ();
-		} else {
-			distanceEnd.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
-			moneyEnd.text = ScoreManager.GetScore ().ToString ();
-			experience.text = ScoreManager.GetExperience ().ToString ();
-		}
+	private void UpdateValueScore() {
+		// Partie Pause
+		distancePause.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
+		moneyPause.text = ScoreManager.GetScore ().ToString ();
+		// Partie End Game
+		distanceEnd.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
+		moneyEnd.text = ScoreManager.GetScore ().ToString ();
+		experience.text = ScoreManager.GetExperience ().ToString ();
 	}
 
 	public void ResumeGame() {

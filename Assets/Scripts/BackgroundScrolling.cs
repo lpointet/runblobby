@@ -30,7 +30,7 @@ public class BackgroundScrolling : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!player.IsDead ()) {
+		if (Time.timeScale > 0 && !player.IsDead ()) {
 			// Décallage permanent dans le sens inverse du joueur
 			xOffset = Mathf.Repeat (xOffset + LevelManager.levelManager.GetLocalDistance() / ratioVitesse, 1);
 			//float x = Mathf.Repeat (Time.time * scrollSpeed - decalage, 1);

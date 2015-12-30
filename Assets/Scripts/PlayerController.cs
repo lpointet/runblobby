@@ -46,6 +46,8 @@ public class PlayerController : Character {
 	private float speedInFly;
 	private float acceleration = 0f;
 	private bool isFlying = false;
+	private float yPosAirDeath;
+	private float yVariableAirDeath = 0f;
 
     /**
 	 * Getters & Setters
@@ -125,6 +127,13 @@ public class PlayerController : Character {
 	
 	protected override void Update () {
 		base.Update();
+
+		// Vol sur place du fantôme pendant la mort en l'air
+		if (IsDead () && !IsGrounded ()) {
+			yVariableAirDeath += Time.deltaTime;
+			transform.position = new Vector2 (transform.position.x, yPosAirDeath + 0.2f * Mathf.Sin (yVariableAirDeath));
+			Debug.Log (Mathf.Sin (Time.time));
+		}
         // Empêcher que des choses se passent durant la pause
 		if (Time.timeScale == 0 || IsDead ())
             return;
@@ -172,9 +181,9 @@ public class PlayerController : Character {
 		if (speedBeforeFly != speedInFly) {
 			acceleration += Time.deltaTime;
 			if (isFlying)
-				SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration));
+				SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration)); // En une seconde
 			else
-				SetMoveSpeed (Mathf.Lerp (speedInFly, speedBeforeFly, acceleration * 2));
+				SetMoveSpeed (Mathf.Lerp (speedInFly, speedBeforeFly, acceleration * 2)); // En 0.5 seconde
 		}
 	}
 	
@@ -203,8 +212,15 @@ public class PlayerController : Character {
 			myAudio.FallDeathSound ();
 		}
 		else {
+			if (!IsGrounded ()) { // Faire flotter le fantôme si on est en l'air
+				myRb.gravityScale = 0f;
+				isFlying = false;
+				anim.SetBool ("flying", isFlying);
+				yPosAirDeath = transform.position.y;
+				myAudio.AirDeathSound ();
+			} else
+				myAudio.DeathSound ();
 			anim.SetTrigger ("dead");
-			myAudio.DeathSound ();
 		}
 			
 		_StaticFunction.Save ();
@@ -226,7 +242,7 @@ public class PlayerController : Character {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 
-		// TODO il faut enlever tous les pickups
+		// TODO il faut enlever tous les pickups (déjà fait dans levelmanager ?)
 
 		UIManager.uiManager.ToggleEndMenu (true);
 	}

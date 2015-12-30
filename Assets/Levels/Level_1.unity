@@ -961,7 +961,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 3.25
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 437840, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2881,6 +2881,8 @@ MonoBehaviour:
   splashVolume: 0.3
   deathSfx: {fileID: 8300000, guid: 950b5be5d5e79694da7e73b0320e45d6, type: 3}
   deathVolume: 0.8
+  airDeathSfx: {fileID: 8300000, guid: 841a82973743ab5489774f4ada4ac948, type: 3}
+  airDeathVolume: 0.5
   fallDeathSfx: {fileID: 8300000, guid: 1c99a1fd59a2a404cb07db2cdb3fe7ec, type: 3}
   fallDeathVolume: 0.5
 --- !u!82 &830211161

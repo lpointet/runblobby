@@ -71,7 +71,6 @@ public static class _StaticFunction {
 		if (LevelManager.levelManager.IsStory()) {
 			levelCourant.storyData [difficulty].distanceRecord = Mathf.Max(levelCourant.storyData [difficulty].distanceRecord, LevelManager.levelManager.GetDistanceTraveled());
 		}
-		Debug.Log (levelCourant.levelNumber + " " + difficulty + " " + levelCourant.storyData [difficulty].distanceRecord);
 	}
 	/** 
 	 * FIN PARTIE SAUVEGARDE
