@@ -38,7 +38,10 @@ public class ScoreManager : MonoBehaviour {
 		scoreText.text = score.ToString ();
 	}
 
-	public static void AddPoint(int numberPoint, Types type){
+	public static void AddPoint(int numberPoint, Types type) {
+		if (LevelManager.GetPlayer ().IsDead ()) // Empêcher de récupérer des sous/xp après la mort
+			return;
+
 		Multiplier multiplier;
 
 		// On multiplie s'il y a lieu
@@ -50,10 +53,11 @@ public class ScoreManager : MonoBehaviour {
 		}
 
 		// On ajoute les points au bon endroit
-		if (Types.Coin == type)
+		if (Types.Coin == type) {
 			score += numberPoint;
-		else if (Types.Experience == type)
+		} else if (Types.Experience == type) {
 			experience += numberPoint;
+		}
 	}
 	
 	public static void AddMultiplier( int multiplier, Types type, float lifeTime ) {

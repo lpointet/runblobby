@@ -61,6 +61,8 @@ public class LevelManager : MonoBehaviour {
 	private float enemyDistanceToKill;
 	//* Fin partie ennemi intermédiaire
 
+	private float fps;
+
 	public static PlayerController GetPlayer() {
 		return player;
 	}
@@ -175,6 +177,8 @@ public class LevelManager : MonoBehaviour {
 
 		soundVolumeInit = sourceSound.volume;
 		PlayBackgroundMusic ();
+
+		fps = 1.0f / Time.deltaTime;
 	}
 
 	void Update () {
@@ -193,7 +197,7 @@ public class LevelManager : MonoBehaviour {
 	
 		// Distance parcourue depuis le dernier update
 		//localDistance = player.GetMoveSpeed() * Time.smoothDeltaTime;
-		localDistance = player.GetMoveSpeed () / 40f; // TODO choisir un des deux, celui-ci a l'air plus fluide et caler le reste en fonction de cette distance
+		localDistance = player.GetMoveSpeed () / fps; // TODO choisir un des deux, celui-ci a l'air plus fluide
 
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
@@ -277,9 +281,7 @@ public class LevelManager : MonoBehaviour {
 
 	private GameObject GetNewBlock(bool _blockPhase) {
 		if (_blockPhase) {
-			// TODO test random à mettre sous fonction
-			string randomBlock = PoolingManager.current.RandomNameOfPool ("Block", RandomDifficulty(currentPhase)); // Random Block de difficulté adaptée à la currentPhase
-			// fin
+			string randomBlock = PoolingManager.current.RandomPoolName ("Block", RandomDifficulty(currentPhase)); // Random Block de difficulté adaptée à la currentPhase
 			return PoolingManager.current.Spawn (randomBlock);
 		}
 		else
@@ -308,15 +310,16 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void PositionBlock(GameObject obj) {
-		if (obj == null) return;
-		
+		if (obj == null)
+			return;
+
 		// On cherche le dernier élément (vu qu'on place tout par rapport à lui)
 		GameObject lastBlock = blockList[blockList.Count-1];
 		
 		obj.transform.position = lastBlock.transform.position + Vector3.right * sizeLastBlock;
 		obj.transform.rotation = lastBlock.transform.rotation;
         _StaticFunction.SetActiveRecursively(obj, true); // Normalement SetActive(true);
-		
+
 		sizeLastBlock = obj.GetComponent<TiledMap>().NumTilesWide;
 		
 		blockList.Add (obj); // On ajoute à la liste le bloc
@@ -346,6 +349,9 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public static void Kill( Character character, bool ignoreLastWish = false ) {
+		if (character.IsDead ()) // Ce qui te tue ne peut pas te rendre plus mort.
+			return;
+		
 		if( character == GetPlayer() ) {
 			CleanPickup (ignoreLastWish);
 		}

@@ -129,30 +129,30 @@ public class PlayerController : Character {
 		base.Update();
 
 		// Vol sur place du fantôme pendant la mort en l'air
-		if (IsDead () && !IsGrounded ()) {
+		if (IsDead () && !IsGrounded () && transform.position.y > 3.5f) {
 			yVariableAirDeath += Time.deltaTime;
 			transform.position = new Vector2 (transform.position.x, yPosAirDeath + 0.2f * Mathf.Sin (yVariableAirDeath));
-			Debug.Log (Mathf.Sin (Time.time));
 		}
+
         // Empêcher que des choses se passent durant la pause
 		if (Time.timeScale == 0 || IsDead ())
             return;
 
-        if (grounded) // Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
+		if (IsGrounded ()) // Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
 			currentJump = 0;
 		
 		// Gestion des sauts
-		if (Input.GetButtonDown ("Jump") && (grounded || bounced)) {
+		if (Input.GetButtonDown ("Jump") && (IsGrounded () || bounced)) {
 			Jump ();
             bounced = false;
 		}
-		if (Input.GetButtonDown ("Jump") && !grounded && currentJump < maxDoubleJump) {
+		if (Input.GetButtonDown ("Jump") && !IsGrounded () && currentJump < maxDoubleJump) {
 			Jump ();
 			currentJump++;
 		}
 
         // Appelé à la fin d'un vol si en l'air et jusqu'à l'atterrisage
-        if(!grounded && wasFlying)
+		if(!IsGrounded () && wasFlying)
         {
             RaycastHit2D hit;
             CloudBlock cloudBlock;
