@@ -100,7 +100,7 @@ public class PoolingManager : MonoBehaviour {
 			int random = Random.Range (0, list.pools.Count);
 
 			if (list.pools [random].poolName.ToLower ().Contains (subname.ToLower ())) {
-				Debug.Log ("Nouveau block depuis : " + list.pools [random].poolName);
+				Debug.Log ("New block (non index) from: " + list.pools [random].poolName);
 				return list.pools [random].poolName;
 			}
 		} else {
@@ -120,7 +120,7 @@ public class PoolingManager : MonoBehaviour {
 				list.currentIndex = 0;
 			}
 
-			Debug.Log ("Nouveau block depuis : " + listElement);
+			Debug.Log ("New block from: " + listElement);
 			return listElement;
 		}
 
@@ -150,6 +150,6 @@ public class PoolingManager : MonoBehaviour {
 		foreach (PoolingScript item in list) {
 			listName += item.poolName + " ";
 		}
-		Debug.Log ("Nouveau tirage pour la Pool d'index \"" + list[0].poolIndex + "\" : " + listName);
+		Debug.Log ("New sorting for Pool \"" + list[0].poolIndex + "\" : " + listName);
 	}
 }

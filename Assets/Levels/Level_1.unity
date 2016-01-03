@@ -995,6 +995,10 @@ Prefab:
       propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11425018, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
+      propertyPath: lifeTime
+      value: 1000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab6138150586df845bd33c7e6501b9a3, type: 2}
   m_IsPrefabParent: 0
@@ -1775,6 +1779,50 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 406588, guid: c339607079660bb4fb70649790f76d14, type: 2}
   m_PrefabInternal: {fileID: 492321777}
+--- !u!1 &532474879
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 532474880}
+  - 114: {fileID: 532474881}
+  m_Layer: 0
+  m_Name: Leaf7_Pooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &532474880
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 532474879}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.7645018, y: 1.4113754, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1704937277}
+  m_RootOrder: 13
+--- !u!114 &532474881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 532474879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97564a1603567e7468676696e92f203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolName: Leaf7
+  pooledObject: {fileID: 153172, guid: da19e621afeb1e4439322c92b1acfee6, type: 2}
+  pooledAmount: 10
+  willGrow: 1
+  poolIndex: 
 --- !u!1 &537701549
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,6 +1983,50 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 474302, guid: ef4806b266ce2234b9efd7a2869fb2f5, type: 2}
   m_PrefabInternal: {fileID: 598211259}
+--- !u!1 &621491136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 621491137}
+  - 114: {fileID: 621491138}
+  m_Layer: 0
+  m_Name: Leaf4_Pooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &621491137
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 621491136}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.7645018, y: 1.4113754, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1704937277}
+  m_RootOrder: 10
+--- !u!114 &621491138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 621491136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97564a1603567e7468676696e92f203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolName: Leaf4
+  pooledObject: {fileID: 196070, guid: d6f870646451e6e48b27c1e807bcec5e, type: 2}
+  pooledAmount: 10
+  willGrow: 1
+  poolIndex: 
 --- !u!1 &627410099
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,6 +2168,50 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 629480895}
+--- !u!1 &634113038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 634113039}
+  - 114: {fileID: 634113040}
+  m_Layer: 0
+  m_Name: Leaf5_Pooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &634113039
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 634113038}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.7645018, y: 1.4113754, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1704937277}
+  m_RootOrder: 11
+--- !u!114 &634113040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 634113038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97564a1603567e7468676696e92f203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolName: Leaf5
+  pooledObject: {fileID: 158448, guid: e8be6b5927c4a1d4a94735fcd1392574, type: 2}
+  pooledAmount: 10
+  willGrow: 1
+  poolIndex: 
 --- !u!1 &658125988
 GameObject:
   m_ObjectHideFlags: 0
@@ -3266,7 +3402,7 @@ MonoBehaviour:
   - {fileID: 105168, guid: a1fca6b1769193f4786a789e54a69ff9, type: 2}
   - {fileID: 178638, guid: 11973d7773c4ead43bb60d6c5bd8d821, type: 2}
   cameraStartPosition: 0
-  listPhase: e8030000dc050000c4090000
+  listPhase: 0a000000dc050000c4090000
   layerCoins:
     serializedVersion: 2
     m_Bits: 8192
@@ -4742,6 +4878,50 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1224977859}
+--- !u!1 &1226834430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1226834431}
+  - 114: {fileID: 1226834432}
+  m_Layer: 0
+  m_Name: Leaf2_Pooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1226834431
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1226834430}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.7645018, y: 1.4113754, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1704937277}
+  m_RootOrder: 8
+--- !u!114 &1226834432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1226834430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97564a1603567e7468676696e92f203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolName: Leaf2
+  pooledObject: {fileID: 190520, guid: 98d82e343c0754f4880eee7fab4f364e, type: 2}
+  pooledAmount: 10
+  willGrow: 1
+  poolIndex: 
 --- !u!1 &1228990199
 GameObject:
   m_ObjectHideFlags: 0
@@ -5680,6 +5860,50 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1549041658}
+--- !u!1 &1561380749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1561380750}
+  - 114: {fileID: 1561380751}
+  m_Layer: 0
+  m_Name: Leaf3_Pooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1561380750
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1561380749}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.7645018, y: 1.4113754, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1704937277}
+  m_RootOrder: 9
+--- !u!114 &1561380751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1561380749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97564a1603567e7468676696e92f203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolName: Leaf3
+  pooledObject: {fileID: 104304, guid: ef4806b266ce2234b9efd7a2869fb2f5, type: 2}
+  pooledAmount: 10
+  willGrow: 1
+  poolIndex: 
 --- !u!1 &1563108799
 GameObject:
   m_ObjectHideFlags: 0
@@ -5738,6 +5962,50 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &1567177128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1567177129}
+  - 114: {fileID: 1567177130}
+  m_Layer: 0
+  m_Name: Leaf6_Pooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1567177129
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1567177128}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.7645018, y: 1.4113754, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1704937277}
+  m_RootOrder: 12
+--- !u!114 &1567177130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1567177128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97564a1603567e7468676696e92f203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolName: Leaf6
+  pooledObject: {fileID: 176916, guid: 73a83410038a7274c8489eb79d756313, type: 2}
+  pooledAmount: 10
+  willGrow: 1
+  poolIndex: 
 --- !u!1 &1574820189
 GameObject:
   m_ObjectHideFlags: 0
@@ -6145,6 +6413,12 @@ MonoBehaviour:
   - {fileID: 1044815669}
   - {fileID: 224466422}
   - {fileID: 716135460}
+  - {fileID: 1226834432}
+  - {fileID: 1561380751}
+  - {fileID: 621491138}
+  - {fileID: 634113040}
+  - {fileID: 1567177130}
+  - {fileID: 532474881}
   - {fileID: 380668171}
   - {fileID: 204020958}
 --- !u!4 &1704937277
@@ -6165,6 +6439,12 @@ Transform:
   - {fileID: 1044815670}
   - {fileID: 555922723}
   - {fileID: 716135459}
+  - {fileID: 1226834431}
+  - {fileID: 1561380750}
+  - {fileID: 621491137}
+  - {fileID: 634113039}
+  - {fileID: 1567177129}
+  - {fileID: 532474880}
   m_Father: {fileID: 0}
   m_RootOrder: 7
 --- !u!1 &1706586255

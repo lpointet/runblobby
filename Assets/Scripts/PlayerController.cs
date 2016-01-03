@@ -110,6 +110,7 @@ public class PlayerController : Character {
 	
 	protected override void Init() {
 		base.Init();
+
 		SetMoveSpeed( GetInitialMoveSpeed() );
 		lerpingHP = GetHealthPoint ();
 		isFlying = false;

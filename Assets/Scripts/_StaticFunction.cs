@@ -3,7 +3,53 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 public static class _StaticFunction {
-	
+
+	/**
+	 * PARTIE MATH
+	 */
+	// Loi de Poisson (avec k entier) : P(X=k, lambda) = (lambda^k * e^-lambda) / k!
+	public static float LoiPoisson(int variable, float esperance, bool cumule = false) {
+		if (esperance < 0) // L'esperance ne peut être négative
+			esperance = 0;
+		
+		float lambdaPowered = Mathf.Exp (-esperance);
+
+		if (!cumule) { // On souhaite la valeur discrête
+			return (MathPower (esperance, variable) * lambdaPowered) / Factorial (variable);
+		} else { // On souhaite les valeurs cumulées
+			float sumCumule = 0;
+			// On somme les lambda^k / k!
+			for (int i = variable; i >= 0; i--) {
+				sumCumule += MathPower (esperance, i) / Factorial (i);
+			}
+			// On multiplie le tout par e^lambda
+			return sumCumule * lambdaPowered;
+		}
+	}
+
+	private static long Factorial(long value) {
+		if (value <= 1)
+			return 1;
+		return value * Factorial (--value);
+	}
+
+	public static float MathPower(float number, int exposant) {
+		float result = 1.0f;
+
+		while (exposant > 0)
+		{
+			if (exposant % 2 == 1)
+				result *= number;
+			exposant >>= 1;
+			number *= number;
+		}
+
+		return result;
+	}
+	/**
+	 * FIN PARTIE MATH
+	 */
+
 	/** 
 	 * PARTIE SAUVEGARDE
 	 */ 
@@ -106,20 +152,6 @@ public static class _StaticFunction {
                 SetActiveRecursively(childTransform.gameObject, active);
         }
     }
-
-    public static float MathPower(float number, int exposant) {
-		float result = 1.0f;
-
-		while (exposant > 0)
-		{
-			if (exposant % 2 == 1)
-				result *= number;
-			exposant >>= 1;
-			number *= number;
-		}
-	
-		return result;
-	}
 
 	// Mapping d'une valeur sur une échelle en fonction d'une autre échelle
 	// On utilise la fonction : outCurrent = (inCurrent - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
