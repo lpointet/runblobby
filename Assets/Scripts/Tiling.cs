@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+// TODO potentiellement à supprimer selon le mode de gestion des backgrounds
 [RequireComponent (typeof(SpriteRenderer))]
 
 public class Tiling : MonoBehaviour {

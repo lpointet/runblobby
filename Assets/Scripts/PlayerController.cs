@@ -139,6 +139,10 @@ public class PlayerController : Character {
 		if (Time.timeScale == 0 || IsDead ())
             return;
 
+		// TODO rapprocher le joueur douuuucement si on est pas en x = 0
+		if (transform.position.x < 0)
+			transform.Translate (Vector3.right * 0.005f);
+
 		if (IsGrounded ()) // Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
 			currentJump = 0;
 		

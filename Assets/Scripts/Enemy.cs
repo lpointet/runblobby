@@ -9,6 +9,8 @@ public class Enemy : Character {
 	[SerializeField] private float distanceToKill;
 	[SerializeField] private int damageToGive;
 	[SerializeField] private int pointScore;
+	[SerializeField] private string name;
+	[SerializeField] private string surName;
 	/* End of Stats */
 
 	public bool movingEnemy;
@@ -21,21 +23,19 @@ public class Enemy : Character {
 	public float wallCheckRadius;
 	public LayerMask whatIsWall;
 
+	public float[] startPosition = new float[2];
+
 	[Header("Coin Drop")]
 	public float frequence = 0.01f;
-	public float mediumValue = 1f;
-	public GameObject[] coins;
+	public float mediumValue = 1.1f; // Offre une bien plus grande variété de feuilles que 1f
+	public GameObject[] coins; // TODO avoir ce tableau en "fixe" pour tous les enfants de Enemy
 	private CoinDrop[] possibleCoins;
-	public LayerMask layerGround;
+	[SerializeField] protected LayerMask layerGround; // TODO autre possibilité pour que le paramètre passe aux enfants ?
 	private float distanceParcourue = 0;
 	private float pointLastDropCheck = 0;
 	public float intervalleDrop = 0.5f;
 	private float mediumSum; // Somme des mediumValue à chaque pièce qui tombe + 1 (= total optimal futur)
 	private float currentSum = 0f; // Somme des value de coin réellement tombées (= total courant)
-
-	private int sommeReel = 0;
-	private float sommeVoulu = 0;
-	private int nombrePiece = 0;
 
 	/**
 	 * Getters & Setters
@@ -52,6 +52,14 @@ public class Enemy : Character {
 		return pointScore;
 	}
 
+	public string GetName() {
+		return name;
+	}
+
+	public string GetSurName() {
+		return surName;
+	}
+
 	public void SetDistanceToKill( float value ) {
 		distanceToKill = value;
 	}
@@ -62,6 +70,18 @@ public class Enemy : Character {
 
 	public void SetPointScore( int value ) {
 		pointScore = value;
+	}
+
+	public void SetName( string value ) {
+		name = value;
+	}
+
+	public void SetSurName( string value ) {
+		surName = value;
+	}
+
+	public Vector2 GetStartPosition () {
+		return new Vector2 (startPosition [0], startPosition [1]);
 	}
 	/* End of Getters & Setters */
 
@@ -158,6 +178,9 @@ public class Enemy : Character {
 	protected override void Update () {
 		base.Update();
 
+		if (LevelManager.GetPlayer ().IsDead () || !isActiveAndEnabled)
+			return;
+
 		// On n'appelle ça que si l'enemy bouge
 		if (movingEnemy) {
 			// Vérifie que l'ennemi touche un mur ou non
@@ -176,8 +199,7 @@ public class Enemy : Character {
 		}
 
 		// Laché de feuilles aléatoires
-		if (!LevelManager.GetPlayer ().IsDead ())
-			MoneyDrop ();
+		MoneyDrop ();
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
@@ -195,7 +217,7 @@ public class Enemy : Character {
 		Despawn();
 	}
 
-	protected void Despawn() {
+	protected virtual void Despawn() {
 		gameObject.SetActive (false);
 	}
 
@@ -209,8 +231,10 @@ public class Enemy : Character {
 			pointLastDropCheck = distanceParcourue;
 
 			if (Random.Range (0f, 1f) <= frequence) { // On pose une pièce en respectant la fréquence
+				
 				RaycastHit2D hit;
 				hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround); // On essaye de trouver le sol, sinon on ne fait rien
+
 				if (hit.collider != null) {
 					// On calcule quelle type de pièce doit tomber en fonction de ce qui est souhaité en moyenne et des pièces précédentes
 					int cannePeche = Random.Range(1, 101); // entre 1 et 100 inclus
@@ -234,8 +258,6 @@ public class Enemy : Character {
 							break;
 						}
 					}
-
-					
 				}
 			}
 		}

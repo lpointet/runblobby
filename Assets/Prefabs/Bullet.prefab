@@ -173,7 +173,7 @@ MonoBehaviour:
   hitParticle: {fileID: 463800, guid: 26427447a69865c48849f663ccb86176, type: 2}
   layerCollision:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 34304
   despawnTimer: 2.5
 --- !u!212 &21276992
 SpriteRenderer:
@@ -222,7 +222,7 @@ Prefab:
       objectReference: {fileID: 463800, guid: 26427447a69865c48849f663ccb86176, type: 2}
     - target: {fileID: 0}
       propertyPath: layerCollision.m_Bits
-      value: 1536
+      value: 34304
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_CollisionDetection

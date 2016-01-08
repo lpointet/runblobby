@@ -19,7 +19,9 @@ public class UIManager : MonoBehaviour {
 	private float enemyDistanceToKill;
 	
 	private Enemy enemyEnCours = null;
-	private bool EnemyGUIActive = false;
+	private bool enemyGUIActive = false;
+	public Text enemyName;
+	public Text enemySurname;
 
 	// Barre de vie
 	public GameObject healthBar;
@@ -49,6 +51,16 @@ public class UIManager : MonoBehaviour {
 	public AudioClip endVictory;
 	private AudioSource endAudio;
 
+	// Déplacement des noms des ennemis
+	private Vector2 namePosition;
+	private Vector2 surnamePosition;
+	private Vector2 positionNameBeforeEndMove;
+	private Vector2 positionSurnameBeforeEndMove;
+	private float textTimeToMid;
+	private float textTimeMid;
+	private float textTimeToEnd;
+	private float textTimeTotal;
+
     void Awake() {
 		if (uiManager == null)
 			uiManager = GameObject.FindGameObjectWithTag ("LevelCanvas").GetComponent<UIManager> ();
@@ -66,14 +78,25 @@ public class UIManager : MonoBehaviour {
 		cdAnim = cdObject.GetComponent<Animator> ();
 
 		endUI.SetActive (false);
+
+		ToggleEnemyGUI (false);
+
+		// Position des textes : ceci est la position de départ, le milieu étant (0, 0) et la fin -position de départ
+		namePosition = new Vector2((Screen.width + enemyName.rectTransform.sizeDelta.x) / 2f, enemyName.rectTransform.anchoredPosition.y);
+		surnamePosition = new Vector2(-(Screen.width + enemySurname.rectTransform.sizeDelta.x) / 2f, enemySurname.rectTransform.anchoredPosition.y);
+		enemyName.rectTransform.anchoredPosition = namePosition;
+		enemySurname.rectTransform.anchoredPosition = surnamePosition;
+
+		textTimeTotal = LevelManager.levelManager.enemySpawnDelay;
+		textTimeToMid = 0.2f * textTimeTotal;
+		textTimeToEnd = 0.2f * textTimeTotal;
+		textTimeMid = 0.6f * textTimeTotal;
 	}
 	
 	void Update() {
 		enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
 
-        //* MENU PAUSE
         PauseManager();
-        //* FIN MENU PAUSE
 
         EnemySpawnManager();
 
@@ -102,7 +125,7 @@ public class UIManager : MonoBehaviour {
         // Variable changée par la classe StartEnemyBlock sur le OnTriggerEnter2D, marque le début du compte à rebours pour le boss
 		if( LevelManager.levelManager.IsEnemyToSpawn() ) {
 			// On affiche la barre de vie vide, pour pouvoir la remplir le temps du spawn (= timer d'apparition)
-            if( !EnemyGUIActive ) {
+            if( !enemyGUIActive ) {
                 ToggleEnemyGUI( true );
             }
 
@@ -114,17 +137,38 @@ public class UIManager : MonoBehaviour {
 				lerpingTimeEnemyBar = 0;
                 LevelManager.levelManager.SetEnemyToSpawn( false ); // On sort de la boucle d'apparition
 			}
+
+			// On gère le déplacement des textes
+			if (textTimeTotal > textTimeMid + textTimeToEnd) {
+				float lerpTime = (LevelManager.levelManager.enemySpawnDelay - textTimeTotal) / textTimeToMid;
+				float posNameX = Mathf.Lerp (namePosition.x, 0, lerpTime);
+				float posSurnameX = Mathf.Lerp (surnamePosition.x, 0, lerpTime);
+				enemyName.rectTransform.anchoredPosition = new Vector2(posNameX, enemyName.rectTransform.anchoredPosition.y);
+				enemySurname.rectTransform.anchoredPosition = new Vector2(posSurnameX, enemySurname.rectTransform.anchoredPosition.y);
+			} else if (textTimeTotal > textTimeToEnd) {
+				enemyName.rectTransform.anchoredPosition = new Vector2(enemyName.rectTransform.anchoredPosition.x - 1f, enemyName.rectTransform.anchoredPosition.y);
+				enemySurname.rectTransform.anchoredPosition = new Vector2(enemySurname.rectTransform.anchoredPosition.x + 1f, enemySurname.rectTransform.anchoredPosition.y);
+				positionNameBeforeEndMove = enemyName.rectTransform.anchoredPosition;
+				positionSurnameBeforeEndMove = enemySurname.rectTransform.anchoredPosition;
+			} else if (textTimeTotal > 0) {
+				float lerpTime = (LevelManager.levelManager.enemySpawnDelay - textTimeMid - textTimeToEnd - textTimeTotal) / textTimeToEnd;
+				float posNameX = Mathf.Lerp (positionNameBeforeEndMove.x, -namePosition.x, lerpTime);
+				float posSurnameX = Mathf.Lerp (positionSurnameBeforeEndMove.x, -surnamePosition.x, lerpTime);
+				enemyName.rectTransform.anchoredPosition = new Vector2(posNameX, enemyName.rectTransform.anchoredPosition.y);
+				enemySurname.rectTransform.anchoredPosition = new Vector2(posSurnameX, enemySurname.rectTransform.anchoredPosition.y);
+			}
+			textTimeTotal -= Time.deltaTime;
 		}
     }
 
     private void EnemyManager() {
         if( null != enemyEnCours ) {
-            if( !EnemyGUIActive ) {
+            if( !enemyGUIActive ) {
                 ToggleEnemyGUI( true );
             }
            fillHealthBar.fillAmount = enemyEnCours.GetHealthPoint() / (float)enemyEnCours.GetHealthPointMax();
         }
-        else if( !LevelManager.levelManager.IsEnemyToSpawn() && EnemyGUIActive ) {
+        else if( !LevelManager.levelManager.IsEnemyToSpawn() && enemyGUIActive ) {
             ToggleEnemyGUI( false );
         }
     }
@@ -150,13 +194,15 @@ public class UIManager : MonoBehaviour {
 		pauseUI.SetActive (active);
 		standardUI.SetActive (!active);
 
-		Time.timeScale = active == true ? 0 : 1;
+		Time.timeScale = active ? 0 : 1;
 	}
 
     private void ToggleEnemyGUI( bool active ) {
-        EnemyGUIActive = active;
+        enemyGUIActive = active;
         foreach (Transform obj in healthBar.transform)
             obj.gameObject.SetActive( active );
+		enemyName.gameObject.SetActive (active);
+		enemySurname.gameObject.SetActive (active);
     }
 
 	public void ToggleEndMenu(bool active) {

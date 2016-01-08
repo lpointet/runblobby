@@ -92,7 +92,7 @@ public class Character : MonoBehaviour {
 		// On fait le deuil
 	}
 	
-	public void Hurt(int damage) {
+	public virtual void Hurt(int damage) {
 		if( invincible ) {
 			return;
 		}

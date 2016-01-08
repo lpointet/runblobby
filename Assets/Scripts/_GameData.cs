@@ -53,6 +53,12 @@ public class GameData {
 [Serializable]
 public class PlayerData {
 
+	public enum Difficulty {
+		Normal,
+		Hard,
+		Hell
+	};
+
 	public string name; // Servira si un jour on doit différencier des joueurs
 
 	/* ETAT COURANT DU JEU */

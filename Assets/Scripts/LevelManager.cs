@@ -51,7 +51,7 @@ public class LevelManager : MonoBehaviour {
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
 	private int currentPhase;	// Phase en cours
 	private bool blockPhase;	// Phase avec des blocs ou avec un ennemi
-	public LayerMask layerCoins; // Permet de supprimer les pièces que les ennemis "perdent"
+	public LayerMask layerNotGround; // Permet de supprimer les pièces que les ennemis "perdent", ou autres obstacles invoqués (bombes...)
 	private bool premierBlock = false;	// Instantier le premier bloc ennemi
 	public Enemy[] enemyMiddle;	// Liste des ennemis
 	private Enemy enemyEnCours;
@@ -213,12 +213,12 @@ public class LevelManager : MonoBehaviour {
 			if( IsEnemyToSpawn() && !enemySpawnLaunched ) {
                 StartCoroutine( SpawnEnemy( enemyMiddle[currentPhase] ) );
                 enemySpawnLaunched = true;
-
-                // Le joueur peut tirer
-                player.SetFireAbility( true );
             }
 			
 			if(enemyEnCours != null) {
+				// Le joueur peut tirer
+				player.SetFireAbility( true );
+
                 // Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
                 SetEnemyDistanceToKill( GetEnemyDistanceToKill() - localDistance );
 
@@ -253,10 +253,11 @@ public class LevelManager : MonoBehaviour {
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra
 		if (blockList [0].transform.position.x + sizeFirstBlock < cameraStartPosition) {
-			// On supprime les objets de la couche "Coins" si on est sur les blocks du boss (les pièces que drop le boss)
+			// On supprime les objets qui ne sont pas sur la couche "Ground" si on est sur les blocks du boss
+			// Supprime les pièces, les bombes...
 			if(blockList[0].name.Contains(blockEnemy[1].name)) {
 				foreach (Transform t in blockList[0].GetComponentsInChildren(typeof(Transform), true)) {
-					if ((1 << t.gameObject.layer & layerCoins) != 0) {
+					if ((1 << t.gameObject.layer & layerNotGround) != 0) {
 						t.parent = null;
 						t.gameObject.SetActive (false);
 					}
@@ -332,10 +333,19 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private IEnumerator SpawnEnemy(Enemy enemy) {
+		Enemy tempEnemy = Instantiate(enemy) as Enemy; // Permet d'accéder à l'ennemi avant qu'il ne soit visible pour le joueur
+		tempEnemy.gameObject.SetActive (false);
+		UIManager.uiManager.enemyName.text = tempEnemy.GetName ();
+		UIManager.uiManager.enemySurname.text = tempEnemy.GetSurName ();
         yield return new WaitForSeconds( enemySpawnDelay );
-		Vector2 enemyTransform = new Vector2 (player.transform.position.x + 12, player.transform.position.y);
-		enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
+		//Vector2 enemyTransform = new Vector2 (player.transform.position.x + 14, player.transform.position.y);
+		//enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
+		enemyEnCours = tempEnemy;
+		tempEnemy = null;
+		enemyEnCours.transform.position = enemyEnCours.GetStartPosition ();
+		enemyEnCours.transform.rotation = Quaternion.identity;
 		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
+		enemyEnCours.gameObject.SetActive (true);
 	}
 
 	public bool IsBlockPhase() {
