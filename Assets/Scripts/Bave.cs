@@ -43,14 +43,14 @@ public class Bave : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D other) {
-		if (other.name == "Heros") {
+		if (other.name == "Heros" && LevelManager.GetPlayer().IsGrounded() && !LevelManager.GetPlayer().IsFlying() && !LevelManager.GetPlayer().IsDead()) {
 			Transform herosTransform = other.transform;
-			herosTransform.position = new Vector2 (herosTransform.position.x - backForce, herosTransform.position.y);
+			herosTransform.Translate (Vector2.left * backForce);
 		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.name == "Heros") {
+		if (other.name == "Heros" && LevelManager.GetPlayer().IsGrounded() && !LevelManager.GetPlayer().IsFlying()) {
 			LevelManager.GetPlayer ().Hurt (damageOnEnter);
 		}
 	}

@@ -39,12 +39,12 @@ public class PlayerSoundEffect : MonoBehaviour {
 			// Saut appelé par le PlayerController
 
 			// Ecrasement
-			if (!wasGrounded && player.IsGrounded()) {
+			if (!wasGrounded && player.IsGrounded() && !player.IsFlying ()) {
 				SplashSound();
 			}
 
 			// Déplacement
-			else if (!soundSource.isPlaying && player.IsGrounded () && Time.time > timeToMove) {
+			else if (!soundSource.isPlaying && player.IsGrounded () && player.IsFlying () && Time.time > timeToMove) {
 				FootStepSound();
 
 				timeToMove = Time.time + (player.GetInitialMoveSpeed () / player.GetMoveSpeed()) * (4 / 7f); // Infinity si MoveSpeed = 0

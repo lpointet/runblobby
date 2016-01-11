@@ -92,6 +92,14 @@ public class PlayerController : Character {
         	lastWish = null;
 		}
     }
+
+	public bool IsGrounded() {
+		return grounded;
+	}
+
+	public bool IsFlying() {
+		return isFlying;
+	}
     /* End of Getters & Setters */
 
     protected override void Awake() {
@@ -203,12 +211,14 @@ public class PlayerController : Character {
 		myRb.velocity = new Vector2(0, GetJumpHeight());
 		myAudio.JumpSound ();
     }
-	
+
+	// TODO supprimer l'apparition du fantôme quand on meurt avec le LastWish
 	public override void OnKill() {
         if( HasLastWish() && !lastWish.IsLaunched() ) {
 			lastWish.Launch();
             return;
 		}
+
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 
@@ -279,10 +289,6 @@ public class PlayerController : Character {
     public void RemovePickup( Collider2D pickup ) {
         pickups.Remove( pickup );
     }
-
-	public bool IsGrounded() {
-		return grounded && !isFlying;
-	}
 
     public void Fly() {
 		isFlying = true;

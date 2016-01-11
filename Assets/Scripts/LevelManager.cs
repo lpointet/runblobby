@@ -178,7 +178,7 @@ public class LevelManager : MonoBehaviour {
 		soundVolumeInit = sourceSound.volume;
 		PlayBackgroundMusic ();
 
-		fps = 1.0f / Time.deltaTime;
+		fps = 1.0f / Time.fixedDeltaTime;
 	}
 
 	void Update () {
@@ -359,8 +359,8 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public static void Kill( Character character, bool ignoreLastWish = false ) {
-		if (character.IsDead ()) // Ce qui te tue ne peut pas te rendre plus mort.
-			return;
+//		if (character.IsDead ()) // Ce qui te tue ne peut pas te rendre plus mort.
+//			return;
 		
 		if( character == GetPlayer() ) {
 			CleanPickup (ignoreLastWish);
