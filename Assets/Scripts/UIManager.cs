@@ -141,25 +141,29 @@ public class UIManager : MonoBehaviour {
 			// On gère le déplacement des textes
 			if (textTimeTotal > textTimeMid + textTimeToEnd) {
 				float lerpTime = (LevelManager.levelManager.enemySpawnDelay - textTimeTotal) / textTimeToMid;
-				float posNameX = Mathf.Lerp (namePosition.x, 0, lerpTime);
-				float posSurnameX = Mathf.Lerp (surnamePosition.x, 0, lerpTime);
-				enemyName.rectTransform.anchoredPosition = new Vector2(posNameX, enemyName.rectTransform.anchoredPosition.y);
-				enemySurname.rectTransform.anchoredPosition = new Vector2(posSurnameX, enemySurname.rectTransform.anchoredPosition.y);
+				MoveIntroEnemyText (enemyName, lerpTime, namePosition.x, 0);
+				MoveIntroEnemyText (enemySurname, lerpTime, surnamePosition.x, 0);
 			} else if (textTimeTotal > textTimeToEnd) {
-				enemyName.rectTransform.anchoredPosition = new Vector2(enemyName.rectTransform.anchoredPosition.x - 1f, enemyName.rectTransform.anchoredPosition.y);
-				enemySurname.rectTransform.anchoredPosition = new Vector2(enemySurname.rectTransform.anchoredPosition.x + 1f, enemySurname.rectTransform.anchoredPosition.y);
+				enemyName.rectTransform.anchoredPosition = new Vector2 (enemyName.rectTransform.anchoredPosition.x - 1f, enemyName.rectTransform.anchoredPosition.y);
+				enemySurname.rectTransform.anchoredPosition = new Vector2 (enemySurname.rectTransform.anchoredPosition.x + 1f, enemySurname.rectTransform.anchoredPosition.y);
 				positionNameBeforeEndMove = enemyName.rectTransform.anchoredPosition;
 				positionSurnameBeforeEndMove = enemySurname.rectTransform.anchoredPosition;
 			} else if (textTimeTotal > 0) {
 				float lerpTime = (LevelManager.levelManager.enemySpawnDelay - textTimeMid - textTimeToEnd - textTimeTotal) / textTimeToEnd;
-				float posNameX = Mathf.Lerp (positionNameBeforeEndMove.x, -namePosition.x, lerpTime);
-				float posSurnameX = Mathf.Lerp (positionSurnameBeforeEndMove.x, -surnamePosition.x, lerpTime);
-				enemyName.rectTransform.anchoredPosition = new Vector2(posNameX, enemyName.rectTransform.anchoredPosition.y);
-				enemySurname.rectTransform.anchoredPosition = new Vector2(posSurnameX, enemySurname.rectTransform.anchoredPosition.y);
+				MoveIntroEnemyText (enemyName, lerpTime, positionNameBeforeEndMove.x, -namePosition.x);
+				MoveIntroEnemyText (enemySurname, lerpTime, positionSurnameBeforeEndMove.x, -surnamePosition.x);
+			} else if (textTimeTotal <= 0) {
+				enemyName.enabled = false;
+				enemySurname.enabled = false;
 			}
 			textTimeTotal -= Time.deltaTime;
 		}
     }
+
+	private void MoveIntroEnemyText(Text movingText, float currentTime, float posBegin, float posEnd) {
+		float posCurrent = Mathf.Lerp (posBegin, posEnd, currentTime);
+		movingText.rectTransform.anchoredPosition = new Vector2 (posCurrent, movingText.rectTransform.anchoredPosition.y);
+	}
 
     private void EnemyManager() {
         if( null != enemyEnCours ) {

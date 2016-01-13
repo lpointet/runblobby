@@ -125,6 +125,8 @@ MonoBehaviour:
   distanceToKill: 50
   damageToGive: 1
   pointScore: 100
+  name: Name
+  surName: Surname
   movingEnemy: 0
   moveRight: 0
   wallCheck: {fileID: 464780}
@@ -132,6 +134,9 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 1024
+  startPosition:
+  - 14
+  - 0
   frequence: 0.1
   mediumValue: 7
   coins:
@@ -278,6 +283,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: mediumValue
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: name
+      value: Name
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: surName
+      value: Surname
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: startPosition.Array.data[0]
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

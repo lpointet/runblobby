@@ -138,7 +138,7 @@ public class PlayerController : Character {
 		base.Update();
 
 		// Vol sur place du fantôme pendant la mort en l'air
-		if (IsDead () && !IsGrounded () && transform.position.y > 3.5f) {
+		if (IsDead () && !HasLastWish() && !IsGrounded () && transform.position.y > 3.5f) {
 			yVariableAirDeath += Time.deltaTime;
 			transform.position = new Vector2 (transform.position.x, yPosAirDeath + 0.2f * Mathf.Sin (yVariableAirDeath));
 		}
@@ -259,7 +259,7 @@ public class PlayerController : Character {
 
 		// TODO il faut enlever tous les pickups (déjà fait dans levelmanager ?)
 
-		UIManager.uiManager.ToggleEndMenu (true);
+		//UIManager.uiManager.ToggleEndMenu (true);
 	}
 	
 	public void SetFireAbility( bool able ) {

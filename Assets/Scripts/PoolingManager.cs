@@ -89,6 +89,7 @@ public class PoolingManager : MonoBehaviour {
 //		return "";
 //	}
 
+	// Retourne le nom de la PoolingScript si celle-ci correspond au type recherché
 	public string RandomPoolName(string subname, string index = null) {
 		OrderedPools list;
 

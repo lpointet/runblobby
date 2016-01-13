@@ -353,9 +353,13 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void FinDuMonde () {
-		//LevelManager.Kill( player, true ); // TODO adapter le code pour la fin du niveau en mode histoire
-		UIManager.uiManager.ToggleEndMenu(true);
-		CleanPickup (true);
+		// TODO adapter le code pour la fin du niveau en mode histoire
+		if (IsStory ()) {
+			GetPlayer ().SetMoveSpeed (0);
+			GetPlayer ().gameObject.SetActive (false);
+			UIManager.uiManager.ToggleEndMenu (true);
+			CleanPickup (true);
+		}
 	}
 
 	public static void Kill( Character character, bool ignoreLastWish = false ) {
