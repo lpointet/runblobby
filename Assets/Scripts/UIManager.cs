@@ -224,6 +224,12 @@ public class UIManager : MonoBehaviour {
 		distanceEnd.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
 		moneyEnd.text = ScoreManager.GetScore ().ToString ();
 		experience.text = ScoreManager.GetExperience ().ToString ();
+		int diffLevel = _StaticFunction.LevelFromExp (GameData.gameData.playerData.experience + ScoreManager.GetExperience ()) - _StaticFunction.LevelFromExp (GameData.gameData.playerData.experience);
+		if (diffLevel != 0) {
+			// Si l'XP gagnée permet de passer un level ou plus, on l'affiche
+			playerLevel.text = "+" + diffLevel.ToString();
+		} else
+			playerLevel.text = "";
 	}
 
 	public void ResumeGame() {

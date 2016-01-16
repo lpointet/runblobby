@@ -147,7 +147,7 @@ public class PlayerController : Character {
 		if (Time.timeScale == 0 || IsDead ())
             return;
 
-		// TODO rapprocher le joueur douuuucement si on est pas en x = 0
+		// Rapprocher le joueur douuuucement si on est pas en x = 0
 		if (transform.position.x < 0)
 			transform.Translate (Vector3.right * 0.005f);
 
@@ -256,10 +256,6 @@ public class PlayerController : Character {
 	public void OnVictory() {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
-
-		// TODO il faut enlever tous les pickups (déjà fait dans levelmanager ?)
-
-		//UIManager.uiManager.ToggleEndMenu (true);
 	}
 	
 	public void SetFireAbility( bool able ) {

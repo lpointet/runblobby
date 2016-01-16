@@ -320,27 +320,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22423426, guid: bbe326cd18c205a4283c8d9b0b829713, type: 2}
       propertyPath: m_AnchorMin.x
-      value: .349999994
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 22423426, guid: bbe326cd18c205a4283c8d9b0b829713, type: 2}
       propertyPath: m_AnchorMin.y
-      value: .25999999
+      value: 0.26
       objectReference: {fileID: 0}
     - target: {fileID: 22423426, guid: bbe326cd18c205a4283c8d9b0b829713, type: 2}
       propertyPath: m_AnchorMax.x
-      value: .649999976
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 22423426, guid: bbe326cd18c205a4283c8d9b0b829713, type: 2}
       propertyPath: m_AnchorMax.y
-      value: .340000004
+      value: 0.34
       objectReference: {fileID: 0}
     - target: {fileID: 22423426, guid: bbe326cd18c205a4283c8d9b0b829713, type: 2}
       propertyPath: m_Pivot.x
-      value: .5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22423426, guid: bbe326cd18c205a4283c8d9b0b829713, type: 2}
       propertyPath: m_Pivot.y
-      value: .5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 146666, guid: bbe326cd18c205a4283c8d9b0b829713, type: 2}
       propertyPath: m_Name
@@ -4530,6 +4530,82 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 433664, guid: c46dcd20b7baa99459eb60f44616cfbd, type: 2}
   m_PrefabInternal: {fileID: 996227799}
+--- !u!1 &1146446323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 177076, guid: bbe326cd18c205a4283c8d9b0b829713, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 1146446324}
+  - 222: {fileID: 1146446326}
+  - 114: {fileID: 1146446325}
+  m_Layer: 5
+  m_Name: Level
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1146446324
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 22498732, guid: bbe326cd18c205a4283c8d9b0b829713,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1146446323}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.25, z: 1}
+  m_Children: []
+  m_Father: {fileID: 94122002}
+  m_RootOrder: 2
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 100, y: 0}
+  m_SizeDelta: {x: 400, y: 168}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &1146446325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11448460, guid: bbe326cd18c205a4283c8d9b0b829713,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1146446323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.90912783, b: 0.5294118, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 5cabc87b9cf8a164991f3760b30edf11, type: 3}
+    m_FontSize: 192
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 192
+    m_Alignment: 8
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: +7
+--- !u!222 &1146446326
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 22246862, guid: bbe326cd18c205a4283c8d9b0b829713,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1146446323}
 --- !u!1001 &1155698687
 Prefab:
   m_ObjectHideFlags: 0
@@ -4946,7 +5022,7 @@ MonoBehaviour:
   distanceEnd: {fileID: 1317522053}
   moneyEnd: {fileID: 943379468}
   experience: {fileID: 94122003}
-  playerLevel: {fileID: 0}
+  playerLevel: {fileID: 1146446325}
   endFailure: {fileID: 0}
   endVictory: {fileID: 0}
 --- !u!1 &1224977859
