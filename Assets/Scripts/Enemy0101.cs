@@ -2,9 +2,10 @@
 using System.Collections;
 
 /* GASTON LE GASTEROPODE
- * Il se contente d'envoyer des bombes/glands de temps en temps, en parabole
+ * Il se contente d'envoyer de la bave de temps en temps, qui colle/blesse le joueur
+ * TODO : en hard, renvoyer les missiles du joueur de temps en temps selon la normale de la carapace
  */
-public class Enemy1Level01 : Enemy {
+public class Enemy0101 : Enemy {
 
 	[Header("Gaston Special")]
 	public float delayBaving = 2f;

@@ -13,15 +13,7 @@ public class Enemy : Character {
 	[SerializeField] private string surName;
 	/* End of Stats */
 
-	public bool movingEnemy;
-	public bool moveRight;
-
-	private Rigidbody2D myRb;
-
-	private bool hittingWall;
-	public Transform wallCheck;
-	public float wallCheckRadius;
-	public LayerMask whatIsWall;
+	protected Rigidbody2D myRb;
 
 	public float[] startPosition = new float[2];
 
@@ -178,25 +170,8 @@ public class Enemy : Character {
 	protected override void Update () {
 		base.Update();
 
-		if (LevelManager.GetPlayer ().IsDead () || !isActiveAndEnabled)
+		if (LevelManager.GetPlayer ().IsDead () || IsDead())
 			return;
-
-		// On n'appelle ça que si l'enemy bouge
-		if (movingEnemy) {
-			// Vérifie que l'ennemi touche un mur ou non
-			hittingWall = Physics2D.OverlapCircle (wallCheck.position, wallCheckRadius, whatIsWall);
-			// Changement de direction si on touche un mur
-			if (hittingWall)
-				moveRight = !moveRight;
-			// Position et échelle selon la direction
-			if (moveRight) {
-				myTransform.localScale = new Vector3 (-1f, 1f, 1f);
-				myRb.velocity = new Vector2 (GetMoveSpeed(), myRb.velocity.y);
-			} else {
-				myTransform.localScale = new Vector3 (1f, 1f, 1f);
-				myRb.velocity = new Vector2 (-GetMoveSpeed(), myRb.velocity.y);
-			}
-		}
 
 		// Laché de feuilles aléatoires
 		MoneyDrop ();

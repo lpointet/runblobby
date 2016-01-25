@@ -48,6 +48,7 @@ public class PlayerController : Character {
 	private bool isFlying = false;
 	private float yPosAirDeath;
 	private float yVariableAirDeath = 0f;
+	// TODO ratioMoveSpeed = GetMoveSpeed () / GetInitialMoveSpeed() à remplacer dans tous les scripts qui appellent ça ?
 
     /**
 	 * Getters & Setters

@@ -196,8 +196,8 @@ public class LevelManager : MonoBehaviour {
 		sourceSound.volume = soundVolumeInit;
 	
 		// Distance parcourue depuis le dernier update
-		//localDistance = player.GetMoveSpeed() * Time.smoothDeltaTime;
-		localDistance = player.GetMoveSpeed () / fps; // TODO choisir un des deux, celui-ci a l'air plus fluide
+		localDistance = player.GetMoveSpeed() * Time.smoothDeltaTime;
+		//localDistance = player.GetMoveSpeed () / fps; // TODO choisir un des deux, celui-ci a l'air plus fluide
 
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
@@ -363,9 +363,6 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public static void Kill( Character character, bool ignoreLastWish = false ) {
-//		if (character.IsDead ()) // Ce qui te tue ne peut pas te rendre plus mort.
-//			return;
-		
 		if( character == GetPlayer() ) {
 			CleanPickup (ignoreLastWish);
 		}

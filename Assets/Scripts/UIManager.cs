@@ -123,19 +123,19 @@ public class UIManager : MonoBehaviour {
 
     private void EnemySpawnManager() {
         // Variable changée par la classe StartEnemyBlock sur le OnTriggerEnter2D, marque le début du compte à rebours pour le boss
-		if( LevelManager.levelManager.IsEnemyToSpawn() ) {
+		if (LevelManager.levelManager.IsEnemyToSpawn ()) {
 			// On affiche la barre de vie vide, pour pouvoir la remplir le temps du spawn (= timer d'apparition)
-            if( !enemyGUIActive ) {
-                ToggleEnemyGUI( true );
-            }
+			if (!enemyGUIActive) {
+				ToggleEnemyGUI (true);
+			}
 
-            // On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
-            lerpingTimeEnemyBar += Time.deltaTime / LevelManager.levelManager.enemySpawnDelay;
+			// On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
+			lerpingTimeEnemyBar += Time.deltaTime / LevelManager.levelManager.enemySpawnDelay;
 			fillHealthBar.fillAmount = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
 
-			if(fillHealthBar.fillAmount == 1) {
+			if (fillHealthBar.fillAmount == 1) {
 				lerpingTimeEnemyBar = 0;
-                LevelManager.levelManager.SetEnemyToSpawn( false ); // On sort de la boucle d'apparition
+				LevelManager.levelManager.SetEnemyToSpawn (false); // On sort de la boucle d'apparition
 			}
 
 			// On gère le déplacement des textes
@@ -152,11 +152,11 @@ public class UIManager : MonoBehaviour {
 				float lerpTime = (LevelManager.levelManager.enemySpawnDelay - textTimeMid - textTimeToEnd - textTimeTotal) / textTimeToEnd;
 				MoveIntroEnemyText (enemyName, lerpTime, positionNameBeforeEndMove.x, -namePosition.x);
 				MoveIntroEnemyText (enemySurname, lerpTime, positionSurnameBeforeEndMove.x, -surnamePosition.x);
-			} else if (textTimeTotal <= 0) {
-				enemyName.enabled = false;
-				enemySurname.enabled = false;
 			}
 			textTimeTotal -= Time.deltaTime;
+		} else { // Si on n'est pas dans le compte-à-rebours, on cache les textes
+			enemyName.gameObject.SetActive (false);
+			enemySurname.gameObject.SetActive (false);
 		}
     }
 
