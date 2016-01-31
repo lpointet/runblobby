@@ -215,11 +215,6 @@ public class PlayerController : Character {
 
 	// TODO supprimer l'apparition du fantôme quand on meurt avec le LastWish
 	public override void OnKill() {
-        if( HasLastWish() && !lastWish.IsLaunched() ) {
-			lastWish.Launch();
-            return;
-		}
-
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 

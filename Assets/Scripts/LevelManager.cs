@@ -223,7 +223,7 @@ public class LevelManager : MonoBehaviour {
                 SetEnemyDistanceToKill( GetEnemyDistanceToKill() - localDistance );
 
 				if( GetEnemyDistanceToKill() <= 0 ) {
-					LevelManager.Kill( player, true );
+					LevelManager.Kill( player );
 				}
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
@@ -358,18 +358,25 @@ public class LevelManager : MonoBehaviour {
 			GetPlayer ().SetMoveSpeed (0);
 			GetPlayer ().gameObject.SetActive (false);
 			UIManager.uiManager.ToggleEndMenu (true);
-			CleanPickup (true);
+			CleanPickup( GetPlayer().GetLastWish() );
 		}
 	}
 
-	public static void Kill( Character character, bool ignoreLastWish = false ) {
+	public static void Kill( Character character ) {
+		LastWishPickup lastWish = GetPlayer().GetLastWish();
+
 		if( character == GetPlayer() ) {
-			CleanPickup (ignoreLastWish);
+			CleanPickup( lastWish );
 		}
 
-		character.Die();
-		
-		character.OnKill();
+		if( lastWish == null || lastWish.IsLaunched() ) {
+			character.Die();
+			
+			character.OnKill();
+		}
+		else if( lastWish != null ) {
+			lastWish.Launch();
+		}
 	}
 
 	public static void MaybeKill( Transform transform ) {
@@ -387,9 +394,8 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	private static void CleanPickup (bool ignoreLastWish = false) {
+	private static void CleanPickup (LastWishPickup lastWish = null) {
 		Pickup[] pickups = GetPlayer().GetComponentsInChildren<Pickup>();
-		LastWishPickup lastWish = GetPlayer().GetLastWish();
 
 		foreach( Pickup pickup in pickups ) {
 			if( pickup != lastWish || lastWish.IsLaunched() ) {
@@ -397,7 +403,7 @@ public class LevelManager : MonoBehaviour {
 			}
 		}
 
-		if( ignoreLastWish && lastWish != null ) {
+		if( lastWish != null && lastWish.IsLaunched() ) {
 			lastWish.Cancel();
 		}
 	}
