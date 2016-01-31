@@ -11,6 +11,11 @@ public class _GameData : MonoBehaviour {
 	public List<LevelData> levelList;
 	public static string saveFile;
 
+	/* Permet de gérer le chargement de la liste des levels (passage d'arguments) */
+	private bool loadListLevel = false;
+	public bool IsListLevel() { return loadListLevel; }
+	public void SetListLevel(bool value) { loadListLevel = value; }
+
 	void Awake() {
 		if (current == null) {
 			current = this;

@@ -86,6 +86,13 @@ public class MainMenuManager : MonoBehaviour {
 		AjusterVolume(aSfxMixer, "sfxVolume", sSfx, -21, 3);
 
 		ClearMenu();
+
+		/* On charge l'écran de "jeu" */
+		if (_GameData.current.IsListLevel ()) {
+			ChangeMainScreen ();
+			Level_Click ();
+			_GameData.current.SetListLevel (false);
+		}
 	}
 
     public void Everywhere_Click() {

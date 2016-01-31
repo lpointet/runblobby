@@ -40,7 +40,6 @@ public class UIManager : MonoBehaviour {
 
 	[Header("End Menu")]
 	public GameObject endUI;
-	private SFXMenu sfxSound;
 
 	public Text distanceEnd;
 	public Text moneyEnd;
@@ -50,6 +49,14 @@ public class UIManager : MonoBehaviour {
 	public AudioClip endFailure;
 	public AudioClip endVictory;
 	private AudioSource endAudio;
+
+	[Header("Générique")]
+	public GameObject wQuit;
+	public Button bQuitYes;
+	public Button bQuitNo;
+	public Text tQuitContent;
+
+	private SFXMenu sfxSound;
 
 	// Déplacement des noms des ennemis
 	private Vector2 namePosition;
@@ -65,6 +72,8 @@ public class UIManager : MonoBehaviour {
 		if (uiManager == null)
 			uiManager = GameObject.FindGameObjectWithTag ("LevelCanvas").GetComponent<UIManager> ();
 
+		sfxSound = GetComponentInChildren<SFXMenu> ();
+
         // Compteur
         defaultTextColor = meterText.color;
         scaleInitial = meterText.rectTransform.localScale.x;
@@ -74,10 +83,11 @@ public class UIManager : MonoBehaviour {
     }
 
 	void Start() {
-		pauseUI.SetActive (false);
 		cdAnim = cdObject.GetComponent<Animator> ();
 
+		pauseUI.SetActive (false);
 		endUI.SetActive (false);
+		wQuit.SetActive (false);
 
 		ToggleEnemyGUI (false);
 
@@ -250,12 +260,40 @@ public class UIManager : MonoBehaviour {
 	public void Home_Click() {
 		SceneManager.LoadScene (0);
 	}
-	
-	public void Quit() {
-#if UNITY_EDITOR
+
+	public void List_Click() {
+		_GameData.current.SetListLevel (true); // On demande à charger le menu du jeu (liste des levels)
+		SceneManager.LoadScene (0);
+	}
+
+	public void Quit_Click() {
+		// Change le texte selon l'état du joueur : mort ou vivant ou pause
+		string content;
+		if (LevelManager.GetPlayer ().IsDead ()) {
+			content = "Are you really sure you want to quit?\nYou just died, but don't be afraid. This kind of misadventure happens at least once in a life.";
+		} else if (!paused) {
+			content = "Are you really sure you want to quit?\nYou just succeeded, why would you leave?";
+		} else {
+			content = "Are you really sure you want to quit?\nYou can make a pause, and come back later!";
+		}
+		tQuitContent.text = content;
+
+		wQuit.SetActive (true);
+	}
+
+	public void Quit_Yes_Click() {
+		_StaticFunction.Save ();
+
+		#if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
-#elif UNITY_STANDALONE
+		#elif UNITY_STANDALONE
 		Application.Quit ();
-#endif
+		#endif
+	}
+
+	public void Quit_No_Click() {
+		sfxSound.ButtonNoClick ();
+
+		wQuit.SetActive (false);
 	}
 }

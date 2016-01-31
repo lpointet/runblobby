@@ -84,9 +84,7 @@ public class Enemy0102 : Enemy {
 				// On compare à la probabilité d'esquiver
 				if (Random.Range(0f, 1f) < dodgeSkill) {
 					// On ajuste la puissance du saut en fonction du lieu d'impact de la balle
-					float powerJump = 1;
-					if (detectedBullet.transform.position.y > 0)
-						powerJump += detectedBullet.transform.position.y;
+					float powerJump = Mathf.Max(1, 1 + detectedBullet.transform.position.y);
 
 					// On fait sauter la poule
 					myRb.velocity = new Vector2 (myRb.velocity.x, powerJump * GetJumpHeight ());
@@ -106,10 +104,9 @@ public class Enemy0102 : Enemy {
 			foreach (Oeuf item in listeOeufs) {
 				if (item.IsBroken ()) {
 					listeOeufs.Remove (item); // On l'enlève de la liste, vu qu'il est cassé
-					angry = true; // On active le mode enragé
 
+					angry = true; // On active le mode enragé
 					myAnim.SetFloat ("angry", 1);
-					myTransform.localScale = new Vector2 (-myTransform.localScale.x, myTransform.localScale.y);
 
 					break;
 				}
@@ -117,8 +114,8 @@ public class Enemy0102 : Enemy {
 		}
 		// Si elle vient de s'énervée, elle fonce vers le joueur
 		if (angry) {
-			// Si elle n'est pas encore sur le joueur, elle s'avance vers lui
-			if (myTransform.position.x > LevelManager.GetPlayer ().transform.position.x) {
+			// Si elle n'est pas encore un peu avant le joueur, elle s'avance vers lui
+			if (myTransform.position.x > LevelManager.GetPlayer ().transform.position.x - 0.5f) {
 				// On le fait accélérer
 				if (lerpingAngryTime < 1) {
 					lerpingAngryTime += Time.deltaTime / delayRunAngry;
@@ -128,7 +125,6 @@ public class Enemy0102 : Enemy {
 			} else {
 				angry = false;
 				myAnim.SetFloat ("angry", 0);
-				myTransform.localScale = new Vector2 (-myTransform.localScale.x, myTransform.localScale.y);
 				lerpingAngryTime = 0;
 			}
 		}
@@ -138,9 +134,9 @@ public class Enemy0102 : Enemy {
 		base.Hurt (damage);
 
 		// Calculer le pourcentage de vie restant
-		int pourcentVie = Mathf.FloorToInt(100 * GetHealthPoint()/ (float)GetHealthPointMax());
-		// Si la différence vaut plus que la valeur oeufale courante (selon difficulté), on lâche un oeuf
-		if (pourcentVie <= currentOeuf) {
+		int pourcentVie = Mathf.FloorToInt(100 * GetHealthPoint() / (float)GetHealthPointMax());
+		// Si la différence vaut plus que la valeur oeufale courante (selon difficulté) et que le poulet n'est pas mort, on lâche un oeuf
+		if (pourcentVie <= currentOeuf && !IsDead()) {
 			EggDrop ();
 			// On fait sauter la poule
 			myRb.AddForce(Vector2.up * 250);
@@ -174,20 +170,21 @@ public class Enemy0102 : Enemy {
 	}
 
 	// A la mort, attacher l'ennemi au sol, et laisser un poulet rôti / un pilon de poulet
+	// TODO gérer la mort en l'air (le poulet ne tombe pas)
 	protected override void Despawn () {
-		base.Despawn ();
-//		myAnim.SetTrigger ("dead");
-//
-//		RaycastHit2D hit;
-//		hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround);
-//
-//		if (hit.collider != null) {
-//			myTransform.parent = hit.transform;
-//
-//			GetComponent<EdgeCollider2D> ().enabled = false;
-//			GetComponent<Rigidbody2D> ().isKinematic = true;
-//		} else {
-//			GetComponent<EdgeCollider2D> ().enabled = false;
-//		}
+		myAnim.SetTrigger ("dead");
+
+		RaycastHit2D hit;
+		hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround);
+
+		GetComponent<EdgeCollider2D> ().enabled = false;
+
+		if (hit.collider != null) {
+			myTransform.parent = hit.transform;
+			// Puis on baisse légèrement la position du poulet pour qu'il soit davantage sur le sol
+			myTransform.position = new Vector2(myTransform.position.x, myTransform.position.y - 7/32f);
+
+			GetComponent<Rigidbody2D> ().isKinematic = true;
+		}
 	}
 }

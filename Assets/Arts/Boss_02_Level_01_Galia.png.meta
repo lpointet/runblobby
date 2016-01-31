@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 9e19b6c82eda2e54691dce257f2f9f6e
-timeCreated: 1453567234
+guid: e5d52f869b32d6f40babbd9f9bbd16fb
+timeCreated: 1454155789
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,7 @@ TextureImporter:
     21300010: Boss_02_Level_01_Galia_5
     21300012: Boss_02_Level_01_Galia_6
     21300014: Boss_02_Level_01_Galia_7
+    21300016: Boss_02_Level_01_Galia_8
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -35,7 +36,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 256
+  maxTextureSize: 512
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -62,7 +63,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 72
+        y: 216
         width: 64
         height: 72
       alignment: 0
@@ -83,7 +84,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 72
+        y: 216
         width: 64
         height: 72
       alignment: 0
@@ -102,7 +103,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 72
+        y: 216
         width: 64
         height: 72
       alignment: 0
@@ -121,7 +122,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 72
+        y: 216
         width: 64
         height: 72
       alignment: 0
@@ -139,8 +140,8 @@ TextureImporter:
     - name: Boss_02_Level_01_Galia_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 256
+        y: 216
         width: 64
         height: 72
       alignment: 0
@@ -170,8 +171,8 @@ TextureImporter:
     - name: Boss_02_Level_01_Galia_5
       rect:
         serializedVersion: 2
-        x: 64
-        y: 0
+        x: 320
+        y: 216
         width: 64
         height: 72
       alignment: 0
@@ -202,8 +203,8 @@ TextureImporter:
     - name: Boss_02_Level_01_Galia_6
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
+        x: 384
+        y: 216
         width: 64
         height: 72
       alignment: 0
@@ -233,8 +234,8 @@ TextureImporter:
     - name: Boss_02_Level_01_Galia_7
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
+        x: 448
+        y: 216
         width: 64
         height: 72
       alignment: 0
@@ -254,6 +255,27 @@ TextureImporter:
         - {x: 32, y: -25}
         - {x: 32, y: 34}
         - {x: 28, y: 36}
+    - name: Boss_02_Level_01_Galia_8
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 0
+        width: 64
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 24, y: 9}
+        - {x: 6, y: 9}
+        - {x: -10, y: 7}
+        - {x: -26, y: -10}
+        - {x: -26, y: -31}
+        - {x: -24, y: -36}
+        - {x: 19, y: -36}
+        - {x: 29, y: -25}
+        - {x: 31, y: -18}
+        - {x: 31, y: 2}
     outline: []
   spritePackingTag: 
   userData: 
