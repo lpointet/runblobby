@@ -44,7 +44,8 @@ public class LevelScrollList : MonoBehaviour {
 	}
 	
 	void Start () {
-		GetComponent<Image> ().color = new Color (255, 255, 255, 0); // On cache la liste avant peuplement (alpha = 0)
+		// On cache la liste avant peuplement
+		GetComponent<Image> ().enabled = false;
 
 		PopulateList ();
 
@@ -70,8 +71,8 @@ public class LevelScrollList : MonoBehaviour {
 		currentLerpTime = lerpTime; // Pour éviter de rendre visible le déplacement (instantané du coup)
 		PlacerLevel (0);
 
-		// On remonte le alpha de 1 pour réaffiche la liste une fois peuplée
-		GetComponent<Image> ().color = new Color32 (255, 255, 255, 1);
+		// On réaffiche la liste une fois peuplée
+		GetComponent<Image> ().enabled = true;
 	}
 
 	void Update() {
@@ -120,8 +121,7 @@ public class LevelScrollList : MonoBehaviour {
 			level.deadBoss.SetActive(item.storyData[0].isBossDead);
 			level.sceneNumber = item.levelNumber + (GameData.gameData.firstLevel - 1); // Correction du level par rapport à la scène du premier level
 
-			level.transform.SetParent (contentPanel);
-			level.transform.localScale = Vector3.one; // Corrige un bug que je n'explique pas...
+			level.transform.SetParent (contentPanel, false);
 		}
 	}
 

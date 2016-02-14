@@ -20,7 +20,7 @@ public class Enemy : Character {
 	[Header("Coin Drop")]
 	public float frequence = 0.01f;
 	public float mediumValue = 1.1f; // Offre une bien plus grande variété de feuilles que 1f
-	public GameObject[] coins; // TODO avoir ce tableau en "fixe" pour tous les enfants de Enemy
+	private GameObject[] coins; // Fait référence à ListManager
 	private CoinDrop[] possibleCoins;
 	[SerializeField] protected LayerMask layerGround; // TODO autre possibilité pour que le paramètre passe aux enfants ?
 	private float distanceParcourue = 0;
@@ -89,6 +89,8 @@ public class Enemy : Character {
 
 	protected override void Init() { // TODO pourquoi c'est appelé deux fois ? Start (voir Character.cs) et OnEnable ?
 		base.Init();
+
+		coins = ListManager.current.coins;
 
 		frequence = Mathf.Clamp01 (frequence);
 

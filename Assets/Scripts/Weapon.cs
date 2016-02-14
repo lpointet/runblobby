@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour {
 
 	private float timeToFire;
 	private Transform firePoint;
-	private float timeToSpanwEffect; // Avec Raycast seulement
+	private float timeToSpawnEffect; // Avec Raycast seulement
 
 	/*public Transform muzzleFlashPrefab;
 	public Transform bulletTrailPrefab;*/

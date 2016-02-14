@@ -4,6 +4,8 @@ using System.Collections;
 public class Oeuf : MonoBehaviour {
 
 	private Animator myAnim;
+	private Rigidbody2D myRb;
+
 	private bool broken;
 
 	public bool IsBroken() {
@@ -12,10 +14,12 @@ public class Oeuf : MonoBehaviour {
 
 	void Awake () {
 		myAnim = GetComponent<Animator> ();
+		myRb = GetComponent<Rigidbody2D> ();
 	}
 
 	void OnEnable () {
 		broken = false;
+		myRb.isKinematic = false;
 		myAnim.SetBool ("broken", broken);
 	}
 
@@ -24,6 +28,7 @@ public class Oeuf : MonoBehaviour {
 			if (!broken) {
 				broken = true;
 				myAnim.SetBool ("broken", broken);
+				myRb.isKinematic = true;
 			}
 		}
 	}

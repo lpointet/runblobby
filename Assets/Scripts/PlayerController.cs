@@ -15,7 +15,7 @@ public class PlayerController : Character {
 	private float lerpingHP;
 	
 	private Rigidbody2D myRb;
-	private Animator anim;
+	private Animator myAnim;
 	private PlayerSoundEffect myAudio;
 	private Transform weapon;
 	private SpriteRenderer mySprite;
@@ -44,10 +44,15 @@ public class PlayerController : Character {
 	private float flySpeedCoeff = 2f;
 	private float speedBeforeFly;
 	private float speedInFly;
-	private float acceleration = 0f;
+	private float acceleration = 0f; // Temps de transition
 	private bool isFlying = false;
+	private bool zeroGravFlying = true;
 	private float yPosAirDeath;
 	private float yVariableAirDeath = 0f;
+
+	private float followDelay = 1f;
+	private float dampVelocity = 0f;
+
 	// TODO ratioMoveSpeed = GetMoveSpeed () / GetInitialMoveSpeed() à remplacer dans tous les scripts qui appellent ça ?
 
     /**
@@ -101,17 +106,25 @@ public class PlayerController : Character {
 	public bool IsFlying() {
 		return isFlying;
 	}
+
+	public void SetZeroGravFlying(bool value) {
+		zeroGravFlying = value;
+	}
+
+	public bool IsZeroGravFlying() {
+		return zeroGravFlying;
+	}
     /* End of Getters & Setters */
 
     protected override void Awake() {
         base.Awake();
 
 		myRb = GetComponent<Rigidbody2D> ();
-		anim = GetComponent<Animator> ();
+		myAnim = GetComponent<Animator> ();
 		myAudio = GetComponent<PlayerSoundEffect> ();
 		mySprite = GetComponent<SpriteRenderer> ();
 
-		SetWeapon( transform.FindChild( "Weapon" ) );
+		SetWeapon( myTransform.FindChild( "Weapon" ) );
         initialGravityScale = myRb.gravityScale;
         initialJumpHeight = GetJumpHeight();
         initialMaxDoubleJump = GetMaxDoubleJump();
@@ -129,19 +142,19 @@ public class PlayerController : Character {
 	void FixedUpdate(){
 		// Assure qu'on soit au sol lorsqu'on est en contact
 		grounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, layerGround);
-		anim.SetBool ("grounded", grounded);
-		anim.SetFloat ("verticalSpeed", myRb.velocity.y);
+		myAnim.SetBool ("grounded", grounded);
+		myAnim.SetFloat ("verticalSpeed", myRb.velocity.y);
 		// Ajuster la vitesse d'animation du héros en fonction de sa vitesse de déplacement
-		anim.SetFloat("moveSpeed", GetMoveSpeed () / GetInitialMoveSpeed());
+		myAnim.SetFloat("moveSpeed", GetMoveSpeed () / GetInitialMoveSpeed());
 	}
 	
 	protected override void Update () {
 		base.Update();
 
 		// Vol sur place du fantôme pendant la mort en l'air
-		if (IsDead () && !HasLastWish() && !IsGrounded () && transform.position.y > 3.5f) {
+		if (IsDead () && !HasLastWish() && !IsGrounded () && myTransform.position.y > 3.5f) {
 			yVariableAirDeath += Time.deltaTime;
-			transform.position = new Vector2 (transform.position.x, yPosAirDeath + 0.2f * Mathf.Sin (yVariableAirDeath));
+			myTransform.position = new Vector2 (myTransform.position.x, yPosAirDeath + 0.2f * Mathf.Sin (yVariableAirDeath));
 		}
 
         // Empêcher que des choses se passent durant la pause
@@ -149,10 +162,24 @@ public class PlayerController : Character {
             return;
 
 		// Rapprocher le joueur douuuucement si on est pas en x = 0
-		if (transform.position.x < 0)
-			transform.Translate (Vector3.right * 0.005f);
+		if (myTransform.position.x < 0)
+			myTransform.Translate (Vector3.right * 0.005f);
 
-		if (IsGrounded ()) // Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
+		// Permet de suivre le "doigt" du joueur quand il vole en zéro gravité
+		if (IsFlying() && IsZeroGravFlying () && Input.GetMouseButton (0)) {
+			float cameraCursorY = Camera.main.ScreenToWorldPoint (Input.mousePosition).y;
+			float positionToCursor = Mathf.SmoothDamp (myTransform.position.y, cameraCursorY, ref dampVelocity, followDelay);
+
+			// On évite de le faire descendre s'il est déjà au sol
+			if (IsGrounded () && cameraCursorY < positionToCursor) {
+				positionToCursor = myTransform.position.y;
+			}
+			//myRb.AddForce(new Vector2(0, 25*(cameraCursorY-positionToCursor)));
+			myTransform.position = new Vector2 (myTransform.position.x, positionToCursor);
+		}
+
+		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
+		if (IsGrounded ())
 			currentJump = 0;
 		
 		// Gestion des sauts
@@ -171,7 +198,7 @@ public class PlayerController : Character {
             RaycastHit2D hit;
             CloudBlock cloudBlock;
 
-            hit = Physics2D.Raycast(transform.position, new Vector2(2, -4), 1, layerGround);
+			hit = Physics2D.Raycast(myTransform.position, new Vector2(2, -4), 1, layerGround);
 
             if (hit.collider != null)
             {
@@ -182,8 +209,8 @@ public class PlayerController : Character {
                 for (int j = 0; j < nbCollider; j++)
                 {
                     cloudBlock = colliderHits[j].GetComponent<CloudBlock>();
-                    if (cloudBlock != null)
-                        cloudBlock.thisNuageActif = true;
+					if (cloudBlock != null)
+						cloudBlock.ActiverNuage (true);
                 }
 
                 // On réinitialise pour ne plus afficher les éventuels nuages
@@ -211,6 +238,18 @@ public class PlayerController : Character {
 	public void Jump() {
 		myRb.velocity = new Vector2(0, GetJumpHeight());
 		myAudio.JumpSound ();
+
+		// Affichage d'un effet de "nuage" à l'endroit du saut s'il est effectué en l'air
+		if (!IsGrounded () && !IsFlying ()) {
+			GameObject dust = PoolingManager.current.Spawn("AerialDust");
+
+			if (dust != null) {
+				dust.transform.position = myTransform.position;
+				dust.transform.rotation = Quaternion.identity;
+
+				dust.gameObject.SetActive (true);
+			}
+		}
     }
 
 	// TODO supprimer l'apparition du fantôme quand on meurt avec le LastWish
@@ -218,24 +257,24 @@ public class PlayerController : Character {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 
-		if (transform.position.y < -3.5f) { // Si on est en dessous du bas de l'écran
-			anim.SetTrigger ("dead_fall");
+		if (myTransform.position.y < -3.5f) { // Si on est en dessous du bas de l'écran
+			myAnim.SetTrigger ("dead_fall");
 			myAudio.FallDeathSound ();
 		}
 		else {
 			if (!IsGrounded ()) { // Faire flotter le fantôme si on est en l'air
 				myRb.gravityScale = 0f;
 				isFlying = false;
-				anim.SetBool ("flying", isFlying);
-				yPosAirDeath = transform.position.y;
+				myAnim.SetBool ("flying", isFlying);
+				yPosAirDeath = myTransform.position.y;
 				myAudio.AirDeathSound ();
 			} else
 				myAudio.DeathSound ();
-			anim.SetTrigger ("dead");
+			myAnim.SetTrigger ("dead");
 		}
 			
 		_StaticFunction.Save ();
-		StartCoroutine (WaitForDeadAnim (anim));
+		StartCoroutine (WaitForDeadAnim (myAnim));
 	}
 
 	private IEnumerator WaitForDeadAnim(Animator animation) {
@@ -286,8 +325,13 @@ public class PlayerController : Character {
 		isFlying = true;
 
         // Abaisser la gravité et la hauteur du saut
-        myRb.gravityScale = 0.2f;
-        SetJumpHeight( 2 );
+		if (IsZeroGravFlying ()) {
+			myRb.gravityScale = 0;
+			SetJumpHeight (0);
+		} else {
+			myRb.gravityScale = 0.2f;
+			SetJumpHeight (2);
+		}
 
         // Faire décoller le joueur
         Jump();
@@ -302,7 +346,7 @@ public class PlayerController : Character {
 
 		//SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
 
-		anim.SetBool( "flying", isFlying );
+		myAnim.SetBool( "flying", isFlying );
     }
 
     public void Land() {
@@ -322,7 +366,7 @@ public class PlayerController : Character {
 		// Diminuer la vitesse
 		acceleration = 0;
 
-		anim.SetBool( "flying", isFlying );
+		myAnim.SetBool( "flying", isFlying );
     }
 
     public void AttractCoins( float radius, LayerMask layerCoins ) {

@@ -70,12 +70,8 @@ public class Enemy0101 : Enemy {
 		RaycastHit2D hit;
 		hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround);
 
-		GetComponent<EdgeCollider2D> ().enabled = false;
-
 		if (hit.collider != null) {
 			myTransform.parent = hit.transform;
-
-			GetComponent<Rigidbody2D> ().isKinematic = true;
 		}
 	}
 }

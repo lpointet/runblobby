@@ -50,16 +50,24 @@ public class BulletManager : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (transform.position.x > endOfScreen || transform.position.x < startOfScreen)
+		if (myTransform.position.x > endOfScreen || myTransform.position.x < startOfScreen)
 			Despawn(); // on désactive s'il sort de l'écran pour éviter qu'il touche des objets
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if ((1 << other.gameObject.layer & layerCollision) != 0) {
 			Despawn();
-			// TODO améliorer l'effet en pixel art
-			Transform particle = Instantiate(hitParticle, transform.position, Quaternion.FromToRotation(Vector3.down, transform.right)) as Transform; // Effet vers la balle... :(
-			particle.parent = other.transform; // On rattache l'effet au point d'impact pour qu'il suive le mouvement
+
+			// Effet de particule à l'impact
+			GameObject particle = PoolingManager.current.Spawn("BulletImpact");
+
+			if (particle != null) {
+				particle.transform.position = myTransform.position;
+				particle.transform.rotation = Quaternion.Euler(new Vector3(360 - myTransform.rotation.eulerAngles.z, 90, 0));
+				particle.GetComponent<ParticleSystemRenderer>().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.GetPlayer().GetHealthPoint(), 0, LevelManager.GetPlayer().GetHealthPointMax (), 210, 0));
+				// TODO Améliorer la façon de changer la couleur des particules
+				particle.gameObject.SetActive (true);
+			}
 
 			// Si on rencontre un ennemi
 			if(other.gameObject.layer == layerEnemy) {
@@ -76,8 +84,7 @@ public class BulletManager : MonoBehaviour {
 	private void Despawn() {
 		gameObject.SetActive (false);
 	}
-
-	
+		
 	private IEnumerator DespawnAfterDelay(GameObject obj)
 	{
 		yield return new WaitForSeconds (despawnTimer);

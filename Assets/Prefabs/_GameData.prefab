@@ -16,6 +16,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &169896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 474548}
+  - 114: {fileID: 11453214}
+  m_Layer: 0
+  m_Name: ListManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &423198
 Transform:
   m_ObjectHideFlags: 1
@@ -25,9 +41,45 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.380794, y: 12.522234, z: 0.01171875}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 474548}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &474548
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 169896}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 423198}
+  m_RootOrder: 0
+--- !u!114 &11453214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 169896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b07aae9ac6f57b94fb442d6d12dbd493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cloudBlock:
+  - {fileID: 21300000, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
+  - {fileID: 21300002, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
+  - {fileID: 21300004, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
+  coins:
+  - {fileID: 157248, guid: c46dcd20b7baa99459eb60f44616cfbd, type: 2}
+  - {fileID: 190520, guid: 98d82e343c0754f4880eee7fab4f364e, type: 2}
+  - {fileID: 104304, guid: ef4806b266ce2234b9efd7a2869fb2f5, type: 2}
+  - {fileID: 196070, guid: d6f870646451e6e48b27c1e807bcec5e, type: 2}
+  - {fileID: 158448, guid: e8be6b5927c4a1d4a94735fcd1392574, type: 2}
+  - {fileID: 176916, guid: 73a83410038a7274c8489eb79d756313, type: 2}
+  - {fileID: 153172, guid: da19e621afeb1e4439322c92b1acfee6, type: 2}
 --- !u!114 &11463614
 MonoBehaviour:
   m_ObjectHideFlags: 1

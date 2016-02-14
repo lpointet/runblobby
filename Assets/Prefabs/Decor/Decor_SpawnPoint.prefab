@@ -40,12 +40,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listDecor:
-  - {fileID: 106504, guid: 7b2966fb026df8642b8928ef17448030, type: 2}
   - {fileID: 146128, guid: f681f9ed7e1e7df439ecd759b2e5759b, type: 2}
   - {fileID: 192966, guid: e29f36ac41248b14a9293faf8b152b03, type: 2}
   - {fileID: 161070, guid: a271d701fa744d943bc6f4408e998291, type: 2}
   - {fileID: 193258, guid: 418e784f2b6d55a4ebf1b4f70d6ce5cd, type: 2}
+  - {fileID: 106504, guid: 7b2966fb026df8642b8928ef17448030, type: 2}
   - {fileID: 194370, guid: ac07efcd477cedf43ae2aa3e54ae1d9b, type: 2}
+  - {fileID: 137574, guid: 05c391e0db7a9764191fa08fa32a228f, type: 2}
+  listDecorProba: 0f0000000f0000000f0000000f0000000a0000000a00000001000000
   probaApparition: 75
   caseDispo: 1
 --- !u!1001 &100100000
@@ -54,7 +56,67 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: listDecor.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecorProba.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecorProba.Array.data[0]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecorProba.Array.data[1]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecorProba.Array.data[2]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecorProba.Array.data[3]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecorProba.Array.data[4]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecor.Array.data[6]
+      value: 
+      objectReference: {fileID: 137574, guid: 05c391e0db7a9764191fa08fa32a228f, type: 2}
+    - target: {fileID: 0}
+      propertyPath: listDecorProba.Array.data[6]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecorProba.Array.data[5]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: listDecor.Array.data[0]
+      value: 
+      objectReference: {fileID: 146128, guid: f681f9ed7e1e7df439ecd759b2e5759b, type: 2}
+    - target: {fileID: 0}
+      propertyPath: listDecor.Array.data[1]
+      value: 
+      objectReference: {fileID: 192966, guid: e29f36ac41248b14a9293faf8b152b03, type: 2}
+    - target: {fileID: 0}
+      propertyPath: listDecor.Array.data[2]
+      value: 
+      objectReference: {fileID: 161070, guid: a271d701fa744d943bc6f4408e998291, type: 2}
+    - target: {fileID: 0}
+      propertyPath: listDecor.Array.data[3]
+      value: 
+      objectReference: {fileID: 193258, guid: 418e784f2b6d55a4ebf1b4f70d6ce5cd, type: 2}
+    - target: {fileID: 0}
+      propertyPath: listDecor.Array.data[4]
+      value: 
+      objectReference: {fileID: 106504, guid: 7b2966fb026df8642b8928ef17448030, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 138708}

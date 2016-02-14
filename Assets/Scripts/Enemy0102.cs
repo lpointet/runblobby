@@ -18,7 +18,6 @@ public class Enemy0102 : Enemy {
 
 	private float attackSpeed;
 	public float easyAttackSpeed = 10f;
-	private float ratioPlayerSpeed;
 
 	private List<Oeuf> listeOeufs = new List<Oeuf>();
 	private bool angry = false;
@@ -41,10 +40,7 @@ public class Enemy0102 : Enemy {
 		currentOeuf -= pourcentOeuf; // Initialise à la première valeur de laché d'oeuf
 		//myAnim.SetFloat("ratioHP", 1f);
 
-		ratioPlayerSpeed = LevelManager.GetPlayer ().GetMoveSpeed () / LevelManager.GetPlayer ().GetInitialMoveSpeed ();
-
 		attackSpeed = easyAttackSpeed;
-		attackSpeed /= ratioPlayerSpeed;
 	}
 
 	protected override void Update () {
@@ -62,7 +58,7 @@ public class Enemy0102 : Enemy {
 
 			// Si elle n'est pas à sa place initiale, elle s'y avance régulièrement
 			if (myTransform.position.x < startPosition [0]) {
-				SetMoveSpeed (attackSpeed * ratioPlayerSpeed);
+				SetMoveSpeed (attackSpeed);
 			} else {
 				SetMoveSpeed (0);
 			}
@@ -170,21 +166,14 @@ public class Enemy0102 : Enemy {
 	}
 
 	// A la mort, attacher l'ennemi au sol, et laisser un poulet rôti / un pilon de poulet
-	// TODO gérer la mort en l'air (le poulet ne tombe pas)
 	protected override void Despawn () {
 		myAnim.SetTrigger ("dead");
 
 		RaycastHit2D hit;
 		hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround);
 
-		GetComponent<EdgeCollider2D> ().enabled = false;
-
 		if (hit.collider != null) {
 			myTransform.parent = hit.transform;
-			// Puis on baisse légèrement la position du poulet pour qu'il soit davantage sur le sol
-			myTransform.position = new Vector2(myTransform.position.x, myTransform.position.y - 7/32f);
-
-			GetComponent<Rigidbody2D> ().isKinematic = true;
 		}
 	}
 }

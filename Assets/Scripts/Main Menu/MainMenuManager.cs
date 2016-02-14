@@ -49,6 +49,16 @@ public class MainMenuManager : MonoBehaviour {
 	/* Fin de l'écran des talents/équipements/level */
 	/************************************************/
 
+	/*********************/
+	/* Ecran des crédits */
+	[Header("Crédit Menu")]
+	public GameObject wCreditMenu;
+
+	public Button bCreditBack;
+	public GameObject creditScrollView;
+	/* Fin de l'écran des crédits */
+	/******************************/
+
 	/* Ecran de chargement */
 	[Header("Loading Screen")]
 	public GameObject loadingScreen;
@@ -169,6 +179,16 @@ public class MainMenuManager : MonoBehaviour {
 		sfxSound.ButtonNoClick ();
 
 		wQuit.SetActive (false);
+		ClearMenu ();
+	}
+
+	public void Credit_Click() {
+		wCreditMenu.SetActive (true);
+	}
+
+	public void Credit_Back() {
+		wCreditMenu.SetActive (false);
+		wMainMenu.SetActive (true);
 		ClearMenu ();
 	}
 

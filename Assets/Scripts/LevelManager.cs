@@ -161,7 +161,7 @@ public class LevelManager : MonoBehaviour {
 			probabiliteBlock [i] = new int[5] {20, 20, 20, 20, 20};
 		}
 
-		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 5;
+		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 3;
 		cameraEndPosition = kamera.transform.position.x + kamera.orthographicSize * kamera.aspect + 5;
 
         // Initialisation avec le Block Start

@@ -14,8 +14,9 @@ public class LastWishPickup : Pickup {
 	private float lerpTimeEnding;
 	private float deathPlayerPosition;
 	private float endingPlayerPosition;
+	private float angelStartPosition;
 
-	private float distancetoPlayer = 0f;
+	private float distanceToPlayer = 0f;
 	private float offsetYToPlayer = 0f;
 	private float followDelay = 1f;
 	private float dampVelocity = 0f;
@@ -30,15 +31,15 @@ public class LastWishPickup : Pickup {
 		despawnTime = 2.0f;
 
 		// Manip stupide pour pouvoir désactiver l'objet par défaut (le but étant d'éviter de jouer la musique)
-		Transform divineRay;
-		divineRay = transform.FindChild ("DivineRay");
-		divineMesh = divineRay.gameObject;
+		divineMesh = transform.FindChild ("DivineRay").gameObject;
 		divineMesh.SetActive (false);
     }
 
     void Start() {
         player = LevelManager.GetPlayer();
 		playerTransform = player.transform;
+
+		angelStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition); // Voir dans LevelManager pour la position par défaut
 	}
 	
 	public void Launch() {
@@ -72,9 +73,9 @@ public class LastWishPickup : Pickup {
 		// Effet visuel de l'ange qui se rapproche jusqu'à la mort
 		if (effectOnGoing && !effectEnding) {
 			offsetYToPlayer = Mathf.SmoothDamp (myTransform.position.y, playerTransform.position.y, ref dampVelocity, (timeToLive / lifeTime) * followDelay);
-			distancetoPlayer = _StaticFunction.MappingScale (timeToLive, lifeTime, 0, Mathf.Abs (LevelManager.levelManager.cameraStartPosition), 0);
+			distanceToPlayer = _StaticFunction.MappingScale (timeToLive, lifeTime, 0, angelStartPosition, 0);
 
-			myTransform.position = new Vector2 (playerTransform.position.x - distancetoPlayer, offsetYToPlayer);
+			myTransform.position = new Vector2 (playerTransform.position.x - distanceToPlayer, offsetYToPlayer);
 		}
 
 		// Effet de l'ange qui amène le joueur au ciel

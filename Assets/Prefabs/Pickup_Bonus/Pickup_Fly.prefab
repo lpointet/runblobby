@@ -59,7 +59,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 00b7a0948ba1e3942a3f204eaca5768e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.7
-  m_Pitch: 1
+  m_Pitch: 1.2
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -151,9 +151,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 10
   weight: 5
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1024
+  spawnTime: 0.5
+  offsetYToPlayer: 0.65
 --- !u!212 &21254070
 SpriteRenderer:
   m_ObjectHideFlags: 1

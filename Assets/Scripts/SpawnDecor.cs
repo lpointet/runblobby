@@ -4,7 +4,10 @@ using System.Collections;
 public class SpawnDecor : MonoBehaviour {
 
 	public GameObject[] listDecor;
+	public int[] listDecorProba;
 	private Transform myTransform;
+
+	private int totalProba = 0;
 
 	private static Transform positionCurrentDecor;
 	private static int sizeCurrentDecor = 0;
@@ -19,6 +22,9 @@ public class SpawnDecor : MonoBehaviour {
 			positionCurrentDecor = new GameObject ().transform;
 			positionCurrentDecor.position = Vector2.zero;
 		}
+
+		// Somme des probabilités
+		for (int i = 0; i < listDecorProba.Length; totalProba += listDecorProba [i++]);
 	}
 
 	void OnEnable () {
@@ -30,9 +36,13 @@ public class SpawnDecor : MonoBehaviour {
 			
 		// On teste si on doit faire apparaître un objet ou non
 		if (myTransform.position.x >= positionCurrentDecor.position.x + sizeCurrentDecor && Random.Range (0, 101) <= probaApparition) {
-			int decorRandom = Random.Range (0, listDecor.Length); // On choisit un élément de décor aléatoire
+			// On choisit un élément de décor aléatoire selon les probabilités d'apparition
+			int probaRandom = Random.Range (0, totalProba);
+			int k, decorChoisi;
+			// On ajoute à k la valeur de la proportion si jamais k est inférieur à random, et on incrémente decorChoisi
+			for(k = 0, decorChoisi = 0; k <= probaRandom; k += listDecorProba[decorChoisi++]);
 
-			GameObject decor = PoolingManager.current.Spawn (listDecor [decorRandom].name);
+			GameObject decor = PoolingManager.current.Spawn (listDecor [decorChoisi-1].name);
 
 			if (decor != null) {
 				decor.transform.position = myTransform.position;
@@ -43,6 +53,7 @@ public class SpawnDecor : MonoBehaviour {
 
 				// On assigne la taille de l'élément courant, afin de ne pas en faire apparaître d'autre devant
 				sizeCurrentDecor = Mathf.CeilToInt (decor.GetComponent<SpriteRenderer> ().bounds.size.x);
+
 				positionCurrentDecor = myTransform;
 			}
 		}
