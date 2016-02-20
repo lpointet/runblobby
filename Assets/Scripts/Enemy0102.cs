@@ -11,6 +11,7 @@ public class Enemy0102 : Enemy {
 
 	[Header("Galia Special")]
 	public LayerMask playerMask;
+	public ParticleSystem smokeParticle;
 	public float dodgeSkill;
 	public int pourcentOeuf = 10;
 	private int currentOeuf = 100;
@@ -24,9 +25,14 @@ public class Enemy0102 : Enemy {
 	private float lerpingAngryTime = 0f;
 	private float delayRunAngry = 0.7f;
 
+	// Zone de détection des balles
 	private Collider2D detectedBullet = null;
 	private int currentBulletID = 0;
 	private float entryTime; // Le moment d'entrée de la dernière balle dans la zone de détection
+
+	// Détection du sol
+	private bool grounded;
+	public float groundCheckRadius;
 
 	private Animator myAnim;
 
@@ -41,6 +47,8 @@ public class Enemy0102 : Enemy {
 		//myAnim.SetFloat("ratioHP", 1f);
 
 		attackSpeed = easyAttackSpeed;
+
+		smokeParticle.gameObject.SetActive (false);
 	}
 
 	protected override void Update () {
@@ -53,8 +61,11 @@ public class Enemy0102 : Enemy {
 
 		// Quand elle n'est pas en colère
 		if (!angry) {
-			// Elle peut éviter les balles
-			DodgeBullet ();
+			// Elle peut éviter les balles si elle peut sauter (= si elle touche le sol)
+			grounded = Physics2D.OverlapCircle (myTransform.position, groundCheckRadius, layerGround);
+			if (grounded) {
+				DodgeBullet ();
+			}
 
 			// Si elle n'est pas à sa place initiale, elle s'y avance régulièrement
 			if (myTransform.position.x < startPosition [0]) {
@@ -134,6 +145,7 @@ public class Enemy0102 : Enemy {
 		// Si la différence vaut plus que la valeur oeufale courante (selon difficulté) et que le poulet n'est pas mort, on lâche un oeuf
 		if (pourcentVie <= currentOeuf && !IsDead()) {
 			EggDrop ();
+			myAudio.HitSound ();
 			// On fait sauter la poule
 			myRb.AddForce(Vector2.up * 250);
 			// On ajuste la valeur du prochain oeuf en fonction
@@ -167,7 +179,11 @@ public class Enemy0102 : Enemy {
 
 	// A la mort, attacher l'ennemi au sol, et laisser un poulet rôti / un pilon de poulet
 	protected override void Despawn () {
+		Die ();
+
 		myAnim.SetTrigger ("dead");
+
+		smokeParticle.gameObject.SetActive (true);
 
 		RaycastHit2D hit;
 		hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround);

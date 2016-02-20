@@ -5,14 +5,14 @@ public class Pickup : MonoBehaviour {
 	
 	public float lifeTime = 0;
 	protected bool parentAttach = false;
-	protected Transform initialParent;						// Référence vers le parent initial
-	protected Transform myTransform; 							// Référence vers le transform du bonus
+	protected Transform initialParent;		// Référence vers le parent initial
+	protected Transform myTransform; 		// Référence vers le transform du bonus
     protected Collider2D myCollider;
-	protected float despawnTime = 0; 	// protected parce qu'il doit etre réglé dans la classe fille directement, pas modifiable dans l'éditeur, dans Awake
+	protected float despawnTime = 0; 		// protected parce qu'il doit etre réglé dans la classe fille directement, pas modifiable dans l'éditeur, dans Awake
 	private Renderer rdr;
 	protected bool picked = false;
-	protected float timeToLive;			// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
-	public int weight = 0;			// Probabilité d'apparition relative du bonus
+	protected float timeToLive;				// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
+	public int weight = 0;					// Probabilité d'apparition relative du bonus
     protected Animator myAnim;
     protected AudioSource soundSource;
     protected bool despawnCalled = false;

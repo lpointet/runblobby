@@ -28,10 +28,18 @@ public class PlayerController : Character {
 	public LayerMask layerGround;
 	
 	private int currentJump = 0;
+	private int initialMaxDoubleJump;
 
+	// Concerne le saut
     private float initialGravityScale;
     private float initialJumpHeight;
-    private int initialMaxDoubleJump;
+    
+	// Calculé à partir des formules de portée et de hauteur max en partant des conditions initiales
+	// Permet de conserver une hauteur et une distance constante des sauts pour toutes les vitesses horizontales
+	private const float maxJumpHeight = 3;
+	private const float jumpDistance = 4;
+	private const float constJump = 4 * maxJumpHeight / jumpDistance;
+	private const float constGravity = 0.5f / maxJumpHeight / 10f;
 
     private List<Collider2D> pickups = new List<Collider2D>();
     private LastWishPickup lastWish = null;
@@ -41,12 +49,13 @@ public class PlayerController : Character {
     private Collider2D[] coins = new Collider2D[20];        // Liste des pièces existantes
     private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
 
+	// Concerne le vol
 	private float flySpeedCoeff = 2f;
 	private float speedBeforeFly;
 	private float speedInFly;
 	private float acceleration = 0f; // Temps de transition
 	private bool isFlying = false;
-	private bool zeroGravFlying = true;
+	private bool zeroGravFlying = false;
 	private float yPosAirDeath;
 	private float yVariableAirDeath = 0f;
 
@@ -125,8 +134,8 @@ public class PlayerController : Character {
 		mySprite = GetComponent<SpriteRenderer> ();
 
 		SetWeapon( myTransform.FindChild( "Weapon" ) );
-        initialGravityScale = myRb.gravityScale;
-        initialJumpHeight = GetJumpHeight();
+//        initialGravityScale = myRb.gravityScale;
+//        initialJumpHeight = GetJumpHeight();
         initialMaxDoubleJump = GetMaxDoubleJump();
     }
 	
@@ -137,6 +146,7 @@ public class PlayerController : Character {
 		lerpingHP = GetHealthPoint ();
 		isFlying = false;
         wasFlying = false;
+		SetZeroGravFlying (false); // TODO doit provenir de l'arbre des talents (v2)
     }
 	
 	void FixedUpdate(){
@@ -150,6 +160,12 @@ public class PlayerController : Character {
 	
 	protected override void Update () {
 		base.Update();
+
+		// Ajustement du saut et gravité en fonction de la vitesse
+		if (!isFlying) {
+			SetJumpHeight (GetMoveSpeed () * constJump);
+			myRb.gravityScale = GetJumpHeight () * GetJumpHeight () * constGravity;
+		}
 
 		// Vol sur place du fantôme pendant la mort en l'air
 		if (IsDead () && !HasLastWish() && !IsGrounded () && myTransform.position.y > 3.5f) {
@@ -166,16 +182,18 @@ public class PlayerController : Character {
 			myTransform.Translate (Vector3.right * 0.005f);
 
 		// Permet de suivre le "doigt" du joueur quand il vole en zéro gravité
-		if (IsFlying() && IsZeroGravFlying () && Input.GetMouseButton (0)) {
-			float cameraCursorY = Camera.main.ScreenToWorldPoint (Input.mousePosition).y;
-			float positionToCursor = Mathf.SmoothDamp (myTransform.position.y, cameraCursorY, ref dampVelocity, followDelay);
+		if (IsFlying() && IsZeroGravFlying ()) {
+			if (Input.GetMouseButton (0)) {
+				float cameraCursorY = Camera.main.ScreenToWorldPoint (Input.mousePosition).y;
 
-			// On évite de le faire descendre s'il est déjà au sol
-			if (IsGrounded () && cameraCursorY < positionToCursor) {
-				positionToCursor = myTransform.position.y;
+				// On ne bouge que si le curseur est suffisament loin du joueur (pour éviter des zigzags)
+				if (Mathf.Abs (cameraCursorY - myTransform.position.y) > 0.1f)
+					myRb.velocity = new Vector2 (0, Mathf.Sign ((cameraCursorY - myTransform.position.y)) * 5);
+				else
+					myRb.velocity = Vector2.zero;
+			} else { // Si on n'appuie pas, on ne bouge pas
+				myRb.velocity = Vector2.zero;
 			}
-			//myRb.AddForce(new Vector2(0, 25*(cameraCursorY-positionToCursor)));
-			myTransform.position = new Vector2 (myTransform.position.x, positionToCursor);
 		}
 
 		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
@@ -221,10 +239,14 @@ public class PlayerController : Character {
 		// Accélération et décélération au début et à la fin du vol
 		if (speedBeforeFly != speedInFly) {
 			acceleration += Time.deltaTime;
-			if (isFlying)
+			if (isFlying) // Au démarrage
 				SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration)); // En une seconde
-			else
+			else {
 				SetMoveSpeed (Mathf.Lerp (speedInFly, speedBeforeFly, acceleration * 2)); // En 0.5 seconde
+				// Quand on a atteint la bonne vitesse, on évite de rappeler cette fonction
+				if (GetMoveSpeed () == speedBeforeFly)
+					speedInFly = speedBeforeFly;
+			}
 		}
 	}
 	
@@ -353,8 +375,8 @@ public class PlayerController : Character {
 		isFlying = false;
 
         // Remettre les paramètres initiaux
-        myRb.gravityScale = initialGravityScale;
-        SetJumpHeight( initialJumpHeight );
+//        myRb.gravityScale = initialGravityScale;
+//        SetJumpHeight( initialJumpHeight );
         SetMaxDoubleJump( initialMaxDoubleJump );
 
         // On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou

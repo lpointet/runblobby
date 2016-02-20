@@ -18,8 +18,10 @@ public class CreditScrollList : MonoBehaviour {
 	public GameObject itemSaut;
 	private GameObject item;
 
-	private float speedScroll = 0.5f;
+	public float speedScroll = 1f;
+	public float pressedSpeedScroll = 2.5f;
 	private float dragTime;
+	private bool pressed = false;
 
 	void Start() {
 		// Chargement du fichier
@@ -46,25 +48,40 @@ public class CreditScrollList : MonoBehaviour {
 
 		// Padding TOP et BOT (commencer/terminer au milieu)
 		int paddingSize = Mathf.RoundToInt(Screen.height * (GetComponent<RectTransform>().anchorMax.y - GetComponent<RectTransform>().anchorMin.y) / 2 - itemSection.GetComponent<LayoutElement>().minHeight);
-		contentPanel.GetComponent<VerticalLayoutGroup> ().padding = new RectOffset (0, 0, paddingSize, paddingSize);Debug.Log (paddingSize);
+		contentPanel.GetComponent<VerticalLayoutGroup> ().padding = new RectOffset (0, 0, paddingSize, paddingSize);
 	}
 
 	void OnEnable () {
 		contentPanel.anchoredPosition = Vector2.zero;
-		dragTime = Time.time - 4; // (5-4)s de lancement
+		dragTime = Time.time - 1; // (2-1)s de lancement
 	}
 
 	void Update () {
 		// Si on drag, on arrête le défilement pendant 5sec
 		// TODO 661 est une valeur arbitraire, je ne sais pas comment la calculer...
-		if (contentPanel.anchoredPosition.y < 661 && dragTime + 5 < Time.time) {
-			contentPanel.anchoredPosition = new Vector2 (0, contentPanel.anchoredPosition.y + speedScroll);
+		if ((contentPanel.anchoredPosition.y >= -1 && contentPanel.anchoredPosition.y < 661 && dragTime + 2 < Time.time) || pressed) {
+			float currentSpeed;
+			currentSpeed = pressed ? pressedSpeedScroll : speedScroll; // On ajuste la vitesse en fonction de ce qu'il se passe
+			contentPanel.anchoredPosition = new Vector2 (0, contentPanel.anchoredPosition.y + currentSpeed);
+
+			// Si on dépasse les limites, on recadre (pour éviter de ne plus appeler cette fonction)
+			if (contentPanel.anchoredPosition.y + currentSpeed < 0)
+				contentPanel.anchoredPosition = Vector2.zero;
+			else if (contentPanel.anchoredPosition.y + currentSpeed >= 661)
+				contentPanel.anchoredPosition = new Vector2 (0, 660);
 		}
 
 		// TODO il faut faire des boutons pour accès rapides
 	}
 
-	public void Dragging() {
+	public void Pressing() {
+		pressed = true;
+		// On agit différement selon que l'on clique plus haut ou plus bas
+		pressedSpeedScroll = (Camera.main.ScreenToWorldPoint (Input.mousePosition).y > 0) ? -Mathf.Abs (pressedSpeedScroll) : Mathf.Abs (pressedSpeedScroll);
+	}
+
+	public void ReleasePression() {
+		pressed = false;
 		dragTime = Time.time;
 	}
 }

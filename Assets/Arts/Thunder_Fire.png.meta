@@ -1,0 +1,150 @@
+fileFormatVersion: 2
+guid: 2a55267c4f8de7a4ea45b4af9fa8ffe1
+timeCreated: 1455824701
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Thunder_Fire_0
+    21300002: Thunder_Fire_1
+    21300004: Thunder_Fire_2
+    21300006: Thunder_Fire_3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 64
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 32
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Thunder_Fire_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 32}
+        - {x: -3, y: 32}
+        - {x: -8, y: 29}
+        - {x: -12, y: 19}
+        - {x: -12, y: 3}
+        - {x: -10, y: 0}
+        - {x: 10, y: 0}
+        - {x: 13, y: 1}
+        - {x: 13, y: 24}
+        - {x: 11, y: 26}
+    - name: Thunder_Fire_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 32}
+        - {x: -11, y: 2}
+        - {x: -10, y: 0}
+        - {x: 8, y: 0}
+        - {x: 12, y: 1}
+        - {x: 12, y: 28}
+        - {x: 9, y: 32}
+    - name: Thunder_Fire_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 26}
+        - {x: -13, y: 21}
+        - {x: -13, y: 6}
+        - {x: -9, y: 0}
+        - {x: 13, y: 0}
+        - {x: 13, y: 18}
+        - {x: 9, y: 26}
+      - - {x: 3, y: 30}
+        - {x: 3, y: 26}
+        - {x: 6, y: 23}
+        - {x: 8, y: 23}
+        - {x: 10, y: 25}
+        - {x: 10, y: 27}
+        - {x: 6, y: 31}
+      - - {x: -4, y: 32}
+        - {x: -4, y: 30}
+        - {x: -1, y: 27}
+        - {x: 0, y: 27}
+        - {x: 3, y: 30}
+        - {x: 2, y: 32}
+    - name: Thunder_Fire_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 30}
+        - {x: -13, y: 22}
+        - {x: -15, y: 11}
+        - {x: -15, y: 4}
+        - {x: -10, y: 0}
+        - {x: 13, y: 0}
+        - {x: 13, y: 20}
+        - {x: 2, y: 30}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

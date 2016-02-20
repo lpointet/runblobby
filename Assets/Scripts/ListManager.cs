@@ -5,8 +5,9 @@ public class ListManager : MonoBehaviour {
 
 	public static ListManager current;
 
+	public CoinPickup[] coins;
+	public Pickup[] powerups;
 	public Sprite[] cloudBlock;
-	public GameObject[] coins;
 
 	void Awake() {
 		if (current == null) {

@@ -1,0 +1,504 @@
+fileFormatVersion: 2
+guid: a2620decc6c662b46926476d124218f2
+timeCreated: 1455737394
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Thunder_0
+    21300002: Thunder_1
+    21300004: Thunder_2
+    21300006: Thunder_3
+    21300008: Thunder_4
+    21300010: Thunder_5
+    21300012: Thunder_6
+    21300014: Thunder_7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 512
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 32
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Thunder_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 32
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4, y: 75}
+        - {x: 7, y: 71}
+        - {x: 10, y: 73}
+        - {x: 9, y: 79}
+        - {x: 7, y: 81}
+        - {x: 4, y: 80}
+      - - {x: -9, y: 98}
+        - {x: -9, y: 97}
+        - {x: -8, y: 95}
+        - {x: -5, y: 95}
+        - {x: 0, y: 98}
+        - {x: 0, y: 102}
+        - {x: -2, y: 104}
+        - {x: -3, y: 104}
+      - - {x: -12, y: 122}
+        - {x: -11, y: 118}
+        - {x: -8, y: 117}
+        - {x: -5, y: 118}
+        - {x: -5, y: 122}
+        - {x: -9, y: 127}
+        - {x: -12, y: 126}
+      - - {x: -3, y: 152}
+        - {x: -8, y: 148}
+        - {x: -7, y: 145}
+        - {x: -4, y: 145}
+        - {x: 0, y: 148}
+        - {x: 0, y: 150}
+        - {x: -2, y: 152}
+      - - {x: -4, y: 160}
+        - {x: -4, y: 158}
+        - {x: -2, y: 152}
+        - {x: 2, y: 152}
+        - {x: 6, y: 154}
+        - {x: 6, y: 157}
+        - {x: 4, y: 160}
+    - name: Thunder_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 160
+        width: 32
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 20}
+        - {x: 1, y: 15}
+        - {x: 4, y: 17}
+        - {x: 2, y: 24}
+        - {x: 0, y: 26}
+        - {x: -3, y: 25}
+      - - {x: 0, y: 55}
+        - {x: -4, y: 47}
+        - {x: -4, y: 43}
+        - {x: 1, y: 43}
+        - {x: 5, y: 47}
+        - {x: 6, y: 54}
+        - {x: 4, y: 56}
+      - - {x: -1, y: 93}
+        - {x: -3, y: 90}
+        - {x: -3, y: 82}
+        - {x: 5, y: 70}
+        - {x: 10, y: 70}
+        - {x: 10, y: 86}
+        - {x: 2, y: 93}
+      - - {x: -11, y: 81}
+        - {x: -8, y: 81}
+        - {x: -6, y: 83}
+        - {x: -6, y: 88}
+        - {x: -8, y: 92}
+        - {x: -10, y: 92}
+        - {x: -12, y: 91}
+        - {x: -12, y: 83}
+      - - {x: -9, y: 94}
+        - {x: -6, y: 93}
+        - {x: -2, y: 93}
+        - {x: 0, y: 94}
+        - {x: 0, y: 102}
+        - {x: -1, y: 104}
+        - {x: -3, y: 104}
+        - {x: -9, y: 100}
+      - - {x: 8, y: 119}
+        - {x: -2, y: 113}
+        - {x: -2, y: 109}
+        - {x: 0, y: 102}
+        - {x: 6, y: 102}
+        - {x: 13, y: 109}
+        - {x: 13, y: 119}
+      - - {x: -13, y: 127}
+        - {x: -13, y: 122}
+        - {x: -9, y: 116}
+        - {x: -7, y: 116}
+        - {x: -5, y: 117}
+        - {x: -4, y: 126}
+        - {x: -4, y: 129}
+        - {x: -6, y: 130}
+      - - {x: -1, y: 131}
+        - {x: -3, y: 125}
+        - {x: -3, y: 119}
+        - {x: 1, y: 116}
+        - {x: 7, y: 116}
+        - {x: 7, y: 127}
+        - {x: 3, y: 131}
+      - - {x: -9, y: 160}
+        - {x: -13, y: 156}
+        - {x: -13, y: 136}
+        - {x: -9, y: 131}
+        - {x: 5, y: 131}
+        - {x: 7, y: 136}
+        - {x: 7, y: 156}
+        - {x: 2, y: 160}
+    - name: Thunder_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 160
+        width: 32
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 4}
+        - {x: -3, y: 0}
+        - {x: 3, y: 0}
+        - {x: 3, y: 3}
+        - {x: 1, y: 10}
+        - {x: -3, y: 10}
+        - {x: -6, y: 9}
+      - - {x: -3, y: 28}
+        - {x: -5, y: 18}
+        - {x: -5, y: 13}
+        - {x: 3, y: 4}
+        - {x: 9, y: 4}
+        - {x: 10, y: 6}
+        - {x: 10, y: 13}
+        - {x: 9, y: 17}
+        - {x: 3, y: 27}
+        - {x: 1, y: 29}
+      - - {x: -8, y: 34}
+        - {x: -11, y: 30}
+        - {x: -11, y: 25}
+        - {x: -10, y: 24}
+        - {x: -8, y: 24}
+        - {x: -3, y: 29}
+        - {x: -3, y: 33}
+        - {x: -5, y: 35}
+      - - {x: -1, y: 37}
+        - {x: -1, y: 34}
+        - {x: 3, y: 30}
+        - {x: 6, y: 29}
+        - {x: 9, y: 30}
+        - {x: 9, y: 33}
+        - {x: 6, y: 36}
+        - {x: 1, y: 39}
+      - - {x: 2, y: 59}
+        - {x: -5, y: 54}
+        - {x: -5, y: 41}
+        - {x: -3, y: 41}
+        - {x: 2, y: 43}
+        - {x: 6, y: 48}
+        - {x: 9, y: 56}
+        - {x: 8, y: 59}
+      - - {x: -6, y: 69}
+        - {x: -6, y: 56}
+        - {x: 0, y: 56}
+        - {x: 2, y: 57}
+        - {x: 2, y: 67}
+        - {x: -2, y: 69}
+      - - {x: -6, y: 160}
+        - {x: -13, y: 152}
+        - {x: -13, y: 123}
+        - {x: -7, y: 115}
+        - {x: -4, y: 117}
+        - {x: -4, y: 121}
+        - {x: -2, y: 112}
+        - {x: -13, y: 97}
+        - {x: -13, y: 87}
+        - {x: -12, y: 82}
+        - {x: -9, y: 81}
+        - {x: -6, y: 82}
+        - {x: -5, y: 85}
+        - {x: -5, y: 88}
+        - {x: -5, y: 84}
+        - {x: -6, y: 74}
+        - {x: -3, y: 70}
+        - {x: 14, y: 70}
+        - {x: 14, y: 160}
+    - name: Thunder_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 160
+        width: 32
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 3}
+        - {x: 12, y: 5}
+        - {x: 12, y: 120}
+        - {x: -1, y: 120}
+        - {x: -15, y: 103}
+        - {x: -15, y: 84}
+        - {x: -14, y: 82}
+        - {x: -11, y: 81}
+        - {x: -8, y: 82}
+        - {x: -7, y: 85}
+        - {x: -7, y: 88}
+        - {x: -6, y: 79}
+        - {x: -14, y: 73}
+        - {x: -13, y: 69}
+        - {x: -8, y: 57}
+        - {x: -15, y: 41}
+        - {x: -15, y: 39}
+        - {x: -14, y: 25}
+        - {x: -10, y: 24}
+        - {x: -5, y: 29}
+        - {x: -5, y: 33}
+        - {x: -5, y: 21}
+        - {x: -13, y: 16}
+        - {x: -11, y: 2}
+        - {x: -5, y: 0}
+        - {x: 1, y: 0}
+        - {x: 1, y: 2}
+        - {x: 0, y: 9}
+        - {x: 1, y: 5}
+      - - {x: -3, y: 155}
+        - {x: -14, y: 148}
+        - {x: -14, y: 121}
+        - {x: -9, y: 118}
+        - {x: 5, y: 118}
+        - {x: 5, y: 147}
+        - {x: 3, y: 155}
+    - name: Thunder_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 160
+        width: 32
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 4}
+        - {x: 9, y: 6}
+        - {x: 9, y: 38}
+        - {x: 3, y: 49}
+        - {x: 1, y: 51}
+        - {x: -3, y: 51}
+        - {x: -13, y: 43}
+        - {x: -13, y: 26}
+        - {x: -9, y: 25}
+        - {x: -4, y: 30}
+        - {x: -12, y: 17}
+        - {x: -10, y: 4}
+        - {x: -4, y: 0}
+        - {x: 2, y: 0}
+        - {x: 2, y: 3}
+        - {x: 1, y: 10}
+        - {x: 2, y: 6}
+      - - {x: -4, y: 65}
+        - {x: -6, y: 64}
+        - {x: -7, y: 61}
+        - {x: -7, y: 59}
+        - {x: 2, y: 50}
+        - {x: 4, y: 50}
+        - {x: 6, y: 51}
+        - {x: 7, y: 54}
+        - {x: 7, y: 59}
+        - {x: 0, y: 65}
+      - - {x: -11, y: 76}
+        - {x: -11, y: 71}
+        - {x: -9, y: 65}
+        - {x: 0, y: 65}
+        - {x: 0, y: 79}
+        - {x: -3, y: 79}
+      - - {x: -5, y: 102}
+        - {x: -5, y: 82}
+        - {x: 3, y: 74}
+        - {x: 10, y: 74}
+        - {x: 10, y: 100}
+        - {x: 1, y: 102}
+      - - {x: -10, y: 99}
+        - {x: -14, y: 96}
+        - {x: -14, y: 92}
+        - {x: -12, y: 88}
+        - {x: -9, y: 84}
+        - {x: -6, y: 86}
+        - {x: -5, y: 90}
+        - {x: -5, y: 99}
+      - - {x: -1, y: 110}
+        - {x: -1, y: 107}
+        - {x: 0, y: 106}
+        - {x: 2, y: 106}
+        - {x: 12, y: 112}
+        - {x: 12, y: 116}
+        - {x: 11, y: 118}
+        - {x: 9, y: 118}
+        - {x: 1, y: 115}
+      - - {x: 0, y: 121}
+        - {x: 3, y: 122}
+        - {x: 3, y: 125}
+        - {x: 0, y: 126}
+        - {x: -2, y: 124}
+      - - {x: -6, y: 135}
+        - {x: -7, y: 132}
+        - {x: -5, y: 128}
+        - {x: -2, y: 127}
+        - {x: 2, y: 127}
+        - {x: 4, y: 129}
+        - {x: 3, y: 133}
+        - {x: -4, y: 135}
+      - - {x: -12, y: 147}
+        - {x: -12, y: 143}
+        - {x: -10, y: 142}
+        - {x: -7, y: 142}
+        - {x: -4, y: 146}
+        - {x: -4, y: 148}
+        - {x: -7, y: 149}
+    - name: Thunder_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 3}
+        - {x: -7, y: 2}
+        - {x: 4, y: 2}
+        - {x: 8, y: 4}
+        - {x: 8, y: 18}
+        - {x: 3, y: 31}
+        - {x: -2, y: 31}
+        - {x: -9, y: 22}
+      - - {x: -1, y: 48}
+        - {x: -5, y: 48}
+        - {x: -12, y: 43}
+        - {x: -12, y: 27}
+        - {x: -9, y: 26}
+        - {x: -6, y: 27}
+        - {x: -4, y: 31}
+        - {x: 1, y: 46}
+      - - {x: -4, y: 34}
+        - {x: 2, y: 30}
+        - {x: 6, y: 30}
+        - {x: 8, y: 32}
+        - {x: 6, y: 38}
+        - {x: -1, y: 41}
+        - {x: -3, y: 41}
+        - {x: -4, y: 39}
+      - - {x: -2, y: 60}
+        - {x: -2, y: 57}
+        - {x: 0, y: 51}
+        - {x: 3, y: 50}
+        - {x: 6, y: 51}
+        - {x: 7, y: 57}
+        - {x: 4, y: 60}
+        - {x: 0, y: 61}
+      - - {x: -10, y: 70}
+        - {x: -9, y: 67}
+        - {x: -5, y: 67}
+        - {x: -2, y: 71}
+        - {x: -2, y: 76}
+        - {x: -3, y: 77}
+        - {x: -7, y: 77}
+        - {x: -10, y: 74}
+      - - {x: -4, y: 95}
+        - {x: 1, y: 89}
+        - {x: 4, y: 90}
+        - {x: 4, y: 95}
+        - {x: 2, y: 97}
+        - {x: -2, y: 98}
+    - name: Thunder_6
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -1, y: 28}
+        - {x: -3, y: 27}
+        - {x: -9, y: 15}
+        - {x: -9, y: 13}
+        - {x: -2, y: 13}
+        - {x: 4, y: 15}
+        - {x: 4, y: 22}
+        - {x: 1, y: 28}
+      - - {x: -11, y: 41}
+        - {x: -11, y: 35}
+        - {x: -8, y: 31}
+        - {x: -5, y: 33}
+        - {x: -4, y: 41}
+        - {x: -4, y: 43}
+        - {x: -7, y: 44}
+      - - {x: -1, y: 40}
+        - {x: -2, y: 38}
+        - {x: -2, y: 33}
+        - {x: 3, y: 31}
+        - {x: 6, y: 32}
+        - {x: 6, y: 34}
+        - {x: 2, y: 40}
+    - name: Thunder_7
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 160
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 158}
+        - {x: 1, y: 160}
+        - {x: -4, y: 160}
+        - {x: -2, y: 157}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

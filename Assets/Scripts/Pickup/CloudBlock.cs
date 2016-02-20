@@ -15,8 +15,12 @@ public class CloudBlock : MonoBehaviour {
 	private float randomStart; // Permet de ne pas avoir le même mouvement pour tous les nuages
 	private float vectorScaleX; // Modification de scale X des nuages
 	private float vectorScaleY; // Modification de scale Y des nuages
-	private float speedScale = 0.5f; // Vitesse de changement
+	private float speedScale = 0.25f; // Vitesse de changement
 	private float timeScale; // Unité de mesure du temps pour le scaling (permet de garder une augmentation linéaire du scaling)
+
+	private float timeToPop;
+	private float delayToPop = 0.1f;
+	private float scalePop;
 
     void Awake() {
 		mySprite = GetComponentInChildren<SpriteRenderer> ();
@@ -26,13 +30,14 @@ public class CloudBlock : MonoBehaviour {
 
     void Start() {
         camRightLimit = CameraManager.cameraManager.camRightEnd + 1;
-		randomStart = Random.Range (0f, Mathf.PI); // Démarrage aléatoire
-		delayScaleY = Random.Range (Mathf.PI / 2f, Mathf.PI); // Décalage de l'axe Y
+		randomStart = Random.Range (0f, 2 * Mathf.PI); // Démarrage aléatoire
+		delayScaleY = Random.Range (Mathf.PI, 3 * Mathf.PI / 2f); // Décalage de l'axe Y
     }
 
     void OnEnable() {
         ActiverNuage(false);
 		timeScale = randomStart;
+		scalePop = 0;
     }
 
 	void Update () {
@@ -47,18 +52,28 @@ public class CloudBlock : MonoBehaviour {
 
 		// On modifie la taille des nuages (visuel)
 		if (thisNuageActif) {
-			timeScale += Time.deltaTime / speedScale;
-			vectorScaleX = 1f + 0.1f* Mathf.Sin (timeScale); // Entre 0.9 et 1.1
-			vectorScaleY = 1f + 0.1f* Mathf.Sin (timeScale + delayScaleY); // Entre 0.9 et 1.1
+			// On le fait "pop" au démarrage
+			if (Time.time < timeToPop) {
+				scalePop += 1.5f * Time.deltaTime / delayToPop;
+				mySpriteTransform.localScale = new Vector2 (scalePop, scalePop);
+			} else { // Une fois qu'il a pop, il fluctue
+				timeScale += Time.deltaTime / speedScale;
+				vectorScaleX = 1f + 0.15f * Mathf.Sin (timeScale); // Entre 0.9 et 1.1
+				vectorScaleY = 1f + 0.15f * Mathf.Sin (timeScale + delayScaleY); // Entre 0.9 et 1.1
 
-			mySpriteTransform.localScale = new Vector2(vectorScaleX, vectorScaleY);
+				mySpriteTransform.localScale = new Vector2 (vectorScaleX, vectorScaleY);
+			}
 		}
 	}
 
 	public void ActiverNuage(bool actif) {
-		mySprite.sprite = ListManager.current.cloudBlock[Random.Range(0, ListManager.current.cloudBlock.Length)];
+		if (actif)
+			mySprite.sprite = ListManager.current.cloudBlock[Random.Range(0, ListManager.current.cloudBlock.Length)];
+		
 		mySprite.enabled = actif;
         myCollider.isTrigger = !actif;
 		thisNuageActif = nuageActif;
+
+		timeToPop = Time.time + delayToPop;
 	}
 }

@@ -14,13 +14,14 @@ public class Enemy : Character {
 	/* End of Stats */
 
 	protected Rigidbody2D myRb;
+	protected EnemySoundEffect myAudio;
 
 	public float[] startPosition = new float[2];
 
 	[Header("Coin Drop")]
 	public float frequence = 0.01f;
 	public float mediumValue = 1.1f; // Offre une bien plus grande variété de feuilles que 1f
-	private GameObject[] coins; // Fait référence à ListManager
+	private CoinPickup[] coins; // Fait référence à ListManager
 	private CoinDrop[] possibleCoins;
 	[SerializeField] protected LayerMask layerGround; // TODO autre possibilité pour que le paramètre passe aux enfants ?
 	private float distanceParcourue = 0;
@@ -85,6 +86,7 @@ public class Enemy : Character {
         base.Awake();
 
 		myRb = GetComponent<Rigidbody2D> ();
+		myAudio = GetComponent<EnemySoundEffect> ();
 	}
 
 	protected override void Init() { // TODO pourquoi c'est appelé deux fois ? Start (voir Character.cs) et OnEnable ?
@@ -102,7 +104,7 @@ public class Enemy : Character {
 
 		for (int i = 0; i < coins.Length; i++) {
 			// Si la différence entre la valeur souhaitée et la valeur de la pièce est négative (strictement), on doit retenir la valeur précédente comme pièce médiane
-			if (mediumValue - coins [i].GetComponent<CoinPickup> ().pointToAdd < 0) {
+			if (mediumValue - coins [i].pointToAdd < 0) {
 				mediane = i == 0 ? 0 : (i - 1); // S'assurer qu'on prenne au pire la première pièce
 				tabSize = mediane > 1 ? 5 : (mediane + 3);
 				if (mediane == coins.Length - 2) // On modifie juste la valeur si on tombe sur l'avant-dernier élément
@@ -124,7 +126,7 @@ public class Enemy : Character {
 			// On calculera donc la loi de Poisson pour un 7 à la place du 5 (solution la plus "fiable")
 			int poissonValue;
 			if (i < tabSize - 1) {
-				poissonValue = Mathf.FloorToInt ((coins [firstElement + i].GetComponent<CoinPickup> ().pointToAdd + coins [firstElement + i + 1].GetComponent<CoinPickup> ().pointToAdd) / 2f);
+				poissonValue = Mathf.FloorToInt ((coins [firstElement + i].pointToAdd + coins [firstElement + i + 1].pointToAdd) / 2f);
 			} else {
 				poissonValue = 0;
 			}
@@ -137,16 +139,16 @@ public class Enemy : Character {
 
 	// TODO créer un script à part
 	public class CoinDrop {
-		private GameObject coin;
+		private CoinPickup coin;
 		private int poissonValue;
 		private float esperance = 0;
 		private int coinValue;
 
-		public CoinDrop(GameObject coin, int poissonValue, float esperance) {
+		public CoinDrop(CoinPickup coin, int poissonValue, float esperance) {
 			this.coin = coin;
 			this.poissonValue = poissonValue;
 			this.esperance = esperance;
-			coinValue = coin.GetComponent<CoinPickup> ().pointToAdd;
+			coinValue = coin.pointToAdd;
 		}
 
 		public void SetEsperance(float value) {

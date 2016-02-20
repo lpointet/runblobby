@@ -65,6 +65,8 @@ public class Enemy0101 : Enemy {
 
 	// A la mort, attacher l'ennemi au sol, et laisser la carapace
 	protected override void Despawn () {
+		Die ();
+
 		myAnim.SetTrigger ("dead");
 
 		RaycastHit2D hit;

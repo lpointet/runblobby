@@ -4474,6 +4474,8 @@ MonoBehaviour:
   itemSection: {fileID: 171368, guid: 8aac19dbff0ba7f4a8a63316f9fc8c67, type: 2}
   itemContenu: {fileID: 166828, guid: 0f19b47df338c3148830591482b3b1de, type: 2}
   itemSaut: {fileID: 179872, guid: f8b1aa543385b0d478cd2bf92c27e02f, type: 2}
+  speedScroll: 1
+  pressedSpeedScroll: 5
 --- !u!114 &1544372022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4486,12 +4488,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 5
+  - eventID: 2
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1544372021}
-          m_MethodName: Dragging
+          m_MethodName: Pressing
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1544372021}
+          m_MethodName: ReleasePression
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4562,10 +4581,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Content: {fileID: 2002070505}
   m_Horizontal: 0
-  m_Vertical: 1
+  m_Vertical: 0
   m_MovementType: 2
   m_Elasticity: 0.1
-  m_Inertia: 1
+  m_Inertia: 0
   m_DecelerationRate: 0.1
   m_ScrollSensitivity: 20
   m_Viewport: {fileID: 0}

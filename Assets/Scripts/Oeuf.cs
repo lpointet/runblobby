@@ -19,16 +19,14 @@ public class Oeuf : MonoBehaviour {
 
 	void OnEnable () {
 		broken = false;
-		myRb.isKinematic = false;
 		myAnim.SetBool ("broken", broken);
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.name == "Heros" || other.CompareTag("Bullet")) {
-			if (!broken) {
+			if (!IsBroken()) {
 				broken = true;
 				myAnim.SetBool ("broken", broken);
-				myRb.isKinematic = true;
 			}
 		}
 	}

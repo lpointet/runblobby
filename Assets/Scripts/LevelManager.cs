@@ -59,6 +59,7 @@ public class LevelManager : MonoBehaviour {
     private bool enemySpawnLaunched = false; // Bool pour savoir si l'appel du spawn a déjà été fait ou pas
 	public float enemySpawnDelay;
 	private float enemyDistanceToKill;
+	public FlyPickup flyEndBoss;
 	//* Fin partie ennemi intermédiaire
 
 	private float fps;
@@ -142,6 +143,9 @@ public class LevelManager : MonoBehaviour {
 		blockPhase = true;
         SetEnemyDistanceToKill( 0 );
 
+		// Ajustement de l'apparition du boss de fin (par rapport à la distance maximum du level)
+		listPhase [listPhase.Length - 1] = _GameData.current.levelList [LevelManager.levelManager.GetCurrentLevel ()].storyData [LevelManager.levelManager.GetCurrentDifficulty ()].distanceMax;
+
 		SetCurrentLevel (1); // TODO l'information doit venir du MainMenuManager
 		SetStoryMode (true); // TODO idem
 		SetCurrentDifficulty (0); // TODO idem
@@ -213,6 +217,15 @@ public class LevelManager : MonoBehaviour {
 			if( IsEnemyToSpawn() && !enemySpawnLaunched ) {
                 StartCoroutine( SpawnEnemy( enemyMiddle[currentPhase] ) );
                 enemySpawnLaunched = true;
+
+				// On fait voler le joueur si c'est le dernier ennemi
+				if (currentPhase == 0) { // TODO listPhase.Length - 1
+					CleanPickup( GetPlayer().GetLastWish() );
+					GetPlayer ().SetZeroGravFlying (true);
+					// On créer un pickup de vol sur le joueur, en vol infini (1000s...)
+					flyEndBoss.lifeTime = 1000;
+					Instantiate (flyEndBoss, GetPlayer ().transform.position, Quaternion.identity);
+				}
             }
 			
 			if(enemyEnCours != null) {

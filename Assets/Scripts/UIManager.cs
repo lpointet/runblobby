@@ -17,6 +17,10 @@ public class UIManager : MonoBehaviour {
 	private Color warningTextColorBis;
 	private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
 	private float enemyDistanceToKill;
+
+	// Distance parcourue
+	public Slider meterTravelled;
+	private int currentLevelMaxdistance;
 	
 	private Enemy enemyEnCours = null;
 	private bool enemyGUIActive = false;
@@ -101,25 +105,36 @@ public class UIManager : MonoBehaviour {
 		textTimeToMid = 0.2f * textTimeTotal;
 		textTimeToEnd = 0.2f * textTimeTotal;
 		textTimeMid = 0.6f * textTimeTotal;
+
+		// Compteur distance (à n'afficher qu'en mode histoire)
+		if (LevelManager.levelManager.IsStory ()) {
+			currentLevelMaxdistance = LevelManager.levelManager.listPhase [LevelManager.levelManager.listPhase.Length - 1];
+			meterTravelled.maxValue = LevelManager.levelManager.listPhase [LevelManager.levelManager.listPhase.Length - 1];
+			meterTravelled.gameObject.SetActive (true);
+		} else {
+			meterTravelled.gameObject.SetActive (false);
+		}
 	}
-	
+
 	void Update() {
 		enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
 
-        PauseManager();
-
-        EnemySpawnManager();
+//		if (Input.GetButtonDown ("Pause")) {
+//			PauseManager ();
+//		}
 
         // Compteur
         MeterTextManager();
-    }
+		if (LevelManager.levelManager.IsStory ())
+			MeterBarManager ();
+
+		EnemySpawnManager();
     
-    void OnGUI() {
         EnemyManager();
     }
 
-    private void PauseManager() { 
-		if (Input.GetButtonDown ("Pause") && !endUI.activeInHierarchy) {
+    public void PauseManager() { 
+		if (!endUI.activeInHierarchy) {
 			paused = !paused;
 
 			if (paused) {
@@ -203,6 +218,10 @@ public class UIManager : MonoBehaviour {
             meterText.transform.localScale = new Vector2( scaleInitial, scaleInitial );
         }
     }
+
+	private void MeterBarManager() {
+		meterTravelled.value = LevelManager.levelManager.GetDistanceTraveled ();
+	}
 
 	private void TogglePauseMenu(bool active) {
 		pauseUI.SetActive (active);

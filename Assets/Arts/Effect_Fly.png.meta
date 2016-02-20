@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 94933e8bfa9c6d64eb32fa83f042081a
-timeCreated: 1454623136
+timeCreated: 1455463791
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -17,6 +17,17 @@ TextureImporter:
     21300020: Effect_Fly_10
     21300022: Effect_Fly_11
     21300024: Effect_Fly_12
+    21300026: Effect_Fly_13
+    21300028: Effect_Fly_14
+    21300030: Effect_Fly_15
+    21300032: Effect_Fly_16
+    21300034: Effect_Fly_17
+    21300036: Effect_Fly_18
+    21300038: Effect_Fly_19
+    21300040: Effect_Fly_20
+    21300042: Effect_Fly_21
+    21300044: Effect_Fly_22
+    21300046: Effect_Fly_23
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -40,7 +51,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 128
+  maxTextureSize: 256
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -67,7 +78,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -87,7 +98,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 96
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -106,7 +117,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 96
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -124,7 +135,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 96
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -142,7 +153,7 @@ TextureImporter:
     - name: Effect_Fly_4
       rect:
         serializedVersion: 2
-        x: 0
+        x: 128
         y: 64
         width: 32
         height: 32
@@ -150,19 +161,18 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 8, y: 16}
-        - {x: -12, y: 16}
-        - {x: -16, y: 12}
-        - {x: -16, y: -4}
-        - {x: 0, y: -12}
-        - {x: 8, y: -12}
-        - {x: 16, y: -4}
-        - {x: 16, y: 5}
-        - {x: 12, y: 11}
+      - - {x: -13, y: 16}
+        - {x: -16, y: 11}
+        - {x: -16, y: -10}
+        - {x: -12, y: -12}
+        - {x: 7, y: -12}
+        - {x: 16, y: -7}
+        - {x: 16, y: 7}
+        - {x: 9, y: 16}
     - name: Effect_Fly_5
       rect:
         serializedVersion: 2
-        x: 32
+        x: 160
         y: 64
         width: 32
         height: 32
@@ -170,19 +180,18 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 5, y: 16}
-        - {x: -1, y: 13}
-        - {x: -16, y: 8}
-        - {x: -16, y: -5}
+      - - {x: -10, y: 8}
+        - {x: -16, y: 6}
+        - {x: -16, y: -4}
         - {x: 0, y: -13}
-        - {x: 8, y: -13}
-        - {x: 16, y: -5}
-        - {x: 16, y: 13}
-        - {x: 13, y: 16}
+        - {x: 6, y: -13}
+        - {x: 16, y: -4}
+        - {x: 16, y: 5}
+        - {x: 11, y: 8}
     - name: Effect_Fly_6
       rect:
         serializedVersion: 2
-        x: 64
+        x: 192
         y: 64
         width: 32
         height: 32
@@ -190,17 +199,18 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -8, y: 16}
-        - {x: -16, y: 13}
-        - {x: -16, y: -11}
-        - {x: -5, y: -16}
-        - {x: 15, y: -16}
-        - {x: 16, y: -13}
-        - {x: 16, y: 16}
+      - - {x: -16, y: 7}
+        - {x: -16, y: -4}
+        - {x: -7, y: -12}
+        - {x: -1, y: -16}
+        - {x: 11, y: -16}
+        - {x: 16, y: -6}
+        - {x: 16, y: 6}
+        - {x: 14, y: 7}
     - name: Effect_Fly_7
       rect:
         serializedVersion: 2
-        x: 96
+        x: 224
         y: 64
         width: 32
         height: 32
@@ -208,14 +218,14 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -3, y: 14}
-        - {x: -16, y: 9}
-        - {x: -16, y: -4}
+      - - {x: -10, y: 9}
+        - {x: -16, y: 7}
+        - {x: -16, y: -3}
         - {x: 0, y: -12}
-        - {x: 8, y: -12}
-        - {x: 16, y: -4}
-        - {x: 16, y: 8}
-        - {x: 11, y: 14}
+        - {x: 6, y: -12}
+        - {x: 16, y: -3}
+        - {x: 16, y: 6}
+        - {x: 11, y: 9}
     - name: Effect_Fly_8
       rect:
         serializedVersion: 2
@@ -296,6 +306,82 @@ TextureImporter:
     - name: Effect_Fly_12
       rect:
         serializedVersion: 2
+        x: 128
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: 16}
+        - {x: -16, y: 11}
+        - {x: -16, y: -10}
+        - {x: -12, y: -12}
+        - {x: 7, y: -12}
+        - {x: 16, y: -7}
+        - {x: 16, y: 7}
+        - {x: 9, y: 16}
+    - name: Effect_Fly_13
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 8}
+        - {x: -16, y: 6}
+        - {x: -16, y: -4}
+        - {x: 0, y: -13}
+        - {x: 6, y: -13}
+        - {x: 16, y: -4}
+        - {x: 16, y: 5}
+        - {x: 11, y: 8}
+    - name: Effect_Fly_14
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 7}
+        - {x: -16, y: -4}
+        - {x: -7, y: -12}
+        - {x: -1, y: -16}
+        - {x: 11, y: -16}
+        - {x: 16, y: -6}
+        - {x: 16, y: 6}
+        - {x: 14, y: 7}
+    - name: Effect_Fly_15
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 9}
+        - {x: -16, y: 7}
+        - {x: -16, y: -3}
+        - {x: 0, y: -12}
+        - {x: 6, y: -12}
+        - {x: 16, y: -3}
+        - {x: 16, y: 6}
+        - {x: 11, y: 9}
+    - name: Effect_Fly_16
+      rect:
+        serializedVersion: 2
         x: 0
         y: 0
         width: 32
@@ -304,13 +390,149 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -16, y: 16}
+      - - {x: 8, y: 16}
+        - {x: -12, y: 16}
+        - {x: -16, y: 12}
         - {x: -16, y: -4}
-        - {x: -10, y: -11}
-        - {x: 7, y: -11}
+        - {x: 0, y: -12}
+        - {x: 8, y: -12}
+        - {x: 16, y: -4}
+        - {x: 16, y: 5}
+        - {x: 12, y: 11}
+    - name: Effect_Fly_17
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: 16}
+        - {x: -1, y: 13}
+        - {x: -16, y: 8}
+        - {x: -16, y: -5}
+        - {x: 0, y: -13}
+        - {x: 8, y: -13}
+        - {x: 16, y: -5}
+        - {x: 16, y: 13}
+        - {x: 13, y: 16}
+    - name: Effect_Fly_18
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 16}
+        - {x: -16, y: 13}
+        - {x: -16, y: -11}
+        - {x: -5, y: -16}
+        - {x: 15, y: -16}
+        - {x: 16, y: -13}
+        - {x: 16, y: 16}
+    - name: Effect_Fly_19
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 14}
+        - {x: -16, y: 9}
+        - {x: -16, y: -4}
+        - {x: 0, y: -12}
+        - {x: 8, y: -12}
+        - {x: 16, y: -4}
+        - {x: 16, y: 8}
+        - {x: 11, y: 14}
+    - name: Effect_Fly_20
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: 16}
+        - {x: -16, y: 11}
+        - {x: -16, y: -10}
+        - {x: -12, y: -12}
+        - {x: 7, y: -12}
         - {x: 16, y: -7}
-        - {x: 16, y: 14}
-        - {x: 12, y: 16}
+        - {x: 16, y: 7}
+        - {x: 9, y: 16}
+    - name: Effect_Fly_21
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: 16}
+        - {x: -1, y: 13}
+        - {x: -16, y: 8}
+        - {x: -16, y: -5}
+        - {x: 0, y: -13}
+        - {x: 8, y: -13}
+        - {x: 16, y: -5}
+        - {x: 16, y: 13}
+        - {x: 13, y: 16}
+    - name: Effect_Fly_22
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: 16}
+        - {x: -14, y: 15}
+        - {x: -16, y: 9}
+        - {x: -16, y: -7}
+        - {x: -7, y: -16}
+        - {x: 10, y: -16}
+        - {x: 16, y: -11}
+        - {x: 16, y: 16}
+    - name: Effect_Fly_23
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 9}
+        - {x: -16, y: 7}
+        - {x: -16, y: -3}
+        - {x: 0, y: -12}
+        - {x: 6, y: -12}
+        - {x: 16, y: -3}
+        - {x: 16, y: 6}
+        - {x: 11, y: 9}
     outline: []
   spritePackingTag: 
   userData: 
