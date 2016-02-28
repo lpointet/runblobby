@@ -44,7 +44,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -90,7 +90,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 8288f1f421a553849815f895d7ac16fc, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -118,26 +118,11 @@ MonoBehaviour:
   pointScore: 10
   name: Gaston
   surName: the Lazy Gastropod
-  movingEnemy: 0
-  moveRight: 0
-  wallCheck: {fileID: 0}
-  wallCheckRadius: 0
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 0
   startPosition:
   - 14
-  - -0.25
+  - 0
   frequence: 0.01
   mediumValue: 1
-  coins:
-  - {fileID: 157248, guid: c46dcd20b7baa99459eb60f44616cfbd, type: 2}
-  - {fileID: 190520, guid: 98d82e343c0754f4880eee7fab4f364e, type: 2}
-  - {fileID: 104304, guid: ef4806b266ce2234b9efd7a2869fb2f5, type: 2}
-  - {fileID: 196070, guid: d6f870646451e6e48b27c1e807bcec5e, type: 2}
-  - {fileID: 158448, guid: e8be6b5927c4a1d4a94735fcd1392574, type: 2}
-  - {fileID: 176916, guid: 73a83410038a7274c8489eb79d756313, type: 2}
-  - {fileID: 153172, guid: da19e621afeb1e4439322c92b1acfee6, type: 2}
   layerGround:
     serializedVersion: 2
     m_Bits: 1024
@@ -248,10 +233,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: startPosition.Array.data[1]
-      value: -0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_GravityScale
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

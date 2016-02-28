@@ -26,6 +26,9 @@ public class EnemyFlying : MonoBehaviour {
 	}
 
 	void Update () {
+		if (Time.timeScale == 0)
+			return;
+
 		if (enemyIsHere && !enemyIsOnPlayerY) {
 			
 			// On fait bouger l'ennemi vers le bas ou vers le haut, selon sa position par rapport au joueur
@@ -48,15 +51,15 @@ public class EnemyFlying : MonoBehaviour {
 		if (enemyIsOnPlayerY) {
 			if(isSinus || isPingPong) {
 				if(isSinus) // On donne une vitesse sinusoidale
-					myTransform.position = new Vector2(myTransform.position.x - Time.deltaTime * flySpeed, enemyPositionY + Mathf.Sin (2 * flySpeed * mouvement) / 2.0f);
+					myTransform.position = new Vector2(myTransform.position.x - Time.unscaledDeltaTime * flySpeed, enemyPositionY + Mathf.Sin (2 * flySpeed * mouvement) / 2.0f);
 				else if (isPingPong) // On donne une vitesse pingpongidale
-					myTransform.position = new Vector2(myTransform.position.x - Time.deltaTime * flySpeed, enemyPositionY + Mathf.PingPong (flySpeed / 2.0f * mouvement, 0.5f));
+					myTransform.position = new Vector2(myTransform.position.x - Time.unscaledDeltaTime * flySpeed, enemyPositionY + Mathf.PingPong (flySpeed / 2.0f * mouvement, 0.5f));
 
-				mouvement += Time.deltaTime;
+				mouvement += Time.unscaledDeltaTime;
 			}
 			// On donne une vitesse horizontale
 			else
-				myTransform.Translate (Vector3.left * Time.deltaTime * flySpeed);
+				myTransform.Translate (Vector3.left * Time.unscaledDeltaTime * flySpeed);
 		}
 	}
 

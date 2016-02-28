@@ -71,7 +71,8 @@ public class BulletManager : MonoBehaviour {
 
 			// Si on rencontre un ennemi
 			if(other.gameObject.layer == layerEnemy) {
-				other.GetComponent<Enemy>().Hurt(bulletPower);
+				if (other.GetComponent<Enemy>())
+					other.GetComponent<Enemy>().Hurt(bulletPower);
 			}
 
 			// Si on rencontre un joueur
@@ -87,7 +88,7 @@ public class BulletManager : MonoBehaviour {
 		
 	private IEnumerator DespawnAfterDelay(GameObject obj)
 	{
-		yield return new WaitForSeconds (despawnTimer);
+		yield return new WaitForSeconds (despawnTimer * Time.timeScale);
 		obj.SetActive(false);
 	}
 }

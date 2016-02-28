@@ -8,7 +8,6 @@ public class InviciblePickup : Pickup {
 	public AudioClip soundEnd;
 	public float soundEndVolume = 0.8f;
 
-	private SpriteRenderer mySprite;
 	private float timeToClignote = 3f;
 	private float clignottant;
 	private float coefClignottant = 0.05f;
@@ -16,8 +15,6 @@ public class InviciblePickup : Pickup {
 
 	protected override void Awake() {
 		base.Awake();
-
-		mySprite = GetComponent<SpriteRenderer> ();
 
 		parentAttach = true;
 		despawnTime = 0.3f;
@@ -28,11 +25,13 @@ public class InviciblePickup : Pickup {
 	protected override void Update() {
 		base.Update ();
 
+		if (Time.timeScale == 0)
+			return;
+
 		if( picked && timeToLive < timeToClignote && timeToLive > 0) {
 			alphaSprite = Mathf.Abs (Mathf.Sin (coefClignottant * _StaticFunction.MathPower(clignottant, 4)));
-			mySprite.color = new Color (mySprite.color.r, mySprite.color.g, mySprite.color.b, alphaSprite);
-			clignottant += Time.deltaTime;
-			//mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (timeToLive, lifeTime, 0, 0, -20));
+			myRender.color = new Color (myRender.color.r, myRender.color.g, myRender.color.b, alphaSprite);
+			clignottant += Time.unscaledDeltaTime;
 		}
 	}
 	
@@ -56,12 +55,11 @@ public class InviciblePickup : Pickup {
 		soundSource.loop = false;
 		soundSource.Play ();
 
-		mySprite.color = new Color (mySprite.color.r, mySprite.color.g, mySprite.color.b, 1f);
-		//mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
+		myRender.color = new Color (myRender.color.r, myRender.color.g, myRender.color.b, 1f);
 	}
 
 	private IEnumerator PlayActifSound(float delay) {
-		yield return new WaitForSeconds(delay);
+		yield return new WaitForSeconds(delay * Time.timeScale);
 
 		soundSource.clip = soundActif;
 		soundSource.volume = soundActifVolume;

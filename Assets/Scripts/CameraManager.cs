@@ -44,9 +44,9 @@ public class CameraManager : MonoBehaviour {
 		// on place on offset en pourcentage par rapport à ce qui est calculé
 		xOffset = (Camera.main.orthographicSize * Camera.main.aspect) * xOffsetPourcentage;
 		//yOffset = Camera.main.orthographicSize * yOffsetPourcentage;
-		// le yOffset doit placer le héros à 3 unités au-dessus du bas de l'écran (sachant qu'il commence déjà à -1)
-		yOffset = Camera.main.orthographicSize - 4f;
-		transform.position = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + yOffset, transform.position.z);
+		// le yOffset doit placer le héros à 3 unités (taille max des block en hauteur) au-dessus du bas de l'écran (sachant qu'il commence déjà à -1)
+		yOffset = Camera.main.orthographicSize - 3 - LevelManager.levelManager.GetHeightStartBlock();
+		transform.position = new Vector3(0 + xOffset, 0 + yOffset, transform.position.z);
 		
 		// On ajuste les fonds d'écran de sorte qu'ils rentrent dans la caméra en HAUTEUR
 		//float xScale = Camera.main.orthographicSize * Camera.main.aspect * 2 / bg_sky.GetComponent<SpriteRenderer> ().bounds.size.x;

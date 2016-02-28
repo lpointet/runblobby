@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Oeuf : MonoBehaviour {
 
 	private Animator myAnim;
 	private Rigidbody2D myRb;
+	private AudioSource myAudio;
 
 	private bool broken;
 
@@ -15,6 +15,7 @@ public class Oeuf : MonoBehaviour {
 	void Awake () {
 		myAnim = GetComponent<Animator> ();
 		myRb = GetComponent<Rigidbody2D> ();
+		myAudio = GetComponent<AudioSource> ();
 	}
 
 	void OnEnable () {
@@ -26,6 +27,7 @@ public class Oeuf : MonoBehaviour {
 		if (other.name == "Heros" || other.CompareTag("Bullet")) {
 			if (!IsBroken()) {
 				broken = true;
+				myAudio.Play ();
 				myAnim.SetBool ("broken", broken);
 			}
 		}

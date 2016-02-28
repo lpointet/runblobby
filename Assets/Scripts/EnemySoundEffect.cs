@@ -30,10 +30,10 @@ public class EnemySoundEffect : MonoBehaviour {
 
 	void Update() {
 		if (Time.timeScale > 0 && !enemy.IsDead ()) {
-			if (!soundSource.isPlaying  && Time.time > timeToMove) {
+			if (!soundSource.isPlaying  && Time.unscaledTime > timeToMove) {
 				FootStepSound();
 
-				timeToMove = Time.time + delayMove;
+				timeToMove = Time.unscaledTime + delayMove;
 			}
 		}
 	}

@@ -18,7 +18,7 @@ public class Enemy0101 : Enemy {
 		base.Awake();
 
 		myAnim = GetComponent<Animator> ();
-		timeToBave = Time.time + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
+		timeToBave = Time.unscaledTime + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
 	}
 
 	void Start() {
@@ -34,8 +34,8 @@ public class Enemy0101 : Enemy {
 		// L'ennemi se rapproche du joueur au fil du temps (joueur considéré en position (0, 0)) pour finir à mi-chemin
 		myTransform.Translate(Vector3.left * LevelManager.levelManager.GetLocalDistance() * startPosition[0] / (GetDistanceToKill() * 2));
 
-		if (Time.time > timeToBave) {
-			timeToBave = Time.time + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
+		if (Time.unscaledTime > timeToBave) {
+			timeToBave = Time.unscaledTime + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
 			BaveDrop ();
 		}
 	}

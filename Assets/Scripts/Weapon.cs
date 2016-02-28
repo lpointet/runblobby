@@ -31,8 +31,8 @@ public class Weapon : MonoBehaviour {
 				Shoot ();
 			}
 		} else {
-			if ( ( autoFire || Input.GetMouseButton (0) ) && Time.time > timeToFire ) {
-				timeToFire = Time.time + 1/fireRate;
+			if ( ( autoFire || Input.GetMouseButton (0) ) && Time.unscaledTime > timeToFire ) {
+				timeToFire = Time.unscaledTime + 1/fireRate;
 				Shoot();
 			}
 		}

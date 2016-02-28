@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 438586}
   - 68: {fileID: 6811592}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ GameObject:
   - 4: {fileID: 445148}
   - 198: {fileID: 19827860}
   - 199: {fileID: 19949578}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121444}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.880366, y: 4.165283, z: 0}
+  m_LocalPosition: {x: 4.5389166, y: 1.2734327, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 438586}
@@ -104,7 +104,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -224,7 +224,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 34450b4ebb326a74abbb11261d3fb7ba, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -244,17 +244,17 @@ MonoBehaviour:
   healthPoint: 10
   healthPointMax: 10
   moveSpeed: 0
-  jumpHeight: 14
+  jumpHeight: 5
   isDead: 0
   maxHeight: 7.5
   distanceToKill: 250
-  damageToGive: 0
+  damageToGive: 1
   pointScore: 50
   name: Galia
   surName: the Stupid Gallinacae
   startPosition:
   - 12
-  - 0
+  - 0.25
   frequence: 0.01
   mediumValue: 2.1
   layerGround:
@@ -268,7 +268,7 @@ MonoBehaviour:
   dodgeSkill: 0.3
   pourcentOeuf: 10
   oeufName: Oeuf
-  easyAttackSpeed: 15
+  easyAttackSpeed: 5
   groundCheckRadius: 1.2
 --- !u!114 &11458242
 MonoBehaviour:
@@ -344,7 +344,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     startLifetime:
-      scalar: 1.2
+      scalar: 3.6
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -360,7 +360,7 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - time: 0
-          value: 0.8333333
+          value: 0.8333334
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -369,7 +369,7 @@ ParticleSystem:
         m_RotationOrder: 0
       minMaxState: 3
     startSpeed:
-      scalar: 0.7
+      scalar: 0.22
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -385,7 +385,7 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - time: 0
-          value: 0.71428573
+          value: 0.6818182
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -646,7 +646,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 5
+      scalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1884,7 +1884,7 @@ Prefab:
       objectReference: {fileID: 153172, guid: da19e621afeb1e4439322c92b1acfee6, type: 2}
     - target: {fileID: 0}
       propertyPath: startPosition.Array.data[1]
-      value: 0
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: startPosition.Array.data[0]
@@ -1892,11 +1892,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: jumpHeight
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: dodgeSkill
@@ -1974,6 +1974,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: hitVolume
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: easyAttackSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_GravityScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

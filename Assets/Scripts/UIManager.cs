@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class UIManager : MonoBehaviour {
 
@@ -20,7 +21,6 @@ public class UIManager : MonoBehaviour {
 
 	// Distance parcourue
 	public Slider meterTravelled;
-	private int currentLevelMaxdistance;
 	
 	private Enemy enemyEnCours = null;
 	private bool enemyGUIActive = false;
@@ -41,18 +41,25 @@ public class UIManager : MonoBehaviour {
 	private Animator cdAnim;
 	
 	private bool paused = false;
+	private float initialTimeScale;
 
 	[Header("End Menu")]
 	public GameObject endUI;
 
 	public Text distanceEnd;
+	public Slider distanceSliderEnd;
 	public Text moneyEnd;
+	public Slider moneySliderEnd;
 	public Text experience;
+	public Slider experienceSliderEnd;
 	public Text playerLevel;
 
 	public AudioClip endFailure;
 	public AudioClip endVictory;
 	private AudioSource endAudio;
+
+	private float timeUpdateValue;
+	private float delaySliderFull = 1.5f;
 
 	[Header("Générique")]
 	public GameObject wQuit;
@@ -72,9 +79,13 @@ public class UIManager : MonoBehaviour {
 	private float textTimeToEnd;
 	private float textTimeTotal;
 
+	public float GetTimeScale() {
+		return initialTimeScale;
+	}
+
     void Awake() {
 		if (uiManager == null)
-			uiManager = GameObject.FindGameObjectWithTag ("LevelCanvas").GetComponent<UIManager> ();
+			uiManager = this;
 
 		sfxSound = GetComponentInChildren<SFXMenu> ();
 
@@ -108,7 +119,6 @@ public class UIManager : MonoBehaviour {
 
 		// Compteur distance (à n'afficher qu'en mode histoire)
 		if (LevelManager.levelManager.IsStory ()) {
-			currentLevelMaxdistance = LevelManager.levelManager.listPhase [LevelManager.levelManager.listPhase.Length - 1];
 			meterTravelled.maxValue = LevelManager.levelManager.listPhase [LevelManager.levelManager.listPhase.Length - 1];
 			meterTravelled.gameObject.SetActive (true);
 		} else {
@@ -119,9 +129,12 @@ public class UIManager : MonoBehaviour {
 	void Update() {
 		enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
 
-//		if (Input.GetButtonDown ("Pause")) {
-//			PauseManager ();
-//		}
+		if (endUI.activeInHierarchy && Input.GetMouseButton(0) && timeUpdateValue < delaySliderFull) {
+			timeUpdateValue = delaySliderFull - 0.001f; // Pour permettre de rentrer une dernière fois dans la boucle while de UpdateSlider()
+
+			int diffLvl = _StaticFunction.LevelFromExp(GameData.gameData.playerData.experience + ScoreManager.GetExperience ()) - _StaticFunction.LevelFromExp(GameData.gameData.playerData.experience);
+			StartCoroutine (PopText (playerLevel, "+" + diffLvl));
+		}
 
         // Compteur
         MeterTextManager();
@@ -138,10 +151,9 @@ public class UIManager : MonoBehaviour {
 			paused = !paused;
 
 			if (paused) {
+				initialTimeScale = Time.timeScale;
 				TogglePauseMenu (true);
 				UpdateValueScore ();
-			} else {
-				TogglePauseMenu (false);
 			}
 		}
     }
@@ -155,7 +167,7 @@ public class UIManager : MonoBehaviour {
 			}
 
 			// On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
-			lerpingTimeEnemyBar += Time.deltaTime / LevelManager.levelManager.enemySpawnDelay;
+			lerpingTimeEnemyBar += Time.unscaledDeltaTime / LevelManager.levelManager.enemySpawnDelay;
 			fillHealthBar.fillAmount = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
 
 			if (fillHealthBar.fillAmount == 1) {
@@ -178,7 +190,7 @@ public class UIManager : MonoBehaviour {
 				MoveIntroEnemyText (enemyName, lerpTime, positionNameBeforeEndMove.x, -namePosition.x);
 				MoveIntroEnemyText (enemySurname, lerpTime, positionSurnameBeforeEndMove.x, -surnamePosition.x);
 			}
-			textTimeTotal -= Time.deltaTime;
+			textTimeTotal -= Time.unscaledDeltaTime;
 		} else { // Si on n'est pas dans le compte-à-rebours, on cache les textes
 			enemyName.gameObject.SetActive (false);
 			enemySurname.gameObject.SetActive (false);
@@ -227,7 +239,7 @@ public class UIManager : MonoBehaviour {
 		pauseUI.SetActive (active);
 		standardUI.SetActive (!active);
 
-		Time.timeScale = active ? 0 : 1;
+		Time.timeScale = active ? 0 : initialTimeScale;
 	}
 
     private void ToggleEnemyGUI( bool active ) {
@@ -242,6 +254,12 @@ public class UIManager : MonoBehaviour {
 		endUI.SetActive (active);
 		standardUI.SetActive (!active);
 
+		if (LevelManager.GetPlayer ().IsDead ()) {
+			endUI.GetComponent<AudioSource> ().PlayOneShot (endFailure);
+		} else {
+			endUI.GetComponent<AudioSource> ().PlayOneShot (endVictory);
+		}
+
 		UpdateValueScore ();
 	}
 
@@ -253,34 +271,106 @@ public class UIManager : MonoBehaviour {
 		distanceEnd.text = Mathf.RoundToInt (LevelManager.levelManager.GetDistanceTraveled ()).ToString ();
 		moneyEnd.text = ScoreManager.GetScore ().ToString ();
 		experience.text = ScoreManager.GetExperience ().ToString ();
-		int diffLevel = _StaticFunction.LevelFromExp (GameData.gameData.playerData.experience + ScoreManager.GetExperience ()) - _StaticFunction.LevelFromExp (GameData.gameData.playerData.experience);
-		if (diffLevel != 0) {
-			// Si l'XP gagnée permet de passer un level ou plus, on l'affiche
-			playerLevel.text = "+" + diffLevel.ToString();
-		} else
-			playerLevel.text = "";
+
+		if (endUI.activeInHierarchy)
+			StartCoroutine (UpdateSlider ());
+	}
+
+	private IEnumerator UpdateSlider() {
+		distanceSliderEnd.maxValue = meterTravelled.maxValue;
+
+		int currentPlayerLevel = _StaticFunction.LevelFromExp (GameData.gameData.playerData.experience);
+		int nextPlayerLevel = currentPlayerLevel + 1;
+
+		int currentPlayerExpInLevel = GameData.gameData.playerData.experience - _StaticFunction.ExpFromLevel (currentPlayerLevel);
+		int futurPlayerExp = GameData.gameData.playerData.experience + ScoreManager.GetExperience ();
+
+		int diffLevel = _StaticFunction.LevelFromExp (futurPlayerExp) - currentPlayerLevel;
+
+		bool newLevel = true; // Savoir si l'on va passer un niveau complet ou non (servira en cas de multi level)
+		int currentLevelGain = 0; // Gain en level courant
+		int xpMaxThisLevel = 0; // XP à atteindre sur ce level
+
+		float timeUpdateMultiLevel = 0; // Défini le temps passé sur chaque barre en cas de gain de level
+		
+		while (timeUpdateValue < delaySliderFull) {
+			distanceSliderEnd.value = Mathf.Lerp (0, meterTravelled.value, timeUpdateValue / delaySliderFull);
+			moneySliderEnd.value = Mathf.Lerp (0, ScoreManager.GetRatioLeaf (), timeUpdateValue / delaySliderFull);
+
+			if (newLevel) {
+				experienceSliderEnd.maxValue = _StaticFunction.ExpFromLevel (nextPlayerLevel + currentLevelGain) - _StaticFunction.ExpFromLevel (currentPlayerLevel + currentLevelGain);
+
+				// Si le prochain level à atteindre est le dernier qu'on atteindra, la limite haute n'est pas l'xp requise pour passer de niveau, mais l'xp totale restante
+				if (currentLevelGain == diffLevel) {
+					xpMaxThisLevel = futurPlayerExp - _StaticFunction.ExpFromLevel (currentPlayerLevel + diffLevel);
+				} else {
+					xpMaxThisLevel = Mathf.RoundToInt(experienceSliderEnd.maxValue);
+				}
+					
+				newLevel = false; // On reset éventuellement ce point lorsqu'on atteint la fin d'une barre
+			}
+
+			experienceSliderEnd.value = Mathf.Lerp (currentPlayerExpInLevel, xpMaxThisLevel, timeUpdateMultiLevel / delaySliderFull);
+
+			// Lorsque l'on gagne un level
+			if (experienceSliderEnd.value >= xpMaxThisLevel) {
+				newLevel = true;
+				currentLevelGain++;
+				currentPlayerExpInLevel = 0;
+				timeUpdateMultiLevel = 0;
+
+				StartCoroutine (PopText (playerLevel, "+" + currentLevelGain));Debug.Log ("pouet");
+			}
+
+			// TODO ajouter un son filling
+
+			timeUpdateValue += Time.unscaledDeltaTime;
+			timeUpdateMultiLevel += Time.unscaledDeltaTime * (diffLevel + 1);
+			yield return null;
+		}
+	}
+
+	private IEnumerator PopText(Text text, string content) {
+		float timeScalePop = 0;
+		float delayPop = 0.2f;
+		float popScale = 0;
+		float initialScale = text.rectTransform.localScale.x;
+
+		playerLevel.text = content;
+
+		text.GetComponent<AudioSource> ().Play ();
+
+		while (timeScalePop < delayPop) {
+			popScale = Mathf.Lerp (initialScale, initialScale * 4f, timeScalePop);
+			text.rectTransform.localScale = new Vector2 (popScale, popScale);
+
+			timeScalePop += Time.unscaledDeltaTime;
+			yield return null;
+		}
+
+		text.rectTransform.localScale = new Vector2 (initialScale, initialScale);
 	}
 
 	public void ResumeGame() {
+		sfxSound.ButtonYesClick ();
 		cdObject.SetActive (true);
 		cdAnim.SetBool ("powerOn", true); // Animation de compte à rebours
-		pauseUI.SetActive(false);
+		pauseUI.SetActive (false);
 		standardUI.SetActive (true);
 		paused = false;
-		// A la fin de l'animation, le timeScale redevient 1
-		// S'il faut passer un paramètre de timeScale (si jamais il n'est pas à 1), il faudra passer un "faux" paramètre d'animator
 	}
 
 	public void Rejouer_Click() {
-		//endUI.SetActive (false);
 		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
 	}
 	
 	public void Home_Click() {
+		sfxSound.ButtonNoClick ();
 		SceneManager.LoadScene (0);
 	}
 
 	public void List_Click() {
+		sfxSound.ButtonYesClick ();
 		_GameData.current.SetListLevel (true); // On demande à charger le menu du jeu (liste des levels)
 		SceneManager.LoadScene (0);
 	}
@@ -297,11 +387,13 @@ public class UIManager : MonoBehaviour {
 		}
 		tQuitContent.text = content;
 
+		sfxSound.ButtonYesClick ();
 		wQuit.SetActive (true);
 	}
 
 	public void Quit_Yes_Click() {
 		_StaticFunction.Save ();
+		sfxSound.ButtonYesClick ();
 
 		#if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;

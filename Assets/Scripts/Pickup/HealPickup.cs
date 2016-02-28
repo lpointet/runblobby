@@ -4,6 +4,7 @@ public class HealPickup : Pickup {
 
 	public int heal;
 
+	private Animator frontAnim;
 	private Animator backAnim;
 
 	protected override void Awake() {
@@ -12,6 +13,7 @@ public class HealPickup : Pickup {
 		parentAttach = true;
 		despawnTime = 1.5f;
 
+		frontAnim = transform.Find ("Heal_Front").GetComponent<Animator> ();
 		backAnim = transform.Find ("Heal_Back").GetComponent<Animator> ();
 	}
 
@@ -23,17 +25,16 @@ public class HealPickup : Pickup {
     }
 
 	protected override void PickEffect() {
-		base.PickEffect();
-		
-		if ( null != backAnim ) {
+		base.PickEffect ();
+
+		if ( null != backAnim && null != frontAnim ) {
 			if (_StaticFunction.ExistsAndHasParameter ("picked", backAnim))
-				backAnim.SetBool("picked", true);
+				backAnim.SetBool ("picked", true);
+			if (_StaticFunction.ExistsAndHasParameter ("picked", frontAnim))
+				frontAnim.SetBool ("picked", true);
 		}
+
+		frontAnim.transform.localPosition = Vector2.zero;
+		backAnim.transform.localPosition = Vector2.zero;
 	}
-
-	/*protected override void PickEffect() {
-		base.PickEffect();
-
-		LevelManager.GetPlayer().GetComponent<CharacterSFX>().PlayAnimation("healed");
-	}*/
 }

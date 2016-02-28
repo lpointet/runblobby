@@ -9,7 +9,7 @@ public class StartEnemyBlock : MonoBehaviour {
 	}
 
 	void Update() {
-		circleStartingPhase.offset = new Vector2 (circleStartingPhase.offset.x, LevelManager.GetPlayer ().transform.position.y + 1); // Décalage de 1 pour qu'il soit au dessus du sol
+		circleStartingPhase.offset = new Vector2 (circleStartingPhase.offset.x, LevelManager.GetPlayer ().transform.position.y + LevelManager.levelManager.GetHeightStartBlock());
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {

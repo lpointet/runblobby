@@ -22,6 +22,13 @@ public class ScoreManager : MonoBehaviour {
 	private static int score; // Score de la session - PlayerData pour le score total
 	private static int experience; // Expérience de la session - PlayerData pour l'exp totale
 
+	private static int leaf; // Le nombre de pièces obtenues
+	private static int leafMax; // Le nombre maximum de pièces obtenables
+
+	public static float GetRatioLeaf() {
+		return leafMax == 0 ? 1 : (float)leaf / leafMax;
+	}
+
 	public static int GetScore() {
 		return score;
 	}
@@ -55,6 +62,8 @@ public class ScoreManager : MonoBehaviour {
 		// On ajoute les points au bon endroit
 		if (Types.Coin == type) {
 			score += numberPoint;
+			// On compte une pièce supplémentaire
+			leaf++;
 		} else if (Types.Experience == type) {
 			experience += numberPoint;
 		}
@@ -65,7 +74,7 @@ public class ScoreManager : MonoBehaviour {
 		Multiplier newMult;
 		
 		newMult.value = multiplier;
-		newMult.endTime = Time.time + lifeTime;
+		newMult.endTime = Time.unscaledTime + lifeTime;
 		
 		if( multipliers.TryGetValue( type, out initial ) ) {
 			newMult.value = Mathf.Max( multiplier, initial.value );
@@ -79,14 +88,20 @@ public class ScoreManager : MonoBehaviour {
 		Multiplier initial;
 
 		if( multipliers.TryGetValue( type, out initial ) ) {
-			if( initial.endTime <= Time.time + 0.05f ) {
+			if( initial.endTime <= Time.unscaledTime + 0.05f ) {
 				multipliers.Remove( type );
 			}
 		}
 	}
 
+	public static void AddLeaf(int number) {
+		leafMax += number;
+	}
+
 	public static void Reset() {
 		score = 0;
 		experience = 0;
+		leaf = 0;
+		leafMax = 0;
 	}
 }

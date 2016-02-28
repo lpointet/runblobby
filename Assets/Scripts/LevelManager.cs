@@ -13,6 +13,9 @@ public class LevelManager : MonoBehaviour {
 	private AudioSource sourceSound;
 	private float soundVolumeInit;
 
+	private bool startLevel = false;
+	private bool endLevel = false;
+
 	// Mort, Respawn
 	public GameObject currentCheckPoint;
 	public float respawnDelay;
@@ -28,6 +31,7 @@ public class LevelManager : MonoBehaviour {
 	private bool isStory;
 
 	public GameObject blockStart;
+	private float heightStartBlock = 0.25f;
 	public GameObject blockEnd;
 	public GameObject[] blockEnemy;
 	private List<GameObject> blockList;
@@ -38,7 +42,7 @@ public class LevelManager : MonoBehaviour {
 	private float sizeFirstBlock;
 
 	[HideInInspector] public float cameraStartPosition;
-	private float cameraEndPosition;
+	[HideInInspector] public float cameraEndPosition;
 	// Fin création du monde et déplacement
 
 	// Distance parcourue
@@ -59,7 +63,7 @@ public class LevelManager : MonoBehaviour {
     private bool enemySpawnLaunched = false; // Bool pour savoir si l'appel du spawn a déjà été fait ou pas
 	public float enemySpawnDelay;
 	private float enemyDistanceToKill;
-	public FlyPickup flyEndBoss;
+	public FlyPickup flyEndBoss;	// Pour faire voler à l'infini durant le dernier boss
 	//* Fin partie ennemi intermédiaire
 
 	private float fps;
@@ -123,9 +127,21 @@ public class LevelManager : MonoBehaviour {
 		return localDistance;
 	}
 
+	public float GetHeightStartBlock() {
+		return heightStartBlock;
+	}
+
+	public void StartLevel() {
+		startLevel = true;
+	}
+
+	public bool IsLevelStarted() {
+		return startLevel;
+	}
+
     void Awake() {
 		if (levelManager == null)
-			levelManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<LevelManager> ();
+			levelManager = this;
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
@@ -134,7 +150,7 @@ public class LevelManager : MonoBehaviour {
 
 	void Start () {
 		// Reset divers
-		Time.timeScale = 1;
+		//Time.timeScale = 1;
 		ScoreManager.Reset ();
 
 		distanceTraveled = 0;
@@ -171,7 +187,7 @@ public class LevelManager : MonoBehaviour {
         // Initialisation avec le Block Start
         blockList = new List<GameObject> {blockStart};
 		// ICI : Instantiate si jamais c'est un prefab
-		blockList[0].transform.position = player.transform.position + Vector3.down; // Juste sous le joueur
+		blockList[0].transform.position = new Vector3(-1, -1, 0) * heightStartBlock; // Juste sous le joueur, un peu en avant
 		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().NumTilesWide;
 		sizeFirstBlock = sizeLastBlock;
 		//layerCoins = LayerMask.NameToLayer ("Coins");
@@ -183,9 +199,15 @@ public class LevelManager : MonoBehaviour {
 		PlayBackgroundMusic ();
 
 		fps = 1.0f / Time.fixedDeltaTime;
+		//StartLevel (); // TODO SUPPRIMER CETTE LIGNE + ACTIVER STARTLEVEL
 	}
 
 	void Update () {
+		// On ne commence pas avant le début... hé oué !
+		if (!IsLevelStarted ()) {
+			return;
+		}
+
 		// Empêcher que des choses se passent durant la pause
 		if (Time.timeScale == 0 || player.IsDead ()) {
 			sourceSound.volume = 0.1f;
@@ -193,7 +215,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
 		// Faire apparaître le menu de fin si on est en mode histoire et qu'on a tué le dernier boss
-		if (currentPhase >= listPhase.Length && IsStory()) {
+		if (currentPhase >= listPhase.Length && IsStory() && !endLevel) {
 			FinDuMonde ();
 		}
 
@@ -221,10 +243,11 @@ public class LevelManager : MonoBehaviour {
 				// On fait voler le joueur si c'est le dernier ennemi
 				if (currentPhase == 0) { // TODO listPhase.Length - 1
 					CleanPickup( GetPlayer().GetLastWish() );
-					GetPlayer ().SetZeroGravFlying (true);
 					// On créer un pickup de vol sur le joueur, en vol infini (1000s...)
+					GetPlayer ().SetZeroGravFlying (true);
 					flyEndBoss.lifeTime = 1000;
-					Instantiate (flyEndBoss, GetPlayer ().transform.position, Quaternion.identity);
+					flyEndBoss = Instantiate (flyEndBoss, GetPlayer ().transform.position, Quaternion.identity) as FlyPickup;
+					flyEndBoss.gameObject.SetActive (true);
 				}
             }
 			
@@ -350,9 +373,9 @@ public class LevelManager : MonoBehaviour {
 		tempEnemy.gameObject.SetActive (false);
 		UIManager.uiManager.enemyName.text = tempEnemy.GetName ();
 		UIManager.uiManager.enemySurname.text = tempEnemy.GetSurName ();
-        yield return new WaitForSeconds( enemySpawnDelay );
-		//Vector2 enemyTransform = new Vector2 (player.transform.position.x + 14, player.transform.position.y);
-		//enemyEnCours = Instantiate (enemy, enemyTransform, player.transform.rotation) as Enemy;
+
+		yield return new WaitForSeconds( enemySpawnDelay * Time.timeScale );
+
 		enemyEnCours = tempEnemy;
 		tempEnemy = null;
 		enemyEnCours.transform.position = enemyEnCours.GetStartPosition ();
@@ -366,12 +389,13 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void FinDuMonde () {
-		// TODO adapter le code pour la fin du niveau en mode histoire
 		if (IsStory ()) {
-			GetPlayer ().SetMoveSpeed (0);
-			GetPlayer ().gameObject.SetActive (false);
-			UIManager.uiManager.ToggleEndMenu (true);
+			GetPlayer ().OnVictory ();
 			CleanPickup( GetPlayer().GetLastWish() );
+
+			UIManager.uiManager.ToggleEndMenu (true);
+
+			endLevel = true;
 		}
 	}
 

@@ -19,6 +19,7 @@ public class PlayerController : Character {
 	private PlayerSoundEffect myAudio;
 	private Transform weapon;
 	private SpriteRenderer mySprite;
+	public GameObject parachute;
 	
 	private bool grounded;
     [HideInInspector] public bool bounced = false;
@@ -46,7 +47,7 @@ public class PlayerController : Character {
 
     // Attract Coins
     private int nbCoins = 0;                                // Nombre de pièces à ramasser
-    private Collider2D[] coins = new Collider2D[20];        // Liste des pièces existantes
+    private Collider2D[] coins = new Collider2D[40];        // Liste des pièces existantes
     private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
 
 	// Concerne le vol
@@ -159,17 +160,16 @@ public class PlayerController : Character {
 	}
 	
 	protected override void Update () {
-		base.Update();
-
-		// Ajustement du saut et gravité en fonction de la vitesse
-		if (!isFlying) {
-			SetJumpHeight (GetMoveSpeed () * constJump);
-			myRb.gravityScale = GetJumpHeight () * GetJumpHeight () * constGravity;
+		// On ne commence pas avant le début... hé oué !
+		if (!LevelManager.levelManager.IsLevelStarted ()) {
+			return;
 		}
+
+		base.Update();
 
 		// Vol sur place du fantôme pendant la mort en l'air
 		if (IsDead () && !HasLastWish() && !IsGrounded () && myTransform.position.y > 3.5f) {
-			yVariableAirDeath += Time.deltaTime;
+			yVariableAirDeath += Time.unscaledDeltaTime;
 			myTransform.position = new Vector2 (myTransform.position.x, yPosAirDeath + 0.2f * Mathf.Sin (yVariableAirDeath));
 		}
 
@@ -180,6 +180,12 @@ public class PlayerController : Character {
 		// Rapprocher le joueur douuuucement si on est pas en x = 0
 		if (myTransform.position.x < 0)
 			myTransform.Translate (Vector3.right * 0.005f);
+		
+		// Ajustement du saut et gravité en fonction de la vitesse
+		if (!IsFlying() && speedBeforeFly == speedInFly) {
+			SetJumpHeight (GetMoveSpeed () * constJump);
+			myRb.gravityScale = GetJumpHeight () * GetJumpHeight () * constGravity;
+		}
 
 		// Permet de suivre le "doigt" du joueur quand il vole en zéro gravité
 		if (IsFlying() && IsZeroGravFlying ()) {
@@ -188,7 +194,7 @@ public class PlayerController : Character {
 
 				// On ne bouge que si le curseur est suffisament loin du joueur (pour éviter des zigzags)
 				if (Mathf.Abs (cameraCursorY - myTransform.position.y) > 0.1f)
-					myRb.velocity = new Vector2 (0, Mathf.Sign ((cameraCursorY - myTransform.position.y)) * 5);
+					myRb.velocity = new Vector2 (0, Mathf.Sign ((cameraCursorY - myTransform.position.y)) * 1.5f);
 				else
 					myRb.velocity = Vector2.zero;
 			} else { // Si on n'appuie pas, on ne bouge pas
@@ -197,8 +203,9 @@ public class PlayerController : Character {
 		}
 
 		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
-		if (IsGrounded ())
+		if (IsGrounded ()) {
 			currentJump = 0;
+		}
 		
 		// Gestion des sauts
 		if (Input.GetButtonDown ("Jump") && (IsGrounded () || bounced)) {
@@ -231,18 +238,20 @@ public class PlayerController : Character {
 						cloudBlock.ActiverNuage (true);
                 }
 
+				ActiveParachute(false);
+
                 // On réinitialise pour ne plus afficher les éventuels nuages
-                wasFlying = false;
+				wasFlying = false;
             }
         }
 
 		// Accélération et décélération au début et à la fin du vol
 		if (speedBeforeFly != speedInFly) {
-			acceleration += Time.deltaTime;
+			acceleration += Time.unscaledDeltaTime;
 			if (isFlying) // Au démarrage
 				SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration)); // En une seconde
 			else {
-				SetMoveSpeed (Mathf.Lerp (speedInFly, speedBeforeFly, acceleration * 2)); // En 0.5 seconde
+				SetMoveSpeed (Mathf.Lerp (speedInFly, speedBeforeFly, acceleration)); // En une seconde
 				// Quand on a atteint la bonne vitesse, on évite de rappeler cette fonction
 				if (GetMoveSpeed () == speedBeforeFly)
 					speedInFly = speedBeforeFly;
@@ -251,10 +260,11 @@ public class PlayerController : Character {
 	}
 	
 	void OnGUI() {
-		// Rouge = 210 ou -160 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
-		lerpingHP = Mathf.Lerp (lerpingHP, GetHealthPoint (), Time.deltaTime * 3);
+		// Rouge = 230 ou -140 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
+		lerpingHP = Mathf.Lerp (lerpingHP, GetHealthPoint (), Time.unscaledDeltaTime * 3);
         // sharedMaterial pour que les boules changent de couleur aussi
-        if (!IsDead()) mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 210, 0));
+        if (!IsDead())
+			mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 230, 0));
 	}
 	
 	public void Jump() {
@@ -279,7 +289,7 @@ public class PlayerController : Character {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 
-		if (myTransform.position.y < -3.5f) { // Si on est en dessous du bas de l'écran
+		if (myTransform.position.y < -3f + LevelManager.levelManager.GetHeightStartBlock()) { // Si on est en dessous du bas de l'écran (3 blocks hauteur de base)
 			myAnim.SetTrigger ("dead_fall");
 			myAudio.FallDeathSound ();
 		}
@@ -306,13 +316,15 @@ public class PlayerController : Character {
 		} while (animation.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f);
 
 		myRb.Sleep();
-		//Application.LoadLevelAdditive (1);
 		UIManager.uiManager.ToggleEndMenu (true);
 	}
 
 	public void OnVictory() {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
+		SetMoveSpeed (0);
+
+		gameObject.SetActive (false);
 	}
 	
 	public void SetFireAbility( bool able ) {
@@ -343,32 +355,36 @@ public class PlayerController : Character {
         pickups.Remove( pickup );
     }
 
-    public void Fly() {
-		isFlying = true;
+	public void ActiveParachute(bool active) {
+		parachute.SetActive (active);
+	}
 
+    public void Fly() {
         // Abaisser la gravité et la hauteur du saut
 		if (IsZeroGravFlying ()) {
 			myRb.gravityScale = 0;
 			SetJumpHeight (0);
 		} else {
-			myRb.gravityScale = 0.2f;
-			SetJumpHeight (2);
+			myRb.gravityScale = 0.05f;
+			SetJumpHeight (1);
 		}
 
-        // Faire décoller le joueur
-        Jump();
-
-        // Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
-        SetMaxDoubleJump( 1000 );
-
-		// Augmenter la vitesse
-		acceleration = 0;
-		speedBeforeFly = GetMoveSpeed ();
-		speedInFly = GetMoveSpeed() * flySpeedCoeff;
+		// Augmenter la vitesse si pas déjà en vol
+		if (!IsFlying ()) {
+			acceleration = 0;
+			speedBeforeFly = GetMoveSpeed ();
+			speedInFly = GetMoveSpeed () * flySpeedCoeff;
+		}
 
 		//SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
-
+		isFlying = true;
 		myAnim.SetBool( "flying", isFlying );
+
+		// Faire décoller le joueur
+		Jump();
+
+		// Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
+		SetMaxDoubleJump( 1000 );
     }
 
     public void Land() {
@@ -379,11 +395,17 @@ public class PlayerController : Character {
 //        SetJumpHeight( initialJumpHeight );
         SetMaxDoubleJump( initialMaxDoubleJump );
 
+		// TODO pour le problème de la gravité (qui devient énorme), faire atterrir le joueur avec le parachute
+		// Voir dans le Updte() si on garde le speedbefore == speedinfly
+
         // On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou
         wasFlying = true;
 
         // On "force" le joueur à sauter avant l'atterrissage, signant en même temps la fin du vol
-        Jump();
+        //Jump();
+
+		// On fait atterrir le joueur avec le parachute
+		ActiveParachute(true);
 
 		// Diminuer la vitesse
 		acceleration = 0;

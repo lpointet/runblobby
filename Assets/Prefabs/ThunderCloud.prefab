@@ -11,7 +11,7 @@ GameObject:
   - 212: {fileID: 21249538}
   - 114: {fileID: 11482582}
   - 114: {fileID: 11410576}
-  - 61: {fileID: 6141288}
+  - 58: {fileID: 5822346}
   - 95: {fileID: 9550646}
   - 82: {fileID: 8201268}
   m_Layer: 0
@@ -28,13 +28,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23, y: -0.125, z: 0}
+  m_LocalPosition: {x: 48, y: 1.375, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!61 &6141288
-BoxCollider2D:
+--- !u!58 &5822346
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -46,7 +46,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0.5}
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Radius: 0.5
 --- !u!82 &8201268
 AudioSource:
   m_ObjectHideFlags: 1
@@ -132,7 +132,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 50a2909e5e6a8c84a9429ec8a8e00c3f, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 

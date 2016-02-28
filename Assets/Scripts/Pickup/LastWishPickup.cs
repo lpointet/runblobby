@@ -18,7 +18,7 @@ public class LastWishPickup : Pickup {
 
 	private float distanceToPlayer = 0f;
 	private float offsetYToPlayer = 0f;
-	private float followDelay = 1f;
+	private float followDelay = 1.5f;
 	private float dampVelocity = 0f;
 
 	private GameObject divineMesh;
@@ -70,6 +70,9 @@ public class LastWishPickup : Pickup {
 	}
 
 	void LateUpdate() {
+		if (Time.timeScale == 0)
+			return;
+		
 		// Effet visuel de l'ange qui se rapproche jusqu'à la mort
 		if (effectOnGoing && !effectEnding) {
 			offsetYToPlayer = Mathf.SmoothDamp (myTransform.position.y, playerTransform.position.y, ref dampVelocity, (timeToLive / lifeTime) * followDelay);
@@ -80,9 +83,8 @@ public class LastWishPickup : Pickup {
 
 		// Effet de l'ange qui amène le joueur au ciel
 		if (effectEnding) {
-			lerpTimeEnding += Time.deltaTime / despawnTime;
-			
-			//player.SetMoveSpeed (Mathf.Lerp (player.GetInitialMoveSpeed (), 0, lerpTimeEnding));
+			lerpTimeEnding += Time.unscaledDeltaTime / despawnTime;
+
 			playerTransform.position = new Vector2(playerTransform.position.x, Mathf.Lerp(deathPlayerPosition, endingPlayerPosition, lerpTimeEnding));
 
 			// Rayon divin qui grossit

@@ -54,7 +54,7 @@ public class Enemy0102 : Enemy {
 	protected override void Update () {
 		base.Update();
 
-		if (IsDead () || LevelManager.GetPlayer ().IsDead ())
+		if (IsDead () || LevelManager.GetPlayer ().IsDead () || Time.timeScale == 0)
 			return;
 
 		AngryChicken ();
@@ -86,12 +86,12 @@ public class Enemy0102 : Enemy {
 			// On retient la dernière balle prise en compte, pour éviter d'appeler en boucle la même fonction
 			if (currentBulletID != detectedBullet.GetInstanceID ()) {
 				currentBulletID = detectedBullet.GetInstanceID ();
-				entryTime = Time.time; // On retient le moment de l'entrée dans la zone, pour reset au bout de 2sec si jamais il ne se passe rien (voir plus bas)
+				entryTime = Time.unscaledTime; // On retient le moment de l'entrée dans la zone, pour reset au bout de 2sec si jamais il ne se passe rien (voir plus bas)
 
 				// On compare à la probabilité d'esquiver
 				if (Random.Range(0f, 1f) < dodgeSkill) {
 					// On ajuste la puissance du saut en fonction du lieu d'impact de la balle
-					float powerJump = Mathf.Max(1, 1 + detectedBullet.transform.position.y);
+					float powerJump = Mathf.Clamp(detectedBullet.transform.position.y, 1, 3);
 
 					// On fait sauter la poule
 					myRb.velocity = new Vector2 (myRb.velocity.x, powerJump * GetJumpHeight ());
@@ -99,7 +99,7 @@ public class Enemy0102 : Enemy {
 			}
 		}
 
-		if (Time.time > entryTime + 2) {
+		if (Time.unscaledTime > entryTime + 2) {
 			currentBulletID = 0;
 		}
 	}
@@ -125,7 +125,7 @@ public class Enemy0102 : Enemy {
 			if (myTransform.position.x > LevelManager.GetPlayer ().transform.position.x - 0.5f) {
 				// On le fait accélérer
 				if (lerpingAngryTime < 1) {
-					lerpingAngryTime += Time.deltaTime / delayRunAngry;
+					lerpingAngryTime += Time.unscaledDeltaTime / delayRunAngry;
 					SetMoveSpeed (Mathf.Lerp (0, -attackSpeed, lerpingAngryTime));
 				}
 				myRb.velocity = new Vector2 (GetMoveSpeed (), myRb.velocity.y);

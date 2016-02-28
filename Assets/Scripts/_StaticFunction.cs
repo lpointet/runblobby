@@ -122,6 +122,11 @@ public static class _StaticFunction {
 	public static int LevelFromExp(int experience) {
 		return Mathf.FloorToInt (experience / 100.0f); // TODO adapter la règle en fonction de l'xp
 	}
+
+	public static int ExpFromLevel(int level) {
+		return Mathf.FloorToInt (level * 100.0f); // TODO adapter la règle en fonction de l'xp
+	}
+
 	/** 
 	 * FIN PARTIE SAUVEGARDE
 	 */ 
@@ -184,7 +189,7 @@ public static class _StaticFunction {
 			audio.Play ();
 		}
 
-		audio.volume += Time.deltaTime / delay;
+		audio.volume += Time.unscaledDeltaTime / delay;
 	}
 
 	// Fonction utilisée pour diminuer le volume d'un son progressivement
@@ -198,7 +203,7 @@ public static class _StaticFunction {
 			return;
 		}
 
-		audio.volume -= Time.deltaTime / delay;
+		audio.volume -= Time.unscaledDeltaTime / delay;
 	}
 
 	public static Color ColorFromHSV(float h, float s, float v, float a = 1)

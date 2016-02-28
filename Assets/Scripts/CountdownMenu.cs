@@ -10,7 +10,7 @@ public class CountdownMenu : MonoBehaviour {
 
 	private void EndAnimStartTime() {
 		myAnim.SetBool ("powerOn", false);
-		Time.timeScale = 1f;
+		Time.timeScale = UIManager.uiManager.GetTimeScale();
 		gameObject.SetActive (false);
 	}
 }

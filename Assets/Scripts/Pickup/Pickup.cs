@@ -9,7 +9,7 @@ public class Pickup : MonoBehaviour {
 	protected Transform myTransform; 		// Référence vers le transform du bonus
     protected Collider2D myCollider;
 	protected float despawnTime = 0; 		// protected parce qu'il doit etre réglé dans la classe fille directement, pas modifiable dans l'éditeur, dans Awake
-	private Renderer rdr;
+	protected SpriteRenderer myRender;
 	protected bool picked = false;
 	protected float timeToLive;				// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
 	public int weight = 0;					// Probabilité d'apparition relative du bonus
@@ -18,10 +18,10 @@ public class Pickup : MonoBehaviour {
     protected bool despawnCalled = false;
 
     protected virtual void Awake() {
-		rdr = GetComponent<Renderer>();
 		myTransform = transform;
 		initialParent = myTransform.parent;
-        myAnim = GetComponent<Animator>();
+		myRender = GetComponentInChildren<SpriteRenderer>();
+		myAnim = GetComponentInChildren<Animator>();
         soundSource = GetComponent<AudioSource>();
         myCollider = GetComponent<Collider2D>();
     }
@@ -33,7 +33,7 @@ public class Pickup : MonoBehaviour {
     }
 
 	protected virtual void Update() {
-		if( !picked ) {
+		if( !picked || Time.timeScale == 0) {
 			return;
 		}
 		
@@ -43,7 +43,7 @@ public class Pickup : MonoBehaviour {
 		
 		if( lifeTime > 0 ) {
 			// Mettre à jour le temps qui reste à vivre
-			timeToLive -= Time.deltaTime;
+			timeToLive -= Time.unscaledDeltaTime;
 		}
 	}
 
@@ -64,6 +64,8 @@ public class Pickup : MonoBehaviour {
 			myTransform.position = myTransform.parent.position;
         }
 
+		myRender.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
+
         LevelManager.GetPlayer().AddPickup( myCollider );
     }
 	
@@ -74,18 +76,19 @@ public class Pickup : MonoBehaviour {
 			// Attacher le bonus à son parent initial
 			myTransform.parent = initialParent;
 		}
-
-		gameObject.SetActive( false );
+			
         LevelManager.GetPlayer().RemovePickup( myCollider );
+		gameObject.SetActive( false );
     }
 
 	protected virtual void PickEffect() {
 		PickupSound ();
 
-		if (!_StaticFunction.ExistsAndHasParameter ("picked", myAnim)) // On cache directement ceux qui n'ont pas d'animation de ramassage
-			rdr.enabled = false;
-		else
-        	myAnim.SetBool("picked", true);
+		if (_StaticFunction.ExistsAndHasParameter ("picked", myAnim))
+        	myAnim.SetBool ("picked", true);
+
+		else if (myRender != null) // On cache directement ceux qui n'ont pas d'animation de ramassage
+			myRender.enabled = false;
     }
 	
 	protected virtual void DespawnEffect() {
@@ -93,13 +96,14 @@ public class Pickup : MonoBehaviour {
 		if (_StaticFunction.ExistsAndHasParameter ("end", myAnim)) // On joue une animation pour ceux qui ont une fin
 			myAnim.SetBool ("end", true);
 
-		_StaticFunction.AudioFadeOut (soundSource, 0, despawnTime);
+		if (soundSource)
+			_StaticFunction.AudioFadeOut (soundSource, 0, despawnTime);
 	}
 
 	private IEnumerator Despawn() {
         despawnCalled = true;
         DespawnEffect();
-		yield return new WaitForSeconds (despawnTime);
+		yield return new WaitForSeconds (despawnTime * Time.timeScale);
 		OnDespawn();
 	}
 

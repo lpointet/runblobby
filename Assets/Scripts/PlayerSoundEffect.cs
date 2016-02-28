@@ -44,10 +44,10 @@ public class PlayerSoundEffect : MonoBehaviour {
 			}
 
 			// Déplacement
-			else if (!soundSource.isPlaying && player.IsGrounded () && player.IsFlying () && Time.time > timeToMove) {
+			else if (!soundSource.isPlaying && player.IsGrounded () && !player.IsFlying () && Time.unscaledTime > timeToMove) {
 				FootStepSound();
 
-				timeToMove = Time.time + (player.GetInitialMoveSpeed () / player.GetMoveSpeed()) * (4 / 7f); // Infinity si MoveSpeed = 0
+				timeToMove = Time.unscaledTime + (player.GetInitialMoveSpeed () / player.GetMoveSpeed()) * (4 / 7f); // Infinity si MoveSpeed = 0
 			}
 		}
 		wasGrounded = player.IsGrounded (); // Connaitre l'état de la précédente frame
