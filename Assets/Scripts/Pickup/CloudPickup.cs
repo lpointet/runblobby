@@ -10,7 +10,6 @@
 		base.OnPick ();
 
 		CloudBlock.nuageActif = true;
-		// TODO : jouer un son de nuage qui pop, genre POP. Pas mal.
 	}
 	
 	protected override void DespawnEffect() {

@@ -42,7 +42,7 @@ public class CloudBlock : MonoBehaviour {
     }
 
 	void Update () {
-		if (transform.position.x > camRightLimit || Time.timeScale == 0)
+		if (transform.position.x > camRightLimit || TimeManager.paused)
             return;
         
         // On ne met à jour que s'il y a un changement de la variable static
@@ -54,11 +54,11 @@ public class CloudBlock : MonoBehaviour {
 		// On modifie la taille des nuages (visuel)
 		if (thisNuageActif) {
 			// On le fait "pop" au démarrage
-			if (Time.unscaledTime < timeToPop) {
-				scalePop += 1.5f * Time.unscaledDeltaTime / delayToPop;
+			if (TimeManager.time < timeToPop) {
+				scalePop += 1.5f * TimeManager.deltaTime / delayToPop;
 				mySpriteTransform.localScale = new Vector2 (scalePop, scalePop);
 			} else { // Une fois qu'il a pop, il fluctue
-				timeScale += Time.unscaledDeltaTime / speedScale;
+				timeScale += TimeManager.deltaTime / speedScale;
 				vectorScaleX = 1f + 0.15f * Mathf.Sin (timeScale); // Entre 0.9 et 1.1
 				vectorScaleY = 1f + 0.15f * Mathf.Sin (timeScale + delayScaleY); // Entre 0.9 et 1.1
 
@@ -75,6 +75,6 @@ public class CloudBlock : MonoBehaviour {
         myCollider.isTrigger = !actif;
 		thisNuageActif = nuageActif;
 
-		timeToPop = Time.unscaledTime + delayToPop;
+		timeToPop = TimeManager.time + delayToPop;
 	}
 }

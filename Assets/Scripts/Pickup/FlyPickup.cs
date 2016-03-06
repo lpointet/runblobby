@@ -11,7 +11,6 @@ public class FlyPickup : Pickup {
 
 	public float spawnTime = 0.5f;
 	private bool catched = false;
-	private float weakTime = 3f;
 
 	private float birdStartPosition;
 	private float distancetoPlayer = 10f;
@@ -24,6 +23,7 @@ public class FlyPickup : Pickup {
 
 		parentAttach = true;
 		despawnTime = 0.6f;
+		weakTime = 3f;
 	}
 
 	void Start() {
@@ -37,7 +37,7 @@ public class FlyPickup : Pickup {
 	}
 
 	protected override void Update() {
-		if( !picked || Time.timeScale == 0) {
+		if( !picked || TimeManager.paused) {
 			return;
 		}
 
@@ -54,7 +54,7 @@ public class FlyPickup : Pickup {
 					myAnim.SetBool("picked", false);
 				}
 			}
-		} else { // Une fois que l'oiseau est sur lui, on agit différemment
+		} else { // Une fois que l'oiseau est sur lui, on agit différemment tant qu'il n'est pas affaibli
 			if (timeToLive > weakTime) {
 				// Adaptation de l'animation et du son de l'oiseau à la vitesse verticale du joueur
 				myAnim.SetFloat ("verticalSpeed", playerRb.velocity.y);
@@ -63,11 +63,6 @@ public class FlyPickup : Pickup {
 				} else {
 					soundSource.pitch = basePitch * 1.2f;
 				}
-			} else {
-				// Accélération de la vitesse de battement d'ailes avant la fin et du son
-				myAnim.SetBool ("end", true);
-				myAnim.speed += Time.unscaledDeltaTime / weakTime;
-				soundSource.pitch = basePitch * myAnim.speed;
 			}
 		}
 	}
@@ -92,6 +87,13 @@ public class FlyPickup : Pickup {
 		// On attend que l'oiseau arrive pour que le joueur "vole"
 		StartCoroutine( WaitBeforeFly(spawnTime) );
 	}
+
+	protected override void WeakEffect() {
+		// Accélération de la vitesse de battement d'ailes avant la fin et du son
+		myAnim.SetBool ("end", true);
+		myAnim.speed += TimeManager.deltaTime / weakTime;
+		soundSource.pitch = basePitch * myAnim.speed;
+	}
 		
 	protected override void OnDespawn() {
 		if (!player.IsDead ())
@@ -113,10 +115,17 @@ public class FlyPickup : Pickup {
 		base.DespawnEffect();
 	}
 
+	protected override void DespawnSound() {
+		// Rien.
+	}
+
+	// L'oiseau s'envole
 	private IEnumerator TakeOff(Transform flyTransform) {
+		soundSource.Stop();
+
 		float flyDistance = 0f;
 		while (flyTransform.position.y < maxHeight) {
-			flyDistance += Time.unscaledDeltaTime;
+			flyDistance += TimeManager.deltaTime;
 			flyTransform.position = new Vector2 (flyTransform.position.x + flyDistance / 2f, flyTransform.position.y + flyDistance);
 			yield return null;
 		}
@@ -126,11 +135,12 @@ public class FlyPickup : Pickup {
 			// Attacher le bonus à son parent initial
 			flyTransform.parent = initialParent;
 		}
-
+			
 		flyTransform.gameObject.SetActive( false );
 		LevelManager.GetPlayer().RemovePickup( flyTransform.GetComponent<Collider2D>() );
 	}
 
+	// On attend un certain temps avant que l'oiseau récupère le joueur
 	private IEnumerator WaitBeforeFly(float delay) {
 		yield return new WaitForSeconds (delay * Time.timeScale);
 

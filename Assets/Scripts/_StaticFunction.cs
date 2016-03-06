@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Collections;
 
 public static class _StaticFunction {
 
@@ -175,36 +176,89 @@ public static class _StaticFunction {
 		return (inCurrent - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 	}
 
+	// TODO changer ces fonctions en Coroutine et adapter les codes les appelant
 	// Fonction utilisée pour augmenter le volume d'un son progressivement
-	public static void AudioFadeIn(AudioSource audio, float volumeMax = 1, float delay = 1) {
-		if (audio == null || volumeMax < 0 || delay == 0)
-			return;
+	public static IEnumerator AudioFadeIn(AudioSource audio, float volumeMax = 1, float delay = 1) {
+		if (audio == null || volumeMax < 0)
+			yield break;
+		
 		if (volumeMax > 1)
 			volumeMax = 1;
-		if (audio.volume > volumeMax)
-			return;
+		
+		if (delay == 0) {
+			audio.volume = volumeMax;
+			yield break;
+		}
 
 		if (!audio.isPlaying) { // On démarre le son au volume le plus bas
 			audio.volume = 0;
 			audio.Play ();
 		}
 
-		audio.volume += Time.unscaledDeltaTime / delay;
+		while (audio.volume < volumeMax) {
+			audio.volume += TimeManager.deltaTime / delay;
+			yield return null;
+		}
+
+		if (audio.volume > volumeMax) // On s'assure de ne pas aller plus haut que le volumeMax demandé
+			audio.volume = volumeMax;
 	}
 
 	// Fonction utilisée pour diminuer le volume d'un son progressivement
-	public static void AudioFadeOut(AudioSource audio, float volumeMin = 0, float delay = 1) {
-		if (audio == null || volumeMin > 1 || delay == 0)
-			return;
+	public static IEnumerator AudioFadeOut(AudioSource audio, float volumeMin = 0, float delay = 1) {
+		if (audio == null || volumeMin > 1)
+			yield break;
+		
 		if (volumeMin < 0)
 			volumeMin = 0;
-		if (audio.volume < volumeMin) { // On stoppe le son lorsqu'on est au min demandé
-			audio.Stop ();
-			return;
+
+		if (delay == 0) {
+			audio.volume = volumeMin;
+			yield break;
 		}
 
-		audio.volume -= Time.unscaledDeltaTime / delay;
+		while (audio.volume > volumeMin) {
+			audio.volume -= TimeManager.deltaTime / delay;
+			yield return null;
+		}
+
+		if (audio.volume < volumeMin) // On s'assure de ne pas aller plus bas que le volumeMin demandé
+			audio.volume = volumeMin;
+
+		if (audio.isPlaying) {
+			audio.Stop (); // On stoppe le son lorsqu'on est au min demandé
+		}
 	}
+	// Fonction utilisée pour augmenter le volume d'un son progressivement
+//	public static void AudioFadeIn(AudioSource audio, float volumeMax = 1, float delay = 1) {
+//		if (audio == null || volumeMax < 0 || delay == 0)
+//			return;
+//		if (volumeMax > 1)
+//			volumeMax = 1;
+//		if (audio.volume > volumeMax)
+//			return;
+//
+//		if (!audio.isPlaying) { // On démarre le son au volume le plus bas
+//			audio.volume = 0;
+//			audio.Play ();
+//		}
+//
+//		audio.volume += TimeManager.deltaTime / delay;
+//	}
+
+	// Fonction utilisée pour diminuer le volume d'un son progressivement
+//	public static void AudioFadeOut(AudioSource audio, float volumeMin = 0, float delay = 1) {
+//		if (audio == null || volumeMin > 1 || delay == 0)
+//			return;
+//		if (volumeMin < 0)
+//			volumeMin = 0;
+//		if (audio.volume < volumeMin) { // On stoppe le son lorsqu'on est au min demandé
+//			audio.Stop ();
+//			return;
+//		}
+//
+//		audio.volume -= TimeManager.deltaTime / delay;
+//	}
 
 	public static Color ColorFromHSV(float h, float s, float v, float a = 1)
 	{

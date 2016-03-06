@@ -20,7 +20,7 @@ public class CoinPickup : Pickup {
 	}
 
 	protected override void Update () {
-		if (Time.timeScale == 0)
+		if (TimeManager.paused)
 			return;
 
 		if (!counted && myTransform.position.x < playerTransform.position.x + 1f) { // On prend un peu d'avance sur le joueur

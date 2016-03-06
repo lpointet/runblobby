@@ -3,7 +3,6 @@
 public class Oeuf : MonoBehaviour {
 
 	private Animator myAnim;
-	private Rigidbody2D myRb;
 	private AudioSource myAudio;
 
 	private bool broken;
@@ -14,7 +13,6 @@ public class Oeuf : MonoBehaviour {
 
 	void Awake () {
 		myAnim = GetComponent<Animator> ();
-		myRb = GetComponent<Rigidbody2D> ();
 		myAudio = GetComponent<AudioSource> ();
 	}
 

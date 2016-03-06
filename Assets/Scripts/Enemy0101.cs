@@ -18,7 +18,7 @@ public class Enemy0101 : Enemy {
 		base.Awake();
 
 		myAnim = GetComponent<Animator> ();
-		timeToBave = Time.unscaledTime + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
+		timeToBave = TimeManager.time + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
 	}
 
 	void Start() {
@@ -28,14 +28,14 @@ public class Enemy0101 : Enemy {
 	protected override void Update () {
 		base.Update();
 
-		if (IsDead () || LevelManager.GetPlayer ().IsDead ())
+		if (IsDead () || LevelManager.GetPlayer ().IsDead () || TimeManager.paused)
 			return;
 
 		// L'ennemi se rapproche du joueur au fil du temps (joueur considéré en position (0, 0)) pour finir à mi-chemin
 		myTransform.Translate(Vector3.left * LevelManager.levelManager.GetLocalDistance() * startPosition[0] / (GetDistanceToKill() * 2));
 
-		if (Time.unscaledTime > timeToBave) {
-			timeToBave = Time.unscaledTime + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
+		if (TimeManager.time > timeToBave) {
+			timeToBave = TimeManager.time + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
 			BaveDrop ();
 		}
 	}
@@ -48,10 +48,10 @@ public class Enemy0101 : Enemy {
 			GameObject obj = PoolingManager.current.Spawn (baveName);
 
 			if (obj != null) {
-				obj.transform.position = new Vector2(myTransform.position.x, -1f); // On place juste en dessous du boss
+				obj.transform.position = new Vector2(myTransform.position.x, hit.transform.position.y); // On place juste en dessous du boss
 				obj.transform.rotation = myTransform.rotation;
 				obj.transform.parent = hit.transform;
-				obj.transform.localScale = new Vector2 (Random.Range (1.75f, 2.5f), Random.Range (1f, 1.5f)); // Pas toujours la même taille de flaque
+
 				obj.SetActive (true);
 			}
 		}
@@ -74,6 +74,19 @@ public class Enemy0101 : Enemy {
 
 		if (hit.collider != null) {
 			myTransform.parent = hit.transform;
+			myRb.isKinematic = true;
+			GetComponent<EdgeCollider2D> ().enabled = false;
+			StartCoroutine (RollCarapace());
+		}
+	}
+
+	// On le fait tourner, s'il est mort
+	private IEnumerator RollCarapace() {
+		float axeMaxRoll = 0;
+		while (myTransform.rotation.eulerAngles.z < 15) {
+			axeMaxRoll += TimeManager.deltaTime;
+			myTransform.Rotate (Vector3.forward, axeMaxRoll);
+			yield return null;
 		}
 	}
 }

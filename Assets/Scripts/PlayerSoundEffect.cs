@@ -35,7 +35,7 @@ public class PlayerSoundEffect : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Time.timeScale > 0 && !player.IsDead ()) {
+		if (!TimeManager.paused && !player.IsDead ()) {
 			// Saut appelé par le PlayerController
 
 			// Ecrasement
@@ -44,10 +44,10 @@ public class PlayerSoundEffect : MonoBehaviour {
 			}
 
 			// Déplacement
-			else if (!soundSource.isPlaying && player.IsGrounded () && !player.IsFlying () && Time.unscaledTime > timeToMove) {
+			else if (!soundSource.isPlaying && player.IsGrounded () && !player.IsFlying () && TimeManager.time > timeToMove) {
 				FootStepSound();
 
-				timeToMove = Time.unscaledTime + (player.GetInitialMoveSpeed () / player.GetMoveSpeed()) * (4 / 7f); // Infinity si MoveSpeed = 0
+				timeToMove = TimeManager.time + (player.GetInitialMoveSpeed () / player.GetMoveSpeed()) * (4 / 7f); // Infinity si MoveSpeed = 0
 			}
 		}
 		wasGrounded = player.IsGrounded (); // Connaitre l'état de la précédente frame

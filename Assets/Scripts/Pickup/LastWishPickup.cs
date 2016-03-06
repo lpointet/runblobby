@@ -24,6 +24,8 @@ public class LastWishPickup : Pickup {
 	private GameObject divineMesh;
 	public LayerMask layerGround;
 
+	public FlyPickup flyPickup;
+
     protected override void Awake() {
         base.Awake();
 
@@ -33,6 +35,8 @@ public class LastWishPickup : Pickup {
 		// Manip stupide pour pouvoir désactiver l'objet par défaut (le but étant d'éviter de jouer la musique)
 		divineMesh = transform.FindChild ("DivineRay").gameObject;
 		divineMesh.SetActive (false);
+
+		flyPickup.gameObject.SetActive (false);
     }
 
     void Start() {
@@ -41,7 +45,7 @@ public class LastWishPickup : Pickup {
 
 		angelStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition); // Voir dans LevelManager pour la position par défaut
 	}
-	
+
 	public void Launch() {
 		player.Resurrect();
 		Effect();
@@ -55,9 +59,8 @@ public class LastWishPickup : Pickup {
     protected override void Update() {
 		base.Update ();
 
-		if (!picked) {
+		if (!picked || TimeManager.paused)
 			return;
-		}
 
 		// Effet commence
 		if ( launched ) {
@@ -70,20 +73,20 @@ public class LastWishPickup : Pickup {
 	}
 
 	void LateUpdate() {
-		if (Time.timeScale == 0)
+		if (TimeManager.paused)
 			return;
 		
 		// Effet visuel de l'ange qui se rapproche jusqu'à la mort
 		if (effectOnGoing && !effectEnding) {
-			offsetYToPlayer = Mathf.SmoothDamp (myTransform.position.y, playerTransform.position.y, ref dampVelocity, (timeToLive / lifeTime) * followDelay);
-			distanceToPlayer = _StaticFunction.MappingScale (timeToLive, lifeTime, 0, angelStartPosition, 0);
+			offsetYToPlayer = Mathf.SmoothDamp (myTransform.position.y, playerTransform.position.y, ref dampVelocity, ((timeToLive - despawnTime) / lifeTime) * followDelay);
+			distanceToPlayer = _StaticFunction.MappingScale (timeToLive - despawnTime, lifeTime, 0, angelStartPosition, 0);
 
 			myTransform.position = new Vector2 (playerTransform.position.x - distanceToPlayer, offsetYToPlayer);
 		}
 
 		// Effet de l'ange qui amène le joueur au ciel
 		if (effectEnding) {
-			lerpTimeEnding += Time.unscaledDeltaTime / despawnTime;
+			lerpTimeEnding += TimeManager.deltaTime / despawnTime;
 
 			playerTransform.position = new Vector2(playerTransform.position.x, Mathf.Lerp(deathPlayerPosition, endingPlayerPosition, lerpTimeEnding));
 
@@ -93,15 +96,15 @@ public class LastWishPickup : Pickup {
     }
 
     protected override void OnPick() {
-        base.OnPick();
+		base.OnPick();
 
         if( player.HasLastWish() ) {
             // Un last wish a déjà été récup, on se casse de là
-            timeToLive = 0;
+			Disable();
+			despawnTime = 0;
         }
         else {
             player.SetLastWish( this );
-			//myAudio.enabled = true;
         }
     }
 
@@ -126,18 +129,14 @@ public class LastWishPickup : Pickup {
 		}
 	}
 	
-	public void Effect() {
+	private void Effect() {Debug.Log(TimeManager.time);
         effectOnGoing = true;
+
+		timeToLive += despawnTime; // Car on compte le despawnTime dans le temps complet, à cause de l'animation particulière de ce pickup
 
         // C'est pour l'instant le seul moyen que j'ai trouvé pour ne pas rester dans la position de la mort (qui peut être bloquante)
         // TODO: remplacer ou améliorer avec une animation ?
 		playerTransform.position = LevelManager.levelManager.currentCheckPoint.transform.position;
-
-        // Tu voles
-        player.Fly();
-
-        // T'es invul
-        player.SetInvincible( lifeTime );
 
 		// Effet visuel au moment d'activer l'objet
 		myTransform.position = new Vector2 (myTransform.position.x - Mathf.Abs (LevelManager.levelManager.cameraStartPosition), playerTransform.position.y);
@@ -147,19 +146,32 @@ public class LastWishPickup : Pickup {
 		myAnim.SetBool("actif", true);
 
 		soundSource.volume = 1;
+
+		// Tu voles
+		player.Fly(); // Pour que le joueur vole immédiatement
+		flyPickup.gameObject.SetActive (true);
+		flyPickup.transform.position = playerTransform.position + Vector3.right * 0.25f; // On donne au joueur un pickup fly personnalisé pour ce mode
+
+		// T'es invul
+		player.SetInvincible( lifeTime ); // TODO toujours lifeTime ? Pas timeToLive ?
     }
 
 	// Effet visuel au moment où on ramasse l'item
 	protected override void PickEffect() {
 		base.PickEffect();
-		
-		myTransform.position = new Vector2 (myTransform.position.x, myTransform.position.y + (16 / 32f));
+
+		myTransform.position = playerTransform.position + Vector3.up * 0.5f;
 	}
 
-	protected override void DespawnEffect() {
+	protected override void DespawnEffect() {Debug.Log(TimeManager.time);
+		// On s'assure de ne pas déclencher le Despawn d'un pickup qu'on vient de ramasser en plus de celui qu'on a déjà
+		if (player.GetLastWish () != this)
+			return;
+
 		effectEnding = true;
 
 		player.Die (); // Le joueur est mort au début de l'effet, on ne peut pas utiliser d'animation pour cela
+		player.SetFireAbility (false); // Il n'est pas encore vraiment mort, donc il faut l'empêcher de tirer à ce moment
 
 		// On désactive ses colliders pour éviter les obstacles quand il remonte
 		Collider2D[] playerCollider = player.GetComponentsInChildren<Collider2D> ();
@@ -168,18 +180,26 @@ public class LastWishPickup : Pickup {
 
 		// On réattribue le pickup au joueur
 		myTransform.parent = playerTransform;
-		myTransform.position = new Vector2 (myTransform.position.x, myTransform.position.y + 4 / 32f); // Léger décalage de 4 pixels
+		myTransform.position = playerTransform.position + Vector3.up * 4 / 32f; // Léger décalage de 4 pixels
 
 		lerpTimeEnding = 0f;
 		deathPlayerPosition = playerTransform.position.y;
-		endingPlayerPosition = Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager>().yOffset + 1; // Pour etre au-dessus
+		endingPlayerPosition = Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager> ().yOffset + 1; // Pour etre au-dessus
 
 		// Rayon divin
 		// Il change de parent pour ne pas bouger
 		divineMesh.transform.parent = LevelManager.levelManager.transform;
 
-		divineMesh.transform.position = new Vector2(divineMesh.transform.position.x, 5);
+		divineMesh.transform.position = new Vector2 (divineMesh.transform.position.x, 5);
 		divineMesh.transform.localScale = new Vector2 (0.1f, 20); // On affiche une mince ligne au début
 		divineMesh.SetActive (true);
+
+		// On supprime tous les pickups potentiels, pour que ce soit plus beau...
+		Pickup[] pickups = player.GetComponentsInChildren<Pickup> ();
+		foreach (Pickup pickup in pickups) {
+			if (pickup != this) {
+				pickup.Disable ();
+			}
+		}
 	}
 }

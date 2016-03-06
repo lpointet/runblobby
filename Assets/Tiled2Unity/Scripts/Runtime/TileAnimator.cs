@@ -45,7 +45,7 @@ namespace Tiled2Unity
 
                 // Wait until the next frame
                 float timeToWait = frame.DurationMs / 1000.0f;
-                yield return new WaitForSeconds(timeToWait);
+				yield return new WaitForSeconds(timeToWait * Time.timeScale);
 
                 // Make the frame 'invisible' again. Make matching positive 'z' values negative
                 ModifyVertices(frame.Vertex_z);

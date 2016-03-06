@@ -24,7 +24,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
@@ -34,7 +34,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 128
+  maxTextureSize: 256
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -49,7 +49,7 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
-  spritePivot: {x: .5, y: .5}
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 32
   alphaIsTransparency: 1
@@ -65,8 +65,9 @@ TextureImporter:
         width: 32
         height: 36
       alignment: 2
-      pivot: {x: .5, y: 1}
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Mushroom_Bump_1
       rect:
         serializedVersion: 2
@@ -75,8 +76,9 @@ TextureImporter:
         width: 32
         height: 36
       alignment: 2
-      pivot: {x: .5, y: 1}
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Mushroom_Bump_2
       rect:
         serializedVersion: 2
@@ -85,8 +87,9 @@ TextureImporter:
         width: 32
         height: 36
       alignment: 2
-      pivot: {x: .5, y: 1}
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Mushroom_Bump_3
       rect:
         serializedVersion: 2
@@ -95,8 +98,9 @@ TextureImporter:
         width: 32
         height: 36
       alignment: 2
-      pivot: {x: .5, y: 1}
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Mushroom_Bump_4
       rect:
         serializedVersion: 2
@@ -105,8 +109,9 @@ TextureImporter:
         width: 32
         height: 36
       alignment: 2
-      pivot: {x: .5, y: 1}
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Mushroom_Bump_5
       rect:
         serializedVersion: 2
@@ -115,8 +120,9 @@ TextureImporter:
         width: 32
         height: 36
       alignment: 2
-      pivot: {x: .5, y: 1}
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Mushroom_Bump_6
       rect:
         serializedVersion: 2
@@ -125,8 +131,10 @@ TextureImporter:
         width: 32
         height: 36
       alignment: 2
-      pivot: {x: .5, y: 1}
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

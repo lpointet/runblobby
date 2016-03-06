@@ -66,10 +66,12 @@ public class LevelManager : MonoBehaviour {
 	public FlyPickup flyEndBoss;	// Pour faire voler à l'infini durant le dernier boss
 	//* Fin partie ennemi intermédiaire
 
-	private float fps;
-
 	public static PlayerController GetPlayer() {
 		return player;
+	}
+
+	public bool IsBlockPhase() {
+		return blockPhase;
 	}
 
     public bool IsEnemyToSpawn() {
@@ -141,7 +143,7 @@ public class LevelManager : MonoBehaviour {
 
     void Awake() {
 		if (levelManager == null)
-			levelManager = this;
+			levelManager = FindObjectOfType<LevelManager>();
 
 		player = FindObjectOfType<PlayerController> ();
 		kamera = Camera.main;
@@ -159,12 +161,12 @@ public class LevelManager : MonoBehaviour {
 		blockPhase = true;
         SetEnemyDistanceToKill( 0 );
 
-		// Ajustement de l'apparition du boss de fin (par rapport à la distance maximum du level)
-		listPhase [listPhase.Length - 1] = _GameData.current.levelList [LevelManager.levelManager.GetCurrentLevel ()].storyData [LevelManager.levelManager.GetCurrentDifficulty ()].distanceMax;
-
 		SetCurrentLevel (1); // TODO l'information doit venir du MainMenuManager
 		SetStoryMode (true); // TODO idem
 		SetCurrentDifficulty (0); // TODO idem
+
+		// Ajustement de l'apparition du boss de fin (par rapport à la distance maximum du level)
+		listPhase [listPhase.Length - 1] = GameData.gameData.playerData.levelData[GetCurrentLevel ()].storyData[GetCurrentDifficulty ()].distanceMax;
 
 		moneyMat.SetColor("_BaseColor", BaseColor);
 		moneyMat.SetColor("_TargetColor", BaseColor);
@@ -198,8 +200,7 @@ public class LevelManager : MonoBehaviour {
 		soundVolumeInit = sourceSound.volume;
 		PlayBackgroundMusic ();
 
-		fps = 1.0f / Time.fixedDeltaTime;
-		//StartLevel (); // TODO SUPPRIMER CETTE LIGNE + ACTIVER STARTLEVEL
+		StartLevel (); // TODO SUPPRIMER CETTE LIGNE + ACTIVER STARTLEVEL
 	}
 
 	void Update () {
@@ -209,7 +210,8 @@ public class LevelManager : MonoBehaviour {
 		}
 
 		// Empêcher que des choses se passent durant la pause
-		if (Time.timeScale == 0 || player.IsDead ()) {
+		// En plus de baisser le volume si l'écran de fin arrive
+		if (TimeManager.paused || player.IsDead () || endLevel) {
 			sourceSound.volume = 0.1f;
 			return;
 		}
@@ -223,7 +225,6 @@ public class LevelManager : MonoBehaviour {
 	
 		// Distance parcourue depuis le dernier update
 		localDistance = player.GetMoveSpeed() * Time.smoothDeltaTime;
-		//localDistance = player.GetMoveSpeed () / fps; // TODO choisir un des deux, celui-ci a l'air plus fluide
 
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
@@ -241,7 +242,7 @@ public class LevelManager : MonoBehaviour {
                 enemySpawnLaunched = true;
 
 				// On fait voler le joueur si c'est le dernier ennemi
-				if (currentPhase == 0) { // TODO listPhase.Length - 1
+				if (currentPhase == listPhase.Length - 1) { // TODO listPhase.Length - 1
 					CleanPickup( GetPlayer().GetLastWish() );
 					// On créer un pickup de vol sur le joueur, en vol infini (1000s...)
 					GetPlayer ().SetZeroGravFlying (true);
@@ -282,7 +283,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
         // On actualise la distance parcourue si le joueur n'est pas mort, et que l'ennemi n'est pas là
-        if (!player.IsDead () && !IsEnemyToSpawn() && enemyEnCours == null) {
+		if (!player.IsDead() && !IsEnemyToSpawn() && enemyEnCours == null) {
 			distanceTraveled += localDistance;
 			distanceSinceLastBonus += localDistance;
 		}
@@ -370,7 +371,7 @@ public class LevelManager : MonoBehaviour {
 
 	private IEnumerator SpawnEnemy(Enemy enemy) {
 		Enemy tempEnemy = Instantiate(enemy) as Enemy; // Permet d'accéder à l'ennemi avant qu'il ne soit visible pour le joueur
-		tempEnemy.gameObject.SetActive (false);
+
 		UIManager.uiManager.enemyName.text = tempEnemy.GetName ();
 		UIManager.uiManager.enemySurname.text = tempEnemy.GetSurName ();
 
@@ -378,20 +379,19 @@ public class LevelManager : MonoBehaviour {
 
 		enemyEnCours = tempEnemy;
 		tempEnemy = null;
-		enemyEnCours.transform.position = enemyEnCours.GetStartPosition ();
-		enemyEnCours.transform.rotation = Quaternion.identity;
-		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
-		enemyEnCours.gameObject.SetActive (true);
-	}
 
-	public bool IsBlockPhase() {
-		return blockPhase;
+		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
 	}
 
 	private void FinDuMonde () {
 		if (IsStory ()) {
 			GetPlayer ().OnVictory ();
 			CleanPickup( GetPlayer().GetLastWish() );
+
+			// On offre des points d'xp supplémentaires si c'est la première fois qu'il tue le boss
+			if (!GameData.gameData.playerData.levelData [GetCurrentLevel ()].storyData [GetCurrentDifficulty ()].isBossDead) {
+				ScoreManager.AddPoint (20 + 2 * GetCurrentLevel (), ScoreManager.Types.Experience); // TODO ajuster la fonction
+			}
 
 			UIManager.uiManager.ToggleEndMenu (true);
 
@@ -402,17 +402,20 @@ public class LevelManager : MonoBehaviour {
 	public static void Kill( Character character ) {
 		LastWishPickup lastWish = GetPlayer().GetLastWish();
 
-		if( character == GetPlayer() ) {
-			CleanPickup( lastWish );
-		}
+		if (character == GetPlayer ()) {
+			CleanPickup (lastWish);
 
-		if( lastWish == null || lastWish.IsLaunched() ) {
-			character.Die();
-			
-			character.OnKill();
-		}
-		else if( lastWish != null ) {
-			lastWish.Launch();
+			if (lastWish == null || lastWish.IsLaunched ()) {
+				character.Die ();
+
+				character.OnKill ();
+			} else if (lastWish != null) {
+				lastWish.Launch ();
+			}
+		} else {
+			character.Die ();
+
+			character.OnKill ();
 		}
 	}
 
@@ -431,7 +434,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	private static void CleanPickup (LastWishPickup lastWish = null) {
+	public static void CleanPickup (LastWishPickup lastWish = null) {
 		Pickup[] pickups = GetPlayer().GetComponentsInChildren<Pickup>();
 
 		foreach( Pickup pickup in pickups ) {

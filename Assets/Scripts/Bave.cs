@@ -40,6 +40,8 @@ public class Bave : MonoBehaviour {
 	void OnEnable() {
 		// On affiche un sprite aléatoire parmi la liste
 		GetComponent<SpriteRenderer> ().sprite = variousBave [Random.Range (0, variousBave.Length)];
+
+		transform.localScale = new Vector2 (Random.Range (1.75f, 2.5f), Random.Range (1f, 1.5f)); // Pas toujours la même taille de flaque
 	}
 
 	void OnTriggerStay2D(Collider2D other) {

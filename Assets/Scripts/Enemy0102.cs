@@ -54,7 +54,7 @@ public class Enemy0102 : Enemy {
 	protected override void Update () {
 		base.Update();
 
-		if (IsDead () || LevelManager.GetPlayer ().IsDead () || Time.timeScale == 0)
+		if (IsDead () || LevelManager.GetPlayer ().IsDead () || TimeManager.paused)
 			return;
 
 		AngryChicken ();
@@ -86,7 +86,7 @@ public class Enemy0102 : Enemy {
 			// On retient la dernière balle prise en compte, pour éviter d'appeler en boucle la même fonction
 			if (currentBulletID != detectedBullet.GetInstanceID ()) {
 				currentBulletID = detectedBullet.GetInstanceID ();
-				entryTime = Time.unscaledTime; // On retient le moment de l'entrée dans la zone, pour reset au bout de 2sec si jamais il ne se passe rien (voir plus bas)
+				entryTime = TimeManager.time; // On retient le moment de l'entrée dans la zone, pour reset au bout de 2sec si jamais il ne se passe rien (voir plus bas)
 
 				// On compare à la probabilité d'esquiver
 				if (Random.Range(0f, 1f) < dodgeSkill) {
@@ -99,7 +99,7 @@ public class Enemy0102 : Enemy {
 			}
 		}
 
-		if (Time.unscaledTime > entryTime + 2) {
+		if (TimeManager.time > entryTime + 2) {
 			currentBulletID = 0;
 		}
 	}
@@ -125,7 +125,7 @@ public class Enemy0102 : Enemy {
 			if (myTransform.position.x > LevelManager.GetPlayer ().transform.position.x - 0.5f) {
 				// On le fait accélérer
 				if (lerpingAngryTime < 1) {
-					lerpingAngryTime += Time.unscaledDeltaTime / delayRunAngry;
+					lerpingAngryTime += TimeManager.deltaTime / delayRunAngry;
 					SetMoveSpeed (Mathf.Lerp (0, -attackSpeed, lerpingAngryTime));
 				}
 				myRb.velocity = new Vector2 (GetMoveSpeed (), myRb.velocity.y);

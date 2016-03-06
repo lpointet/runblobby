@@ -7,56 +7,61 @@ public class AutoCoinPickup : Pickup {
 
 	private float volumeMax;
 
-	private Animator frontAnim;
 	private Animator backAnim;
+
+	private float animSpeed = 1;
 
 	protected override void Awake() {
 		base.Awake();
 
 		parentAttach = true;
 		despawnTime = 0.3f;
+		weakTime = 3f;
 
-		frontAnim = transform.Find ("Magnet_Front").GetComponent<Animator> ();
 		backAnim = transform.Find ("Magnet_Back").GetComponent<Animator> ();
 	}
 
 	protected override void PickEffect() {
 		volumeMax = soundSource.volume;
+		StartCoroutine(_StaticFunction.AudioFadeIn(soundSource, volumeMax, weakTime));
 
-		if ( null != backAnim && null != frontAnim ) {
-			if (_StaticFunction.ExistsAndHasParameter ("picked", backAnim)) {
-				backAnim.SetBool ("picked", true);
-				frontAnim.SetBool ("picked", true);
-			}
-		}
+		base.PickEffect ();
+
+		if (_StaticFunction.ExistsAndHasParameter ("picked", backAnim))
+			backAnim.SetBool ("picked", true);
 
 		transform.localPosition = new Vector2(0, 28/32f); // 4 pixels sous le joueur
-		frontAnim.transform.localPosition = Vector2.zero;
+		myAnim.transform.localPosition = Vector2.zero;
 		backAnim.transform.localPosition = Vector2.zero;
     }
 
 	protected override void DespawnEffect() {
-		if (_StaticFunction.ExistsAndHasParameter ("end", backAnim)) // On cache directement ceux qui n'ont pas d'animation de fin
+		backAnim.speed = 1;
+		myAnim.speed = 1;
+
+		base.DespawnEffect ();
+
+		if (_StaticFunction.ExistsAndHasParameter ("end", backAnim))
 			backAnim.SetBool ("end", true);
-		if (_StaticFunction.ExistsAndHasParameter ("end", frontAnim)) // On cache directement ceux qui n'ont pas d'animation de fin
-			frontAnim.SetBool ("end", true);
     }
+
+	protected override void WeakEffect() {
+		// On diminue la vitesse de la tornade légèrement vers la fin
+		animSpeed = _StaticFunction.MappingScale (timeToLive, weakTime, 0, 1, 0.5f);
+		backAnim.speed = animSpeed;
+		myAnim.speed = animSpeed;
+
+		soundSource.volume -= TimeManager.deltaTime / (2 * weakTime);
+	}
 
 	protected override void Update() {
 		base.Update();
 
-		if( !picked || Time.timeScale == 0) {
+		if( !picked || TimeManager.paused ) {
 			return;
 		}
 
         // Attirer toutes les pièces vers le joueur
         LevelManager.GetPlayer().AttractCoins( radius, layerCoins );
-
-		if ( !despawnCalled ) {
-			_StaticFunction.AudioFadeIn (soundSource, volumeMax, despawnTime);
-        }
-        else {
-			_StaticFunction.AudioFadeOut( soundSource, 0, despawnTime * 5 );
-        }
     }
 }

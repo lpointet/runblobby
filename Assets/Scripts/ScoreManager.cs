@@ -74,7 +74,7 @@ public class ScoreManager : MonoBehaviour {
 		Multiplier newMult;
 		
 		newMult.value = multiplier;
-		newMult.endTime = Time.unscaledTime + lifeTime;
+		newMult.endTime = TimeManager.time + lifeTime;
 		
 		if( multipliers.TryGetValue( type, out initial ) ) {
 			newMult.value = Mathf.Max( multiplier, initial.value );
@@ -88,7 +88,7 @@ public class ScoreManager : MonoBehaviour {
 		Multiplier initial;
 
 		if( multipliers.TryGetValue( type, out initial ) ) {
-			if( initial.endTime <= Time.unscaledTime + 0.05f ) {
+			if( initial.endTime <= TimeManager.time + 0.05f ) {
 				multipliers.Remove( type );
 			}
 		}

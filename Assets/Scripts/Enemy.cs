@@ -9,14 +9,18 @@ public class Enemy : Character {
 	[SerializeField] private float distanceToKill;
 	[SerializeField] private int damageToGive;
 	[SerializeField] private int pointScore;
-	[SerializeField] private string name;
+	[SerializeField] private string firstName;
 	[SerializeField] private string surName;
 	/* End of Stats */
 
 	protected Rigidbody2D myRb;
 	protected EnemySoundEffect myAudio;
+	protected SpriteRenderer myRend;
 
+	public float[] popPosition = new float[2];
 	public float[] startPosition = new float[2];
+	private float lerpBeforeFight = 0;
+	private bool popEnemy = false;
 
 	[Header("Coin Drop")]
 	public float frequence = 0.01f;
@@ -46,7 +50,7 @@ public class Enemy : Character {
 	}
 
 	public string GetName() {
-		return name;
+		return firstName;
 	}
 
 	public string GetSurName() {
@@ -76,6 +80,15 @@ public class Enemy : Character {
 	public Vector2 GetStartPosition () {
 		return new Vector2 (startPosition [0], startPosition [1]);
 	}
+
+	protected void SetPopPosition (Vector2 vector) {
+		popPosition [0] = vector.x;
+		popPosition [1] = vector.y;
+	}
+
+	protected Vector2 GetPopPosition () {
+		return new Vector2 (popPosition [0], popPosition [1]);
+	}
 	/* End of Getters & Setters */
 
 	void OnEnable() {
@@ -87,11 +100,57 @@ public class Enemy : Character {
 
 		myRb = GetComponent<Rigidbody2D> ();
 		myAudio = GetComponent<EnemySoundEffect> ();
+		myRend = GetComponent<SpriteRenderer> ();
+
+		myRend.enabled = false;
 	}
 
 	protected override void Init() { // TODO pourquoi c'est appelé deux fois ? Start (voir Character.cs) et OnEnable ?
 		base.Init();
 
+		PossibleCoin ();
+
+		// On le place à sa position AVANT début du combat
+		SetPopPosition (new Vector2(LevelManager.levelManager.cameraEndPosition - 3.5f, GetStartPosition().y));
+		myTransform.position = GetPopPosition ();
+		myTransform.rotation = Quaternion.identity;
+		popEnemy = true;
+		myRend.enabled = true;
+	}
+
+	protected override void Update () {
+		base.Update();
+
+		if (LevelManager.GetPlayer ().IsDead () || IsDead() || TimeManager.paused)
+			return;
+
+		// Déplacement avant le combat
+		if (popEnemy) {
+			myTransform.position = new Vector2 (Mathf.Lerp(GetPopPosition().x, GetStartPosition().x, lerpBeforeFight), myTransform.position.y);
+
+			lerpBeforeFight += TimeManager.deltaTime / LevelManager.levelManager.enemySpawnDelay;
+
+			if (myTransform.position.x <= startPosition [0])
+				popEnemy = false;
+			
+			return;
+		}
+
+		// Laché de feuilles aléatoires
+		MoneyDrop ();
+	}
+
+	void OnTriggerEnter2D(Collider2D other){
+		// Si l'ennemi est déjà mort, il ne peut plus rien faire...
+		if( IsDead() ) {
+			return;
+		}
+
+		if (other.name == "Heros")
+			LevelManager.GetPlayer ().Hurt(GetDamageToGive());
+	}
+
+	private void PossibleCoin() {
 		coins = ListManager.current.coins;
 
 		frequence = Mathf.Clamp01 (frequence);
@@ -169,26 +228,6 @@ public class Enemy : Character {
 			else // Si on est sur la dernière valeur du tableau, et donc que poissonValue = 0, la limite haute est toujours 100
 				return 100;
 		}
-	}
-
-	protected override void Update () {
-		base.Update();
-
-		if (LevelManager.GetPlayer ().IsDead () || IsDead())
-			return;
-
-		// Laché de feuilles aléatoires
-		MoneyDrop ();
-	}
-
-	void OnTriggerEnter2D(Collider2D other){
-		// Si l'ennemi est déjà mort, il ne peut plus rien faire...
-		if( IsDead() ) {
-			return;
-		}
-
-		if (other.name == "Heros")
-			LevelManager.GetPlayer ().Hurt(GetDamageToGive());
 	}
 
 	public override void OnKill() {

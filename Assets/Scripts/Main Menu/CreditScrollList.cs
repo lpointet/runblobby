@@ -53,13 +53,13 @@ public class CreditScrollList : MonoBehaviour {
 
 	void OnEnable () {
 		contentPanel.anchoredPosition = Vector2.zero;
-		dragTime = Time.unscaledTime - 1; // (2-1)s de lancement
+		dragTime = TimeManager.time - 1; // (2-1)s de lancement
 	}
 
 	void Update () {
 		// Si on drag, on arrête le défilement pendant 5sec
 		// TODO 661 est une valeur arbitraire, je ne sais pas comment la calculer...
-		if ((contentPanel.anchoredPosition.y >= -1 && contentPanel.anchoredPosition.y < 661 && dragTime + 2 < Time.unscaledTime) || pressed) {
+		if ((contentPanel.anchoredPosition.y >= -1 && contentPanel.anchoredPosition.y < 661 && dragTime + 2 < TimeManager.time) || pressed) {
 			float currentSpeed;
 			currentSpeed = pressed ? pressedSpeedScroll : speedScroll; // On ajuste la vitesse en fonction de ce qu'il se passe
 			contentPanel.anchoredPosition = new Vector2 (0, contentPanel.anchoredPosition.y + currentSpeed);
@@ -82,6 +82,6 @@ public class CreditScrollList : MonoBehaviour {
 
 	public void ReleasePression() {
 		pressed = false;
-		dragTime = Time.unscaledTime;
+		dragTime = TimeManager.time;
 	}
 }

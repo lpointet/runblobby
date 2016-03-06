@@ -29,11 +29,11 @@ public class EnemySoundEffect : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Time.timeScale > 0 && !enemy.IsDead ()) {
-			if (!soundSource.isPlaying  && Time.unscaledTime > timeToMove) {
+		if (!TimeManager.paused && !enemy.IsDead ()) {
+			if (!soundSource.isPlaying  && TimeManager.time > timeToMove) {
 				FootStepSound();
 
-				timeToMove = Time.unscaledTime + delayMove;
+				timeToMove = TimeManager.time + delayMove;
 			}
 		}
 	}

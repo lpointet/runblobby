@@ -116,11 +116,14 @@ MonoBehaviour:
   distanceToKill: 200
   damageToGive: 0
   pointScore: 10
-  name: Gaston
+  firstName: Gaston
   surName: the Lazy Gastropod
+  popPosition:
+  - 0
+  - 0.75
   startPosition:
   - 14
-  - 0
+  - 0.75
   frequence: 0.01
   mediumValue: 1
   layerGround:
@@ -233,7 +236,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: startPosition.Array.data[1]
-      value: 0
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_IsTrigger
@@ -242,6 +245,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_GravityScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: firstName
+      value: Gaston
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: popPosition.Array.data[1]
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

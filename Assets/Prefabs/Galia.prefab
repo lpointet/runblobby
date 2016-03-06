@@ -250,11 +250,14 @@ MonoBehaviour:
   distanceToKill: 250
   damageToGive: 1
   pointScore: 50
-  name: Galia
+  firstName: Galia
   surName: the Stupid Gallinacae
+  popPosition:
+  - 0
+  - 0.75
   startPosition:
   - 12
-  - 0.25
+  - 0.75
   frequence: 0.01
   mediumValue: 2.1
   layerGround:
@@ -1884,7 +1887,7 @@ Prefab:
       objectReference: {fileID: 153172, guid: da19e621afeb1e4439322c92b1acfee6, type: 2}
     - target: {fileID: 0}
       propertyPath: startPosition.Array.data[1]
-      value: 0.25
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: startPosition.Array.data[0]
@@ -1982,6 +1985,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_GravityScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: firstName
+      value: Galia
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: popPosition.Array.data[1]
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

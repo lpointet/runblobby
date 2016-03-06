@@ -60,9 +60,6 @@ public class PlayerController : Character {
 	private float yPosAirDeath;
 	private float yVariableAirDeath = 0f;
 
-	private float followDelay = 1f;
-	private float dampVelocity = 0f;
-
 	// TODO ratioMoveSpeed = GetMoveSpeed () / GetInitialMoveSpeed() à remplacer dans tous les scripts qui appellent ça ?
 
     /**
@@ -169,12 +166,12 @@ public class PlayerController : Character {
 
 		// Vol sur place du fantôme pendant la mort en l'air
 		if (IsDead () && !HasLastWish() && !IsGrounded () && myTransform.position.y > 3.5f) {
-			yVariableAirDeath += Time.unscaledDeltaTime;
+			yVariableAirDeath += TimeManager.deltaTime;
 			myTransform.position = new Vector2 (myTransform.position.x, yPosAirDeath + 0.2f * Mathf.Sin (yVariableAirDeath));
 		}
 
         // Empêcher que des choses se passent durant la pause
-		if (Time.timeScale == 0 || IsDead ())
+		if (TimeManager.paused || IsDead ())
             return;
 
 		// Rapprocher le joueur douuuucement si on est pas en x = 0
@@ -247,7 +244,7 @@ public class PlayerController : Character {
 
 		// Accélération et décélération au début et à la fin du vol
 		if (speedBeforeFly != speedInFly) {
-			acceleration += Time.unscaledDeltaTime;
+			acceleration += TimeManager.deltaTime;
 			if (isFlying) // Au démarrage
 				SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration)); // En une seconde
 			else {
@@ -261,7 +258,7 @@ public class PlayerController : Character {
 	
 	void OnGUI() {
 		// Rouge = 230 ou -140 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
-		lerpingHP = Mathf.Lerp (lerpingHP, GetHealthPoint (), Time.unscaledDeltaTime * 3);
+		lerpingHP = Mathf.Lerp (lerpingHP, GetHealthPoint (), TimeManager.deltaTime * 3);
         // sharedMaterial pour que les boules changent de couleur aussi
         if (!IsDead())
 			mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 230, 0));
@@ -289,19 +286,21 @@ public class PlayerController : Character {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 
+		isFlying = false;
+		myAnim.SetBool ("flying", isFlying);
+
 		if (myTransform.position.y < -3f + LevelManager.levelManager.GetHeightStartBlock()) { // Si on est en dessous du bas de l'écran (3 blocks hauteur de base)
 			myAnim.SetTrigger ("dead_fall");
 			myAudio.FallDeathSound ();
 		}
 		else {
 			if (!IsGrounded ()) { // Faire flotter le fantôme si on est en l'air
-				myRb.gravityScale = 0f;
-				isFlying = false;
-				myAnim.SetBool ("flying", isFlying);
+				myRb.isKinematic = true;
 				yPosAirDeath = myTransform.position.y;
 				myAudio.AirDeathSound ();
 			} else
 				myAudio.DeathSound ();
+			
 			myAnim.SetTrigger ("dead");
 		}
 			
@@ -324,7 +323,7 @@ public class PlayerController : Character {
 		SetFireAbility( false );
 		SetMoveSpeed (0);
 
-		gameObject.SetActive (false);
+		//gameObject.SetActive (false);
 	}
 	
 	public void SetFireAbility( bool able ) {
@@ -355,8 +354,21 @@ public class PlayerController : Character {
         pickups.Remove( pickup );
     }
 
+	public Pickup HasTypePickup( System.Type type ) {
+		Pickup[] pickups = GetComponentsInChildren<Pickup>();
+
+		foreach( Pickup pickup in pickups ) {
+			if( pickup.GetType() == type ) {
+				return pickup;
+			}
+		}
+
+		return null;
+	}
+
 	public void ActiveParachute(bool active) {
 		parachute.SetActive (active);
+		myAnim.SetTrigger ("parachute");
 	}
 
     public void Fly() {
@@ -378,7 +390,8 @@ public class PlayerController : Character {
 
 		//SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
 		isFlying = true;
-		myAnim.SetBool( "flying", isFlying );
+		myAnim.SetBool( "flying", isFlying ); // Permet d'annuler le parachute une fois au sol
+		myAnim.SetTrigger ("parachute"); // Animation de "parachute" pendant le vol
 
 		// Faire décoller le joueur
 		Jump();
@@ -405,7 +418,8 @@ public class PlayerController : Character {
         //Jump();
 
 		// On fait atterrir le joueur avec le parachute
-		ActiveParachute(true);
+		if (!IsGrounded ())
+			ActiveParachute (true);
 
 		// Diminuer la vitesse
 		acceleration = 0;

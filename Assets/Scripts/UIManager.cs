@@ -35,7 +35,9 @@ public class UIManager : MonoBehaviour {
 	[Header("Pause Menu")]
 	public GameObject pauseUI;
 	public Text distancePause;
+	public Slider distanceSliderPause;
 	public Text moneyPause;
+	public Slider moneySliderPause;
 
 	public GameObject cdObject;
 	private Animator cdAnim;
@@ -133,8 +135,11 @@ public class UIManager : MonoBehaviour {
 			timeUpdateValue = delaySliderFull - 0.001f; // Pour permettre de rentrer une dernière fois dans la boucle while de UpdateSlider()
 
 			int diffLvl = _StaticFunction.LevelFromExp(GameData.gameData.playerData.experience + ScoreManager.GetExperience ()) - _StaticFunction.LevelFromExp(GameData.gameData.playerData.experience);
-			StartCoroutine (PopText (playerLevel, "+" + diffLvl));
+			StartCoroutine (PopText (playerLevel, diffLvl));
 		}
+
+		if (TimeManager.paused)
+			return;
 
         // Compteur
         MeterTextManager();
@@ -167,7 +172,7 @@ public class UIManager : MonoBehaviour {
 			}
 
 			// On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
-			lerpingTimeEnemyBar += Time.unscaledDeltaTime / LevelManager.levelManager.enemySpawnDelay;
+			lerpingTimeEnemyBar += TimeManager.deltaTime / LevelManager.levelManager.enemySpawnDelay;
 			fillHealthBar.fillAmount = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
 
 			if (fillHealthBar.fillAmount == 1) {
@@ -190,10 +195,11 @@ public class UIManager : MonoBehaviour {
 				MoveIntroEnemyText (enemyName, lerpTime, positionNameBeforeEndMove.x, -namePosition.x);
 				MoveIntroEnemyText (enemySurname, lerpTime, positionSurnameBeforeEndMove.x, -surnamePosition.x);
 			}
-			textTimeTotal -= Time.unscaledDeltaTime;
+			textTimeTotal -= TimeManager.deltaTime;
 		} else { // Si on n'est pas dans le compte-à-rebours, on cache les textes
 			enemyName.gameObject.SetActive (false);
 			enemySurname.gameObject.SetActive (false);
+			textTimeTotal = LevelManager.levelManager.enemySpawnDelay;
 		}
     }
 
@@ -272,8 +278,18 @@ public class UIManager : MonoBehaviour {
 		moneyEnd.text = ScoreManager.GetScore ().ToString ();
 		experience.text = ScoreManager.GetExperience ().ToString ();
 
+		if (pauseUI.activeInHierarchy)
+			UpdatePauseSlider ();
+		
 		if (endUI.activeInHierarchy)
 			StartCoroutine (UpdateSlider ());
+	}
+
+	private void UpdatePauseSlider () {
+		distanceSliderPause.maxValue = meterTravelled.maxValue;
+		distanceSliderPause.value = meterTravelled.value;
+
+		moneySliderPause.value = ScoreManager.GetRatioLeaf ();
 	}
 
 	private IEnumerator UpdateSlider() {
@@ -287,7 +303,7 @@ public class UIManager : MonoBehaviour {
 
 		int diffLevel = _StaticFunction.LevelFromExp (futurPlayerExp) - currentPlayerLevel;
 
-		bool newLevel = true; // Savoir si l'on va passer un niveau complet ou non (servira en cas de multi level)
+		bool newLevel = true; // Savoir si l'on va passer un niveau complet ou non (sert en cas de multi level)
 		int currentLevelGain = 0; // Gain en level courant
 		int xpMaxThisLevel = 0; // XP à atteindre sur ce level
 
@@ -313,30 +329,31 @@ public class UIManager : MonoBehaviour {
 			experienceSliderEnd.value = Mathf.Lerp (currentPlayerExpInLevel, xpMaxThisLevel, timeUpdateMultiLevel / delaySliderFull);
 
 			// Lorsque l'on gagne un level
-			if (experienceSliderEnd.value >= xpMaxThisLevel) {
+			if (currentLevelGain != diffLevel && experienceSliderEnd.value >= xpMaxThisLevel) {
 				newLevel = true;
 				currentLevelGain++;
 				currentPlayerExpInLevel = 0;
 				timeUpdateMultiLevel = 0;
 
-				StartCoroutine (PopText (playerLevel, "+" + currentLevelGain));Debug.Log ("pouet");
+				StartCoroutine (PopText (playerLevel, currentLevelGain));
 			}
 
 			// TODO ajouter un son filling
 
-			timeUpdateValue += Time.unscaledDeltaTime;
-			timeUpdateMultiLevel += Time.unscaledDeltaTime * (diffLevel + 1);
+			timeUpdateValue += TimeManager.deltaTime;
+			timeUpdateMultiLevel += TimeManager.deltaTime * (diffLevel + 1);
 			yield return null;
 		}
 	}
 
-	private IEnumerator PopText(Text text, string content) {
+	private IEnumerator PopText(Text text, int gainLevel) {
 		float timeScalePop = 0;
 		float delayPop = 0.2f;
 		float popScale = 0;
 		float initialScale = text.rectTransform.localScale.x;
 
-		playerLevel.text = content;
+		if (gainLevel > 0)
+			playerLevel.text = "+" + gainLevel;
 
 		text.GetComponent<AudioSource> ().Play ();
 
@@ -344,7 +361,7 @@ public class UIManager : MonoBehaviour {
 			popScale = Mathf.Lerp (initialScale, initialScale * 4f, timeScalePop);
 			text.rectTransform.localScale = new Vector2 (popScale, popScale);
 
-			timeScalePop += Time.unscaledDeltaTime;
+			timeScalePop += TimeManager.deltaTime;
 			yield return null;
 		}
 

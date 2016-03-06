@@ -3,8 +3,6 @@ using System.Collections;
 
 public class StartLevel : MonoBehaviour {
 
-	private SpriteRenderer myRenderer;
-
 	public float delayBeforeStart = 1.5f;
 	private float startingTime;
 
@@ -14,13 +12,11 @@ public class StartLevel : MonoBehaviour {
 	private float modifCamScaling;
 
 	void Start () {
-		startingTime = Time.unscaledTime;
-
-		myRenderer = GetComponent<SpriteRenderer> ();
+		startingTime = TimeManager.time;
 
 		CameraManager cameraManager = Camera.main.GetComponent<CameraManager> ();
 
-		endingScale = 96; // TODO trouver une formule pour ça...
+		endingScale = 28; // TODO trouver une formule pour ça...
 		modifCamScaling = cameraManager.bgContainer.transform.localScale.x * 2.5f; // *2.5f Pour éviter d'être hors caméra TODO formule aussi
 
 		// On place le joueur dans de bonnes conditions de chute en parachute
@@ -29,18 +25,19 @@ public class StartLevel : MonoBehaviour {
 
 		// On accroche le parachute au joueur
 		LevelManager.GetPlayer ().ActiveParachute (true);
+		LevelManager.GetPlayer ().GetComponent<Animator> ().SetTrigger ("parachute");
 	}
 
 	void Update () {
 		// On attend la fin du délai pour démarrer
-		if (startingTime + delayBeforeStart < Time.unscaledTime) {
+		if (startingTime + delayBeforeStart < TimeManager.time) {
 			LevelManager.GetPlayer ().ActiveParachute (false);
 			LevelManager.levelManager.StartLevel ();
 			gameObject.SetActive (false);
 		} else {
 			// On agrandit la taille du cercle au fil du temps
-			startingTimeScale = Time.unscaledTime * Time.unscaledTime;
-			currentScaling = _StaticFunction.MappingScale (startingTimeScale, 0, delayBeforeStart, 1, endingScale);
+			startingTimeScale = TimeManager.time * TimeManager.time;
+			currentScaling = _StaticFunction.MappingScale (startingTimeScale, startingTime, startingTime + delayBeforeStart, 1, endingScale);
 			transform.localScale = Vector2.one * currentScaling * modifCamScaling;
 
 			// On fait suivre au cercle le joueur (mais pas sur z)

@@ -8,7 +8,6 @@ public class InviciblePickup : Pickup {
 	public AudioClip soundEnd;
 	public float soundEndVolume = 0.8f;
 
-	private float timeToClignote = 3f;
 	private float clignottant;
 	private float coefClignottant = 0.05f;
 	private float alphaSprite = 1f;
@@ -18,21 +17,9 @@ public class InviciblePickup : Pickup {
 
 		parentAttach = true;
 		despawnTime = 0.3f;
+		weakTime = 3f;
 
 		clignottant = Mathf.Sqrt (Mathf.Sqrt (Mathf.PI / (2f * coefClignottant)));
-	}
-
-	protected override void Update() {
-		base.Update ();
-
-		if (Time.timeScale == 0)
-			return;
-
-		if( picked && timeToLive < timeToClignote && timeToLive > 0) {
-			alphaSprite = Mathf.Abs (Mathf.Sin (coefClignottant * _StaticFunction.MathPower(clignottant, 4)));
-			myRender.color = new Color (myRender.color.r, myRender.color.g, myRender.color.b, alphaSprite);
-			clignottant += Time.unscaledDeltaTime;
-		}
 	}
 	
 	protected override void OnPick() {
@@ -46,6 +33,12 @@ public class InviciblePickup : Pickup {
 
 		StartCoroutine (PlayActifSound (soundSource.clip.length));
 	}
+
+	protected override void WeakEffect() {
+		alphaSprite = Mathf.Abs (Mathf.Sin (coefClignottant * _StaticFunction.MathPower(clignottant, 4)));
+		myRender.color = new Color (myRender.color.r, myRender.color.g, myRender.color.b, alphaSprite);
+		clignottant += TimeManager.deltaTime;
+	}
 	
 	protected override void DespawnEffect() {
 		base.DespawnEffect();
@@ -56,6 +49,7 @@ public class InviciblePickup : Pickup {
 		soundSource.Play ();
 
 		myRender.color = new Color (myRender.color.r, myRender.color.g, myRender.color.b, 1f);
+		// TODO trouver pourquoi le pickup réapparait à la fin... (et pas que pour celui-ci)
 	}
 
 	private IEnumerator PlayActifSound(float delay) {

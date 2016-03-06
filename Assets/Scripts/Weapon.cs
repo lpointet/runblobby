@@ -23,7 +23,7 @@ public class Weapon : MonoBehaviour {
 
 	void Update () {
         // Empêcher que des choses se passent durant la pause
-        if (Time.timeScale == 0)
+		if (TimeManager.paused)
             return;
 
         if (fireRate == 0) {
@@ -31,8 +31,8 @@ public class Weapon : MonoBehaviour {
 				Shoot ();
 			}
 		} else {
-			if ( ( autoFire || Input.GetMouseButton (0) ) && Time.unscaledTime > timeToFire ) {
-				timeToFire = Time.unscaledTime + 1/fireRate;
+			if ( ( autoFire || Input.GetMouseButton (0) ) && TimeManager.time > timeToFire ) {
+				timeToFire = TimeManager.time + 1/fireRate;
 				Shoot();
 			}
 		}

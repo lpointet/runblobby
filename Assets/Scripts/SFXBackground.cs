@@ -40,42 +40,42 @@ public class SFXBackground : MonoBehaviour {
 	}
 
 	void Start () {
-		timeToSing = Time.unscaledTime + Random.Range (minIntervalleBird, maxIntervalleBird);
-		timeToCrick = Time.unscaledTime + Random.Range (minIntervalleCricket, maxIntervalleCricket);
-		timeToMoo = Time.unscaledTime + Random.Range (minIntervalleCow, maxIntervalleCow);
+		timeToSing = TimeManager.time + Random.Range (minIntervalleBird, maxIntervalleBird);
+		timeToCrick = TimeManager.time + Random.Range (minIntervalleCricket, maxIntervalleCricket);
+		timeToMoo = TimeManager.time + Random.Range (minIntervalleCow, maxIntervalleCow);
 	}
 
 	void Update () {
 		if (player.IsDead ())
 			myAudio.Stop ();
 
-		if (!myAudio.isPlaying && !player.IsDead () && Time.unscaledTime > timeToNextSound) {
+		if (!myAudio.isPlaying && !player.IsDead () && TimeManager.time > timeToNextSound) {
 
 			// Birds
-			if (Time.unscaledTime > timeToSing && birdBank.Length > 0) {
+			if (TimeManager.time > timeToSing && birdBank.Length > 0) {
 				randSound = Random.Range (0, birdBank.Length);
 
 				PlaySound (birdBank [randSound], Random.Range (minVolumeBird, maxVolumeBird));
 
-				timeToSing = Time.unscaledTime + Random.Range (minIntervalleBird, maxIntervalleBird);
+				timeToSing = TimeManager.time + Random.Range (minIntervalleBird, maxIntervalleBird);
 			}
 
 			// Crickets
-			else if (Time.unscaledTime > timeToCrick && cricketBank.Length > 0) {
+			else if (TimeManager.time > timeToCrick && cricketBank.Length > 0) {
 				randSound = Random.Range (0, cricketBank.Length);
 				
 				PlaySound (cricketBank [randSound], Random.Range (minVolumeCricket, maxVolumeCricket));
 				
-				timeToCrick = Time.unscaledTime + Random.Range (minIntervalleCricket, maxIntervalleCricket);
+				timeToCrick = TimeManager.time + Random.Range (minIntervalleCricket, maxIntervalleCricket);
 			}
 
 			// Cows/Goats
-			else if (Time.unscaledTime > timeToMoo && cowBank.Length > 0) {
+			else if (TimeManager.time > timeToMoo && cowBank.Length > 0) {
 				randSound = Random.Range (0, cowBank.Length);
 				
 				PlaySound (cowBank [randSound], Random.Range (minVolumeCow, maxVolumeCow));
 				
-				timeToMoo = Time.unscaledTime + Random.Range (minIntervalleCow, maxIntervalleCow);
+				timeToMoo = TimeManager.time + Random.Range (minIntervalleCow, maxIntervalleCow);
 			}
 		}
 	}
@@ -84,6 +84,6 @@ public class SFXBackground : MonoBehaviour {
 		myAudio.clip = sound;
 		myAudio.volume = volume;
 		myAudio.Play ();
-		timeToNextSound = Time.unscaledTime + myAudio.clip.length + 0.5f;
+		timeToNextSound = TimeManager.time + myAudio.clip.length + 0.5f;
 	}
 }

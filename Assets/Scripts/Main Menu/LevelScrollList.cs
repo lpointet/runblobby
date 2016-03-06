@@ -94,7 +94,7 @@ public class LevelScrollList : MonoBehaviour {
 		}
 		else {
 			// On approche de la fin du positionnement une fois par image
-			currentLerpTime += Time.unscaledDeltaTime;
+			currentLerpTime += TimeManager.deltaTime;
 			if(currentLerpTime > lerpTime)
 				currentLerpTime = lerpTime;
 

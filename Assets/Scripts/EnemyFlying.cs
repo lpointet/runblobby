@@ -26,7 +26,7 @@ public class EnemyFlying : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Time.timeScale == 0)
+		if (TimeManager.paused)
 			return;
 
 		if (enemyIsHere && !enemyIsOnPlayerY) {
@@ -51,15 +51,15 @@ public class EnemyFlying : MonoBehaviour {
 		if (enemyIsOnPlayerY) {
 			if(isSinus || isPingPong) {
 				if(isSinus) // On donne une vitesse sinusoidale
-					myTransform.position = new Vector2(myTransform.position.x - Time.unscaledDeltaTime * flySpeed, enemyPositionY + Mathf.Sin (2 * flySpeed * mouvement) / 2.0f);
+					myTransform.position = new Vector2(myTransform.position.x - TimeManager.deltaTime * flySpeed, enemyPositionY + Mathf.Sin (2 * flySpeed * mouvement) / 2.0f);
 				else if (isPingPong) // On donne une vitesse pingpongidale
-					myTransform.position = new Vector2(myTransform.position.x - Time.unscaledDeltaTime * flySpeed, enemyPositionY + Mathf.PingPong (flySpeed / 2.0f * mouvement, 0.5f));
+					myTransform.position = new Vector2(myTransform.position.x - TimeManager.deltaTime * flySpeed, enemyPositionY + Mathf.PingPong (flySpeed / 2.0f * mouvement, 0.5f));
 
-				mouvement += Time.unscaledDeltaTime;
+				mouvement += TimeManager.deltaTime;
 			}
 			// On donne une vitesse horizontale
 			else
-				myTransform.Translate (Vector3.left * Time.unscaledDeltaTime * flySpeed);
+				myTransform.Translate (Vector3.left * TimeManager.deltaTime * flySpeed);
 		}
 	}
 
