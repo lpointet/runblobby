@@ -46,7 +46,7 @@ public class EnemySoundEffect : MonoBehaviour {
 		PlaySound (jumpSfx, jumpVolume);
 	}
 
-	private void DeathSound() {
+	public void DeathSound() {
 		PlaySound (deathSfx, deathVolume);
 	}
 

@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 408830}
   - 198: {fileID: 19873078}
   - 199: {fileID: 19964948}
-  - 114: {fileID: 11437352}
+  - 114: {fileID: 11480660}
   m_Layer: 0
   m_Name: ImpactEffet
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11437352
+--- !u!114 &11480660
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -38,7 +38,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 182508}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee1bf7c2a728cc458336c24236c74ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 75ffbc51b643e65449243ab8cfc2e56b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!198 &19873078
@@ -88,7 +88,7 @@ ParticleSystem:
   randomSeed: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   moveWithTransform: 1
   scalingMode: 2
   InitialModule:
@@ -1554,6 +1554,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: InitialModule.startRotation.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

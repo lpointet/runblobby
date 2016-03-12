@@ -177,6 +177,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75641ae1c5b89254b981f97d0227a61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupSound: {fileID: 8300000, guid: 4571e2861ecbd92499442664af09639c, type: 3}
+  pickupVolume: 1
+  actifSound: {fileID: 0}
+  actifVolume: 0
+  despawnSound: {fileID: 0}
+  despawnVolume: 0
   lifeTime: 10
   weight: 10
 --- !u!212 &21203956
@@ -237,6 +243,14 @@ Prefab:
       propertyPath: m_SortingOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: pickupVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: pickupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 4571e2861ecbd92499442664af09639c, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 135226}

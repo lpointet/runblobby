@@ -43,7 +43,7 @@ public class LastWishPickup : Pickup {
         player = LevelManager.GetPlayer();
 		playerTransform = player.transform;
 
-		angelStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition); // Voir dans LevelManager pour la position par défaut
+		angelStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition) - 2; // Voir dans LevelManager pour la position par défaut
 	}
 
 	public void Launch() {
@@ -98,14 +98,8 @@ public class LastWishPickup : Pickup {
     protected override void OnPick() {
 		base.OnPick();
 
-        if( player.HasLastWish() ) {
-            // Un last wish a déjà été récup, on se casse de là
-			Disable();
-			despawnTime = 0;
-        }
-        else {
-            player.SetLastWish( this );
-        }
+        if( !player.HasLastWish() )
+			player.SetLastWish( this );
     }
 
 	public void Cancel() {
@@ -129,7 +123,7 @@ public class LastWishPickup : Pickup {
 		}
 	}
 	
-	private void Effect() {Debug.Log(TimeManager.time);
+	private void Effect() {
         effectOnGoing = true;
 
 		timeToLive += despawnTime; // Car on compte le despawnTime dans le temps complet, à cause de l'animation particulière de ce pickup
@@ -139,7 +133,7 @@ public class LastWishPickup : Pickup {
 		playerTransform.position = LevelManager.levelManager.currentCheckPoint.transform.position;
 
 		// Effet visuel au moment d'activer l'objet
-		myTransform.position = new Vector2 (myTransform.position.x - Mathf.Abs (LevelManager.levelManager.cameraStartPosition), playerTransform.position.y);
+		myTransform.position = new Vector2 (angelStartPosition, playerTransform.position.y);
 		myTransform.parent = LevelManager.levelManager.transform; // Pour permettre à l'objet de suivre le joueur
 
 		myAnim.SetBool("picked", false);
@@ -163,7 +157,7 @@ public class LastWishPickup : Pickup {
 		myTransform.position = playerTransform.position + Vector3.up * 0.5f;
 	}
 
-	protected override void DespawnEffect() {Debug.Log(TimeManager.time);
+	protected override void DespawnEffect() {
 		// On s'assure de ne pas déclencher le Despawn d'un pickup qu'on vient de ramasser en plus de celui qu'on a déjà
 		if (player.GetLastWish () != this)
 			return;
@@ -180,7 +174,7 @@ public class LastWishPickup : Pickup {
 
 		// On réattribue le pickup au joueur
 		myTransform.parent = playerTransform;
-		myTransform.position = playerTransform.position + Vector3.up * 4 / 32f; // Léger décalage de 4 pixels
+		myTransform.position = playerTransform.position + Vector3.up * 22 / 32f; // Léger décalage de 22 pixels
 
 		lerpTimeEnding = 0f;
 		deathPlayerPosition = playerTransform.position.y;

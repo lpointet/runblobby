@@ -175,8 +175,8 @@ public class PlayerController : Character {
             return;
 
 		// Rapprocher le joueur douuuucement si on est pas en x = 0
-		if (myTransform.position.x < 0)
-			myTransform.Translate (Vector3.right * 0.005f);
+		if (Mathf.Abs(myTransform.position.x - 0) > 0.05f)
+			myTransform.Translate (Mathf.Sign(myTransform.position.x) * Vector3.left * 0.005f);
 		
 		// Ajustement du saut et gravité en fonction de la vitesse
 		if (!IsFlying() && speedBeforeFly == speedInFly) {

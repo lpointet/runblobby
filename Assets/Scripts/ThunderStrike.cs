@@ -32,7 +32,7 @@ public class ThunderStrike : MonoBehaviour {
 
 	void Update () {
 		// Distance d'apparition en fonction de la vitesse du joueur
-		distanceFromPlayer = LevelManager.GetPlayer ().GetMoveSpeed () * 2f;
+		distanceFromPlayer = 7 * LevelManager.GetPlayer ().GetMoveSpeed () / LevelManager.GetPlayer ().GetInitialMoveSpeed();
 
 		// On déclenche la foudre dès qu'il apparait dans le champ de vision
 		if (!thunderAppeared && transform.position.x <= playerTransform.position.x + distanceFromPlayer) {

@@ -1006,8 +1006,8 @@ MonoBehaviour:
     storyData:
     - scoreRecord: 0
       distanceRecord: 150
-      distanceMax: 500
-      isBossDead: 1
+      distanceMax: 200
+      isBossDead: 0
     - scoreRecord: 0
       distanceRecord: 0
       distanceMax: 800
@@ -3064,7 +3064,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonYesClick: {fileID: 8300000, guid: cab630b4a6d4c1c48a20556ed6c67833, type: 3}
-  buttonNoClick: {fileID: 8300000, guid: e5b2801261fd1414c9e1675657f586c1, type: 3}
+  buttonNoClick: {fileID: 8300000, guid: 23f6dab31ba1b7847b268dc58bae0189, type: 3}
   changeLevel: {fileID: 8300000, guid: df46e1b19aa45b940ae711c7d0b622de, type: 3}
 --- !u!1 &905197351
 GameObject:

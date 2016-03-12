@@ -112,11 +112,13 @@ public static class _StaticFunction {
 		GameData.gameData.playerData.level = LevelFromExp (GameData.gameData.playerData.experience);
 
 		// Sauvegardes spécifiques au level
-		LevelData levelCourant = GameData.gameData.playerData.levelData[LevelManager.levelManager.GetCurrentLevel() - 1]; // Correction de l'indice du level
-		int difficulty = LevelManager.levelManager.GetCurrentDifficulty ();
+		if (LevelManager.levelManager != null) {
+			LevelData levelCourant = GameData.gameData.playerData.levelData [LevelManager.levelManager.GetCurrentLevel () - 1]; // Correction de l'indice du level
+			int difficulty = LevelManager.levelManager.GetCurrentDifficulty ();
 
-		if (LevelManager.levelManager.IsStory()) {
-			levelCourant.storyData [difficulty].distanceRecord = Mathf.Max(levelCourant.storyData [difficulty].distanceRecord, LevelManager.levelManager.GetDistanceTraveled());
+			if (LevelManager.levelManager.IsStory ()) {
+				levelCourant.storyData [difficulty].distanceRecord = Mathf.Max (levelCourant.storyData [difficulty].distanceRecord, LevelManager.levelManager.GetDistanceTraveled ());
+			}
 		}
 	}
 

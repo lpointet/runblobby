@@ -8,6 +8,7 @@ public class ListManager : MonoBehaviour {
 	public CoinPickup[] coins;
 	public Pickup[] powerups;
 	public Sprite[] cloudBlock;
+	public Sprite[] bave;
 
 	void Awake() {
 		if (current == null) {

@@ -177,6 +177,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d7f8495432620c4fb1d2ad28c86da17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupSound: {fileID: 8300000, guid: b795369af3874364f97de6d497534ed1, type: 3}
+  pickupVolume: 0.4
+  actifSound: {fileID: 8300000, guid: 656f9ccc970f3044fa2081b1cb8f427f, type: 3}
+  actifVolume: 0.4
+  despawnSound: {fileID: 8300000, guid: 0180a7e236f2ef24e9f124a34ebb29d4, type: 3}
+  despawnVolume: 0.8
+  despawnSoundDelay: 3
   lifeTime: 10
   weight: 20
   soundActif: {fileID: 8300000, guid: 656f9ccc970f3044fa2081b1cb8f427f, type: 3}
@@ -244,6 +251,34 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: actifSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 656f9ccc970f3044fa2081b1cb8f427f, type: 3}
+    - target: {fileID: 0}
+      propertyPath: despawnSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 0180a7e236f2ef24e9f124a34ebb29d4, type: 3}
+    - target: {fileID: 0}
+      propertyPath: pickupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: b795369af3874364f97de6d497534ed1, type: 3}
+    - target: {fileID: 0}
+      propertyPath: actifVolume
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: pickupVolume
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: despawnVolume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: despawnSoundDelay
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

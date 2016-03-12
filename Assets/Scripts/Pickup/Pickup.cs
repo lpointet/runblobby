@@ -10,8 +10,18 @@ public class Pickup : MonoBehaviour {
 
 	protected SpriteRenderer myRender;
 	protected Animator myAnim;
+
+	// Aurait pu être dans une classe à part...
+	[Header("Sound")]
+	public AudioClip pickupSound;
+	public float pickupVolume;
+	public AudioClip actifSound;
+	public float actifVolume;
+	public AudioClip despawnSound;
+	public float despawnVolume;
 	protected AudioSource soundSource;
 
+	[Header("Autre")]
 	public float lifeTime = 0;
 	protected float timeToLive;				// Temps en secondes qu'il reste avant que le bonus ne fasse plus effet
 	protected float despawnTime = 0; 		// Temps pour l'animation de despawn - Pas modifiable dans l'éditeur, dans Awake de la classe fille
@@ -86,12 +96,18 @@ public class Pickup : MonoBehaviour {
 		// Que faut-il faire lorsque cet objet a été ramassé ?
 
 		// On contrôle que le joueur n'a pas déjà un pickup du même type, auquel cas on augmente la durée de vie du pickup en cours
-		Pickup existingPickup = LevelManager.GetPlayer ().HasTypePickup (this.GetType ());
-		if (existingPickup != null) {
-			if (!LevelManager.GetPlayer().HasLastWish()) // Si le pickup concerne un lastWish, on ne change pas la durée
-				existingPickup.timeToLive += lifeTime;
-			Disable();
-			despawnTime = 0;
+		// Si c'est une pièce, on ne rentre pas dans le processus
+		if (this.GetType () != typeof(CoinPickup)) {
+			Pickup existingPickup = LevelManager.GetPlayer ().HasTypePickup (this.GetType ());
+
+			if (existingPickup != null) {
+				if (!LevelManager.GetPlayer ().HasLastWish ()) // Si le pickup concerne un lastWish, on ne change pas la durée
+					existingPickup.timeToLive += lifeTime;
+				Disable ();
+				despawnTime = 0;
+
+				return;
+			}
 		}
 
 		if( parentAttach ) {
@@ -141,13 +157,29 @@ public class Pickup : MonoBehaviour {
     }
 
 	protected virtual void PickupSound() {
-        if (soundSource)
-			soundSource.Play();
+		if (soundSource != null && pickupSound != null) {
+			soundSource.volume = pickupVolume;
+			soundSource.PlayOneShot (pickupSound);
+			// Son "actif" dès que le pickup a fini de se dérouler
+			Invoke ("ActifSound", pickupSound.length * Time.timeScale);
+		} else
+			ActifSound ();
     }
 
+	protected virtual void ActifSound() {
+		if (soundSource != null && actifSound != null) {
+			soundSource.clip = actifSound;
+			soundSource.loop = true;
+			soundSource.volume = actifVolume;
+			soundSource.Play ();
+		}
+	}
+
 	protected virtual void DespawnSound() {
-		if (soundSource)
-			StartCoroutine(_StaticFunction.AudioFadeOut(soundSource, 0, despawnTime));
+		if (soundSource != null && despawnSound != null) {
+			soundSource.volume = despawnVolume;
+			soundSource.PlayOneShot (despawnSound);
+		}
 	}
 
 	public void Disable() {

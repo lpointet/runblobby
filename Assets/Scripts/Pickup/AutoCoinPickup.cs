@@ -22,9 +22,6 @@ public class AutoCoinPickup : Pickup {
 	}
 
 	protected override void PickEffect() {
-		volumeMax = soundSource.volume;
-		StartCoroutine(_StaticFunction.AudioFadeIn(soundSource, volumeMax, weakTime));
-
 		base.PickEffect ();
 
 		if (_StaticFunction.ExistsAndHasParameter ("picked", backAnim))

@@ -115,10 +115,6 @@ public class FlyPickup : Pickup {
 		base.DespawnEffect();
 	}
 
-	protected override void DespawnSound() {
-		// Rien.
-	}
-
 	// L'oiseau s'envole
 	private IEnumerator TakeOff(Transform flyTransform) {
 		soundSource.Stop();

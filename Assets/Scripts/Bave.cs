@@ -3,17 +3,24 @@ using System.Collections;
 
 public class Bave : MonoBehaviour {
 
-	public Sprite[] variousBave;
+	private AudioSource myAudio;
+
+	private Vector2 finalScale;
+	private float lerpingTime;
 
 	private float backForce;
-	public float normalBackForce = 0.04f;
-	public float hardBackForce = 0.08f;
-	public float hellBackForce = 0.16f;
+	public float normalBackForce = 0.02f;
+	public float hardBackForce = 0.04f;
+	public float hellBackForce = 0.08f;
 
 	private int damageOnEnter;
 	public int normalDamage = 0;
 	public int hardDamage = 0;
 	public int hellDamage = 1;
+
+	void Awake () {
+		myAudio = GetComponent<AudioSource> ();
+	}
 
 	void Start() {
 		// On ajuste les effets selon la difficulté
@@ -39,9 +46,20 @@ public class Bave : MonoBehaviour {
 
 	void OnEnable() {
 		// On affiche un sprite aléatoire parmi la liste
-		GetComponent<SpriteRenderer> ().sprite = variousBave [Random.Range (0, variousBave.Length)];
+		GetComponent<SpriteRenderer> ().sprite = ListManager.current.bave [Random.Range (0,  ListManager.current.bave.Length)];
 
-		transform.localScale = new Vector2 (Random.Range (1.75f, 2.5f), Random.Range (1f, 1.5f)); // Pas toujours la même taille de flaque
+		finalScale = new Vector2 (Random.Range (1.75f, 2.5f), Random.Range (1f, 1.5f)); // Pas toujours la même taille de flaque
+		lerpingTime = 0;
+		transform.localScale = Vector2.one;
+
+		myAudio.Play ();
+	}
+
+	void Update() {
+		if (transform.localScale.x <= finalScale.x) {
+			lerpingTime += TimeManager.deltaTime / 0.5f;
+			transform.localScale = Vector2.Lerp (Vector2.one, finalScale, lerpingTime);
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D other) {

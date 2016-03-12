@@ -375,9 +375,9 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: a208b2b329d1e8e478c880f79091f18b, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 0.2
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   Priority: 10
@@ -483,6 +483,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01876c1b8ce6a834daa339a1c0a38592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupSound: {fileID: 0}
+  pickupVolume: 0
+  actifSound: {fileID: 8300000, guid: a208b2b329d1e8e478c880f79091f18b, type: 3}
+  actifVolume: 0.2
+  despawnSound: {fileID: 0}
+  despawnVolume: 0
   lifeTime: 10
   weight: 5
   radiusMagnet: 10
@@ -504,6 +510,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89fb828f72aefb54683058dc997a53ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupSound: {fileID: 0}
+  pickupVolume: 0
+  actifSound: {fileID: 0}
+  actifVolume: 0
+  despawnSound: {fileID: 0}
+  despawnVolume: 0
   lifeTime: 1000
   weight: 5
   spawnTime: 0.25
@@ -597,7 +609,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Volume
-      value: .25
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: panLevelCustomCurve.m_RotationOrder
@@ -607,6 +619,18 @@ Prefab:
       propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: Loop
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: actifVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: actifSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a208b2b329d1e8e478c880f79091f18b, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 159458}

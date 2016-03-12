@@ -60,6 +60,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
   - {fileID: 21300002, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
   - {fileID: 21300004, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
+  bave:
+  - {fileID: 21300000, guid: 90ab8236c5bf05442849bda82d74a20e, type: 3}
+  - {fileID: 21300002, guid: 90ab8236c5bf05442849bda82d74a20e, type: 3}
+  - {fileID: 21300004, guid: 90ab8236c5bf05442849bda82d74a20e, type: 3}
+  - {fileID: 21300006, guid: 90ab8236c5bf05442849bda82d74a20e, type: 3}
 --- !u!114 &11463614
 MonoBehaviour:
   m_ObjectHideFlags: 1

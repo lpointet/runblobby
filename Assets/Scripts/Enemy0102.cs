@@ -11,7 +11,8 @@ public class Enemy0102 : Enemy {
 
 	[Header("Galia Special")]
 	public LayerMask playerMask;
-	public ParticleSystem smokeParticle;
+	public ParticleUnscaled smokeParticle;
+	public ParticleUnscaled featherParticle;
 	public float dodgeSkill;
 	public int pourcentOeuf = 10;
 	private int currentOeuf = 100;
@@ -79,7 +80,7 @@ public class Enemy0102 : Enemy {
 
 	// Esquive des tirs du joueur
 	private void DodgeBullet() {
-		detectedBullet = Physics2D.OverlapArea (new Vector2 (myTransform.position.x - 1, myTransform.position.y + 0.4f), new Vector2 (myTransform.position.x - 3, myTransform.position.y - 1), playerMask);
+		detectedBullet = Physics2D.OverlapArea (new Vector2 (myTransform.position.x - 1, myTransform.position.y + 0.4f), new Vector2 (myTransform.position.x - 2, myTransform.position.y - 1), playerMask);
 
 		// Si une balle entre dans la zone derrière la poule
 		if (detectedBullet != null && detectedBullet.CompareTag("Bullet")) {
@@ -91,7 +92,7 @@ public class Enemy0102 : Enemy {
 				// On compare à la probabilité d'esquiver
 				if (Random.Range(0f, 1f) < dodgeSkill) {
 					// On ajuste la puissance du saut en fonction du lieu d'impact de la balle
-					float powerJump = Mathf.Clamp(detectedBullet.transform.position.y, 1, 3);
+					float powerJump = Mathf.Clamp(detectedBullet.transform.position.y, 1.3f, 3);
 
 					// On fait sauter la poule
 					myRb.velocity = new Vector2 (myRb.velocity.x, powerJump * GetJumpHeight ());
@@ -140,12 +141,17 @@ public class Enemy0102 : Enemy {
 	public override void Hurt(int damage) {
 		base.Hurt (damage);
 
+		// Impact de balles
+		if (!IsDead()) {
+			featherParticle.Play ();
+		}
+
 		// Calculer le pourcentage de vie restant
 		int pourcentVie = Mathf.FloorToInt(100 * GetHealthPoint() / (float)GetHealthPointMax());
 		// Si la différence vaut plus que la valeur oeufale courante (selon difficulté) et que le poulet n'est pas mort, on lâche un oeuf
 		if (pourcentVie <= currentOeuf && !IsDead()) {
 			EggDrop ();
-			myAudio.HitSound ();
+
 			// On fait sauter la poule
 			myRb.AddForce(Vector2.up * 250);
 			// On ajuste la valeur du prochain oeuf en fonction

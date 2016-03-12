@@ -13,20 +13,29 @@ public class BulletManager : MonoBehaviour {
 
 	private Rigidbody2D myRb;
 	private Weapon myWeapon;
+	private SpriteRenderer mySprite;
+
+	public ParticleUnscaled myParticle;
+	private AudioSource myAudio;
+	public AudioClip bulletImpactSound;
+	private float initSoundVolume;
+	public float impactSoundVolume = 0.5f;
 
 	private Transform myTransform;
-	public Transform hitParticle;
 
 	public LayerMask layerCollision;
-	public float despawnTimer;
 	private LayerMask layerEnemy;
 	private LayerMask layerPlayer;
+	private bool alreadyHit;
 
 	void Awake() {
 		myRb = GetComponent<Rigidbody2D> ();
 		myTransform = transform;
+		myAudio = GetComponent<AudioSource> ();
+		mySprite = GetComponent<SpriteRenderer> ();
 
 		myWeapon = FindObjectOfType<Weapon> ();
+		initSoundVolume = myAudio.volume;
 	}
 
 	void Start() {
@@ -41,12 +50,14 @@ public class BulletManager : MonoBehaviour {
 		startOfScreen = Camera.main.transform.position.x - camEdge;// Le début de l'écran
 
 		myRb.velocity = myTransform.right * moveSpeed;
+		mySprite.enabled = true;
 
 		if( direction == bulletDirection.left ) {
-			myRb.velocity*= -1;
+			myRb.velocity *= -1;
 		}
 
-		StartCoroutine(DespawnAfterDelay(this.gameObject));
+		alreadyHit = false;
+		myAudio.volume = initSoundVolume;
 	}
 	
 	void Update () {
@@ -55,19 +66,23 @@ public class BulletManager : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
+		if (alreadyHit)
+			return;
+		
 		if ((1 << other.gameObject.layer & layerCollision) != 0) {
-			Despawn();
+			alreadyHit = true;
+
+			// Son de l'impact
+			myAudio.volume = impactSoundVolume;
+			myAudio.PlayOneShot(bulletImpactSound);
+			mySprite.enabled = false; // On cache la balle
+			Invoke ("Despawn", 0.3f); // Durée des particles
 
 			// Effet de particule à l'impact
-			GameObject particle = PoolingManager.current.Spawn("BulletImpact");
-
-			if (particle != null) {
-				particle.transform.position = myTransform.position;
-				particle.transform.rotation = Quaternion.Euler(new Vector3(360 - myTransform.rotation.eulerAngles.z, 90, 0));
-				particle.GetComponent<ParticleSystemRenderer>().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.GetPlayer().GetHealthPoint(), 0, LevelManager.GetPlayer().GetHealthPointMax (), 210, 0));
-				// TODO Améliorer la façon de changer la couleur des particules
-				particle.gameObject.SetActive (true);
-			}
+			myParticle.transform.position = myTransform.position;
+			myParticle.transform.rotation = Quaternion.Euler(new Vector3(360 - myTransform.rotation.eulerAngles.z, 90, 0));
+			myParticle.GetComponent<ParticleSystemRenderer>().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.GetPlayer().GetHealthPoint(), 0, LevelManager.GetPlayer().GetHealthPointMax (), 210, 0));		
+			myParticle.Play();
 
 			// Si on rencontre un ennemi
 			if(other.gameObject.layer == layerEnemy) {
@@ -84,11 +99,5 @@ public class BulletManager : MonoBehaviour {
 
 	private void Despawn() {
 		gameObject.SetActive (false);
-	}
-		
-	private IEnumerator DespawnAfterDelay(GameObject obj)
-	{
-		yield return new WaitForSeconds (despawnTimer * Time.timeScale);
-		obj.SetActive(false);
 	}
 }

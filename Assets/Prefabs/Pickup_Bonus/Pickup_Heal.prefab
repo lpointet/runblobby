@@ -224,6 +224,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62a67e42786b8d47b429f2c14c2022d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupSound: {fileID: 8300000, guid: 2f937aadeb2b61a4e9403089289b6f7b, type: 3}
+  pickupVolume: 0.5
+  actifSound: {fileID: 0}
+  actifVolume: 0
+  despawnSound: {fileID: 0}
+  despawnVolume: 0
   lifeTime: 0
   weight: 20
   heal: 1
@@ -313,6 +319,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: pickupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f937aadeb2b61a4e9403089289b6f7b, type: 3}
+    - target: {fileID: 0}
+      propertyPath: pickupVolume
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

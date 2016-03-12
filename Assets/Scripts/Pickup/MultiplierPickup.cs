@@ -13,6 +13,7 @@ public class MultiplierPickup : Pickup {
 		base.Awake();
 
 		parentAttach = true;
+		despawnTime = despawnSound.length;
 	}
 
 	protected override void OnPick() {

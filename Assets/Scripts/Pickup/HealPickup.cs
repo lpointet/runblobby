@@ -31,8 +31,4 @@ public class HealPickup : Pickup {
 		myAnim.transform.localPosition = Vector2.zero;
 		backAnim.transform.localPosition = Vector2.zero;
 	}
-
-	protected override void DespawnSound() {
-		// On ne fait rien.
-	}
 }
