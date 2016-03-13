@@ -12,13 +12,15 @@ public class PlayerController : Character {
 	/* End of Stats */
 	
 	// GUI
+	private float previousHP; // Permet de faire un changement dégressif des HP
+	private float delayLerpHP = 1f;
+	private float timeLerpHP;
 	private float lerpingHP;
 	
 	private Rigidbody2D myRb;
 	private Animator myAnim;
 	private PlayerSoundEffect myAudio;
 	private Transform weapon;
-	private SpriteRenderer mySprite;
 	public GameObject parachute;
 	
 	private bool grounded;
@@ -107,7 +109,10 @@ public class PlayerController : Character {
     }
 
 	public bool IsGrounded() {
-		return grounded;
+		if (Mathf.Abs (myRb.velocity.y) > 0.05f)
+			return false;
+		else
+			return grounded;
 	}
 
 	public bool IsFlying() {
@@ -129,7 +134,6 @@ public class PlayerController : Character {
 		myRb = GetComponent<Rigidbody2D> ();
 		myAnim = GetComponent<Animator> ();
 		myAudio = GetComponent<PlayerSoundEffect> ();
-		mySprite = GetComponent<SpriteRenderer> ();
 
 		SetWeapon( myTransform.FindChild( "Weapon" ) );
 //        initialGravityScale = myRb.gravityScale;
@@ -142,6 +146,8 @@ public class PlayerController : Character {
 
 		SetMoveSpeed( GetInitialMoveSpeed() );
 		lerpingHP = GetHealthPoint ();
+		mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
+
 		isFlying = false;
         wasFlying = false;
 		SetZeroGravFlying (false); // TODO doit provenir de l'arbre des talents (v2)
@@ -258,10 +264,16 @@ public class PlayerController : Character {
 	
 	void OnGUI() {
 		// Rouge = 230 ou -140 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
-		lerpingHP = Mathf.Lerp (lerpingHP, GetHealthPoint (), TimeManager.deltaTime * 3);
-        // sharedMaterial pour que les boules changent de couleur aussi
-        if (!IsDead())
-			mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 230, 0));
+		if (lerpingHP != GetHealthPoint ()) {
+			timeLerpHP += TimeManager.deltaTime / delayLerpHP;
+			lerpingHP = Mathf.Lerp (previousHP, GetHealthPoint (), timeLerpHP);
+			// sharedMaterial pour que les boules changent de couleur aussi
+			if (!IsDead ())
+				mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 230, 0));
+
+		} else {
+			previousHP = GetHealthPoint ();
+		}
 	}
 	
 	public void Jump() {
@@ -448,4 +460,44 @@ public class PlayerController : Character {
             coins[i].transform.Translate( Mathf.Min( 0.5f, 1 / direction.magnitude ) * -direction.normalized );
         }
     }
+
+	public override void Hurt(int damage) {
+		// Si les "anciens" HP sont égaux aux "nouveaux" HP, on met à jour, sinon on garde l'encore plus vieille valeur
+		if (previousHP == GetHealthPoint ())
+			previousHP = GetHealthPoint ();
+
+		timeLerpHP = 0; // On prépare la nouvelle variation de couleur
+
+		base.Hurt (damage);
+
+		if (!IsInvincible() && !IsDead ())
+			myAudio.HurtSound ();
+	}
+
+	protected override IEnumerator HurtEffect() {
+		float tempAlpha = mySprite.sharedMaterial.GetFloat ("_Alpha");
+		float flashDelay = 0.1f;
+		int flashNumber = 0;
+		int flashNumberMax = 4;
+		bool increment = false;
+
+		while (flashNumber < flashNumberMax) {
+			if (increment)
+				tempAlpha += TimeManager.deltaTime / flashDelay;
+			else 
+				tempAlpha -= TimeManager.deltaTime / flashDelay;
+
+			if (tempAlpha > 1) {
+				increment = false;
+				flashNumber++;
+			}
+			else if (tempAlpha < 0.25f)
+				increment = true;
+
+			mySprite.sharedMaterial.SetFloat ("_Alpha", tempAlpha);
+			yield return null;
+		}
+		// Retour à la "normale"
+		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
+	}
 }

@@ -24,8 +24,10 @@ public class InviciblePickup : Pickup {
 	}
 
 	protected override void WeakEffect() {
-		alphaSprite = Mathf.Abs (Mathf.Sin (coefClignottant * _StaticFunction.MathPower(clignottant, 4)));
-		myRender.color = new Color (myRender.color.r, myRender.color.g, myRender.color.b, alphaSprite);
+		Color tempColor = myRender.color;
+		tempColor.a = Mathf.Abs (Mathf.Sin (coefClignottant * _StaticFunction.MathPower(clignottant, 4)));
+		myRender.color = tempColor;
+
 		clignottant += TimeManager.deltaTime;
 	}
 	
@@ -33,6 +35,5 @@ public class InviciblePickup : Pickup {
 		base.DespawnEffect();
 
 		myRender.color = new Color (myRender.color.r, myRender.color.g, myRender.color.b, 1f);
-		// TODO trouver pourquoi le pickup réapparait à la fin... (et pas que pour celui-ci)
 	}
 }

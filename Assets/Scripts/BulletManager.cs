@@ -76,7 +76,7 @@ public class BulletManager : MonoBehaviour {
 			myAudio.volume = impactSoundVolume;
 			myAudio.PlayOneShot(bulletImpactSound);
 			mySprite.enabled = false; // On cache la balle
-			Invoke ("Despawn", 0.3f); // Durée des particles
+			Invoke ("Despawn", 0.3f * Time.timeScale); // Durée des particles
 
 			// Effet de particule à l'impact
 			myParticle.transform.position = myTransform.position;

@@ -4,10 +4,11 @@
         _HueShift("HueShift", Float ) = 0
         _Sat("Saturation", Float) = 1
         _Val("Value", Float) = 1
+        _Alpha("Alpha", Range(0,1)) = 1
     }
     SubShader {
  
-        Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType" = "Transparent" }
+        Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
         ZWrite Off
         Blend SrcAlpha OneMinusSrcAlpha
         Cull Off
@@ -23,8 +24,8 @@
  
             float3 shift_col(float3 RGB, float3 shift)
             {
-            float3 RESULT = float3(RGB);
-            float VSU = shift.z*shift.y*cos(shift.x*3.14159265/180);
+	            float3 RESULT = float3(RGB);
+	            float VSU = shift.z*shift.y*cos(shift.x*3.14159265/180);
                 float VSW = shift.z*shift.y*sin(shift.x*3.14159265/180);
                
                 RESULT.x = (.299*shift.z+.701*VSU+.168*VSW)*RGB.x
@@ -39,7 +40,7 @@
                         + (.587*shift.z-.588*VSU-1.05*VSW)*RGB.y
                         + (.114*shift.z+.886*VSU-.203*VSW)*RGB.z;
                
-            return (RESULT);
+           		return (RESULT);
             }
  
             struct v2f {
@@ -61,16 +62,17 @@
             float _HueShift;
             float _Sat;
             float _Val;
+            float _Alpha;
  
             half4 frag(v2f i) : COLOR
             {
                 half4 col = tex2D(_MainTex, i.uv);
                 float3 shift = float3(_HueShift, _Sat, _Val);
                
-                return half4( half3(shift_col(col, shift)), col.a);
+                return half4( half3(shift_col(col, shift)), col.a * _Alpha);
             }
             ENDCG
         }
     }
-    Fallback "Diffuse"
+    Fallback "Particles/Alpha Blended/Diffuse"
 }

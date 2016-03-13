@@ -16,6 +16,10 @@ public class PlayerSoundEffect : MonoBehaviour {
 	public float splashVolume;
 	private bool wasGrounded = true;
 
+	public AudioClip hurtSfx;
+	public float hurtVolume;
+	private bool hurted = false;
+
 	public AudioClip deathSfx;
 	public float deathVolume;
 
@@ -65,6 +69,12 @@ public class PlayerSoundEffect : MonoBehaviour {
 		PlaySound (splashSfx, splashVolume);
 	}
 
+	public void HurtSound() {
+		PlaySound (hurtSfx, hurtVolume);
+		hurted = true;
+		Invoke ("EndHurtingSound", hurtSfx.length * Time.timeScale);
+	}
+
 	public void DeathSound() {
 		PlaySound (deathSfx, deathVolume);
 	}
@@ -79,8 +89,15 @@ public class PlayerSoundEffect : MonoBehaviour {
 
 	private void PlaySound(AudioClip sound, float volume) {
 		//soundSource.Stop ();
+		if (hurted)
+			return;
+		
 		soundSource.clip = sound;
 		soundSource.volume = volume;
 		soundSource.Play ();
+	}
+
+	private void EndHurtingSound () {
+		hurted = false;
 	}
 }

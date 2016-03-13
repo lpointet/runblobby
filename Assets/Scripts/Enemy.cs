@@ -15,7 +15,6 @@ public class Enemy : Character {
 
 	protected Rigidbody2D myRb;
 	protected EnemySoundEffect myAudio;
-	protected SpriteRenderer myRend;
 
 	public float[] popPosition = new float[2];
 	public float[] startPosition = new float[2];
@@ -100,9 +99,8 @@ public class Enemy : Character {
 
 		myRb = GetComponent<Rigidbody2D> ();
 		myAudio = GetComponent<EnemySoundEffect> ();
-		myRend = GetComponent<SpriteRenderer> ();
 
-		myRend.enabled = false;
+		mySprite.enabled = false;
 	}
 
 	protected override void Init() { // TODO pourquoi c'est appelé deux fois ? Start (voir Character.cs) et OnEnable ?
@@ -115,7 +113,7 @@ public class Enemy : Character {
 		myTransform.position = GetPopPosition ();
 		myTransform.rotation = Quaternion.identity;
 		popEnemy = true;
-		myRend.enabled = true;
+		mySprite.enabled = true;
 	}
 
 	protected override void Update () {

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Character : MonoBehaviour {
 	
@@ -14,6 +15,7 @@ public class Character : MonoBehaviour {
     /* End of Stats */
 
     protected Transform myTransform;
+	protected SpriteRenderer mySprite;
     private bool invincible = false;
 
     /**
@@ -70,10 +72,15 @@ public class Character : MonoBehaviour {
 	public void SetMaxHeight( float value ) {
 		maxHeight = value;
 	}
+
+	public bool IsInvincible () {
+		return invincible;
+	}
     /* End of Getters & Setters */
 
     protected virtual void Awake() {
         myTransform = transform;
+		mySprite = GetComponent<SpriteRenderer> ();
     }
 
     void Start() {
@@ -93,7 +100,7 @@ public class Character : MonoBehaviour {
 	}
 	
 	public virtual void Hurt(int damage) {
-		if( invincible ) {
+		if( IsInvincible () || IsDead() ) {
 			return;
 		}
 		
@@ -102,6 +109,10 @@ public class Character : MonoBehaviour {
 		if (GetHealthPoint() <= 0 && !IsDead()) {
 			LevelManager.Kill( this );
 		}
+
+		// Effet visuel de blessure
+		if (!IsDead ())
+			StartCoroutine (HurtEffect ());
 	}
 	
 	public void FullHealth() {
@@ -112,7 +123,7 @@ public class Character : MonoBehaviour {
 		invincible = true;
 		
 		CancelInvoke( "SetDamageable" );
-		Invoke( "SetDamageable", time );
+		Invoke( "SetDamageable", time * Time.timeScale );
 	}
 	
 	public void SetDamageable() {
@@ -123,5 +134,33 @@ public class Character : MonoBehaviour {
 		if( transform.position.y >= GetMaxHeight() && !IsDead() ) {
 			transform.position = new Vector3( transform.position.x, GetMaxHeight(), transform.position.z );
 		}
+	}
+
+	protected virtual IEnumerator HurtEffect() {
+		Color tempColor = mySprite.color;
+		float flashDelay = 0.1f;
+		int flashNumber = 0;
+		int flashNumberMax = 4;
+		bool increment = false;
+
+		while (flashNumber < flashNumberMax) {
+			if (increment)
+				tempColor.a += TimeManager.deltaTime / flashDelay;
+			else 
+				tempColor.a -= TimeManager.deltaTime / flashDelay;
+
+			if (tempColor.a > 1) {
+				increment = false;
+				flashNumber++;
+			}
+			else if (tempColor.a < 0.25f)
+				increment = true;
+
+			mySprite.color = tempColor;
+			yield return null;
+		}
+		// Retour à la "normale"
+		tempColor.a = 1;
+		mySprite.color = tempColor;
 	}
 }

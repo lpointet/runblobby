@@ -182,7 +182,7 @@ MonoBehaviour:
   actifSound: {fileID: 8300000, guid: 68ce455bf4cafd44ea9cf4041b34325c, type: 3}
   actifVolume: 0.5
   despawnSound: {fileID: 8300000, guid: 30fa9a5f0c97482459472ef11554d818, type: 3}
-  despawnVolume: 0.5
+  despawnVolume: 0.6
   lifeTime: 10
   weight: 30
   multiplier: 2
