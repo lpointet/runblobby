@@ -14,7 +14,7 @@ public class OrderedPools {
 public class PoolingManager : MonoBehaviour {
 	
 	public static PoolingManager current;
-	public Transform pooledObjectParent; // TODO : corriger sa disparition quand on relance le level
+	public Transform pooledObjectParent; // Sert de "poubelle" pour toutes les instances invoquées et non encore utilisées
 
 	public List<PoolingScript> poolCollection;
 	//private Dictionary<string, List<PoolingScript>> indexedPools = new Dictionary<string, List<PoolingScript>>();
@@ -53,9 +53,6 @@ public class PoolingManager : MonoBehaviour {
 		}
 			
 		// On mélange une première fois les listes indexées
-//		foreach (KeyValuePair<string, List<PoolingScript>> entry in indexedPools) {
-//			ShuffleList (entry.Value, true);
-//		}
 		foreach (KeyValuePair<string, OrderedPools> entry in indexedPools) {
 			ShuffleList (entry.Value.pools, true);
 		}
@@ -70,24 +67,6 @@ public class PoolingManager : MonoBehaviour {
 		else
 			return null;
 	}
-	
-	// Retourne le nom de la PoolingScript si celle-ci correspond au type recherché
-	// TODO à améliorer vu que ça peut potentiellement rater sa pool pendant un bon moment...
-//	public string RandomNameOfPool(string subname, string index = null) {
-//		List<PoolingScript> list;
-//		if( null == index || !indexedPools.TryGetValue( index, out list ) ) {
-//			// Si on n'a pas spécifié d'index ou qu'on a pas trouvé la liste correspondante, on prend dans toute la collection
-//			list = poolCollection;
-//		}
-//
-//		int random = Random.Range (0, list.Count);
-//
-//		if (list [random].poolName.ToLower ().Contains (subname.ToLower ())) {
-//			Debug.Log ("Nouveau block depuis : " + list [random].poolName);
-//			return list [random].poolName;
-//		}
-//		return "";
-//	}
 
 	// Retourne le nom de la PoolingScript si celle-ci correspond au type recherché
 	public string RandomPoolName(string subname, string index = null) {

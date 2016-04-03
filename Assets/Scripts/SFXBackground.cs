@@ -5,7 +5,6 @@ using System.Collections;
 public class SFXBackground : MonoBehaviour {
 
 	private AudioSource myAudio;
-	private PlayerController player;
 
 	private int randSound;
 	private float timeToNextSound = 0f;
@@ -36,7 +35,6 @@ public class SFXBackground : MonoBehaviour {
 	
 	void Awake () {
 		myAudio = GetComponent<AudioSource> ();
-		player = LevelManager.GetPlayer ();
 	}
 
 	void Start () {
@@ -46,10 +44,12 @@ public class SFXBackground : MonoBehaviour {
 	}
 
 	void Update () {
-		if (player.IsDead ())
+		if (LevelManager.GetPlayer().IsDead ()) {
 			myAudio.Stop ();
+			return;
+		}
 
-		if (!myAudio.isPlaying && !player.IsDead () && TimeManager.time > timeToNextSound) {
+		if (!myAudio.isPlaying && TimeManager.time > timeToNextSound) {
 
 			// Birds
 			if (TimeManager.time > timeToSing && birdBank.Length > 0) {

@@ -45,11 +45,9 @@ public class CloudBlock : MonoBehaviour {
 		if (transform.position.x > camRightLimit || TimeManager.paused)
             return;
         
-        // On ne met à jour que s'il y a un changement de la variable static
-		if (thisNuageActif != nuageActif)
-        {
-            ActiverNuage(nuageActif);
-        }
+        // On ne met à jour que s'il y a un changement de la variable static et que le nuage n'est pas déjà actif
+		if (nuageActif && !thisNuageActif)
+			ActiverNuage (true);
 
 		// On modifie la taille des nuages (visuel)
 		if (thisNuageActif) {

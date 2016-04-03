@@ -9,7 +9,7 @@ public class DestroyFinishedParticles : MonoBehaviour {
 	}
 
 	void Update () {
-		if (thisParticles.IsAlive()) // TODO bug dans la version 5.3.1, attente de la correction
+		if (thisParticles.IsAlive())
 			return;
 		gameObject.SetActive (false);
 	}

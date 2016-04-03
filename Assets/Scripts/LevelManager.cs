@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour {
 
 	public static LevelManager levelManager;
 	private Camera kamera;
-	public static PlayerController player;
+	private static PlayerController player;
 
 	private AudioSource sourceSound;
 	private float soundVolumeInit;
@@ -129,6 +129,14 @@ public class LevelManager : MonoBehaviour {
 		return localDistance;
 	}
 
+	public void ResetBonusDistance() {
+		distanceSinceLastBonus = 0;
+	}
+
+	public float GetDistanceSinceLastBonus() {
+		return distanceSinceLastBonus;
+	}
+
 	public float GetHeightStartBlock() {
 		return heightStartBlock;
 	}
@@ -152,7 +160,6 @@ public class LevelManager : MonoBehaviour {
 
 	void Start () {
 		// Reset divers
-		//Time.timeScale = 1;
 		ScoreManager.Reset ();
 
 		distanceTraveled = 0;
@@ -161,15 +168,21 @@ public class LevelManager : MonoBehaviour {
 		blockPhase = true;
         SetEnemyDistanceToKill( 0 );
 
-		SetCurrentLevel (1); // TODO l'information doit venir du MainMenuManager
-		SetStoryMode (true); // TODO idem
-		SetCurrentDifficulty (0); // TODO idem
+		SetCurrentLevel (_GameData.currentLevel); // Information mise à jour par le UIManager > SampleLevel
+		SetStoryMode (_GameData.isStory);
+		SetCurrentDifficulty (_GameData.currentDifficulty);
 
 		// Ajustement de l'apparition du boss de fin (par rapport à la distance maximum du level)
 		listPhase [listPhase.Length - 1] = GameData.gameData.playerData.levelData[GetCurrentLevel ()].storyData[GetCurrentDifficulty ()].distanceMax;
 
 		moneyMat.SetColor("_BaseColor", BaseColor);
 		moneyMat.SetColor("_TargetColor", BaseColor);
+
+		// On commence le niveau dans une phase "block" et non une phase "ennemi", le joueur ne peut donc pas tirer
+		GetPlayer().SetFireAbility( false );
+
+		soundVolumeInit = sourceSound.volume;
+		PlayBackgroundMusic ();
 		// Fin reset divers
 
 		listeDifficulte = new string[5] {"difficulty_1", "difficulty_2", "difficulty_3", "difficulty_4", "difficulty_5"};
@@ -194,24 +207,17 @@ public class LevelManager : MonoBehaviour {
 		sizeFirstBlock = sizeLastBlock;
 		//layerCoins = LayerMask.NameToLayer ("Coins");
 
-        // On commence le niveau dans une phase "block" et non une phase "ennemi", le joueur ne peut donc pas tirer
-        player.SetFireAbility( false );
-
-		soundVolumeInit = sourceSound.volume;
-		PlayBackgroundMusic ();
-
 		StartLevel (); // TODO SUPPRIMER CETTE LIGNE + ACTIVER STARTLEVEL
 	}
 
 	void Update () {
 		// On ne commence pas avant le début... hé oué !
-		if (!IsLevelStarted ()) {
+		if (!IsLevelStarted ())
 			return;
-		}
 
 		// Empêcher que des choses se passent durant la pause
 		// En plus de baisser le volume si l'écran de fin arrive
-		if (TimeManager.paused || player.IsDead () || endLevel) {
+		if (TimeManager.paused || GetPlayer().IsDead () || endLevel) {
 			sourceSound.volume = 0.1f;
 			return;
 		}
@@ -224,7 +230,7 @@ public class LevelManager : MonoBehaviour {
 		sourceSound.volume = soundVolumeInit;
 	
 		// Distance parcourue depuis le dernier update
-		localDistance = player.GetMoveSpeed() * Time.smoothDeltaTime;
+		localDistance = GetPlayer().GetMoveSpeed() * Time.smoothDeltaTime;
 
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
@@ -242,7 +248,7 @@ public class LevelManager : MonoBehaviour {
                 enemySpawnLaunched = true;
 
 				// On fait voler le joueur si c'est le dernier ennemi
-				if (currentPhase == listPhase.Length - 1) { // TODO listPhase.Length - 1
+				if (currentPhase == listPhase.Length - 1) {
 					CleanPickup( GetPlayer().GetLastWish() );
 					// On créer un pickup de vol sur le joueur, en vol infini (1000s...)
 					GetPlayer ().SetZeroGravFlying (true);
@@ -254,13 +260,13 @@ public class LevelManager : MonoBehaviour {
 			
 			if(enemyEnCours != null) {
 				// Le joueur peut tirer
-				player.SetFireAbility( true );
+				GetPlayer().SetFireAbility( true );
 
                 // Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
                 SetEnemyDistanceToKill( GetEnemyDistanceToKill() - localDistance );
 
 				if( GetEnemyDistanceToKill() <= 0 ) {
-					LevelManager.Kill( player );
+					LevelManager.Kill( GetPlayer() );
 				}
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
@@ -273,7 +279,10 @@ public class LevelManager : MonoBehaviour {
 					premierBlock = false;
 
                     // Le joueur ne peut plus tirer
-                    player.SetFireAbility( false );
+					GetPlayer().SetFireAbility( false );
+
+					// On fait accélérer le joueur à chaque nouvelle phase bloc
+					GetPlayer().SetMoveSpeed(GetPlayer().GetMoveSpeed() * 1.15f);
 				}
 			}
 		}
@@ -283,7 +292,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
         // On actualise la distance parcourue si le joueur n'est pas mort, et que l'ennemi n'est pas là
-		if (!player.IsDead() && !IsEnemyToSpawn() && enemyEnCours == null) {
+		if (!GetPlayer().IsDead() && !IsEnemyToSpawn() && enemyEnCours == null) {
 			distanceTraveled += localDistance;
 			distanceSinceLastBonus += localDistance;
 		}
@@ -312,7 +321,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
         // Si le joueur n'est pas mort, on bouge le monde
-        if (!player.IsDead() || player.HasLastWish()) {
+        if (!GetPlayer().IsDead() || GetPlayer().HasLastWish()) {
 			MoveWorld ();
 		}
 	}
@@ -390,7 +399,9 @@ public class LevelManager : MonoBehaviour {
 
 			// On offre des points d'xp supplémentaires si c'est la première fois qu'il tue le boss
 			if (!GameData.gameData.playerData.levelData [GetCurrentLevel ()].storyData [GetCurrentDifficulty ()].isBossDead) {
-				ScoreManager.AddPoint (20 + 2 * GetCurrentLevel (), ScoreManager.Types.Experience); // TODO ajuster la fonction
+				ScoreManager.AddPoint (50 + 25 * GetCurrentLevel (), ScoreManager.Types.Experience); // TODO ajuster la fonction xp
+			} else { // Si on a déjà tué le boss
+				ScoreManager.AddPoint (10 * GetCurrentLevel (), ScoreManager.Types.Experience); // TODO ajuster la fonction xp
 			}
 
 			UIManager.uiManager.ToggleEndMenu (true);
@@ -407,14 +418,13 @@ public class LevelManager : MonoBehaviour {
 
 			if (lastWish == null || lastWish.IsLaunched ()) {
 				character.Die ();
-
 				character.OnKill ();
+
 			} else if (lastWish != null) {
 				lastWish.Launch ();
 			}
 		} else {
 			character.Die ();
-
 			character.OnKill ();
 		}
 	}
@@ -453,13 +463,5 @@ public class LevelManager : MonoBehaviour {
 			return;
 
 		sourceSound.Play ();
-	}
-
-	public void ResetBonusDistance() {
-		distanceSinceLastBonus = 0;
-	}
-
-	public float GetDistanceSinceLastBonus() {
-		return distanceSinceLastBonus;
 	}
 }

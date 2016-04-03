@@ -6,7 +6,7 @@ public class EnemyFlying : MonoBehaviour {
 	private bool enemyIsOnPlayerY = false;
 
 	private Transform myTransform;
-	private Transform player;
+	private Transform playerTransform;
 
 	public float flySpeed = 1f;
 	
@@ -21,7 +21,7 @@ public class EnemyFlying : MonoBehaviour {
 	bool isOverPrevious;
 
 	void Start () {
-		player = LevelManager.GetPlayer ().transform;
+		playerTransform = LevelManager.GetPlayer ().transform;
 		myTransform = transform;
 	}
 
@@ -64,7 +64,7 @@ public class EnemyFlying : MonoBehaviour {
 	}
 
 	private void IsOverPlayer() {
-		if(myTransform.position.y > player.position.y)
+		if(myTransform.position.y > playerTransform.position.y)
 			isOver = true;
 		else
 			isOver = false;

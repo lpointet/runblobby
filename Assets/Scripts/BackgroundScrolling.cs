@@ -15,11 +15,8 @@ public class BackgroundScrolling : MonoBehaviour {
 	private float ratioVitesse;
 	private Material myMaterial;
 
-	private PlayerController player;
-
 	void Start() {
 		myMaterial = GetComponent<Renderer> ().material;
-		player = LevelManager.GetPlayer ();
 
 		// Adapater l'échelle à la taille de l'écran pour qu'on voit tout à chaque fois
 		//transform.localScale = new Vector2 (Camera.main.orthographicSize * Camera.main.aspect * 2, Camera.main.orthographicSize * 2);
@@ -30,7 +27,7 @@ public class BackgroundScrolling : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!TimeManager.paused && !player.IsDead ()) {
+		if (!TimeManager.paused && !LevelManager.GetPlayer ().IsDead ()) {
 			// Décallage permanent dans le sens inverse du joueur
 			xOffset = Mathf.Repeat (xOffset + LevelManager.levelManager.GetLocalDistance() / ratioVitesse, 1);
 			//float x = Mathf.Repeat (Time.time * scrollSpeed - decalage, 1);

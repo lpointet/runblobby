@@ -82,7 +82,7 @@ public class BulletManager : MonoBehaviour {
 			myParticle.transform.position = myTransform.position;
 			myParticle.transform.rotation = Quaternion.Euler(new Vector3(360 - myTransform.rotation.eulerAngles.z, 90, 0));
 			myParticle.GetComponent<ParticleSystemRenderer>().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.GetPlayer().GetHealthPoint(), 0, LevelManager.GetPlayer().GetHealthPointMax (), 210, 0));		
-			myParticle.Play();
+			myParticle.gameObject.SetActive (true);
 
 			// Si on rencontre un ennemi
 			if(other.gameObject.layer == layerEnemy) {
@@ -98,6 +98,7 @@ public class BulletManager : MonoBehaviour {
 	}
 
 	private void Despawn() {
-		gameObject.SetActive (false);
+		//gameObject.SetActive (false);
+		_StaticFunction.SetActiveRecursively (gameObject, false);
 	}
 }

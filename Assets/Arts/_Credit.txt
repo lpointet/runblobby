@@ -1,11 +1,260 @@
-#Section#SECTION
-#Contenu#Contenu
-#Saut#
-#Section#SECTION
-#Contenu#Contenu
-#Contenu#Contenu
-#Contenu#Contenu
-#Saut#
-#Section#SECTION
-#Contenu#Contenu
-#Contenu#Contenu
+#Section#FONT
+
+#Contenu#Born2bSportyV2
+#Auteur#JapanYoshi
+#Site#http://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=383
+
+#Section#IMAGE
+
+#Texte#All resources used have been reworked to fit my own needs, but you always want more inspiration when you are definitely not an artist ;)
+
+#Contenu#Color Palette
+http://kaiseto.deviantart.com/
+
+#Sub#PICKUP
+
+#Contenu#Leaf Regular
+#Auteur#Noenya98
+#Site#http://noenya98.deviantart.com/
+#Contenu#Leaf Maple
+#Auteur#Mirz123
+http://mirz123.deviantart.com/
+#Contenu#Heal Pickup
+#Auteur#Sosogirl1123
+http://sosogirl123.deviantart.com/
+#Contenu#Heal Effect
+#Auteur#Secret of Mana SNES
+http://eu.square-enix.com/fr/
+#Contenu#Shield Pickup
+#Auteur#7soul1
+http://7soul1.deviantart.com/
+#Contenu#Shield Effect
+#Auteur#Sonic-Rhaian
+http://sonic-rhaian.deviantart.com/
+#Contenu#Wind Pickup
+#Auteur#7soul1
+http://7soul1.deviantart.com/
+#Contenu#Wind Effect
+#Auteur#Megamanrockx2
+http://megamanrockx2.deviantart.com/
+#Contenu#Double Pickup
+#Auteur#Jacob
+https://jacobl14.wordpress.com/tag/firefox-pixel-art/
+#Contenu#LastWish Pickup
+#Auteur#Akatsukifan12345
+http://akatsukifan12345.deviantart.com/
+#Contenu#LastWish Angel
+#Auteur#Secret of Mana SNES
+http://eu.square-enix.com/fr/
+#Contenu#Fly Pickup
+#Auteur#Unknown artist, but well-known Wing!
+#Contenu#Fly Effect
+#Auteur#Ganbare Goemon 3 SNES
+https://www.konami.com/
+
+#Sub#DECOR
+#Contenu#Ground
+#Auteur#Wind Runner (really good mobile game!)
+#Contenu#Cloud
+#Auteur#Leonie Yue
+http://blog.leonieyue.com/
+#Contenu#Thunder Fire
+#Auteur#Shantae
+https://wayforward.com/
+#Contenu#Mushroom
+#Auteur#Neoriceisgood
+http://neoriceisgood.deviantart.com/ & http://www.neorice.com/
+#Contenu#Waterfall
+#Auteur#Shadowwolf
+http://shadowwwolf.deviantart.com/
+#Contenu#Flowers
+#Auteur#Some japanese dude I never found about :(
+
+#Sub#OTHERS
+#Contenu#Hero Fall Death
+#Auteur#Secret of Mana SNES
+http://eu.square-enix.com/fr/
+#Contenu#Snail Gaston
+#Auteur#Couldn't find the artist :(
+#Contenu#Chicken Galia
+#Auteur#Harvest Moon SNES Game
+http://survivorsofragnarok.com/
+
+#Section#AUDIO
+
+#Sub#MUSIQUE
+
+#Contenu#LEVEL 1
+#Auteur#"Carefree" Kevin MacLeod
+http://incompetech.com/
+Licensed under Creative Commons: By Attribution 3.0
+http://creativecommons.org/licenses/by/3.0/
+
+#Contenu#LEVEL FAILURE
+#Auteur#"Pizzicato Orchestral Roll 3" Soughtaftersounds
+http://freesound.org/people/Soughtaftersounds/
+Licensed under Creative Commons: By Attribution 3.0
+http://creativecommons.org/licenses/by/3.0/
+
+#Contenu#LEVEL SUCCESS
+#Auteur#"Pizzicato Orchestral Roll 4" Soughtaftersounds
+http://freesound.org/people/Soughtaftersounds/
+Licensed under Creative Commons: By Attribution 3.0
+http://creativecommons.org/licenses/by/3.0/
+
+#Sub#BG SFX
+
+#Contenu#Nightingale
+#Auteur#"Nightingale Song 5" reinsamba
+http://freesound.org/people/reinsamba/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Cricket
+#Auteur#"Cricket Chirping" Otterbahn
+http://freesound.org/people/Otterbahn/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Goat
+#Auteur#"Goat" beskhu
+http://freesound.org/people/beskhu/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Cow
+#Auteur#"Cow moos" josephsardin
+http://freesound.org/people/josephsardin/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Waterfall
+#Auteur#"Small Waterfall On River Mirna" ivolipa
+http://freesound.org/people/ivolipa/
+http://creativecommons.org/licenses/by/3.0/
+
+#Sub#SFX
+
+#Contenu#LastWish Pick & Actif
+#Auteur#"Metal Chimes" janbezouska
+http://freesound.org/people/janbezouska/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Divine Ray
+#Auteur#"Choir of Voices - Single Chord" bone666138
+http://freesound.org/people/bone666138/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Wind Pick & Actif
+#Auteur#"Pt. Lonsdale Wind #3" kangaroovindaloo
+http://freesound.org/people/kangaroovindaloo/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Shield Pick
+#Auteur#"Large Bubble" snottyboy
+http://soundbible.com/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Shield Actif
+#Auteur#"Bubbles Sound" Mike Koenig
+http://soundbible.com/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Shield End
+#Auteur#"Gum Bubble Pop Sound" Sound Explorer
+http://soundbible.com/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Heal Pick & Actif
+#Auteur#"Potion Drink Regen" DrMinky
+http://freesound.org/people/DrMinky/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Fly Pick & Actif
+#Auteur#"Wing effect" Huminaatio
+http://freesound.org/people/Huminaatio/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Cloud Pick
+#Auteur#"3 pops" wubitog
+http://opengameart.org/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Leaf Pick
+#Auteur#"Paper 1" Adam_N
+http://freesound.org/people/Adam_N/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Double Pick
+#Auteur#"Crunching" junkfood2121
+http://freesound.org/people/junkfood2121/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Double Actif
+#Auteur#"Crunching" junkfood2121
+http://freesound.org/people/junkfood2121/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Double End
+#Auteur#"Burp 2x Sound" Mike Koenig
+http://soundbible.com/
+http://creativecommons.org/licenses/by/3.0/
+
+#Contenu#Hero Move
+#Auteur#"Squelchy Squirt" DrMinky
+http://freesound.org/people/DrMinky/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Hero Jump
+#Auteur#"Jumping" fins
+http://freesound.org/people/fins/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Hero Splash
+#Auteur#"Slime Land" DrMinky
+http://freesound.org/people/DrMinky/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Hero Hurt
+#Auteur#"Slime 5" artisticdude
+http://opengameart.org/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Hero Death
+#Auteur#"Slime Death" DrMinky 
+http://freesound.org/people/DrMinky/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Hero Air Death
+#Auteur#"Funny Souls Scary Variations" querywilly
+http://freesound.org/people/querywilly/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Hero Fall Death
+#Auteur#"Fall 2" silversatyr
+http://freesound.org/people/silversatyr/
+http://creativecommons.org/licenses/by/3.0/
+
+#Contenu#Bounce Shroom
+#Auteur#"Jump Sound" qubodup
+http://freesound.org/people/qubodup/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Thunder
+#Auteur#"Fizzle Sound" Mike Koenig
+http://soundbible.com/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Thunder Fire
+#Auteur#"Fire Medium Loop" PhreaKsAccount 
+http://freesound.org/people/PhreaKsAccount/
+http://creativecommons.org/licenses/by/3.0/
+
+#Contenu#HeartBeat
+#Auteur#"Heartbeat Slow" bart
+http://opengameart.org/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Chicken Move
+#Auteur#"Clucking Chicken" pillonoise
+http://freesound.org/people/pillonoise/sounds/164216/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Chicken Jump
+#Auteur#"Clucking Chicken" pillonoise
+http://freesound.org/people/pillonoise/sounds/164216/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Chicken Death
+#Auteur#"Microwave Bell" Georgeantoniv
+http://freesound.org/people/Georgeantoniv/
+http://creativecommons.org/licenses/by/3.0/
+#Contenu#Egg
+#Auteur#"Step On Egg 01" dav0r
+http://freesound.org/people/dav0r/sounds
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Snail Move
+#Auteur#"Lemon, Juicy, Squeeze, Fruit" Filipe Chagas
+http://www.freesound.org/people/Filipe%20Chagas/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Snail Slime
+#Auteur#"Lemon, Juicy, Squeeze, Fruit" Filipe Chagas
+http://www.freesound.org/people/Filipe%20Chagas/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Snail Death
+#Auteur#"Shell Crunch - Wide 07" Anthousai
+http://freesound.org/people/Anthousai/
+http://creativecommons.org/publicdomain/zero/1.0/
+#Contenu#Snail Hit
+#Auteur#"CracklingSquish" zimbot
+http://freesound.org/people/zimbot/
+http://creativecommons.org/licenses/by/3.0/

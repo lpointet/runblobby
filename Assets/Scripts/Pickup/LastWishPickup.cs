@@ -5,7 +5,6 @@ public class LastWishPickup : Pickup {
     public float radiusMagnet = 0f;
     public LayerMask layerCoins;
 
-    private PlayerController player;
 	private Transform playerTransform;
 
     private bool effectOnGoing = false;
@@ -40,14 +39,13 @@ public class LastWishPickup : Pickup {
     }
 
     void Start() {
-        player = LevelManager.GetPlayer();
-		playerTransform = player.transform;
+		playerTransform = LevelManager.GetPlayer().transform;
 
 		angelStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition) - 2; // Voir dans LevelManager pour la position par défaut
 	}
 
 	public void Launch() {
-		player.Resurrect();
+		LevelManager.GetPlayer().Resurrect();
 		Effect();
 		launched = true;
 	}
@@ -65,7 +63,7 @@ public class LastWishPickup : Pickup {
 		// Effet commence
 		if ( launched ) {
 			// T'as un magnet
-			player.AttractCoins( radiusMagnet, layerCoins );
+			LevelManager.GetPlayer().AttractCoins( radiusMagnet, layerCoins );
 		} else {
 			// Ce pickup ne doit jamais disparaitre jusqu'à la mort du joueur
 			timeToLive = lifeTime;
@@ -98,15 +96,15 @@ public class LastWishPickup : Pickup {
     protected override void OnPick() {
 		base.OnPick();
 
-        if( !player.HasLastWish() )
-			player.SetLastWish( this );
+		if( !LevelManager.GetPlayer().HasLastWish() )
+			LevelManager.GetPlayer().SetLastWish( this );
     }
 
 	public void Cancel() {
 		base.OnDespawn();
 
 		// Supprimer la référence dans le joueur
-		player.SetLastWish( null );
+		LevelManager.GetPlayer().SetLastWish( null );
 	}
 
     protected override void OnDespawn() {
@@ -115,11 +113,11 @@ public class LastWishPickup : Pickup {
         if( effectOnGoing ) {
 			if( timeToLive <= 0 ) {
 				// Tuer le joueur, vraiment.
-	            LevelManager.Kill( player );
+				LevelManager.Kill( LevelManager.GetPlayer() );
 			}
 
 			// Supprimer la référence dans le joueur
-			player.SetLastWish( null );
+			LevelManager.GetPlayer().SetLastWish( null );
 		}
 	}
 	
@@ -142,12 +140,15 @@ public class LastWishPickup : Pickup {
 		soundSource.volume = 1;
 
 		// Tu voles
-		player.Fly(); // Pour que le joueur vole immédiatement
+		LevelManager.GetPlayer().Fly(); // Pour que le joueur vole immédiatement
 		flyPickup.gameObject.SetActive (true);
-		flyPickup.transform.position = playerTransform.position + Vector3.right * 0.25f; // On donne au joueur un pickup fly personnalisé pour ce mode
+		//flyPickup.transform.position = playerTransform.position + Vector3.right * 0.25f; // On donne au joueur un pickup fly personnalisé pour ce mode
+		flyPickup.transform.parent = playerTransform;
+		flyPickup.transform.localPosition = Vector2.zero;
+		flyPickup.transform.parent = null; // Quelques lignes assez étrange, mais l'autre solution ne fonctionnait pas systématiqueement
 
 		// T'es invul
-		player.SetInvincible( lifeTime ); // TODO toujours lifeTime ? Pas timeToLive ?
+		LevelManager.GetPlayer().SetInvincible( lifeTime );
     }
 
 	// Effet visuel au moment où on ramasse l'item
@@ -159,16 +160,16 @@ public class LastWishPickup : Pickup {
 
 	protected override void DespawnEffect() {
 		// On s'assure de ne pas déclencher le Despawn d'un pickup qu'on vient de ramasser en plus de celui qu'on a déjà
-		if (player.GetLastWish () != this)
+		if (LevelManager.GetPlayer().GetLastWish () != this)
 			return;
 
 		effectEnding = true;
 
-		player.Die (); // Le joueur est mort au début de l'effet, on ne peut pas utiliser d'animation pour cela
-		player.SetFireAbility (false); // Il n'est pas encore vraiment mort, donc il faut l'empêcher de tirer à ce moment
+		LevelManager.GetPlayer().Die (); // Le joueur est mort au début de l'effet, on ne peut pas utiliser d'animation pour cela
+		LevelManager.GetPlayer().SetFireAbility (false); // Il n'est pas encore vraiment mort, donc il faut l'empêcher de tirer à ce moment
 
 		// On désactive ses colliders pour éviter les obstacles quand il remonte
-		Collider2D[] playerCollider = player.GetComponentsInChildren<Collider2D> ();
+		Collider2D[] playerCollider = LevelManager.GetPlayer().GetComponentsInChildren<Collider2D> ();
 		foreach (Collider2D col in playerCollider)
 			col.enabled = false;
 
@@ -189,7 +190,7 @@ public class LastWishPickup : Pickup {
 		divineMesh.SetActive (true);
 
 		// On supprime tous les pickups potentiels, pour que ce soit plus beau...
-		Pickup[] pickups = player.GetComponentsInChildren<Pickup> ();
+		Pickup[] pickups = LevelManager.GetPlayer().GetComponentsInChildren<Pickup> ();
 		foreach (Pickup pickup in pickups) {
 			if (pickup != this) {
 				pickup.Disable ();

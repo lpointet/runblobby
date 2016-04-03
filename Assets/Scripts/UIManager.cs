@@ -338,8 +338,6 @@ public class UIManager : MonoBehaviour {
 				StartCoroutine (PopText (playerLevel, currentLevelGain));
 			}
 
-			// TODO ajouter un son filling
-
 			timeUpdateValue += TimeManager.deltaTime;
 			timeUpdateMultiLevel += TimeManager.deltaTime * (diffLevel + 1);
 			yield return null;
@@ -378,6 +376,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void Rejouer_Click() {
+		if (paused)
+			Time.timeScale = initialTimeScale;
 		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
 	}
 	
@@ -388,7 +388,7 @@ public class UIManager : MonoBehaviour {
 
 	public void List_Click() {
 		sfxSound.ButtonYesClick ();
-		_GameData.current.SetListLevel (true); // On demande à charger le menu du jeu (liste des levels)
+		_GameData.loadListLevel = true; // On demande à charger le menu du jeu (liste des levels)
 		SceneManager.LoadScene (0);
 	}
 

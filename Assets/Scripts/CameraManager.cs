@@ -5,7 +5,6 @@ public class CameraManager : MonoBehaviour {
 
     public static CameraManager cameraManager;
 
-    public PlayerController player;
 	public bool isFollowing;
 
 	public int unitsInWidth;
@@ -28,8 +27,6 @@ public class CameraManager : MonoBehaviour {
     void Awake() {
         if (cameraManager == null)
             cameraManager = GetComponent<CameraManager>();
-
-        player = FindObjectOfType<PlayerController> ();
 
 		backKiller = transform.Find ("BackKiller");
 		fallingKiller = transform.Find ("FallingKiller");
@@ -62,7 +59,7 @@ public class CameraManager : MonoBehaviour {
 		#endif
 
 		if (isFollowing) {
-			transform.position = new Vector3 (player.transform.position.x + xOffset, player.transform.position.y + yOffset, transform.position.z);
+			transform.position = new Vector3 (LevelManager.GetPlayer().transform.position.x + xOffset, LevelManager.GetPlayer().transform.position.y + yOffset, transform.position.z);
 		}
 	}
 

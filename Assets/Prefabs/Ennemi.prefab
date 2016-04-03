@@ -125,28 +125,16 @@ MonoBehaviour:
   distanceToKill: 50
   damageToGive: 1
   pointScore: 100
-  name: Name
-  surName: Surname
-  movingEnemy: 0
-  moveRight: 0
-  wallCheck: {fileID: 464780}
-  wallCheckRadius: 0.1
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 1024
+  firstName: Unknown
+  surName: Who is that?
+  popPosition:
+  - 0
+  - 0
   startPosition:
   - 14
   - 0
   frequence: 0.1
   mediumValue: 7
-  coins:
-  - {fileID: 157248, guid: c46dcd20b7baa99459eb60f44616cfbd, type: 2}
-  - {fileID: 190520, guid: 98d82e343c0754f4880eee7fab4f364e, type: 2}
-  - {fileID: 104304, guid: ef4806b266ce2234b9efd7a2869fb2f5, type: 2}
-  - {fileID: 196070, guid: d6f870646451e6e48b27c1e807bcec5e, type: 2}
-  - {fileID: 158448, guid: e8be6b5927c4a1d4a94735fcd1392574, type: 2}
-  - {fileID: 176916, guid: 73a83410038a7274c8489eb79d756313, type: 2}
-  - {fileID: 153172, guid: da19e621afeb1e4439322c92b1acfee6, type: 2}
   layerGround:
     serializedVersion: 2
     m_Bits: 1024
@@ -290,11 +278,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: surName
-      value: Surname
+      value: Who is that?
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: startPosition.Array.data[0]
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: firstName
+      value: Unknown
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -74,32 +74,49 @@ public static class _StaticFunction {
 			GameData tempData = new GameData ();
 			tempData = bf.Deserialize (file) as GameData;
 
-			// Copie des données GameData
-			if (tempData.existingGame != null) GameData.gameData.existingGame = tempData.existingGame;
-			if (tempData.musicVolume != null) GameData.gameData.musicVolume = tempData.musicVolume;
-			if (tempData.sfxVolume != null) GameData.gameData.sfxVolume = tempData.sfxVolume;
-			if (tempData.firstLevel != null) GameData.gameData.firstLevel = tempData.firstLevel;
-			if (tempData.lastLevel != null) GameData.gameData.lastLevel = tempData.lastLevel;
+			// Copie des données GameData si on a déjà une sauvegarde
+			if (tempData.existingGame) {
+				GameData.gameData.existingGame = tempData.existingGame;
+				GameData.gameData.musicVolume = tempData.musicVolume;
+				GameData.gameData.sfxVolume = tempData.sfxVolume;
+				GameData.gameData.firstLevel = tempData.firstLevel;
+				GameData.gameData.lastLevel = tempData.lastLevel;
 
+				// Copie des données PlayerData
+				GameData.gameData.playerData.name = tempData.playerData.name;
+				GameData.gameData.playerData.isStory = tempData.playerData.isStory;
+				GameData.gameData.playerData.currentLevel = tempData.playerData.currentLevel;
+				GameData.gameData.playerData.currentDifficulty = tempData.playerData.currentDifficulty;
+				GameData.gameData.playerData.experience = tempData.playerData.experience;
+				GameData.gameData.playerData.level = tempData.playerData.level;
+				GameData.gameData.playerData.distanceTotal = tempData.playerData.distanceTotal;
+				GameData.gameData.playerData.enemyKilled = tempData.playerData.enemyKilled;
 
-			// Copie des données PlayerData
-			if (tempData.playerData.name != null) GameData.gameData.playerData.name = tempData.playerData.name;
-			if (tempData.playerData.isStory != null) GameData.gameData.playerData.isStory = tempData.playerData.isStory;
-			if (tempData.playerData.currentLevel != null) GameData.gameData.playerData.currentLevel = tempData.playerData.currentLevel;
-			if (tempData.playerData.experience != null) GameData.gameData.playerData.experience = tempData.playerData.experience;
-			if (tempData.playerData.level != null) GameData.gameData.playerData.level = tempData.playerData.level;
-			if (tempData.playerData.distanceTotal != null) GameData.gameData.playerData.distanceTotal = tempData.playerData.distanceTotal;
-			if (tempData.playerData.enemyKilled != null) GameData.gameData.playerData.enemyKilled = tempData.playerData.enemyKilled;
+				// Permet d'ajouter des levels si jamais certains sont nouveaux depuis la sauvegarde
+				// On n'efface pas de GameData.gameData ceux qui sont supérieurs à tempData.playerData.levelData.Count
+				// On n'ajoute pas des levels à GameData.gameData si ceux-ci n'existent plus
+				for (int i = 0; i < Mathf.Min (GameData.gameData.playerData.levelData.Count, tempData.playerData.levelData.Count); i++) {
+					if (GameData.gameData.playerData.levelData [i] != null)
+						GameData.gameData.playerData.levelData [i] = tempData.playerData.levelData [i];
+				}
 
-			// Permet d'ajouter des levels si jamais certains sont nouveaux depuis la sauvegarde
-			// On n'efface pas de GameData.gameData ceux qui sont supérieurs à tempData.playerData.levelData.Count
-			// On n'ajoute pas des levels à GameData.gameData si ceux-ci n'existent plus
-			for (int i = 0; i < Mathf.Min(GameData.gameData.playerData.levelData.Count, tempData.playerData.levelData.Count); i++) {
-				if (GameData.gameData.playerData.levelData [i] != null)
-					GameData.gameData.playerData.levelData [i] = tempData.playerData.levelData [i];
-			}
+				Debug.Log ("Load successful from: " + _GameData.saveFile);
+				return true;
+			} else
+				return false;
+		} else
+			return false;
+	}
 
-			Debug.Log ("Load successful from: " + _GameData.saveFile);
+	public static bool Erase() {
+		if (File.Exists (_GameData.saveFile)) {
+
+			// Suppression de l'ancienne sauvegarde
+			File.Delete (_GameData.saveFile);
+
+			// Création d'une nouvelle sauvegarde vierge (pour retenir les paramètres généraux)
+			Save ();
+
 			return true;
 		} else
 			return false;
@@ -178,7 +195,6 @@ public static class _StaticFunction {
 		return (inCurrent - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 	}
 
-	// TODO changer ces fonctions en Coroutine et adapter les codes les appelant
 	// Fonction utilisée pour augmenter le volume d'un son progressivement
 	public static IEnumerator AudioFadeIn(AudioSource audio, float volumeMax = 1, float delay = 1) {
 		if (audio == null || volumeMax < 0)
@@ -231,36 +247,6 @@ public static class _StaticFunction {
 			audio.Stop (); // On stoppe le son lorsqu'on est au min demandé
 		}
 	}
-	// Fonction utilisée pour augmenter le volume d'un son progressivement
-//	public static void AudioFadeIn(AudioSource audio, float volumeMax = 1, float delay = 1) {
-//		if (audio == null || volumeMax < 0 || delay == 0)
-//			return;
-//		if (volumeMax > 1)
-//			volumeMax = 1;
-//		if (audio.volume > volumeMax)
-//			return;
-//
-//		if (!audio.isPlaying) { // On démarre le son au volume le plus bas
-//			audio.volume = 0;
-//			audio.Play ();
-//		}
-//
-//		audio.volume += TimeManager.deltaTime / delay;
-//	}
-
-	// Fonction utilisée pour diminuer le volume d'un son progressivement
-//	public static void AudioFadeOut(AudioSource audio, float volumeMin = 0, float delay = 1) {
-//		if (audio == null || volumeMin > 1 || delay == 0)
-//			return;
-//		if (volumeMin < 0)
-//			volumeMin = 0;
-//		if (audio.volume < volumeMin) { // On stoppe le son lorsqu'on est au min demandé
-//			audio.Stop ();
-//			return;
-//		}
-//
-//		audio.volume -= TimeManager.deltaTime / delay;
-//	}
 
 	public static Color ColorFromHSV(float h, float s, float v, float a = 1)
 	{

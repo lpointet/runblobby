@@ -94,6 +94,7 @@ public class Pickup : MonoBehaviour {
 	
 	protected virtual void OnPick() {
 		// Que faut-il faire lorsque cet objet a été ramassé ?
+		// ATTENTION : le Fly a une règle spéciale, ajouter les modifications d'ici dans le Fly
 
 		// On contrôle que le joueur n'a pas déjà un pickup du même type, auquel cas on augmente la durée de vie du pickup en cours
 		// Si c'est une pièce, on ne rentre pas dans le processus

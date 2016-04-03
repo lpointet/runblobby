@@ -134,7 +134,7 @@ Material:
       data:
         first:
           name: _HueShift
-        second: 126
+        second: 0
       data:
         first:
           name: _Sat
@@ -145,11 +145,11 @@ Material:
         second: 1
       data:
         first:
-          name: _InvFade
+          name: _Alpha
         second: 1
       data:
         first:
-          name: _Alpha
+          name: _InvFade
         second: 1
     m_Colors:
       data:

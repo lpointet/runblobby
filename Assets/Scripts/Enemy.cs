@@ -26,7 +26,7 @@ public class Enemy : Character {
 	public float mediumValue = 1.1f; // Offre une bien plus grande variété de feuilles que 1f
 	private CoinPickup[] coins; // Fait référence à ListManager
 	private CoinDrop[] possibleCoins;
-	[SerializeField] protected LayerMask layerGround; // TODO autre possibilité pour que le paramètre passe aux enfants ?
+	public LayerMask layerGround;
 	private float distanceParcourue = 0;
 	private float pointLastDropCheck = 0;
 	public float intervalleDrop = 0.5f;
@@ -103,7 +103,7 @@ public class Enemy : Character {
 		mySprite.enabled = false;
 	}
 
-	protected override void Init() { // TODO pourquoi c'est appelé deux fois ? Start (voir Character.cs) et OnEnable ?
+	protected override void Init() {
 		base.Init();
 
 		PossibleCoin ();
@@ -140,15 +140,17 @@ public class Enemy : Character {
 
 	void OnTriggerEnter2D(Collider2D other){
 		// Si l'ennemi est déjà mort, il ne peut plus rien faire...
-		if( IsDead() ) {
+		if( IsDead() )
 			return;
-		}
 
 		if (other.name == "Heros")
 			LevelManager.GetPlayer ().Hurt(GetDamageToGive());
 	}
 
 	public override void Hurt(int damage) {
+		if( IsDead() )
+			return;
+
 		base.Hurt (damage);
 
 		if (myAudio != null) {
@@ -160,8 +162,14 @@ public class Enemy : Character {
 	}
 
 	public override void OnKill() {
-		ScoreManager.AddPoint (GetPointScore(), ScoreManager.Types.Experience);
-		Despawn();
+		GainExp ();
+		Despawn ();
+	}
+
+	protected virtual void GainExp() {
+		int pointDistance = Mathf.CeilToInt(LevelManager.levelManager.GetEnemyDistanceToKill () / 20);
+		int pointBoss = 10 + LevelManager.levelManager.GetCurrentLevel (); // TODO ajuster selon l'xp
+		ScoreManager.AddPoint (pointDistance + pointBoss, ScoreManager.Types.Experience);
 	}
 
 	protected virtual void Despawn() {
@@ -254,40 +262,5 @@ public class Enemy : Character {
 				}
 			}
 		}
-	}
-}
-
-
-// TODO créer un script à part
-public class CoinDrop {
-	private CoinPickup coin;
-	private int poissonValue;
-	private float esperance = 0;
-	private int coinValue;
-
-	public CoinDrop(CoinPickup coin, int poissonValue, float esperance) {
-		this.coin = coin;
-		this.poissonValue = poissonValue;
-		this.esperance = esperance;
-		coinValue = coin.pointToAdd;
-	}
-
-	public void SetEsperance(float value) {
-		esperance = value;
-	}
-
-	public string GetCoinName() {
-		return coin.name;
-	}
-
-	public int GetCoinValue() {
-		return coinValue;
-	}
-
-	public int PourcentPoisson () {
-		if (poissonValue > 0)
-			return Mathf.Max(0, Mathf.RoundToInt (_StaticFunction.LoiPoisson (poissonValue, esperance, true) * 100));
-		else // Si on est sur la dernière valeur du tableau, et donc que poissonValue = 0, la limite haute est toujours 100
-			return 100;
 	}
 }

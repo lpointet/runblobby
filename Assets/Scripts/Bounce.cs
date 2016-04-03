@@ -21,12 +21,11 @@ public class Bounce : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.name == "Heros") {
-			PlayerController player = LevelManager.GetPlayer();
             Rigidbody2D herosRb = other.attachedRigidbody;
 
 			// Dans le cas où le contact se fait par dessus, on rebondit
-			if (other.transform.position.y - offsetCheckBounce > transform.position.y) {Debug.Log(other.transform.position.y + " " + transform.position.y);
-				herosRb.velocity = new Vector2 (0, bouncePower * player.GetJumpHeight ());
+			if (other.transform.position.y - offsetCheckBounce > transform.position.y) {
+				herosRb.velocity = new Vector2 (0, bouncePower * LevelManager.GetPlayer().GetJumpHeight ());
 
 				LevelManager.MaybeKill (transform);
 
@@ -34,7 +33,7 @@ public class Bounce : MonoBehaviour {
 				myAudio.Play ();
 
 				// Permettre au héros de sauter même après un bounce
-				player.bounced = true;
+				LevelManager.GetPlayer().bounced = true;
 
 				// Ne pas déclencher d'autres actions avec ce collider, il a fait son job
 				myCollider.enabled = false;

@@ -5,7 +5,6 @@ public class InviciblePickup : Pickup {
 
 	private float clignottant;
 	private float coefClignottant = 0.05f;
-	private float alphaSprite = 1f;
 
 	protected override void Awake() {
 		base.Awake();

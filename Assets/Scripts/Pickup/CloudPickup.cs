@@ -12,10 +12,6 @@
 		CloudBlock.nuageActif = true;
 	}
 	
-	protected override void DespawnEffect() {
-		// TODO : faire diminuer la taille des nuages progressivement ? Les faire clignoter ?
-	}
-	
 	protected override void OnDespawn() {
         base.OnDespawn();
 

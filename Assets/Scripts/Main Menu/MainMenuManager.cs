@@ -17,6 +17,7 @@ public class MainMenuManager : MonoBehaviour {
     public Button bContinue;
 
     public Button bNewGame;
+	public GameObject wNewGame;
 
     public Button bOptions;
 	public Text tMusic;
@@ -30,8 +31,6 @@ public class MainMenuManager : MonoBehaviour {
 
     public Button bQuit;
 	public GameObject wQuit;
-	public Button bQuitYes;
-	public Button bQuitNo;
 	/* Fin menu d'accueil */
 	/**********************/
 
@@ -75,13 +74,6 @@ public class MainMenuManager : MonoBehaviour {
 			mainMenuManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<MainMenuManager> ();
 
 		sfxSound = GetComponentInChildren<SFXMenu> ();
-		//loadingBar = loadingScreen.GetComponentInChildren<Slider>();
-        //tCentral.text = "";
-
-		/*texteAffichable = "To travel deep down into the heart of a history with maaaany rebounds.\n\nLiterally.";
-        AfficherTexte(texteAffichable);*/
-		/*texteAffichable = "Runner's classic mode!\n\nRun.\nJump.\nDie.\n\nTry again.";
-		AfficherTexte(texteAffichable);*/
     }
 
 	void Start() {
@@ -98,10 +90,10 @@ public class MainMenuManager : MonoBehaviour {
 		ClearMenu();
 
 		/* On charge l'écran de "jeu" */
-		if (_GameData.current.IsListLevel ()) {
+		if (_GameData.loadListLevel) {
 			ChangeMainScreen ();
 			Level_Click ();
-			_GameData.current.SetListLevel (false);
+			_GameData.loadListLevel = false;
 		}
 	}
 
@@ -110,20 +102,35 @@ public class MainMenuManager : MonoBehaviour {
     }
 
     public void Continue_Click() {
-		SetMenuActive(bContinue);
-    }
-
-    public void NewGame_Click() {
-		// TODO vérifier si une partie existe déjà
-		// Demander confirmation avant de charger
-
-		// TODO vrai lancement, on ne passe pas par l'autre menu lors d'une nouvelle partie
-		//StartCoroutine (LoadLevelWithBar(1));
-		//sfxSound.ButtonYesClick ();
-
 		ChangeMainScreen ();
 		Level_Click ();
     }
+
+	public void NewGame_Click() {
+		// Demander confirmation avant de charger
+		if (GameData.gameData.existingGame)
+			wNewGame.SetActive (true);
+    }
+
+	public void NewGame_No_Click() {
+		sfxSound.ButtonNoClick ();
+
+		wNewGame.SetActive (false);
+	}
+
+	public void NewGame_Yes_Click() {
+		sfxSound.ButtonYesClick ();
+
+		_StaticFunction.Erase ();
+
+		// Lancement du premier niveau si on a valider le message de confirmation
+		_GameData.currentLevel = 1;
+		_GameData.currentDifficulty = 0; // TODO difficulté : v2
+		_GameData.isStory = true;
+		_GameData.currentLevelName = GameData.gameData.playerData.levelData [0].levelName;
+
+		LoadLevel (1);
+	}
 
     public void Option_Click() {
 		SetMenuActive(bOptions);
@@ -241,6 +248,7 @@ public class MainMenuManager : MonoBehaviour {
 				bContinue.gameObject.SetActive (false);
 			else
 				bContinue.GetComponentInChildren<Text> ().color = colorMenuNormal;
+			
 		} else if (wPlayerMenu.activeInHierarchy) {
 			bLevel.GetComponentInChildren<Text> ().color = colorMenuNormal;
 
@@ -259,18 +267,6 @@ public class MainMenuManager : MonoBehaviour {
 		}
 		ClearMenu(); // Et le nouveau
 	}
-
-    /*private void AfficherTexte(string texte) {
-        tCentral.text = texte;
-        tCentral.gameObject.SetActive(true);
-
-        bGo.gameObject.SetActive(true);
-    }
-
-    private void CacherTexte() {
-        tCentral.gameObject.SetActive(false);
-        bGo.gameObject.SetActive(false);
-    }*/
 
 	public void LoadLevel(int level) {
 		// On vérifie que le level est au moins dans ce qui est existant
@@ -298,15 +294,4 @@ public class MainMenuManager : MonoBehaviour {
 	private void MuteSound(AudioMixer audiosource, string valueName) {
 		audiosource.SetFloat (valueName, -80);
 	}
-
-    /* Ecrire les lettres l'une après l'autre
-    * public float letterTyping = 0.01f;
-    * Appel : StartCoroutine(TypeText(sAventure, tCentral));
-    IEnumerator TypeText(string message, Text texte) {
-        foreach (char letter in message.ToCharArray()) {
-            texte.text += letter;
-            yield return new WaitForSeconds(letterTyping);
-        }
-    }
-    */
 }

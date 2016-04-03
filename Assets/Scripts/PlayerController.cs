@@ -54,15 +54,10 @@ public class PlayerController : Character {
 
 	// Concerne le vol
 	private float flySpeedCoeff = 2f;
-	private float speedBeforeFly;
-	private float speedInFly;
-	private float acceleration = 0f; // Temps de transition
 	private bool isFlying = false;
 	private bool zeroGravFlying = false;
 	private float yPosAirDeath;
 	private float yVariableAirDeath = 0f;
-
-	// TODO ratioMoveSpeed = GetMoveSpeed () / GetInitialMoveSpeed() à remplacer dans tous les scripts qui appellent ça ?
 
     /**
 	 * Getters & Setters
@@ -73,6 +68,10 @@ public class PlayerController : Character {
 	
 	public void SetInitialMoveSpeed( float value ) {
 		initialMoveSpeed = value;
+	}
+
+	public float GetRatioSpeed () {
+		return GetMoveSpeed () / (float)GetInitialMoveSpeed ();
 	}
 	
 	public Transform GetWeapon() {
@@ -126,6 +125,46 @@ public class PlayerController : Character {
 	public bool IsZeroGravFlying() {
 		return zeroGravFlying;
 	}
+
+	public void SetFireAbility( bool able ) {
+		if( null != weapon ) {
+			weapon.gameObject.SetActive( able );
+		}
+	}
+
+	public bool GetFireAbility() {
+		bool active = false;
+
+		if( null != weapon ) {
+			active = weapon.gameObject.activeSelf;
+		}
+
+		return active;
+	}
+
+	public void AddPickup( Collider2D pickup ) {
+		pickups.Add( pickup );
+	}
+
+	public bool HasPickup( Collider2D pickup ) {
+		return pickups.Contains( pickup );
+	}
+
+	public void RemovePickup( Collider2D pickup ) {
+		pickups.Remove( pickup );
+	}
+
+	public Pickup HasTypePickup( System.Type type ) {
+		Pickup[] pickups = GetComponentsInChildren<Pickup>();
+
+		foreach( Pickup pickup in pickups ) {
+			if( pickup.GetType() == type ) {
+				return pickup;
+			}
+		}
+
+		return null;
+	}
     /* End of Getters & Setters */
 
     protected override void Awake() {
@@ -147,24 +186,26 @@ public class PlayerController : Character {
 		SetMoveSpeed( GetInitialMoveSpeed() );
 		lerpingHP = GetHealthPoint ();
 		mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
+		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
 
 		isFlying = false;
         wasFlying = false;
 		SetZeroGravFlying (false); // TODO doit provenir de l'arbre des talents (v2)
     }
 	
-	void FixedUpdate(){
+	void FixedUpdate() {
 		// Assure qu'on soit au sol lorsqu'on est en contact
 		grounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, layerGround);
 		myAnim.SetBool ("grounded", grounded);
 		myAnim.SetFloat ("verticalSpeed", myRb.velocity.y);
 		// Ajuster la vitesse d'animation du héros en fonction de sa vitesse de déplacement
-		myAnim.SetFloat("moveSpeed", GetMoveSpeed () / GetInitialMoveSpeed());
+		myAnim.SetFloat("moveSpeed", GetRatioSpeed());
 	}
 	
 	protected override void Update () {
 		// On ne commence pas avant le début... hé oué !
 		if (!LevelManager.levelManager.IsLevelStarted ()) {
+			wasFlying = true; // Permet de "ranger" le parachute comme si on volait à la fin du "StartLevel"
 			return;
 		}
 
@@ -185,7 +226,7 @@ public class PlayerController : Character {
 			myTransform.Translate (Mathf.Sign(myTransform.position.x) * Vector3.left * 0.005f);
 		
 		// Ajustement du saut et gravité en fonction de la vitesse
-		if (!IsFlying() && speedBeforeFly == speedInFly) {
+		if (!IsFlying() && !wasFlying) {
 			SetJumpHeight (GetMoveSpeed () * constJump);
 			myRb.gravityScale = GetJumpHeight () * GetJumpHeight () * constGravity;
 		}
@@ -206,18 +247,18 @@ public class PlayerController : Character {
 		}
 
 		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
-		if (IsGrounded ()) {
+		if (IsGrounded ())
 			currentJump = 0;
-		}
 		
 		// Gestion des sauts
-		if (Input.GetButtonDown ("Jump") && (IsGrounded () || bounced)) {
-			Jump ();
-            bounced = false;
-		}
-		if (Input.GetButtonDown ("Jump") && !IsGrounded () && currentJump < maxDoubleJump) {
-			Jump ();
-			currentJump++;
+		if (Input.GetButtonDown ("Jump")) {
+			if (IsGrounded () || bounced) {
+				Jump ();
+				bounced = false;
+			} else if (!IsGrounded () && currentJump < maxDoubleJump) {
+				Jump ();
+				currentJump++;
+			}
 		}
 
         // Appelé à la fin d'un vol si en l'air et jusqu'à l'atterrisage
@@ -247,18 +288,20 @@ public class PlayerController : Character {
 				wasFlying = false;
             }
         }
+	}
 
-		// Accélération et décélération au début et à la fin du vol
-		if (speedBeforeFly != speedInFly) {
-			acceleration += TimeManager.deltaTime;
-			if (isFlying) // Au démarrage
-				SetMoveSpeed (Mathf.Lerp (speedBeforeFly, speedInFly, acceleration)); // En une seconde
-			else {
-				SetMoveSpeed (Mathf.Lerp (speedInFly, speedBeforeFly, acceleration)); // En une seconde
-				// Quand on a atteint la bonne vitesse, on évite de rappeler cette fonction
-				if (GetMoveSpeed () == speedBeforeFly)
-					speedInFly = speedBeforeFly;
-			}
+	private IEnumerator ChangeSpeed(float newSpeed, float delay = 1) {
+		float oldSpeed = GetMoveSpeed ();
+		float acceleration = 0;
+
+		while (GetMoveSpeed () != newSpeed) {
+			acceleration += TimeManager.deltaTime / delay;
+			SetMoveSpeed (Mathf.Lerp (oldSpeed, newSpeed, acceleration));
+
+			if (GetMoveSpeed () >= newSpeed)
+				SetMoveSpeed (newSpeed);
+
+			yield return null;
 		}
 	}
 	
@@ -277,9 +320,6 @@ public class PlayerController : Character {
 	}
 	
 	public void Jump() {
-		myRb.velocity = new Vector2(0, GetJumpHeight());
-		myAudio.JumpSound ();
-
 		// Affichage d'un effet de "nuage" à l'endroit du saut s'il est effectué en l'air
 		if (!IsGrounded () && !IsFlying ()) {
 			GameObject dust = PoolingManager.current.Spawn("AerialDust");
@@ -291,9 +331,11 @@ public class PlayerController : Character {
 				dust.gameObject.SetActive (true);
 			}
 		}
-    }
 
-	// TODO supprimer l'apparition du fantôme quand on meurt avec le LastWish
+		myRb.velocity = new Vector2(0, GetJumpHeight());
+		myAudio.JumpSound ();
+    }
+		
 	public override void OnKill() {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
@@ -301,9 +343,16 @@ public class PlayerController : Character {
 		isFlying = false;
 		myAnim.SetBool ("flying", isFlying);
 
-		if (myTransform.position.y < -3f + LevelManager.levelManager.GetHeightStartBlock()) { // Si on est en dessous du bas de l'écran (3 blocks hauteur de base)
+		// Si on est en dessous du bas de l'écran (3 blocs hauteur de base)
+		if (myTransform.position.y < -3f + LevelManager.levelManager.GetHeightStartBlock()) {
 			myAnim.SetTrigger ("dead_fall");
 			myAudio.FallDeathSound ();
+		}
+		// Si on est au dessus de l'écran (donc mort suite LastWish)
+		else if (myTransform.position.y > Camera.main.orthographicSize) {
+			// On ne fait rien pour l'instant (placeholder)
+			myRb.isKinematic = true;
+			yPosAirDeath = myTransform.position.y;
 		}
 		else {
 			if (!IsGrounded ()) { // Faire flotter le fantôme si on est en l'air
@@ -334,53 +383,12 @@ public class PlayerController : Character {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 		SetMoveSpeed (0);
-
-		//gameObject.SetActive (false);
-	}
-	
-	public void SetFireAbility( bool able ) {
-		if( null != weapon ) {
-			weapon.gameObject.SetActive( able );
-		}
-	}
-	
-	public bool GetFireAbility() {
-		bool active = false;
-
-		if( null != weapon ) {
-			active = weapon.gameObject.activeSelf;
-		}
-
-		return active;
-	}
-
-    public void AddPickup( Collider2D pickup ) {
-        pickups.Add( pickup );
-    }
-
-    public bool HasPickup( Collider2D pickup ) {
-        return pickups.Contains( pickup );
-    }
-
-    public void RemovePickup( Collider2D pickup ) {
-        pickups.Remove( pickup );
-    }
-
-	public Pickup HasTypePickup( System.Type type ) {
-		Pickup[] pickups = GetComponentsInChildren<Pickup>();
-
-		foreach( Pickup pickup in pickups ) {
-			if( pickup.GetType() == type ) {
-				return pickup;
-			}
-		}
-
-		return null;
 	}
 
 	public void ActiveParachute(bool active) {
 		parachute.SetActive (active);
 		myAnim.SetTrigger ("parachute");
+		currentJump = 10000; // On empêche le joueur de sauter
 	}
 
     public void Fly() {
@@ -394,11 +402,8 @@ public class PlayerController : Character {
 		}
 
 		// Augmenter la vitesse si pas déjà en vol
-		if (!IsFlying ()) {
-			acceleration = 0;
-			speedBeforeFly = GetMoveSpeed ();
-			speedInFly = GetMoveSpeed () * flySpeedCoeff;
-		}
+		if (!IsFlying ())
+			StartCoroutine (ChangeSpeed (GetMoveSpeed () * flySpeedCoeff));
 
 		//SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
 		isFlying = true;
@@ -419,9 +424,7 @@ public class PlayerController : Character {
 //        myRb.gravityScale = initialGravityScale;
 //        SetJumpHeight( initialJumpHeight );
         SetMaxDoubleJump( initialMaxDoubleJump );
-
-		// TODO pour le problème de la gravité (qui devient énorme), faire atterrir le joueur avec le parachute
-		// Voir dans le Updte() si on garde le speedbefore == speedinfly
+		StartCoroutine (ChangeSpeed (GetMoveSpeed () / flySpeedCoeff));
 
         // On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou
         wasFlying = true;
@@ -432,9 +435,6 @@ public class PlayerController : Character {
 		// On fait atterrir le joueur avec le parachute
 		if (!IsGrounded ())
 			ActiveParachute (true);
-
-		// Diminuer la vitesse
-		acceleration = 0;
 
 		myAnim.SetBool( "flying", isFlying );
     }

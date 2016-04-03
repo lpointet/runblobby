@@ -93,6 +93,10 @@ public class Character : MonoBehaviour {
 		FullHealth();
 		// Let it live
 		Resurrect();
+		// On corrige l'alpha si besoin
+		Color tempColor = mySprite.color;
+		tempColor.a = 1;
+		mySprite.color = tempColor;
 	}
 	
 	public virtual void OnKill() {
@@ -100,15 +104,13 @@ public class Character : MonoBehaviour {
 	}
 	
 	public virtual void Hurt(int damage) {
-		if( IsInvincible () || IsDead() ) {
+		if( IsInvincible () || IsDead() )
 			return;
-		}
 		
 		SetHealthPoint( GetHealthPoint() - damage );
 		
-		if (GetHealthPoint() <= 0 && !IsDead()) {
+		if (GetHealthPoint() <= 0 && !IsDead())
 			LevelManager.Kill( this );
-		}
 
 		// Effet visuel de blessure
 		if (!IsDead ())

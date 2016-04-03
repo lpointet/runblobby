@@ -12,9 +12,13 @@ public class _GameData : MonoBehaviour {
 	public static string saveFile;
 
 	/* Permet de gérer le chargement de la liste des levels (passage d'arguments) */
-	private bool loadListLevel = false;
-	public bool IsListLevel() { return loadListLevel; }
-	public void SetListLevel(bool value) { loadListLevel = value; }
+	public static bool loadListLevel = false;
+
+	/* Passage d'informations au LevelManager depuis le Menu */
+	public static int currentLevel = 1;
+	public static int currentDifficulty = 0;
+	public static bool isStory = true;
+	public static string currentLevelName;
 
 	void Awake() {
 		if (current == null) {
@@ -58,18 +62,13 @@ public class GameData {
 [Serializable]
 public class PlayerData {
 
-	public enum Difficulty {
-		Normal,
-		Hard,
-		Hell
-	};
-
 	public string name; // Servira si un jour on doit différencier des joueurs
 
 	/* ETAT COURANT DU JEU */
 	public bool isStory = true;
 	public int currentLevel = 1;
-	
+	public int currentDifficulty = 0;
+
 	/* STATISTIQUES GLOBALES DU JOUEUR */
 	public int experience = 0;
 	public int level = 1;

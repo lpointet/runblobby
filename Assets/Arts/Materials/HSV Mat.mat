@@ -130,7 +130,7 @@ Material:
       data:
         first:
           name: _HueShift
-        second: 0
+        second: 28.958553
       data:
         first:
           name: _Sat
@@ -142,7 +142,7 @@ Material:
       data:
         first:
           name: _Alpha
-        second: 1
+        second: 0.834307
     m_Colors:
       data:
         first:

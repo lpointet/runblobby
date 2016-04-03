@@ -4,16 +4,6 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
-/*public class Level {
-	public Sprite background;
-	public string name;
-	public int distance;
-	public int maxDistance;
-	public bool isBoss;
-	public int sceneNumber;
-}*/
-
 public class LevelScrollList : MonoBehaviour {
 	
 	public RectTransform contentPanel;
@@ -39,8 +29,7 @@ public class LevelScrollList : MonoBehaviour {
 	private int recordMinButton = 0;
 
 	void Awake() {
-		// TODO j'aime pas un tag juste pour ça... à voir
-		sfxSound = GameObject.FindGameObjectWithTag ("SFX").GetComponent<SFXMenu> ();
+		sfxSound = GameObject.FindObjectOfType<SFXMenu> ();
 	}
 	
 	void Start () {
@@ -59,7 +48,7 @@ public class LevelScrollList : MonoBehaviour {
 		//PlacerLevel (0);
 	}
 
-	IEnumerator WaitEndOfFrame() {
+	private IEnumerator WaitEndOfFrame() {
 		yield return new WaitForEndOfFrame();
 		
 		// Distance entre les boutons (ils sont placés à la fin de la première frame seulement)
@@ -94,7 +83,7 @@ public class LevelScrollList : MonoBehaviour {
 		}
 		else {
 			// On approche de la fin du positionnement une fois par image
-			currentLerpTime += TimeManager.deltaTime;
+			currentLerpTime += Time.unscaledDeltaTime;
 			if(currentLerpTime > lerpTime)
 				currentLerpTime = lerpTime;
 
