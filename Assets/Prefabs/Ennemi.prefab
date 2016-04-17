@@ -122,7 +122,7 @@ MonoBehaviour:
   jumpHeight: 0
   isDead: 0
   maxHeight: 7.5
-  distanceToKill: 50
+  distanceToKill: 250
   damageToGive: 1
   pointScore: 100
   firstName: Unknown

@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour {
 	public GameObject blockEnd;
 	public GameObject[] blockEnemy;
 	private List<GameObject> blockList;
-	private int[][] probabiliteBlock; // Probabilités d'apparition de chaque block par phase
+	private int[][] probabiliteBlock; // Probabilités d'apparition de chaque bloc par phase
 	private string[] listeDifficulte; // Liste des difficultés possibles pour les blocs
 
 	private float sizeLastBlock;
@@ -173,7 +173,7 @@ public class LevelManager : MonoBehaviour {
 		SetCurrentDifficulty (_GameData.currentDifficulty);
 
 		// Ajustement de l'apparition du boss de fin (par rapport à la distance maximum du level)
-		listPhase [listPhase.Length - 1] = GameData.gameData.playerData.levelData[GetCurrentLevel ()].storyData[GetCurrentDifficulty ()].distanceMax;
+		listPhase [listPhase.Length - 1] = GameData.gameData.playerData.levelData[GetCurrentLevel () - GameData.gameData.firstLevel].storyData[GetCurrentDifficulty ()].distanceMax;
 
 		moneyMat.SetColor("_BaseColor", BaseColor);
 		moneyMat.SetColor("_TargetColor", BaseColor);
@@ -299,13 +299,17 @@ public class LevelManager : MonoBehaviour {
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra
 		if (blockList [0].transform.position.x + sizeFirstBlock < cameraStartPosition) {
-			// On supprime les objets qui ne sont pas sur la couche "Ground" si on est sur les blocks du boss
+			// On supprime les objets qui ne sont pas sur la couche "Ground" si on est sur les blocs du boss
 			// Supprime les pièces, les bombes...
 			if(blockList[0].name.Contains(blockEnemy[1].name)) {
 				foreach (Transform t in blockList[0].GetComponentsInChildren(typeof(Transform), true)) {
+				//foreach (Transform t in blockList[0].transform) {
 					if ((1 << t.gameObject.layer & layerNotGround) != 0) {
-						t.parent = null;
-						t.gameObject.SetActive (false);
+						// Teste les spécificités : ici, les "feuilles" sont imbriquées, mais il ne faut pas détacher le contenu du contenant
+						if (!t.name.Contains ("Sprite")) {
+							t.parent = PoolingManager.pooledObjectParent;
+							t.gameObject.SetActive (false);
+						}
 					}
 				}
 			}
@@ -399,9 +403,9 @@ public class LevelManager : MonoBehaviour {
 
 			// On offre des points d'xp supplémentaires si c'est la première fois qu'il tue le boss
 			if (!GameData.gameData.playerData.levelData [GetCurrentLevel ()].storyData [GetCurrentDifficulty ()].isBossDead) {
-				ScoreManager.AddPoint (50 + 25 * GetCurrentLevel (), ScoreManager.Types.Experience); // TODO ajuster la fonction xp
+				ScoreManager.AddPoint (250 + 25 * GetCurrentLevel () * GetCurrentLevel (), ScoreManager.Types.Experience); // XP fin de niveau première fois
 			} else { // Si on a déjà tué le boss
-				ScoreManager.AddPoint (10 * GetCurrentLevel (), ScoreManager.Types.Experience); // TODO ajuster la fonction xp
+				ScoreManager.AddPoint (10 * GetCurrentLevel () * GetCurrentLevel (), ScoreManager.Types.Experience); // XP fin de niveau autre fois
 			}
 
 			UIManager.uiManager.ToggleEndMenu (true);

@@ -14,16 +14,17 @@ public class OrderedPools {
 public class PoolingManager : MonoBehaviour {
 	
 	public static PoolingManager current;
-	public Transform pooledObjectParent; // Sert de "poubelle" pour toutes les instances invoquées et non encore utilisées
+	public static Transform pooledObjectParent; // Sert de "poubelle" pour toutes les instances invoquées et non encore utilisées
 
 	public List<PoolingScript> poolCollection;
-	//private Dictionary<string, List<PoolingScript>> indexedPools = new Dictionary<string, List<PoolingScript>>();
+
 	private Dictionary<string, OrderedPools> indexedPools = new Dictionary<string, OrderedPools>();
 	private static Dictionary<string, PoolingScript> pools = new Dictionary<string, PoolingScript>();
 
 	void Awake() {
 		if (current == null) {
 			current = this;
+			pooledObjectParent = GameObject.Find ("PooledObjects").transform;
 			DontDestroyOnLoad (gameObject);
 		} else if (current != this) {
 			Destroy (gameObject);
@@ -31,6 +32,11 @@ public class PoolingManager : MonoBehaviour {
 
 		indexedPools.Clear ();
 		pools.Clear ();
+
+		// On nettoie tout pour éviter qu'il y ait des blocs actifs quand on reboot
+		foreach (Transform obj in pooledObjectParent.GetComponentInChildren<Transform> ()) {
+			obj.gameObject.SetActive (false);
+		}
 
 		foreach(PoolingScript pool in poolCollection)
 		{

@@ -20,6 +20,7 @@ public class MainMenuManager : MonoBehaviour {
 	public GameObject wNewGame;
 
     public Button bOptions;
+	public GameObject wOptionPanel;
 	public Text tMusic;
 	public Text tMusicValue;
 	public Slider sMusic;
@@ -110,6 +111,15 @@ public class MainMenuManager : MonoBehaviour {
 		// Demander confirmation avant de charger
 		if (GameData.gameData.existingGame)
 			wNewGame.SetActive (true);
+		else {
+			// Lancement du premier niveau si on a valider le message de confirmation
+			_GameData.currentLevel = 1;
+			_GameData.currentDifficulty = 0; // TODO difficulté : v2
+			_GameData.isStory = true;
+			_GameData.currentLevelName = GameData.gameData.playerData.levelData [0].levelName;
+
+			LoadLevel (1);
+		}
     }
 
 	public void NewGame_No_Click() {
@@ -230,8 +240,9 @@ public class MainMenuManager : MonoBehaviour {
 
         // On active tout l'arbre descendant suivant le menu
        if (menu == bOptions) {
-			tMusic.gameObject.SetActive (true);
-			tSfx.gameObject.SetActive (true);
+			wOptionPanel.SetActive (true);
+			//tMusic.gameObject.SetActive (true);
+			//tSfx.gameObject.SetActive (true);
 		}
     }
 
@@ -241,8 +252,9 @@ public class MainMenuManager : MonoBehaviour {
 			bOptions.GetComponentInChildren<Text> ().color = colorMenuNormal;
 			bQuit.GetComponentInChildren<Text> ().color = colorMenuNormal;
 
-			tMusic.gameObject.SetActive (false);
-			tSfx.gameObject.SetActive (false);
+			wOptionPanel.SetActive (false);
+			//tMusic.gameObject.SetActive (false);
+			//tSfx.gameObject.SetActive (false);
 
 			if (!GameData.gameData.existingGame)
 				bContinue.gameObject.SetActive (false);

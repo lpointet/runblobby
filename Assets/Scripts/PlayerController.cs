@@ -40,7 +40,7 @@ public class PlayerController : Character {
 	// Calculé à partir des formules de portée et de hauteur max en partant des conditions initiales
 	// Permet de conserver une hauteur et une distance constante des sauts pour toutes les vitesses horizontales
 	private const float maxJumpHeight = 3;
-	private const float jumpDistance = 4;
+	private const float jumpDistance = 6;
 	private const float constJump = 4 * maxJumpHeight / jumpDistance;
 	private const float constGravity = 0.5f / maxJumpHeight / 10f;
 

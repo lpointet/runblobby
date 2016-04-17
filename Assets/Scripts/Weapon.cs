@@ -26,12 +26,12 @@ public class Weapon : MonoBehaviour {
 		if (TimeManager.paused)
             return;
 
-        if (fireRate == 0) {
-			if (Input.GetMouseButtonDown (0)) {
+		if (fireRate == 0) {
+			if (Input.GetMouseButtonDown (0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight()) {
 				Shoot ();
 			}
 		} else {
-			if ( ( autoFire || Input.GetMouseButton (0) ) && TimeManager.time > timeToFire ) {
+			if ( ( autoFire || Input.GetMouseButton (0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight()) && TimeManager.time > timeToFire ) {
 				timeToFire = TimeManager.time + 1/fireRate;
 				Shoot();
 			}

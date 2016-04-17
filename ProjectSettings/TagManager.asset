@@ -7,6 +7,7 @@ TagManager:
   - GameMaster
   - Bullet
   - LevelCanvas
+  - SFX
   layers:
   - Default
   - TransparentFX

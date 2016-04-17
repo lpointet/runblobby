@@ -6,11 +6,11 @@ public class Enemy : Character {
 	/**
 	 * Enemy Stats
 	 */
-	[SerializeField] private float distanceToKill;
-	[SerializeField] private int damageToGive;
-	[SerializeField] private int pointScore;
-	[SerializeField] private string firstName;
-	[SerializeField] private string surName;
+	public float distanceToKill;
+	public int damageToGive;
+	public int pointScore;
+	public string firstName;
+	public string surName;
 	/* End of Stats */
 
 	protected Rigidbody2D myRb;
@@ -168,7 +168,7 @@ public class Enemy : Character {
 
 	protected virtual void GainExp() {
 		int pointDistance = Mathf.CeilToInt(LevelManager.levelManager.GetEnemyDistanceToKill () / 20);
-		int pointBoss = 10 + LevelManager.levelManager.GetCurrentLevel (); // TODO ajuster selon l'xp
+		int pointBoss = 10 + LevelManager.levelManager.GetCurrentLevel (); // XP pour les boss, par défaut, à changer pour les boss finaux
 		ScoreManager.AddPoint (pointDistance + pointBoss, ScoreManager.Types.Experience);
 	}
 
@@ -204,6 +204,7 @@ public class Enemy : Character {
 			firstElement = 0;
 		// On créé le tableau des pièces utilisables
 		possibleCoins = new CoinDrop[tabSize];
+
 		for (int i = 0; i < tabSize; i++) {
 			// On calcule les valeurs 'moyennes' entre les valeurs exactes des pièces
 			// Ceci permet d'utiliser la loi de Poisson pour le calcul de probabilité d'apparition des pièces
@@ -250,8 +251,8 @@ public class Enemy : Character {
 
 							coin.gameObject.SetActive (true);
 
-							coin.transform.position = new Vector2 (myTransform.position.x, hit.transform.position.y + 0.25f);
 							coin.transform.parent = hit.transform;
+							coin.transform.position = new Vector2 (myTransform.position.x, hit.transform.position.y + 0.25f);
 
 							mediumSum += mediumValue;
 							currentSum += possibleCoins [i].GetCoinValue ();

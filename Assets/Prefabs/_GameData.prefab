@@ -89,8 +89,8 @@ MonoBehaviour:
     storyData:
     - scoreRecord: 0
       distanceRecord: 150
-      distanceMax: 500
-      isBossDead: 1
+      distanceMax: 1000
+      isBossDead: 0
     - scoreRecord: 0
       distanceRecord: 0
       distanceMax: 800

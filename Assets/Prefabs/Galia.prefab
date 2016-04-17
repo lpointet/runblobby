@@ -291,7 +291,7 @@ MonoBehaviour:
   startPosition:
   - 12
   - 0.75
-  frequence: 0.01
+  frequence: 0.02
   mediumValue: 2.1
   layerGround:
     serializedVersion: 2

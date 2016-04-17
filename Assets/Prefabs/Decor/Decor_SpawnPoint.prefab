@@ -47,9 +47,10 @@ MonoBehaviour:
   - {fileID: 106504, guid: 7b2966fb026df8642b8928ef17448030, type: 2}
   - {fileID: 194370, guid: ac07efcd477cedf43ae2aa3e54ae1d9b, type: 2}
   - {fileID: 137574, guid: 05c391e0db7a9764191fa08fa32a228f, type: 2}
-  listDecorProba: 0f0000000f0000000f0000000f0000000a0000000a00000001000000
+  - {fileID: 176532, guid: 25b0800cfad66f74b847ac88ae025a5f, type: 2}
+  - {fileID: 143080, guid: 05e3120da8d7bf1418923e7884107cbc, type: 2}
+  listDecorProba: 0f0000000f0000000f0000000f0000000a00000005000000010000009600000096000000
   probaApparition: 75
-  caseDispo: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -139,12 +139,18 @@ public static class _StaticFunction {
 		}
 	}
 
+	private const float aCoeffXP = 11750;
+	private const float bCoeffXP = 0.01f;
+	private const float cCoeffXP = -11800;
+
+	// Level = (1 / b) * ln ((xp - c) / a)
 	public static int LevelFromExp(int experience) {
-		return Mathf.FloorToInt (experience / 100.0f); // TODO adapter la règle en fonction de l'xp
+		return Mathf.FloorToInt ((1 / bCoeffXP) * Mathf.Log((experience - cCoeffXP) / aCoeffXP)); // XP Level depuis expérience
 	}
 
+	// Experience = a * exp(b * lvl) + c
 	public static int ExpFromLevel(int level) {
-		return Mathf.FloorToInt (level * 100.0f); // TODO adapter la règle en fonction de l'xp
+		return Mathf.CeilToInt (aCoeffXP * Mathf.Exp(bCoeffXP * level) + cCoeffXP); // XP Expérience depuis level
 	}
 
 	/** 

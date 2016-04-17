@@ -5,7 +5,7 @@ public class CloudBlock : MonoBehaviour {
 	public static bool nuageActif = false;
     private bool thisNuageActif = false;
 
-	private SpriteRenderer mySprite;
+	private SpriteRenderer mySprite; // Nécessité de prendre un enfant, pour que le scale ne modifie pas aussi le collider
 	private Transform mySpriteTransform;
 	private BoxCollider2D myCollider;
 

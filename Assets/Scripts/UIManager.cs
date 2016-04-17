@@ -28,9 +28,9 @@ public class UIManager : MonoBehaviour {
 	public Text enemySurname;
 
 	// Barre de vie
-	public GameObject healthBar;
-	public Image fillHealthBar;
 	private float lerpingTimeEnemyBar = 0f;
+	public Slider enemyHealthBar;
+	private float previousHP = 0;
 
 	[Header("Pause Menu")]
 	public GameObject pauseUI;
@@ -145,10 +145,10 @@ public class UIManager : MonoBehaviour {
         MeterTextManager();
 		if (LevelManager.levelManager.IsStory ())
 			MeterBarManager ();
+    
+		EnemyManager();
 
 		EnemySpawnManager();
-    
-        EnemyManager();
     }
 
     public void PauseManager() { 
@@ -173,10 +173,10 @@ public class UIManager : MonoBehaviour {
 
 			// On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
 			lerpingTimeEnemyBar += TimeManager.deltaTime / LevelManager.levelManager.enemySpawnDelay;
-			fillHealthBar.fillAmount = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
+			enemyHealthBar.value = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
 
-			if (fillHealthBar.fillAmount == 1) {
-				lerpingTimeEnemyBar = 0;
+			if (enemyHealthBar.value == 1) {
+				enemyHealthBar.value = 1;
 				LevelManager.levelManager.SetEnemyToSpawn (false); // On sort de la boucle d'apparition
 			}
 
@@ -208,15 +208,29 @@ public class UIManager : MonoBehaviour {
 		movingText.rectTransform.anchoredPosition = new Vector2 (posCurrent, movingText.rectTransform.anchoredPosition.y);
 	}
 
-    private void EnemyManager() {
-        if( null != enemyEnCours ) {
-            if( !enemyGUIActive ) {
-                ToggleEnemyGUI( true );
-            }
-           fillHealthBar.fillAmount = enemyEnCours.GetHealthPoint() / (float)enemyEnCours.GetHealthPointMax();
+	private void EnemyManager() {
+		if( null != enemyEnCours ) {
+			if (!enemyGUIActive) {
+				ToggleEnemyGUI( true );
+				 // TODO pourquoi est-ce qu'on perd une frame ?
+			}
+			float realRatioHP = enemyEnCours.GetHealthPoint() / (float)enemyEnCours.GetHealthPointMax();
+
+			// Si la valeur courante de la barre est plus haute que la valeur réelle des PV, on la fait descendre
+			if (enemyHealthBar.value > realRatioHP) {
+				lerpingTimeEnemyBar += TimeManager.deltaTime / 1f;
+				enemyHealthBar.value = Mathf.Lerp (previousHP, realRatioHP, lerpingTimeEnemyBar);
+			}
+			// Sinon, on reboot le timer pour la prochaine fois
+			else {
+				previousHP = realRatioHP;
+				enemyHealthBar.value = realRatioHP;
+				lerpingTimeEnemyBar = 0;
+			}
         }
         else if( !LevelManager.levelManager.IsEnemyToSpawn() && enemyGUIActive ) {
-            ToggleEnemyGUI( false );
+			enemyHealthBar.value = 0;
+			ToggleEnemyGUI( false );
         }
     }
 
@@ -250,10 +264,11 @@ public class UIManager : MonoBehaviour {
 
     private void ToggleEnemyGUI( bool active ) {
         enemyGUIActive = active;
-        foreach (Transform obj in healthBar.transform)
-            obj.gameObject.SetActive( active );
+
 		enemyName.gameObject.SetActive (active);
 		enemySurname.gameObject.SetActive (active);
+
+		enemyHealthBar.gameObject.SetActive (active);
     }
 
 	public void ToggleEndMenu(bool active) {
@@ -376,9 +391,21 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void Rejouer_Click() {
+		sfxSound.ButtonYesClick ();
 		if (paused)
 			Time.timeScale = initialTimeScale;
 		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
+	}
+
+	public void Next_Click() {
+		if (paused)
+			Time.timeScale = initialTimeScale;
+		// TODO Vérifier qu'on lance bien Arcade si Arcade, et la difficulté idem
+		int nextLevel = SceneManager.GetActiveScene ().buildIndex + 1;
+		if (nextLevel <= SceneManager.sceneCount)
+			SceneManager.LoadScene (nextLevel);
+		else
+			List_Click ();	
 	}
 	
 	public void Home_Click() {
@@ -387,7 +414,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void List_Click() {
-		sfxSound.ButtonYesClick ();
+		//sfxSound.ButtonYesClick ();
 		_GameData.loadListLevel = true; // On demande à charger le menu du jeu (liste des levels)
 		SceneManager.LoadScene (0);
 	}

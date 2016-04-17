@@ -14,6 +14,7 @@ public class TimeManager : MonoBehaviour {
 		
 		deltaTime = 0;
 		time = 0;
+		Time.timeScale = 3;
 		paused = false;
 	}
 
