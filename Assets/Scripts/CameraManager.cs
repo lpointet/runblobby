@@ -73,6 +73,11 @@ public class CameraManager : MonoBehaviour {
 		sizeCameraMinWidth = unitsInWidth / (2f * Camera.main.aspect);
 		//sizeCameraPixelPerfect = Screen.height / 64.0f / 2.0f; // 64 et non 32 pour éviter que ce soit trop petit sur un smartphone
 
+		// On ne doit pas être plus bas qu'une certaine orthographicSize, sinon la hauteur ne sera plus suffisante pour les sauts les plus hauts
+		// 6.5 est la valeur qui permet de sauter avec la plateforme le plus haut possible
+		if (sizeCameraMinWidth < 6.5f)
+			sizeCameraMinWidth = 6.5f;
+
 		// On ajuste l'ortho selon la logique : il vaut mieux déformer les pixels mais avoir une bonne vision devant soi
 		//Camera.main.orthographicSize = sizeCameraMinWidth > sizeCameraPixelPerfect ? sizeCameraMinWidth : sizeCameraPixelPerfect;
 		Camera.main.orthographicSize = sizeCameraMinWidth;

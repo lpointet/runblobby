@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: cb3278e41cca8ec41ba9ec44daae88ab
-timeCreated: 1451423834
+timeCreated: 1461082680
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -44,6 +44,15 @@ TextureImporter:
     21300074: Blobby_37
     21300076: Blobby_38
     21300078: Blobby_39
+    21300080: Blobby_40
+    21300082: Blobby_41
+    21300084: Blobby_42
+    21300086: Blobby_43
+    21300088: Blobby_44
+    21300090: Blobby_45
+    21300092: Blobby_46
+    21300094: Blobby_47
+    21300096: Blobby_48
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -67,7 +76,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 256
+  maxTextureSize: 128
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -84,7 +93,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -94,755 +103,541 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 224
-        width: 32
-        height: 32
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -15, y: 7}
-        - {x: -16, y: 3}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 1}
-        - {x: 14, y: 7}
+      outline: []
     - name: Blobby_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 224
-        width: 32
-        height: 32
+        x: 16
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -7, y: 10}
-        - {x: -16, y: 1}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 7}
-        - {x: 8, y: 10}
+      outline: []
     - name: Blobby_2
       rect:
         serializedVersion: 2
-        x: 64
-        y: 224
-        width: 32
-        height: 32
+        x: 32
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -4, y: 12}
-        - {x: -16, y: -2}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 3}
-        - {x: 9, y: 12}
+      outline: []
     - name: Blobby_3
       rect:
         serializedVersion: 2
-        x: 96
-        y: 224
-        width: 32
-        height: 32
+        x: 48
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -7, y: 10}
-        - {x: -16, y: 1}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 7}
-        - {x: 8, y: 10}
+      outline: []
     - name: Blobby_4
       rect:
         serializedVersion: 2
-        x: 128
-        y: 224
-        width: 32
-        height: 32
+        x: 64
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -15, y: 3}
-        - {x: -16, y: 0}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -2}
-        - {x: 11, y: 3}
+      outline: []
     - name: Blobby_5
       rect:
         serializedVersion: 2
-        x: 160
-        y: 224
-        width: 32
-        height: 32
+        x: 80
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 2}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 2}
+      outline: []
     - name: Blobby_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
-        width: 32
-        height: 32
+        x: 96
+        y: 112
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5, y: 10}
-        - {x: -14, y: 3}
-        - {x: -15, y: 1}
-        - {x: -15, y: -16}
-        - {x: 15, y: -16}
-        - {x: 15, y: 8}
-        - {x: 7, y: 10}
+      outline: []
     - name: Blobby_7
       rect:
         serializedVersion: 2
-        x: 32
-        y: 192
-        width: 32
-        height: 32
+        x: 0
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 15, y: 16}
-        - {x: -5, y: 16}
-        - {x: -12, y: -2}
-        - {x: -12, y: -14}
-        - {x: -9, y: -16}
-        - {x: 8, y: -16}
-        - {x: 14, y: -12}
-        - {x: 16, y: -5}
-        - {x: 16, y: 13}
+      outline: []
     - name: Blobby_8
       rect:
         serializedVersion: 2
-        x: 64
-        y: 192
-        width: 32
-        height: 32
+        x: 16
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -10, y: 13}
-        - {x: -14, y: 4}
-        - {x: -14, y: -10}
-        - {x: -9, y: -16}
-        - {x: 12, y: -16}
-        - {x: 16, y: -11}
-        - {x: 16, y: 9}
-        - {x: 14, y: 13}
+      outline: []
     - name: Blobby_9
       rect:
         serializedVersion: 2
-        x: 96
-        y: 192
-        width: 32
-        height: 32
+        x: 32
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -14, y: 13}
-        - {x: -16, y: 8}
-        - {x: -16, y: -10}
-        - {x: -12, y: -11}
-        - {x: 14, y: -11}
-        - {x: 16, y: -9}
-        - {x: 16, y: 11}
-        - {x: 15, y: 13}
+      outline: []
     - name: Blobby_10
       rect:
         serializedVersion: 2
-        x: 128
-        y: 192
-        width: 32
-        height: 32
+        x: 48
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: 13}
-        - {x: -14, y: 11}
-        - {x: -14, y: -9}
-        - {x: -11, y: -16}
-        - {x: 7, y: -16}
-        - {x: 14, y: -7}
-        - {x: 14, y: 12}
-        - {x: 11, y: 13}
+      outline: []
     - name: Blobby_11
       rect:
         serializedVersion: 2
-        x: 160
-        y: 192
-        width: 32
-        height: 32
+        x: 64
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5, y: 16}
-        - {x: -11, y: 13}
-        - {x: -11, y: -16}
-        - {x: 14, y: -16}
-        - {x: 14, y: 8}
-        - {x: 10, y: 16}
+      outline: []
     - name: Blobby_12
       rect:
         serializedVersion: 2
-        x: 192
-        y: 192
-        width: 32
-        height: 32
+        x: 80
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 10, y: 10}
-        - {x: -9, y: 10}
-        - {x: -14, y: 3}
-        - {x: -14, y: -12}
-        - {x: -12, y: -16}
-        - {x: 12, y: -16}
-        - {x: 16, y: -13}
-        - {x: 16, y: -1}
-        - {x: 14, y: 4}
+      outline: []
     - name: Blobby_13
       rect:
         serializedVersion: 2
-        x: 0
-        y: 160
-        width: 32
-        height: 32
+        x: 96
+        y: 96
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 11, y: 0}
-        - {x: 8, y: -3}
-        - {x: 8, y: -5}
-        - {x: 6, y: -3}
-        - {x: 3, y: -3}
-        - {x: 7, y: -3}
-        - {x: 10, y: 0}
-        - {x: 13, y: 5}
-        - {x: 13, y: 6}
-        - {x: 11, y: 9}
-        - {x: 7, y: 9}
-        - {x: -1, y: 7}
-        - {x: -16, y: 6}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -1}
-        - {x: 13, y: 0}
-      - - {x: -8, y: 12}
-        - {x: -11, y: 9}
-        - {x: -11, y: 6}
-        - {x: -8, y: 4}
-        - {x: -4, y: 4}
-        - {x: -3, y: 6}
-        - {x: -3, y: 11}
-        - {x: -6, y: 12}
-      - - {x: 6, y: 8}
-        - {x: 9, y: 9}
-        - {x: 9, y: 12}
-        - {x: 6, y: 13}
-        - {x: 4, y: 11}
+      outline: []
     - name: Blobby_14
       rect:
         serializedVersion: 2
-        x: 32
-        y: 160
-        width: 32
-        height: 32
+        x: 0
+        y: 80
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 14, y: 9}
-        - {x: -16, y: 9}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 2}
-      - - {x: 6, y: 5}
-        - {x: 9, y: 6}
-        - {x: 9, y: 9}
-        - {x: 6, y: 10}
-        - {x: 4, y: 8}
+      outline: []
     - name: Blobby_15
       rect:
         serializedVersion: 2
-        x: 64
-        y: 160
-        width: 32
-        height: 32
+        x: 16
+        y: 80
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 11, y: 3}
-        - {x: -13, y: 3}
-        - {x: -16, y: -5}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -7}
-        - {x: 15, y: -3}
+      outline: []
     - name: Blobby_16
       rect:
         serializedVersion: 2
-        x: 96
-        y: 160
-        width: 32
-        height: 32
+        x: 32
+        y: 80
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -11, y: -8}
-        - {x: -16, y: -10}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -8}
+      outline: []
     - name: Blobby_17
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
-        width: 32
-        height: 32
+        x: 48
+        y: 80
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 10, y: 6}
-        - {x: -11, y: 6}
-        - {x: -16, y: 1}
-        - {x: -16, y: -16}
-        - {x: 13, y: -16}
-        - {x: 16, y: -13}
-        - {x: 16, y: -3}
-        - {x: 13, y: 5}
+      outline: []
     - name: Blobby_18
       rect:
         serializedVersion: 2
-        x: 32
-        y: 128
-        width: 32
-        height: 32
+        x: 64
+        y: 80
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 0}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -4}
-        - {x: 14, y: 0}
+      outline: []
     - name: Blobby_19
       rect:
         serializedVersion: 2
-        x: 64
-        y: 128
-        width: 32
-        height: 32
+        x: 80
+        y: 80
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 4, y: -4}
-        - {x: -12, y: -4}
-        - {x: -16, y: -10}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -8}
-        - {x: 15, y: -8}
+      outline: []
     - name: Blobby_20
       rect:
         serializedVersion: 2
         x: 96
-        y: 128
-        width: 32
-        height: 32
+        y: 80
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 1, y: -4}
-        - {x: -8, y: -4}
-        - {x: -16, y: -12}
-        - {x: -16, y: -14}
-        - {x: -15, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -8}
-        - {x: 9, y: -5}
+      outline: []
     - name: Blobby_21
       rect:
         serializedVersion: 2
-        x: 128
-        y: 128
-        width: 32
-        height: 32
+        x: 112
+        y: 80
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 12, y: -7}
-        - {x: -14, y: -7}
-        - {x: -14, y: -16}
-        - {x: 15, y: -16}
-        - {x: 16, y: -15}
-        - {x: 16, y: -10}
+      outline: []
     - name: Blobby_22
       rect:
         serializedVersion: 2
-        x: 160
-        y: 128
-        width: 32
-        height: 32
+        x: 0
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: -8}
-        - {x: -15, y: -12}
-        - {x: -15, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: -9}
-        - {x: 9, y: -8}
+      outline: []
     - name: Blobby_23
       rect:
         serializedVersion: 2
-        x: 0
-        y: 96
-        width: 32
-        height: 32
+        x: 16
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -15, y: 7}
-        - {x: -16, y: 4}
-        - {x: -16, y: -15}
-        - {x: -14, y: -16}
-        - {x: 14, y: -16}
-        - {x: 16, y: -15}
-        - {x: 16, y: 3}
-        - {x: 7, y: 7}
+      outline: []
     - name: Blobby_24
       rect:
         serializedVersion: 2
         x: 32
-        y: 96
-        width: 32
-        height: 32
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 11}
-        - {x: -16, y: -10}
-        - {x: -8, y: -16}
-        - {x: 4, y: -16}
-        - {x: 16, y: -9}
-        - {x: 16, y: 11}
+      outline: []
     - name: Blobby_25
       rect:
         serializedVersion: 2
-        x: 64
-        y: 96
-        width: 32
-        height: 32
+        x: 48
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -9, y: 14}
-        - {x: -14, y: 13}
-        - {x: -16, y: 12}
-        - {x: -16, y: -5}
-        - {x: -15, y: -8}
-        - {x: 15, y: -8}
-        - {x: 16, y: -4}
-        - {x: 16, y: 12}
-        - {x: 13, y: 14}
+      outline: []
     - name: Blobby_26
       rect:
         serializedVersion: 2
-        x: 96
-        y: 96
-        width: 32
-        height: 32
+        x: 64
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -15, y: 16}
-        - {x: -16, y: 12}
-        - {x: -16, y: -1}
-        - {x: -11, y: -4}
-        - {x: -1, y: -4}
-        - {x: 14, y: -3}
-        - {x: 16, y: -1}
-        - {x: 16, y: 11}
-        - {x: 14, y: 16}
+      outline: []
     - name: Blobby_27
       rect:
         serializedVersion: 2
-        x: 128
-        y: 96
-        width: 32
-        height: 32
+        x: 80
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 4, y: 16}
-        - {x: 5, y: 13}
-        - {x: 10, y: 11}
-        - {x: -3, y: 16}
-        - {x: -15, y: 16}
-        - {x: -16, y: 15}
-        - {x: -16, y: -1}
-        - {x: 16, y: -1}
-        - {x: 16, y: 15}
-        - {x: 14, y: 16}
+      outline: []
     - name: Blobby_28
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_29
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_30
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_31
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_32
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_33
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_34
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_35
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_36
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_37
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_38
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_39
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_40
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_41
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -1, y: 6}
-        - {x: -5, y: 2}
-        - {x: -5, y: -1}
-        - {x: -2, y: -5}
-        - {x: 2, y: -5}
-        - {x: 6, y: -1}
-        - {x: 6, y: 2}
-        - {x: 2, y: 6}
-    - name: Blobby_29
+      outline: []
+    - name: Blobby_42
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_43
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5, y: -6}
-        - {x: -1, y: -6}
-        - {x: 6, y: -4}
-        - {x: 6, y: 6}
-        - {x: -1, y: 6}
-        - {x: -6, y: 3}
-        - {x: -6, y: -4}
-    - name: Blobby_30
+      outline: []
+    - name: Blobby_44
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_45
       rect:
         serializedVersion: 2
         x: 64
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -7, y: 6}
-        - {x: -8, y: 5}
-        - {x: -8, y: 1}
-        - {x: -5, y: -5}
-        - {x: 2, y: -5}
-        - {x: 6, y: -3}
-        - {x: 6, y: 2}
-        - {x: 4, y: 6}
-    - name: Blobby_31
+      outline: []
+    - name: Blobby_46
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Blobby_47
       rect:
         serializedVersion: 2
         x: 96
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -6, y: 2}
-        - {x: -4, y: -5}
-        - {x: 6, y: -5}
-        - {x: 6, y: 2}
-        - {x: 3, y: 7}
-        - {x: -4, y: 7}
-        - {x: -6, y: 6}
-    - name: Blobby_32
+      outline: []
+    - name: Blobby_48
       rect:
         serializedVersion: 2
-        x: 128
+        x: 112
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -3, y: 6}
-        - {x: -5, y: 4}
-        - {x: -5, y: -1}
-        - {x: -3, y: -5}
-        - {x: 2, y: -5}
-        - {x: 6, y: -1}
-        - {x: 6, y: 2}
-        - {x: 2, y: 6}
-    - name: Blobby_33
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -1, y: 6}
-        - {x: -5, y: 4}
-        - {x: -5, y: -2}
-        - {x: -4, y: -5}
-        - {x: 2, y: -5}
-        - {x: 6, y: -1}
-        - {x: 6, y: 3}
-        - {x: 3, y: 6}
-    - name: Blobby_34
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -3, y: 7}
-        - {x: -4, y: 3}
-        - {x: -4, y: -4}
-        - {x: 0, y: -6}
-        - {x: 3, y: -6}
-        - {x: 6, y: -2}
-        - {x: 6, y: 4}
-        - {x: 2, y: 7}
-    - name: Blobby_35
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5, y: 6}
-        - {x: -5, y: -4}
-        - {x: -4, y: -5}
-        - {x: 3, y: -5}
-        - {x: 6, y: -4}
-        - {x: 6, y: 4}
-        - {x: 2, y: 6}
-    - name: Blobby_36
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5, y: 14}
-        - {x: -14, y: 9}
-        - {x: -16, y: -2}
-        - {x: -16, y: -14}
-        - {x: -14, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 4}
-        - {x: 13, y: 14}
-    - name: Blobby_37
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -6, y: 14}
-        - {x: -16, y: 11}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 6}
-        - {x: 14, y: 14}
-    - name: Blobby_38
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -12, y: 14}
-        - {x: -16, y: 4}
-        - {x: -16, y: -16}
-        - {x: 15, y: -16}
-        - {x: 16, y: -14}
-        - {x: 16, y: 7}
-        - {x: 7, y: 14}
-    - name: Blobby_39
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 160
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -5, y: 14}
-        - {x: -14, y: 9}
-        - {x: -16, y: 0}
-        - {x: -16, y: -16}
-        - {x: 15, y: -16}
-        - {x: 16, y: -12}
-        - {x: 16, y: 8}
-        - {x: 9, y: 14}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

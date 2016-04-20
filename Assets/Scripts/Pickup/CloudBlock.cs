@@ -71,7 +71,8 @@ public class CloudBlock : MonoBehaviour {
 		
 		mySprite.enabled = actif;
         myCollider.isTrigger = !actif;
-		thisNuageActif = nuageActif;
+		//thisNuageActif = nuageActif;
+		thisNuageActif = actif;
 
 		timeToPop = TimeManager.time + delayToPop;
 	}

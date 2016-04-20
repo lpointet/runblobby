@@ -85,7 +85,7 @@ public class Character : MonoBehaviour {
 
     void Start() {
 		Init();
-		SetMaxHeight (Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager> ().yOffset - 2);
+		SetMaxHeight (Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager> ().yOffset - 1.5f);
 	}
 	
 	protected virtual void Init() {

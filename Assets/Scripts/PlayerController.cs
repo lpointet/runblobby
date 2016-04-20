@@ -35,7 +35,7 @@ public class PlayerController : Character {
 
 	// Concerne le saut
     private float initialGravityScale;
-    private float initialJumpHeight;
+    private float initialJumpHeight; // TODO à supprimer ?
     
 	// Calculé à partir des formules de portée et de hauteur max en partant des conditions initiales
 	// Permet de conserver une hauteur et une distance constante des sauts pour toutes les vitesses horizontales
@@ -190,7 +190,7 @@ public class PlayerController : Character {
 
 		isFlying = false;
         wasFlying = false;
-		SetZeroGravFlying (false); // TODO doit provenir de l'arbre des talents (v2)
+		SetZeroGravFlying (true); // TODO doit provenir de l'arbre des talents (v2)
     }
 	
 	void FixedUpdate() {
@@ -231,9 +231,10 @@ public class PlayerController : Character {
 			myRb.gravityScale = GetJumpHeight () * GetJumpHeight () * constGravity;
 		}
 
-		// Permet de suivre le "doigt" du joueur quand il vole en zéro gravité
-		if (IsFlying() && IsZeroGravFlying ()) {
-			if (Input.GetMouseButton (0)) {
+		// Action de voler
+		if (IsFlying() && Input.GetMouseButton (0)) {
+			// Permet de suivre le "doigt" du joueur quand il vole en zéro gravité
+			if (IsZeroGravFlying ()) {
 				float cameraCursorY = Camera.main.ScreenToWorldPoint (Input.mousePosition).y;
 
 				// On ne bouge que si le curseur est suffisament loin du joueur (pour éviter des zigzags)
@@ -241,9 +242,11 @@ public class PlayerController : Character {
 					myRb.velocity = new Vector2 (0, Mathf.Sign ((cameraCursorY - myTransform.position.y)) * 1.5f);
 				else
 					myRb.velocity = Vector2.zero;
-			} else { // Si on n'appuie pas, on ne bouge pas
-				myRb.velocity = Vector2.zero;
+			} else { // En vol normal, tant qu'on appuie, le joueur "monte"
+				myRb.velocity = new Vector2 (0, 1.5f);
 			}
+		} else if (IsFlying() && IsZeroGravFlying ()) { // Si on n'appuie pas, on ne bouge pas
+			myRb.velocity = Vector2.zero;
 		}
 
 		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
@@ -271,10 +274,10 @@ public class PlayerController : Character {
 
             if (hit.collider != null)
             {
-                Collider2D[] colliderHits = new Collider2D[5];
+                Collider2D[] colliderHits = new Collider2D[10];
                 int nbCollider;
-                // Si on touche quelque chose, on allume les 5 cases autour si ce sont des nuages
-                nbCollider = Physics2D.OverlapAreaNonAlloc(new Vector2(hit.point.x - 0.5f, hit.point.y - 0.4f), new Vector2(hit.point.x + 3.5f, hit.point.y + 0.4f), colliderHits, layerGround);
+                // Si on touche quelque chose, on allume les 10 cases autour si ce sont des nuages
+                nbCollider = Physics2D.OverlapAreaNonAlloc(new Vector2(hit.point.x - 0.5f, hit.point.y - 0.4f), new Vector2(hit.point.x + 8.5f, hit.point.y + 0.4f), colliderHits, layerGround);
                 for (int j = 0; j < nbCollider; j++)
                 {
                     cloudBlock = colliderHits[j].GetComponent<CloudBlock>();
@@ -288,21 +291,6 @@ public class PlayerController : Character {
 				wasFlying = false;
             }
         }
-	}
-
-	private IEnumerator ChangeSpeed(float newSpeed, float delay = 1) {
-		float oldSpeed = GetMoveSpeed ();
-		float acceleration = 0;
-
-		while (GetMoveSpeed () != newSpeed) {
-			acceleration += TimeManager.deltaTime / delay;
-			SetMoveSpeed (Mathf.Lerp (oldSpeed, newSpeed, acceleration));
-
-			if (GetMoveSpeed () >= newSpeed)
-				SetMoveSpeed (newSpeed);
-
-			yield return null;
-		}
 	}
 	
 	void OnGUI() {
@@ -392,13 +380,16 @@ public class PlayerController : Character {
 	}
 
     public void Fly() {
+		// On note la gravité actuelle
+		initialGravityScale = myRb.gravityScale;
+
         // Abaisser la gravité et la hauteur du saut
 		if (IsZeroGravFlying ()) {
 			myRb.gravityScale = 0;
 			SetJumpHeight (0);
 		} else {
-			myRb.gravityScale = 0.05f;
-			SetJumpHeight (1);
+			myRb.gravityScale = 0.1f;
+			SetJumpHeight (0);
 		}
 
 		// Augmenter la vitesse si pas déjà en vol
@@ -411,10 +402,10 @@ public class PlayerController : Character {
 		myAnim.SetTrigger ("parachute"); // Animation de "parachute" pendant le vol
 
 		// Faire décoller le joueur
-		Jump();
+		//Jump();
 
 		// Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
-		SetMaxDoubleJump( 1000 );
+		//SetMaxDoubleJump( 1000 );
     }
 
     public void Land() {
@@ -433,11 +424,29 @@ public class PlayerController : Character {
         //Jump();
 
 		// On fait atterrir le joueur avec le parachute
-		if (!IsGrounded ())
+		if (!IsGrounded ()) {
 			ActiveParachute (true);
+			// Rétablir une gravité "cohérente" avec un parachute
+			myRb.gravityScale = initialGravityScale / 3.5f;
+		}
 
 		myAnim.SetBool( "flying", isFlying );
     }
+
+	private IEnumerator ChangeSpeed(float newSpeed, float delay = 1) {
+		float oldSpeed = GetMoveSpeed ();
+		float acceleration = 0;
+
+		while (GetMoveSpeed () != newSpeed) {
+			acceleration += TimeManager.deltaTime / delay;
+			SetMoveSpeed (Mathf.Lerp (oldSpeed, newSpeed, acceleration));
+
+			if (GetMoveSpeed () >= newSpeed)
+				SetMoveSpeed (newSpeed);
+
+			yield return null;
+		}
+	}
 
     public void AttractCoins( float radius, LayerMask layerCoins ) {
         nbCoins = Physics2D.OverlapCircleNonAlloc( myTransform.position, radius, coins, layerCoins );
