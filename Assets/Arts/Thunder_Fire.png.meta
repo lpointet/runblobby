@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 2a55267c4f8de7a4ea45b4af9fa8ffe1
-timeCreated: 1456163762
+timeCreated: 1462547387
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -43,7 +43,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 128
+  maxTextureSize: 64
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -60,7 +60,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -70,446 +70,178 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 32
-        height: 32
+        y: 48
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 3, y: 28}
-        - {x: -8, y: 28}
-        - {x: -9, y: 27}
-        - {x: -14, y: 16}
-        - {x: -14, y: 2}
-        - {x: -13, y: 0}
-        - {x: 10, y: 0}
-        - {x: 12, y: 4}
-        - {x: 12, y: 18}
-        - {x: 9, y: 25}
-      - - {x: 2, y: 32}
-        - {x: 2, y: 30}
-        - {x: 4, y: 28}
-        - {x: 5, y: 28}
-        - {x: 8, y: 31}
-        - {x: 8, y: 32}
+      outline: []
     - name: Thunder_Fire_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 96
-        width: 32
-        height: 32
+        x: 16
+        y: 48
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 4, y: 30}
-        - {x: -11, y: 30}
-        - {x: -16, y: 19}
-        - {x: -16, y: 10}
-        - {x: -12, y: 2}
-        - {x: -10, y: 0}
-        - {x: 12, y: 0}
-        - {x: 15, y: 7}
-        - {x: 15, y: 16}
-        - {x: 7, y: 29}
+      outline: []
     - name: Thunder_Fire_2
       rect:
         serializedVersion: 2
-        x: 64
-        y: 96
-        width: 32
-        height: 32
+        x: 32
+        y: 48
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -2, y: 30}
-        - {x: -14, y: 22}
-        - {x: -14, y: 3}
-        - {x: -12, y: 0}
-        - {x: 13, y: 0}
-        - {x: 16, y: 1}
-        - {x: 16, y: 24}
-        - {x: 14, y: 30}
-      - - {x: -15, y: 22}
-        - {x: -15, y: 20}
-        - {x: -13, y: 18}
-        - {x: -11, y: 18}
-        - {x: -8, y: 20}
-        - {x: -7, y: 24}
-        - {x: -10, y: 26}
-      - - {x: -7, y: 32}
-        - {x: -7, y: 30}
-        - {x: -4, y: 27}
-        - {x: -1, y: 28}
-        - {x: -1, y: 32}
+      outline: []
     - name: Thunder_Fire_3
       rect:
         serializedVersion: 2
-        x: 96
-        y: 96
-        width: 32
-        height: 32
+        x: 48
+        y: 48
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: 26}
-        - {x: -13, y: 0}
-        - {x: 14, y: 0}
-        - {x: 14, y: 21}
-        - {x: 11, y: 26}
-      - - {x: -13, y: 26}
-        - {x: -14, y: 23}
-        - {x: -14, y: 20}
-        - {x: -11, y: 19}
-        - {x: -10, y: 19}
-        - {x: -7, y: 20}
-        - {x: -7, y: 24}
-        - {x: -8, y: 26}
-      - - {x: 5, y: 32}
-        - {x: 3, y: 30}
-        - {x: 3, y: 28}
-        - {x: 5, y: 26}
-        - {x: 8, y: 26}
-        - {x: 10, y: 28}
-        - {x: 10, y: 29}
-        - {x: 7, y: 32}
+      outline: []
     - name: Thunder_Fire_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
-        width: 32
-        height: 32
+        y: 32
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 3, y: 28}
-        - {x: -8, y: 28}
-        - {x: -9, y: 27}
-        - {x: -14, y: 16}
-        - {x: -14, y: 2}
-        - {x: -13, y: 0}
-        - {x: 10, y: 0}
-        - {x: 12, y: 4}
-        - {x: 12, y: 18}
-        - {x: 9, y: 25}
-      - - {x: 2, y: 32}
-        - {x: 2, y: 30}
-        - {x: 4, y: 28}
-        - {x: 5, y: 28}
-        - {x: 8, y: 31}
-        - {x: 8, y: 32}
+      outline: []
     - name: Thunder_Fire_5
       rect:
         serializedVersion: 2
-        x: 32
-        y: 64
-        width: 32
-        height: 32
+        x: 16
+        y: 32
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 4, y: 30}
-        - {x: -11, y: 30}
-        - {x: -16, y: 19}
-        - {x: -16, y: 10}
-        - {x: -12, y: 2}
-        - {x: -10, y: 0}
-        - {x: 12, y: 0}
-        - {x: 15, y: 7}
-        - {x: 15, y: 16}
-        - {x: 7, y: 29}
+      outline: []
     - name: Thunder_Fire_6
       rect:
         serializedVersion: 2
-        x: 64
-        y: 64
-        width: 32
-        height: 32
+        x: 32
+        y: 32
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -2, y: 30}
-        - {x: -14, y: 22}
-        - {x: -14, y: 3}
-        - {x: -12, y: 0}
-        - {x: 13, y: 0}
-        - {x: 16, y: 1}
-        - {x: 16, y: 24}
-        - {x: 14, y: 30}
-      - - {x: -15, y: 22}
-        - {x: -15, y: 20}
-        - {x: -13, y: 18}
-        - {x: -11, y: 18}
-        - {x: -8, y: 20}
-        - {x: -7, y: 24}
-        - {x: -10, y: 26}
-      - - {x: -7, y: 32}
-        - {x: -7, y: 30}
-        - {x: -4, y: 27}
-        - {x: -1, y: 28}
-        - {x: -1, y: 32}
+      outline: []
     - name: Thunder_Fire_7
       rect:
         serializedVersion: 2
-        x: 96
-        y: 64
-        width: 32
-        height: 32
+        x: 48
+        y: 32
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: 26}
-        - {x: -13, y: 0}
-        - {x: 14, y: 0}
-        - {x: 14, y: 21}
-        - {x: 11, y: 26}
-      - - {x: -13, y: 26}
-        - {x: -14, y: 23}
-        - {x: -14, y: 20}
-        - {x: -11, y: 19}
-        - {x: -10, y: 19}
-        - {x: -7, y: 20}
-        - {x: -7, y: 24}
-        - {x: -8, y: 26}
-      - - {x: 5, y: 32}
-        - {x: 3, y: 30}
-        - {x: 3, y: 28}
-        - {x: 5, y: 26}
-        - {x: 8, y: 26}
-        - {x: 10, y: 28}
-        - {x: 10, y: 29}
-        - {x: 7, y: 32}
+      outline: []
     - name: Thunder_Fire_8
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 32
-        height: 32
+        y: 16
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 3, y: 28}
-        - {x: -8, y: 28}
-        - {x: -9, y: 27}
-        - {x: -14, y: 16}
-        - {x: -14, y: 2}
-        - {x: -13, y: 0}
-        - {x: 10, y: 0}
-        - {x: 12, y: 4}
-        - {x: 12, y: 18}
-        - {x: 9, y: 25}
-      - - {x: 2, y: 32}
-        - {x: 2, y: 30}
-        - {x: 4, y: 28}
-        - {x: 5, y: 28}
-        - {x: 8, y: 31}
-        - {x: 8, y: 32}
+      outline: []
     - name: Thunder_Fire_9
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
+        x: 16
+        y: 16
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 4, y: 30}
-        - {x: -11, y: 30}
-        - {x: -16, y: 19}
-        - {x: -16, y: 10}
-        - {x: -12, y: 2}
-        - {x: -10, y: 0}
-        - {x: 12, y: 0}
-        - {x: 15, y: 7}
-        - {x: 15, y: 16}
-        - {x: 7, y: 29}
+      outline: []
     - name: Thunder_Fire_10
       rect:
         serializedVersion: 2
-        x: 64
-        y: 32
-        width: 32
-        height: 32
+        x: 32
+        y: 16
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -2, y: 30}
-        - {x: -14, y: 22}
-        - {x: -14, y: 3}
-        - {x: -12, y: 0}
-        - {x: 13, y: 0}
-        - {x: 16, y: 1}
-        - {x: 16, y: 24}
-        - {x: 14, y: 30}
-      - - {x: -15, y: 22}
-        - {x: -15, y: 20}
-        - {x: -13, y: 18}
-        - {x: -11, y: 18}
-        - {x: -8, y: 20}
-        - {x: -7, y: 24}
-        - {x: -10, y: 26}
-      - - {x: -7, y: 32}
-        - {x: -7, y: 30}
-        - {x: -4, y: 27}
-        - {x: -1, y: 28}
-        - {x: -1, y: 32}
+      outline: []
     - name: Thunder_Fire_11
       rect:
         serializedVersion: 2
-        x: 96
-        y: 32
-        width: 32
-        height: 32
+        x: 48
+        y: 16
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: 26}
-        - {x: -13, y: 0}
-        - {x: 14, y: 0}
-        - {x: 14, y: 21}
-        - {x: 11, y: 26}
-      - - {x: -13, y: 26}
-        - {x: -14, y: 23}
-        - {x: -14, y: 20}
-        - {x: -11, y: 19}
-        - {x: -10, y: 19}
-        - {x: -7, y: 20}
-        - {x: -7, y: 24}
-        - {x: -8, y: 26}
-      - - {x: 5, y: 32}
-        - {x: 3, y: 30}
-        - {x: 3, y: 28}
-        - {x: 5, y: 26}
-        - {x: 8, y: 26}
-        - {x: 10, y: 28}
-        - {x: 10, y: 29}
-        - {x: 7, y: 32}
+      outline: []
     - name: Thunder_Fire_12
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 3, y: 28}
-        - {x: -8, y: 28}
-        - {x: -9, y: 27}
-        - {x: -14, y: 16}
-        - {x: -14, y: 2}
-        - {x: -13, y: 0}
-        - {x: 10, y: 0}
-        - {x: 12, y: 4}
-        - {x: 12, y: 18}
-        - {x: 9, y: 25}
-      - - {x: 2, y: 32}
-        - {x: 2, y: 30}
-        - {x: 4, y: 28}
-        - {x: 5, y: 28}
-        - {x: 8, y: 31}
-        - {x: 8, y: 32}
+      outline: []
     - name: Thunder_Fire_13
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Thunder_Fire_14
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 4, y: 30}
-        - {x: -11, y: 30}
-        - {x: -16, y: 19}
-        - {x: -16, y: 10}
-        - {x: -12, y: 2}
-        - {x: -10, y: 0}
-        - {x: 12, y: 0}
-        - {x: 15, y: 7}
-        - {x: 15, y: 16}
-        - {x: 7, y: 29}
-    - name: Thunder_Fire_14
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -2, y: 30}
-        - {x: -14, y: 22}
-        - {x: -14, y: 3}
-        - {x: -12, y: 0}
-        - {x: 13, y: 0}
-        - {x: 16, y: 1}
-        - {x: 16, y: 24}
-        - {x: 14, y: 30}
-      - - {x: -15, y: 22}
-        - {x: -15, y: 20}
-        - {x: -13, y: 18}
-        - {x: -11, y: 18}
-        - {x: -8, y: 20}
-        - {x: -7, y: 24}
-        - {x: -10, y: 26}
-      - - {x: -7, y: 32}
-        - {x: -7, y: 30}
-        - {x: -4, y: 27}
-        - {x: -1, y: 28}
-        - {x: -1, y: 32}
+      outline: []
     - name: Thunder_Fire_15
       rect:
         serializedVersion: 2
-        x: 96
+        x: 48
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: 26}
-        - {x: -13, y: 0}
-        - {x: 14, y: 0}
-        - {x: 14, y: 21}
-        - {x: 11, y: 26}
-      - - {x: -13, y: 26}
-        - {x: -14, y: 23}
-        - {x: -14, y: 20}
-        - {x: -11, y: 19}
-        - {x: -10, y: 19}
-        - {x: -7, y: 20}
-        - {x: -7, y: 24}
-        - {x: -8, y: 26}
-      - - {x: 5, y: 32}
-        - {x: 3, y: 30}
-        - {x: 3, y: 28}
-        - {x: 5, y: 26}
-        - {x: 8, y: 26}
-        - {x: 10, y: 28}
-        - {x: 10, y: 29}
-        - {x: 7, y: 32}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

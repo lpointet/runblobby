@@ -14,7 +14,7 @@ GameObject:
   - 114: {fileID: 11421686}
   - 95: {fileID: 9525250}
   - 82: {fileID: 8283614}
-  m_Layer: 8
+  m_Layer: 16
   m_Name: Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -32,7 +32,7 @@ GameObject:
   - 198: {fileID: 19878014}
   - 199: {fileID: 19955120}
   - 114: {fileID: 11453158}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ImpactEffet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 119874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.64, y: 1.27, z: 0}
+  m_LocalPosition: {x: -1.904566, y: 6.7803693, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 468692}
@@ -181,7 +181,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 4583edac0dc450f4cb933006400567b9, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -200,7 +200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   bulletPower: 1
-  direction: 1
   myParticle: {fileID: 11453158}
   bulletImpactSound: {fileID: 8300000, guid: 49aeb1f0ed566c746a21e46225583719, type: 3}
   impactSoundVolume: 0.75

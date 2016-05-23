@@ -12,12 +12,9 @@ public class Enemy0101 : Enemy {
 	private float timeToBave;
 	public string baveName = "Bave";
 
-	private Animator myAnim;
-
 	protected override void Awake () {
 		base.Awake();
 
-		myAnim = GetComponent<Animator> ();
 		timeToBave = TimeManager.time + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
 	}
 
@@ -32,7 +29,7 @@ public class Enemy0101 : Enemy {
 			return;
 
 		// L'ennemi se rapproche du joueur au fil du temps (joueur considéré en position (0, 0)) pour finir à mi-chemin
-		myTransform.Translate(Vector3.left * LevelManager.levelManager.GetLocalDistance() * startPosition[0] / (GetDistanceToKill() * 2));
+		myTransform.Translate(Vector3.left * TimeManager.deltaTime * startPosition[0] / (GetTimeToKill() * 2));
 
 		if (TimeManager.time > timeToBave) {
 			timeToBave = TimeManager.time + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);

@@ -14,10 +14,10 @@ public class UIManager : MonoBehaviour {
 	public Text meterText;
 	private Color defaultTextColor; // Couleur par défaut du meterText
 	private float scaleInitial; // Echelle du texte au début
-	private Color warningTextColor; // Couleur en alternance lors d'un ennemi
-	private Color warningTextColorBis;
+	public Color warningTextColor; // Couleur en alternance lors d'un ennemi
+	public Color warningTextColorBis;
 	private float scaleFonctionDistance; // Echelle du texte pendant l'ennemi
-	private float enemyDistanceToKill;
+	private float enemyTimeToKill;
 
 	// Distance parcourue
 	public Slider meterTravelled;
@@ -54,7 +54,11 @@ public class UIManager : MonoBehaviour {
 	public Slider moneySliderEnd;
 	public Text experience;
 	public Slider experienceSliderEnd;
-	public Text playerLevel;
+	public Text gainLevel;
+	public Text tCurrentPlayerLevel;
+	public GameObject bNextLevel;
+	public ParticleSystem pFirework;
+	public Text tTitreEndGame;
 
 	public AudioClip endFailure;
 	public AudioClip endVictory;
@@ -94,9 +98,6 @@ public class UIManager : MonoBehaviour {
         // Compteur
         defaultTextColor = meterText.color;
         scaleInitial = meterText.rectTransform.localScale.x;
-        warningTextColor = new Color( 1, 0.588f, 0.588f );
-        warningTextColorBis = warningTextColor / 2;
-        warningTextColorBis.r = 1f; // rouge à fond
     }
 
 	void Start() {
@@ -135,7 +136,7 @@ public class UIManager : MonoBehaviour {
 			timeUpdateValue = delaySliderFull - 0.001f; // Pour permettre de rentrer une dernière fois dans la boucle while de UpdateSlider()
 
 			int diffLvl = _StaticFunction.LevelFromExp(GameData.gameData.playerData.experience + ScoreManager.GetExperience ()) - _StaticFunction.LevelFromExp(GameData.gameData.playerData.experience);
-			StartCoroutine (PopText (playerLevel, diffLvl));
+			StartCoroutine (PopText (gainLevel, diffLvl));
 		}
 
 		if (TimeManager.paused)
@@ -236,12 +237,12 @@ public class UIManager : MonoBehaviour {
 
     private void MeterTextManager() {
         if( null != enemyEnCours ) {
-            enemyDistanceToKill = LevelManager.levelManager.GetEnemyDistanceToKill();
-            meterText.text = Mathf.RoundToInt( enemyDistanceToKill ) + "m"; // Mise à jour de la distance restante pour tuer le boss
-            meterText.color = Color.Lerp( warningTextColor, warningTextColorBis, Mathf.Sin( 2f * enemyDistanceToKill ) ); // Variation entre deux couleurs
+			enemyTimeToKill = LevelManager.levelManager.GetEnemyTimeToKill();
+			meterText.text = Mathf.RoundToInt( enemyTimeToKill ) + "s"; // Mise à jour du temps restant pour tuer le boss
+			meterText.color = Color.Lerp( warningTextColor, warningTextColorBis, Mathf.Sin( 7f * enemyTimeToKill ) ); // Variation entre deux couleurs
 
             // Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
-            scaleFonctionDistance = ( 2 / Mathf.Pow( enemyEnCours.GetDistanceToKill(), 2 ) ) * _StaticFunction.MathPower( enemyEnCours.GetDistanceToKill() - enemyDistanceToKill, 2 ) + 1;
+			scaleFonctionDistance = ( 2 / Mathf.Pow( enemyEnCours.GetTimeToKill(), 2 ) ) * _StaticFunction.MathPower( enemyEnCours.GetTimeToKill() - enemyTimeToKill, 2 ) + 1;
             meterText.transform.localScale = new Vector2( scaleFonctionDistance, scaleFonctionDistance ) * scaleInitial;
         }
         else if( !LevelManager.GetPlayer().IsDead() && !LevelManager.levelManager.IsEnemyToSpawn() ) {
@@ -277,8 +278,14 @@ public class UIManager : MonoBehaviour {
 
 		if (LevelManager.GetPlayer ().IsDead ()) {
 			endUI.GetComponent<AudioSource> ().PlayOneShot (endFailure);
+			bNextLevel.SetActive (false);
+			tTitreEndGame.text = "YOU LOSE...";
+			pFirework.gameObject.SetActive (false);
 		} else {
 			endUI.GetComponent<AudioSource> ().PlayOneShot (endVictory);
+			bNextLevel.SetActive (true);
+			tTitreEndGame.text = "YOU WIN!";
+			pFirework.gameObject.SetActive (true);
 		}
 
 		UpdateValueScore ();
@@ -312,6 +319,9 @@ public class UIManager : MonoBehaviour {
 
 		int currentPlayerLevel = _StaticFunction.LevelFromExp (GameData.gameData.playerData.experience);
 		int nextPlayerLevel = currentPlayerLevel + 1;
+		// Affichage du niveau courant
+		//Debug.Log(_StaticFunction.LevelFromExp (GameData.gameData.playerData.experience) + " " + currentPlayerLevel);
+		tCurrentPlayerLevel.text = currentPlayerLevel.ToString();
 
 		int currentPlayerExpInLevel = GameData.gameData.playerData.experience - _StaticFunction.ExpFromLevel (currentPlayerLevel);
 		int futurPlayerExp = GameData.gameData.playerData.experience + ScoreManager.GetExperience ();
@@ -350,7 +360,11 @@ public class UIManager : MonoBehaviour {
 				currentPlayerExpInLevel = 0;
 				timeUpdateMultiLevel = 0;
 
-				StartCoroutine (PopText (playerLevel, currentLevelGain));
+				StartCoroutine (PopText (gainLevel, currentLevelGain));
+
+				// Mise à jour du niveau courant
+				int newPlayerLevel = currentPlayerLevel + currentLevelGain;
+				tCurrentPlayerLevel.text = newPlayerLevel.ToString();
 			}
 
 			timeUpdateValue += TimeManager.deltaTime;
@@ -359,14 +373,16 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator PopText(Text text, int gainLevel) {
+	private IEnumerator PopText(Text text, int valueGainLevel) {
 		float timeScalePop = 0;
 		float delayPop = 0.2f;
 		float popScale = 0;
 		float initialScale = text.rectTransform.localScale.x;
 
-		if (gainLevel > 0)
-			playerLevel.text = "+" + gainLevel;
+		if (valueGainLevel > 0) {
+			gainLevel.gameObject.SetActive (true);
+			gainLevel.text = "+" + valueGainLevel;
+		}
 
 		text.GetComponent<AudioSource> ().Play ();
 
@@ -384,10 +400,11 @@ public class UIManager : MonoBehaviour {
 	public void ResumeGame() {
 		sfxSound.ButtonYesClick ();
 		cdObject.SetActive (true);
-		cdAnim.SetBool ("powerOn", true); // Animation de compte à rebours
 		pauseUI.SetActive (false);
 		standardUI.SetActive (true);
 		paused = false;
+
+		cdAnim.SetBool ("powerOn", true); // Animation de compte à rebours
 	}
 
 	public void Rejouer_Click() {
@@ -441,7 +458,7 @@ public class UIManager : MonoBehaviour {
 
 		#if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
-		#elif UNITY_STANDALONE
+		#else
 		Application.Quit ();
 		#endif
 	}

@@ -210,7 +210,7 @@ MonoBehaviour:
   jumpHeight: 0
   isDead: 0
   maxHeight: 7.5
-  distanceToKill: 200
+  timeToKill: 30
   damageToGive: 0
   pointScore: 10
   firstName: Gaston
@@ -223,6 +223,7 @@ MonoBehaviour:
   - 0.75
   frequence: 0.02
   mediumValue: 1
+  coinToGround: 1
   layerGround:
     serializedVersion: 2
     m_Bits: 1024

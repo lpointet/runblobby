@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e247663659ab2f04482c1e7c2aa540e3
-timeCreated: 1454279081
+timeCreated: 1461180071
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -46,7 +46,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -56,11 +56,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 16
-        width: 32
-        height: 16
-      alignment: 9
-      pivot: {x: 0, y: 0.25}
+        y: 8
+        width: 16
+        height: 8
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Herb_1
@@ -68,10 +68,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 16
-      alignment: 4
-      pivot: {x: 0, y: 0.5}
+        width: 16
+        height: 8
+      alignment: 9
+      pivot: {x: 0, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     outline: []

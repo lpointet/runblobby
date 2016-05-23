@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1ebb4ee7da5bdd64eabb3012b2e047d1
-timeCreated: 1446570433
+timeCreated: 1461279616
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -21,7 +21,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
@@ -31,7 +31,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 64
+  maxTextureSize: 32
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -46,9 +46,9 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
-  spritePivot: {x: .5, y: .5}
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -58,42 +58,47 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 24
-        width: 24
-        height: 24
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Bee_1
       rect:
         serializedVersion: 2
-        x: 24
-        y: 24
-        width: 24
-        height: 24
+        x: 16
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Bee_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 24
-        height: 24
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: Bee_3
       rect:
         serializedVersion: 2
-        x: 24
+        x: 16
         y: 0
-        width: 24
-        height: 24
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

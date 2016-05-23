@@ -62,7 +62,7 @@ public class LevelManager : MonoBehaviour {
 	private bool enemyToSpawn = false;	// Bool modifiable pour savoir à quel moment il faut invoquer l'ennemi
     private bool enemySpawnLaunched = false; // Bool pour savoir si l'appel du spawn a déjà été fait ou pas
 	public float enemySpawnDelay;
-	private float enemyDistanceToKill;
+	private float enemyTimeToKill;
 	public FlyPickup flyEndBoss;	// Pour faire voler à l'infini durant le dernier boss
 	//* Fin partie ennemi intermédiaire
 
@@ -89,12 +89,12 @@ public class LevelManager : MonoBehaviour {
         return enemyEnCours;
     }
 
-    public float GetEnemyDistanceToKill() {
-        return enemyDistanceToKill;
+    public float GetEnemyTimeToKill() {
+		return enemyTimeToKill;
     }
 
-    public void SetEnemyDistanceToKill( float value ) {
-        enemyDistanceToKill = value;
+    public void SetEnemyTimeToKill( float value ) {
+		enemyTimeToKill = value;
     }
 
     public int GetDistanceTraveled() {
@@ -161,12 +161,13 @@ public class LevelManager : MonoBehaviour {
 	void Start () {
 		// Reset divers
 		ScoreManager.Reset ();
+		SpawnDecor.Reset ();
 
 		distanceTraveled = 0;
 		distanceSinceLastBonus = 0;
 		currentPhase = 0;
 		blockPhase = true;
-        SetEnemyDistanceToKill( 0 );
+        SetEnemyTimeToKill( 0 );
 
 		SetCurrentLevel (_GameData.currentLevel); // Information mise à jour par le UIManager > SampleLevel
 		SetStoryMode (_GameData.isStory);
@@ -262,10 +263,10 @@ public class LevelManager : MonoBehaviour {
 				// Le joueur peut tirer
 				GetPlayer().SetFireAbility( true );
 
-                // Si on est en phase "ennemie" et qu'on a dépassé la distance allouée pour le tuer, on meurt
-                SetEnemyDistanceToKill( GetEnemyDistanceToKill() - localDistance );
+                // Si on est en phase "ennemie" et qu'on a dépassé le temps alloué pour le tuer, on meurt
+				SetEnemyTimeToKill( GetEnemyTimeToKill() - TimeManager.deltaTime );
 
-				if( GetEnemyDistanceToKill() <= 0 ) {
+				if( GetEnemyTimeToKill() <= 0 ) {
 					LevelManager.Kill( GetPlayer() );
 				}
 
@@ -330,8 +331,8 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	private GameObject GetNewBlock(bool _blockPhase) {
-		if (_blockPhase) {
+	private GameObject GetNewBlock(bool isBlockPhase) {
+		if (isBlockPhase) {
 			string randomBlock = PoolingManager.current.RandomPoolName ("Block", RandomDifficulty(currentPhase)); // Random Block de difficulté adaptée à la currentPhase
 			return PoolingManager.current.Spawn (randomBlock);
 		}
@@ -393,7 +394,7 @@ public class LevelManager : MonoBehaviour {
 		enemyEnCours = tempEnemy;
 		tempEnemy = null;
 
-		enemyDistanceToKill = enemyEnCours.GetDistanceToKill();
+		enemyTimeToKill = enemyEnCours.GetTimeToKill();
 	}
 
 	private void FinDuMonde () {

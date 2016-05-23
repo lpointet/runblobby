@@ -3,6 +3,7 @@
 public class AutoCoinPickup : Pickup {
 
 	public float radius = 0f;
+	private float initialRadius = 0f;
 	public LayerMask layerCoins;
 
 	private float volumeMax;
@@ -17,6 +18,7 @@ public class AutoCoinPickup : Pickup {
 		parentAttach = true;
 		despawnTime = 0.3f;
 		weakTime = 3f;
+		initialRadius = radius;
 
 		backAnim = transform.Find ("Magnet_Back").GetComponent<Animator> ();
 	}
@@ -30,6 +32,8 @@ public class AutoCoinPickup : Pickup {
 		transform.localPosition = new Vector2(0, 28/32f); // 4 pixels sous le joueur
 		myAnim.transform.localPosition = Vector2.zero;
 		backAnim.transform.localPosition = Vector2.zero;
+
+		radius = initialRadius;
     }
 
 	protected override void DespawnEffect() {
@@ -47,6 +51,10 @@ public class AutoCoinPickup : Pickup {
 		animSpeed = _StaticFunction.MappingScale (timeToLive, weakTime, 0, 1, 0.5f);
 		backAnim.speed = animSpeed;
 		myAnim.speed = animSpeed;
+
+		// On réduit la taille du rayon d'attraction pour qu'il ne reste pas de pièces dans la vide
+		// TODO on garde ou on change la façon de faire ?
+		radius = _StaticFunction.MappingScale (timeToLive, weakTime, 0, initialRadius, 1);
 
 		soundSource.volume -= TimeManager.deltaTime / (2 * weakTime);
 	}

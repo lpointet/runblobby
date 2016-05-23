@@ -15,8 +15,6 @@ public class FlyPickup : Pickup {
 	private float distancetoPlayer = 10f;
 	public float offsetYToPlayer = 0f;
 
-	private float maxHeight;
-
     protected override void Awake() {
 		base.Awake();
 
@@ -30,7 +28,6 @@ public class FlyPickup : Pickup {
 		playerRb = LevelManager.GetPlayer().GetComponent<Rigidbody2D> ();
 
 		birdStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition);
-		maxHeight = Camera.main.orthographicSize + CameraManager.cameraManager.yOffset;
 
 		basePitch = this.soundSource.pitch;
 	}
@@ -84,7 +81,7 @@ public class FlyPickup : Pickup {
 		}
 
 		if (myRender != null)
-			myRender.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
+			myRender.transform.localPosition = new Vector2(1 / 16f, -5.4f / 16f); // On place le Sprite correctement par rapport au joueur
 
 		LevelManager.GetPlayer().AddPickup( myCollider );
 
@@ -94,6 +91,7 @@ public class FlyPickup : Pickup {
 			myAnim.SetBool ("eternal", false);
 
 		// On attend que l'oiseau arrive pour que le joueur "vole"
+		LevelManager.GetPlayer().Jump();
 		StartCoroutine( WaitBeforeFly(spawnTime) );
 	}
 
@@ -126,9 +124,9 @@ public class FlyPickup : Pickup {
 
 	// L'oiseau s'envole
 	private IEnumerator TakeOff(Transform flyTransform) {
-		soundSource.Stop();
-
+		float maxHeight = Camera.main.orthographicSize + CameraManager.cameraManager.yOffset;
 		float flyDistance = 0f;
+
 		while (flyTransform.position.y < maxHeight) {
 			flyDistance += TimeManager.deltaTime;
 			flyTransform.position = new Vector2 (flyTransform.position.x + flyDistance / 2f, flyTransform.position.y + flyDistance);
@@ -140,7 +138,8 @@ public class FlyPickup : Pickup {
 			// Attacher le bonus à son parent initial
 			flyTransform.parent = initialParent;
 		}
-			
+
+		soundSource.Stop();
 		flyTransform.gameObject.SetActive( false );
 		LevelManager.GetPlayer().RemovePickup( flyTransform.GetComponent<Collider2D>() );
 	}

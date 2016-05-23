@@ -280,7 +280,7 @@ MonoBehaviour:
   jumpHeight: 5
   isDead: 0
   maxHeight: 7.5
-  distanceToKill: 250
+  timeToKill: 30
   damageToGive: 1
   pointScore: 50
   firstName: Galia
@@ -293,16 +293,17 @@ MonoBehaviour:
   - 0.75
   frequence: 0.02
   mediumValue: 2.1
+  coinToGround: 1
   layerGround:
     serializedVersion: 2
     m_Bits: 1024
   intervalleDrop: 0.5
   playerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 65536
   smokeParticle: {fileID: 11476328}
   featherParticle: {fileID: 11457740}
-  dodgeSkill: 0.5
+  dodgeSkill: 0.3
   pourcentOeuf: 10
   oeufName: Oeuf
   easyAttackSpeed: 5

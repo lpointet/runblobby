@@ -155,7 +155,7 @@ public class LastWishPickup : Pickup {
 	protected override void PickEffect() {
 		base.PickEffect();
 
-		myTransform.position = playerTransform.position + Vector3.up * 0.5f;
+		myTransform.position = playerTransform.position + Vector3.up * 10 / 16f;
 	}
 
 	protected override void DespawnEffect() {
@@ -175,7 +175,7 @@ public class LastWishPickup : Pickup {
 
 		// On réattribue le pickup au joueur
 		myTransform.parent = playerTransform;
-		myTransform.position = playerTransform.position + Vector3.up * 22 / 32f; // Léger décalage de 22 pixels
+		myTransform.position = playerTransform.position + Vector3.up * 11 / 16f; // Léger décalage de 16 pixels
 
 		lerpTimeEnding = 0f;
 		deathPlayerPosition = playerTransform.position.y;

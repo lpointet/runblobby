@@ -7,11 +7,12 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Cloud
-  m_Shader: {fileID: 10751, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _ALPHATEST_ON _DETAIL_MULX2
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -19,7 +20,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: edd37b8e6285a2e40872dfed9c7caa79, type: 3}
+          m_Texture: {fileID: 2800000, guid: 41379740c628c0e4fbc5547beb9a32eb, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 1}
       data:
@@ -68,7 +69,7 @@ Material:
         first:
           name: _DetailAlbedoMap
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: 6c3657007557d2c40b60365660f5bfc1, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -90,7 +91,7 @@ Material:
       data:
         first:
           name: _Cutoff
-        second: .150000006
+        second: 0.15
       data:
         first:
           name: PixelSnap
@@ -98,7 +99,7 @@ Material:
       data:
         first:
           name: _Parallax
-        second: .0199999996
+        second: 0.02
       data:
         first:
           name: _ZWrite
@@ -106,7 +107,7 @@ Material:
       data:
         first:
           name: _Glossiness
-        second: .5
+        second: 0.5
       data:
         first:
           name: _BumpScale
@@ -126,7 +127,7 @@ Material:
       data:
         first:
           name: _Mode
-        second: 0
+        second: 1
       data:
         first:
           name: _Metallic

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 32ebeb4c8b8363e43a8f391603a4ae11
-timeCreated: 1453567255
+timeCreated: 1461698919
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -31,7 +31,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 64
+  maxTextureSize: 32
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -48,7 +48,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -58,71 +58,46 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 32
-        height: 32
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 15, y: -16}
-        - {x: 16, y: -14}
-        - {x: 16, y: 11}
-        - {x: 8, y: 16}
+      outline: []
     - name: Oeuf_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
+        x: 16
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -16, y: 16}
-        - {x: -16, y: -16}
-        - {x: 15, y: -16}
-        - {x: 16, y: -14}
-        - {x: 16, y: 11}
-        - {x: 8, y: 16}
+      outline: []
     - name: Oeuf_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -12, y: 16}
-        - {x: -16, y: 13}
-        - {x: -16, y: -16}
-        - {x: 13, y: -16}
-        - {x: 16, y: -13}
-        - {x: 16, y: 13}
-        - {x: 10, y: 16}
+      outline: []
     - name: Oeuf_3
       rect:
         serializedVersion: 2
-        x: 32
+        x: 16
         y: 0
-        width: 32
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -15, y: 12}
-        - {x: -16, y: 11}
-        - {x: -16, y: -16}
-        - {x: 16, y: -16}
-        - {x: 16, y: 11}
-        - {x: 11, y: 12}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

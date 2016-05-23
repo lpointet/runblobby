@@ -3,14 +3,14 @@ using System.Collections;
 
 public class SpawnDecor : MonoBehaviour {
 
-	public GameObject[] listDecor;
-	public int[] listDecorProba;
+	public DecorElement[] listeDecor;
+
 	private Transform myTransform;
 	private Transform initialParent;
 
 	private int totalProba = 0;
 
-	private static Transform positionCurrentDecor;
+	private static Transform positionCurrentDecor = null;
 	private static int sizeCurrentDecor = 0;
 
 	public int probaApparition = 75;
@@ -18,22 +18,27 @@ public class SpawnDecor : MonoBehaviour {
 
 	public int sizeAvailable = 10;
 
+	// Permet de reset les variables static
+	public static void Reset() {
+		positionCurrentDecor = LevelManager.GetPlayer ().transform;
+		sizeCurrentDecor = 0;
+	}
+
 	void Awake () {
 		myTransform = transform;
 		initialParent = transform.parent;
 
 		if (positionCurrentDecor == null) {
-			positionCurrentDecor = LevelManager.GetPlayer().transform;
-			positionCurrentDecor.position = Vector2.zero;
+			positionCurrentDecor = LevelManager.GetPlayer ().transform;
 		}
 
 		// Somme des probabilités
-		for (int i = 0; i < listDecorProba.Length; totalProba += listDecorProba [i++]);
+		for (int i = 0; i < listeDecor.Length; totalProba += listeDecor[i++].weight);
 	}
 
 	void OnEnable () {
 		// On supprime les éventuels sprites qui ne sont pas partis
-		foreach (SpriteRenderer item in GetComponentsInChildren<SpriteRenderer>()) {
+		foreach (DecorElement item in GetComponentsInChildren<DecorElement>()) {
 			item.transform.parent = initialParent;
 			item.gameObject.SetActive (false);
 		}
@@ -43,7 +48,7 @@ public class SpawnDecor : MonoBehaviour {
 		// On force le contenant à être sur le layer "Ground" pour la suppression de ce bloc spécifique dans le LevelManager
 	}
 
-	void Update () { // TODO : pourquoi les décors ne réapparaissent pas pendant les boss après un reload ?
+	void Update () { // TODO : pourquoi les décors ne réapparaissent pas pendant les boss après un reload ? Ptet à cause du positionCurrentDecor qui reset pas ?
 		// Si l'objet est déjà apparu on annule tout
 		if (appeared || myTransform.position.x > LevelManager.levelManager.cameraEndPosition)
 			return;
@@ -51,19 +56,19 @@ public class SpawnDecor : MonoBehaviour {
 		// Si l'objet entre dans le champ, on considère qu'il est apparu (même s'il n'y aura pas de sprite)
 		if (myTransform.position.x < LevelManager.levelManager.cameraEndPosition)
 			appeared = true;
-
+		
 		// On teste si on doit faire apparaître un objet ou non
 		if (myTransform.position.x >= positionCurrentDecor.position.x + sizeCurrentDecor && Random.Range (0, 101) <= probaApparition) {
 			// On choisit un élément de décor aléatoire selon les probabilités d'apparition
 			int probaRandom = Random.Range (0, totalProba);
 			int k, decorChoisi;
 			// On ajoute à k la valeur de la proportion si jamais k est inférieur à random, et on incrémente decorChoisi
-			for(k = 0, decorChoisi = 0; k <= probaRandom; k += listDecorProba[decorChoisi++]);
+			for(k = 0, decorChoisi = 0; k <= probaRandom; k += listeDecor[decorChoisi++].weight);
 
-			GameObject decor = PoolingManager.current.Spawn (listDecor [decorChoisi-1].name);
+			GameObject decor = PoolingManager.current.Spawn (listeDecor[decorChoisi-1].name);
 
 			if (decor != null) {
-				int decorSize = Mathf.CeilToInt(decor.GetComponent<SpriteRenderer> ().bounds.size.x);
+				int decorSize = decor.GetComponent<DecorElement> ().size;
 				if (decorSize > sizeAvailable)
 					return;
 				

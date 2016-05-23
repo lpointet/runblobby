@@ -5,8 +5,8 @@ public class BulletManager : MonoBehaviour {
 	
 	public int moveSpeed;
 	public int bulletPower;
-	public enum bulletDirection { left, right }
-	public bulletDirection direction = bulletDirection.right;
+	/*public enum bulletDirection { left, right }
+	public bulletDirection direction = bulletDirection.right;*/
 
 	private float endOfScreen;
 	private float startOfScreen;
@@ -52,9 +52,9 @@ public class BulletManager : MonoBehaviour {
 		myRb.velocity = myTransform.right * moveSpeed;
 		mySprite.enabled = true;
 
-		if( direction == bulletDirection.left ) {
+		/*if( direction == bulletDirection.left ) {
 			myRb.velocity *= -1;
-		}
+		}*/
 
 		alreadyHit = false;
 		myAudio.volume = initSoundVolume;
@@ -79,10 +79,12 @@ public class BulletManager : MonoBehaviour {
 			Invoke ("Despawn", 0.3f * Time.timeScale); // Durée des particles
 
 			// Effet de particule à l'impact
-			myParticle.transform.position = myTransform.position;
-			myParticle.transform.rotation = Quaternion.Euler(new Vector3(360 - myTransform.rotation.eulerAngles.z, 90, 0));
-			myParticle.GetComponent<ParticleSystemRenderer>().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.GetPlayer().GetHealthPoint(), 0, LevelManager.GetPlayer().GetHealthPointMax (), 210, 0));		
-			myParticle.gameObject.SetActive (true);
+			if (myParticle != null) {
+				myParticle.transform.position = myTransform.position;
+				myParticle.transform.rotation = Quaternion.Euler (new Vector3 (360 - myTransform.rotation.eulerAngles.z, 90, 0));
+				myParticle.GetComponent<ParticleSystemRenderer> ().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.GetPlayer ().GetHealthPoint (), 0, LevelManager.GetPlayer ().GetHealthPointMax (), 210, 0));		
+				myParticle.gameObject.SetActive (true);
+			}
 
 			// Si on rencontre un ennemi
 			if(other.gameObject.layer == layerEnemy) {

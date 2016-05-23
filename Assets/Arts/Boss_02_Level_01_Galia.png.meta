@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e5d52f869b32d6f40babbd9f9bbd16fb
-timeCreated: 1454155789
+timeCreated: 1461870491
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -53,7 +53,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -63,219 +63,185 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 216
-        width: 64
-        height: 72
+        y: 108
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 23, y: 28}
-        - {x: 2, y: 28}
-        - {x: -32, y: 11}
-        - {x: -32, y: -15}
-        - {x: -27, y: -21}
-        - {x: -8, y: -36}
-        - {x: 30, y: -36}
-        - {x: 32, y: -31}
-        - {x: 32, y: 24}
-        - {x: 30, y: 25}
+      - - {x: -5, y: 16}
+        - {x: -18, y: 11}
+        - {x: -18, y: -14}
+        - {x: -8, y: -18}
+        - {x: 17, y: -18}
+        - {x: 18, y: -17}
+        - {x: 18, y: 16}
     - name: Boss_02_Level_01_Galia_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 216
-        width: 64
-        height: 72
+        x: 36
+        y: 108
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -5, y: 29}
-        - {x: -32, y: 14}
-        - {x: -32, y: -26}
-        - {x: -6, y: -36}
-        - {x: 31, y: -36}
-        - {x: 32, y: -30}
-        - {x: 32, y: 22}
-        - {x: 21, y: 29}
+      - - {x: -5, y: 15}
+        - {x: -18, y: 6}
+        - {x: -18, y: -15}
+        - {x: -10, y: -18}
+        - {x: 18, y: -18}
+        - {x: 18, y: 15}
     - name: Boss_02_Level_01_Galia_2
       rect:
         serializedVersion: 2
-        x: 128
-        y: 216
-        width: 64
-        height: 72
+        x: 72
+        y: 108
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -18, y: 27}
-        - {x: -32, y: 22}
-        - {x: -32, y: -15}
-        - {x: -7, y: -35}
-        - {x: 0, y: -36}
-        - {x: 25, y: -36}
-        - {x: 32, y: -30}
-        - {x: 32, y: 27}
+      - - {x: 4, y: 17}
+        - {x: -18, y: 6}
+        - {x: -18, y: -13}
+        - {x: -7, y: -18}
+        - {x: 15, y: -18}
+        - {x: 18, y: -12}
+        - {x: 18, y: 10}
+        - {x: 13, y: 17}
     - name: Boss_02_Level_01_Galia_3
       rect:
         serializedVersion: 2
-        x: 192
-        y: 216
-        width: 64
-        height: 72
+        x: 108
+        y: 108
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -10, y: 29}
-        - {x: -32, y: 17}
-        - {x: -32, y: -14}
-        - {x: -25, y: -26}
-        - {x: 0, y: -36}
-        - {x: 22, y: -36}
-        - {x: 32, y: -23}
-        - {x: 32, y: 29}
+      - - {x: 0, y: 15}
+        - {x: -15, y: 8}
+        - {x: -18, y: 3}
+        - {x: -18, y: -13}
+        - {x: -6, y: -18}
+        - {x: 15, y: -18}
+        - {x: 18, y: -15}
+        - {x: 18, y: 15}
     - name: Boss_02_Level_01_Galia_4
       rect:
         serializedVersion: 2
-        x: 256
-        y: 216
-        width: 64
-        height: 72
+        x: 144
+        y: 108
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 6, y: 35}
-        - {x: -32, y: 24}
-        - {x: -32, y: -22}
-        - {x: -17, y: -36}
-        - {x: 27, y: -36}
-        - {x: 32, y: -34}
-        - {x: 32, y: 26}
-        - {x: 22, y: 35}
-      - - {x: -12, y: 20}
-        - {x: -10, y: 18}
-        - {x: -7, y: 19}
-        - {x: -7, y: 23}
-        - {x: -9, y: 25}
-        - {x: -12, y: 24}
-      - - {x: -23, y: 23}
-        - {x: -21, y: 21}
-        - {x: -18, y: 22}
-        - {x: -18, y: 26}
-        - {x: -20, y: 28}
-        - {x: -23, y: 27}
+      - - {x: -18, y: -15}
+        - {x: -11, y: -18}
+        - {x: 18, y: -18}
+        - {x: 18, y: 18}
+        - {x: 0, y: 18}
+        - {x: -18, y: 12}
     - name: Boss_02_Level_01_Galia_5
       rect:
         serializedVersion: 2
-        x: 320
-        y: 216
-        width: 64
-        height: 72
+        x: 180
+        y: 108
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 8, y: 36}
-        - {x: -5, y: 35}
-        - {x: -32, y: 28}
-        - {x: -32, y: -23}
-        - {x: -11, y: -33}
-        - {x: -3, y: -36}
-        - {x: 32, y: -36}
-        - {x: 32, y: 32}
-        - {x: 29, y: 36}
-      - - {x: -14, y: 14}
-        - {x: -12, y: 12}
-        - {x: -9, y: 13}
-        - {x: -9, y: 17}
-        - {x: -11, y: 19}
+      - - {x: 2, y: 18}
+        - {x: -3, y: 14}
+        - {x: -4, y: 10}
+        - {x: -4, y: 6}
+        - {x: -6, y: 18}
         - {x: -14, y: 18}
-      - - {x: 6, y: 32}
-        - {x: 8, y: 30}
-        - {x: 11, y: 31}
-        - {x: 11, y: 35}
-        - {x: 10, y: 36}
-        - {x: 6, y: 36}
+        - {x: -18, y: 17}
+        - {x: -18, y: -16}
+        - {x: -12, y: -18}
+        - {x: 18, y: -18}
+        - {x: 18, y: 18}
     - name: Boss_02_Level_01_Galia_6
       rect:
         serializedVersion: 2
-        x: 384
-        y: 216
-        width: 64
-        height: 72
+        x: 216
+        y: 108
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 5, y: 36}
-        - {x: -32, y: 26}
-        - {x: -32, y: -19}
-        - {x: -16, y: -36}
-        - {x: 27, y: -36}
-        - {x: 32, y: -29}
-        - {x: 32, y: 30}
-        - {x: 23, y: 36}
-      - - {x: -27, y: 27}
-        - {x: -25, y: 25}
-        - {x: -22, y: 26}
-        - {x: -22, y: 30}
-        - {x: -24, y: 32}
-        - {x: -27, y: 31}
-      - - {x: 0, y: 30}
-        - {x: 2, y: 28}
-        - {x: 5, y: 29}
-        - {x: 5, y: 33}
-        - {x: 3, y: 35}
-        - {x: 0, y: 34}
+      - - {x: -18, y: 18}
+        - {x: -18, y: -17}
+        - {x: -15, y: -18}
+        - {x: 14, y: -18}
+        - {x: 18, y: -10}
+        - {x: 18, y: 18}
+      - - {x: -9, y: 15}
+        - {x: -7, y: 13}
+        - {x: -4, y: 14}
+        - {x: -4, y: 17}
+        - {x: -5, y: 18}
+        - {x: -9, y: 18}
     - name: Boss_02_Level_01_Galia_7
       rect:
         serializedVersion: 2
-        x: 448
-        y: 216
-        width: 64
-        height: 72
+        x: 252
+        y: 108
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 11, y: 36}
-        - {x: -5, y: 29}
-        - {x: -7, y: 18}
-        - {x: -7, y: 14}
-        - {x: -8, y: 21}
-        - {x: -27, y: 29}
-        - {x: -32, y: 21}
-        - {x: -32, y: -19}
-        - {x: -2, y: -36}
-        - {x: 22, y: -36}
-        - {x: 32, y: -25}
-        - {x: 32, y: 34}
-        - {x: 28, y: 36}
+      - - {x: -1, y: 18}
+        - {x: -3, y: 17}
+        - {x: -12, y: 14}
+        - {x: -18, y: 10}
+        - {x: -18, y: -11}
+        - {x: -14, y: -17}
+        - {x: -11, y: -18}
+        - {x: 16, y: -18}
+        - {x: 18, y: -13}
+        - {x: 18, y: 17}
+        - {x: 16, y: 18}
+      - - {x: -15, y: 15}
+        - {x: -13, y: 13}
+        - {x: -10, y: 14}
+        - {x: -10, y: 17}
+        - {x: -11, y: 18}
+        - {x: -15, y: 18}
     - name: Boss_02_Level_01_Galia_8
       rect:
         serializedVersion: 2
-        x: 448
+        x: 252
         y: 0
-        width: 64
-        height: 72
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 24, y: 9}
-        - {x: 6, y: 9}
-        - {x: -10, y: 7}
-        - {x: -26, y: -10}
-        - {x: -26, y: -31}
-        - {x: -24, y: -36}
-        - {x: 19, y: -36}
-        - {x: 29, y: -25}
-        - {x: 31, y: -18}
-        - {x: 31, y: 2}
+      - - {x: -2, y: 5}
+        - {x: -10, y: 4}
+        - {x: -16, y: -3}
+        - {x: -16, y: -16}
+        - {x: -15, y: -18}
+        - {x: 15, y: -18}
+        - {x: 18, y: -13}
+        - {x: 18, y: 3}
+        - {x: 17, y: 5}
     outline: []
   spritePackingTag: 
   userData: 

@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &138150
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 457078}
+  - 114: {fileID: 11486056}
+  m_Layer: 0
+  m_Name: Decor_SpawnPlatform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &457078
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138150}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11486056
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ed1585fb0c29c4fa7fb14bffaa7a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listeDecor:
+  - {fileID: 11494904, guid: ac07efcd477cedf43ae2aa3e54ae1d9b, type: 2}
+  - {fileID: 11401408, guid: f681f9ed7e1e7df439ecd759b2e5759b, type: 2}
+  - {fileID: 11461724, guid: e29f36ac41248b14a9293faf8b152b03, type: 2}
+  - {fileID: 11498184, guid: a271d701fa744d943bc6f4408e998291, type: 2}
+  - {fileID: 11482170, guid: 418e784f2b6d55a4ebf1b4f70d6ce5cd, type: 2}
+  - {fileID: 11496504, guid: 25b0800cfad66f74b847ac88ae025a5f, type: 2}
+  - {fileID: 11431606, guid: 05e3120da8d7bf1418923e7884107cbc, type: 2}
+  - {fileID: 11488742, guid: 7b2966fb026df8642b8928ef17448030, type: 2}
+  - {fileID: 11475876, guid: 05c391e0db7a9764191fa08fa32a228f, type: 2}
+  - {fileID: 11445690, guid: 651b9449c6b97ae42a6ea82aa34e8fbf, type: 2}
+  - {fileID: 11479844, guid: 1247bd18265b8ea43a35f9a0fbd8eba4, type: 2}
+  - {fileID: 11413014, guid: c8cbf7b8f5ccfae4c87954526941aff1, type: 2}
+  - {fileID: 11403654, guid: 0b4a8a51a0a4ac2498d581c4d21399a9, type: 2}
+  - {fileID: 11402914, guid: 576e4be9f1a32934eacb13865721d71a, type: 2}
+  - {fileID: 11461934, guid: 5d8cdcec0db73cc4887c6ff7b6a53703, type: 2}
+  - {fileID: 11492438, guid: ec7f8d899916d2844ab68001f1a450fd, type: 2}
+  probaApparition: 75
+  sizeAvailable: 10
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 138150}
+  m_IsPrefabParent: 1

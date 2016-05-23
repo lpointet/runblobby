@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 40c823b49e0a13b49bd73f21a5ce55f1
-timeCreated: 1454245414
+timeCreated: 1461777153
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -31,7 +31,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 128
+  maxTextureSize: 64
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -48,7 +48,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -59,70 +59,45 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 96
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        width: 16
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.97917}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 4, y: 0}
-        - {x: 3, y: -1}
-        - {x: 4, y: -5}
-        - {x: 2, y: -41}
-        - {x: 3, y: -96}
-        - {x: 29, y: -96}
-        - {x: 29, y: 0}
+      outline: []
     - name: Waterfall_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.97917}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Waterfall_2
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 32
-        height: 96
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        width: 16
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.97917}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 2, y: 0}
-        - {x: 2, y: -96}
-        - {x: 29, y: -96}
-        - {x: 29, y: -1}
-        - {x: 28, y: 0}
-    - name: Waterfall_2
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 96
-      alignment: 1
-      pivot: {x: 0, y: 1}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 29, y: -6}
-        - {x: 28, y: 0}
-        - {x: 2, y: 0}
-        - {x: 2, y: -80}
-        - {x: 3, y: -96}
-        - {x: 28, y: -96}
-        - {x: 30, y: -65}
-        - {x: 30, y: -45}
-        - {x: 29, y: -38}
+      outline: []
     - name: Waterfall_3
       rect:
         serializedVersion: 2
-        x: 96
+        x: 48
         y: 0
-        width: 32
-        height: 96
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        width: 16
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.97917}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 1, y: 0}
-        - {x: 1, y: -96}
-        - {x: 29, y: -96}
-        - {x: 29, y: 0}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

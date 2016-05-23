@@ -183,13 +183,8 @@ MonoBehaviour:
   actifVolume: 0.4
   despawnSound: {fileID: 8300000, guid: 0180a7e236f2ef24e9f124a34ebb29d4, type: 3}
   despawnVolume: 0.8
-  despawnSoundDelay: 3
   lifeTime: 10
   weight: 20
-  soundActif: {fileID: 8300000, guid: 656f9ccc970f3044fa2081b1cb8f427f, type: 3}
-  soundActifVolume: 0.3
-  soundEnd: {fileID: 8300000, guid: 0180a7e236f2ef24e9f124a34ebb29d4, type: 3}
-  soundEndVolume: 0.8
 --- !u!212 &21241914
 SpriteRenderer:
   m_ObjectHideFlags: 1

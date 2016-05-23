@@ -5,33 +5,40 @@ public class Weapon : MonoBehaviour {
 	public float fireRate = 0;
 	public int weaponPower = 1;
 	public LayerMask whatToHit; // Avec Raycast seulement
-	public string bulletName = "Bullet";
+	public BulletManager bulletType;
+	private string bulletName = "Bullet";
 	public bool autoFire = false;
 
 	private float timeToFire;
 	private Transform firePoint;
 	private float timeToSpawnEffect; // Avec Raycast seulement
 
+	private Character weaponOwner;
+
 	/*public Transform muzzleFlashPrefab;
 	public Transform bulletTrailPrefab;*/
 
 	void Awake() {
+		bulletName = bulletType.name;
 		firePoint = transform.FindChild ("FirePoint");
 		if (firePoint == null)
 			Debug.LogError ("FirePoint manquant, corrige moi ça boulet !");
+		
+		weaponOwner = GetComponentInParent<Character> ();
 	}
 
 	void Update () {
         // Empêcher que des choses se passent durant la pause
-		if (TimeManager.paused)
+		if (TimeManager.paused || weaponOwner.IsDead() || LevelManager.GetPlayer().IsDead())
             return;
 
 		if (fireRate == 0) {
-			if (Input.GetMouseButtonDown (0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight()) {
+			// Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight() = Empêche de tirer quand on appuie sur le bouton PAUSE
+			if (_StaticFunction.TouchOnRightScreen() && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight()) {
 				Shoot ();
 			}
 		} else {
-			if ( ( autoFire || Input.GetMouseButton (0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight()) && TimeManager.time > timeToFire ) {
+			if ( ( autoFire || _StaticFunction.TouchOnRightScreen(true) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight()) && TimeManager.time > timeToFire ) {
 				timeToFire = TimeManager.time + 1/fireRate;
 				Shoot();
 			}

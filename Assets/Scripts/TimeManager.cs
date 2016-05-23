@@ -29,4 +29,16 @@ public class TimeManager : MonoBehaviour {
 		deltaTime = Time.smoothDeltaTime / Time.timeScale;
 		time += deltaTime;
 	}
+
+	void OnApplicationPause(bool pauseStatus) {
+		if (pauseStatus) {
+			UIManager.uiManager.PauseManager ();
+		}
+	}
+
+	/*void OnApplicationFocus(bool focusStatus) {
+		if (!focusStatus) {
+			UIManager.uiManager.PauseManager ();
+		}
+	}*/
 }

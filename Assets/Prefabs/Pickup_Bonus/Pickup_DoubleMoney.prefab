@@ -188,8 +188,8 @@ MonoBehaviour:
   multiplier: 2
   type: 1
   moneyMat: {fileID: 2100000, guid: bc2f98da42a6dea4887603ad96e79c0d, type: 2}
-  BaseColor: {r: 1, g: 1, b: 1, a: 0}
-  TargetColor: {r: 1, g: 0.9724139, b: 0, a: 0}
+  BaseColor: {r: 1, g: 1, b: 1, a: 1}
+  TargetColor: {r: 0.99607843, g: 0.89411765, b: 0.53333336, a: 1}
 --- !u!212 &21248576
 SpriteRenderer:
   m_ObjectHideFlags: 1

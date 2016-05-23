@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5fb1a1d33e63cdd4ea3c2f416bff0e03
-timeCreated: 1443647215
+timeCreated: 1461698811
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -33,7 +33,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
@@ -43,7 +43,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 256
+  maxTextureSize: 128
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -58,9 +58,9 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
-  spritePivot: {x: .5, y: .5}
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -70,162 +70,387 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 192
-        width: 64
-        height: 64
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: 11}
+        - {x: -9, y: 11}
+        - {x: -11, y: 9}
+        - {x: -11, y: 6}
+        - {x: -9, y: 1}
+        - {x: -6, y: 1}
+        - {x: -1, y: 5}
+        - {x: -1, y: 8}
     - name: Effect_Healing_Front_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 192
-        width: 64
-        height: 64
+        x: 32
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 12}
+        - {x: -12, y: 10}
+        - {x: -12, y: 2}
+        - {x: -9, y: 0}
+        - {x: -6, y: 0}
+        - {x: -1, y: 1}
+        - {x: 0, y: 3}
+        - {x: 0, y: 8}
+        - {x: -3, y: 12}
     - name: Effect_Healing_Front_2
       rect:
         serializedVersion: 2
-        x: 128
-        y: 192
-        width: 64
-        height: 64
+        x: 64
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: -4}
+        - {x: 5, y: -8}
+        - {x: 5, y: -9}
+        - {x: 9, y: -14}
+        - {x: 10, y: -14}
+        - {x: 15, y: -10}
+        - {x: 15, y: -9}
+        - {x: 11, y: -4}
+      - - {x: -12, y: 12}
+        - {x: -12, y: 2}
+        - {x: -11, y: 0}
+        - {x: -2, y: 0}
+        - {x: 0, y: 1}
+        - {x: 0, y: 12}
     - name: Effect_Healing_Front_3
       rect:
         serializedVersion: 2
-        x: 192
-        y: 192
-        width: 64
-        height: 64
+        x: 96
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: -1}
+        - {x: -5, y: -5}
+        - {x: -5, y: -7}
+        - {x: -1, y: -11}
+        - {x: 0, y: -11}
+        - {x: 5, y: -14}
+        - {x: 7, y: -15}
+        - {x: 12, y: -15}
+        - {x: 16, y: -12}
+        - {x: 16, y: -3}
+        - {x: 11, y: -1}
+      - - {x: -12, y: 3}
+        - {x: -11, y: 1}
+        - {x: -8, y: 0}
+        - {x: -4, y: 0}
+        - {x: 0, y: 4}
+        - {x: 0, y: 9}
+        - {x: -1, y: 11}
+        - {x: -7, y: 12}
+        - {x: -9, y: 12}
+        - {x: -12, y: 8}
     - name: Effect_Healing_Front_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
-        width: 64
-        height: 64
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: 0}
+        - {x: -6, y: -10}
+        - {x: 0, y: -15}
+        - {x: 16, y: -15}
+        - {x: 16, y: 0}
+      - - {x: -11, y: 6}
+        - {x: -11, y: 5}
+        - {x: -6, y: 1}
+        - {x: -3, y: 2}
+        - {x: -1, y: 7}
+        - {x: -6, y: 11}
+        - {x: -7, y: 11}
     - name: Effect_Healing_Front_5
       rect:
         serializedVersion: 2
-        x: 64
-        y: 128
-        width: 64
-        height: 64
+        x: 32
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: -3}
+        - {x: 6, y: -5}
+        - {x: 6, y: -2}
+        - {x: 4, y: 0}
+        - {x: -6, y: 0}
+        - {x: -6, y: -15}
+        - {x: 16, y: -15}
+        - {x: 16, y: -6}
+        - {x: 15, y: -5}
+      - - {x: 7, y: 9}
+        - {x: 2, y: 7}
+        - {x: 2, y: 4}
+        - {x: 4, y: -1}
+        - {x: 7, y: -1}
+        - {x: 12, y: 1}
+        - {x: 12, y: 4}
+        - {x: 10, y: 9}
+      - - {x: -2, y: 5}
+        - {x: -5, y: 10}
+        - {x: -10, y: 7}
+        - {x: -7, y: 2}
     - name: Effect_Healing_Front_6
       rect:
         serializedVersion: 2
-        x: 128
-        y: 128
-        width: 64
-        height: 64
+        x: 64
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: -9}
+        - {x: 5, y: -10}
+        - {x: 10, y: -14}
+        - {x: 13, y: -13}
+        - {x: 15, y: -8}
+        - {x: 10, y: -4}
+        - {x: 9, y: -4}
+      - - {x: 6, y: 0}
+        - {x: -13, y: 0}
+        - {x: -14, y: -3}
+        - {x: -14, y: -8}
+        - {x: -12, y: -13}
+        - {x: 0, y: -13}
+        - {x: 5, y: -11}
+        - {x: 6, y: -6}
+      - - {x: 9, y: 10}
+        - {x: 6, y: 10}
+        - {x: 3, y: 8}
+        - {x: 1, y: 7}
+        - {x: 1, y: 5}
+        - {x: 2, y: -1}
+        - {x: 4, y: -2}
+        - {x: 9, y: -2}
+        - {x: 13, y: 1}
+        - {x: 13, y: 4}
+        - {x: 12, y: 9}
+      - - {x: -7, y: 9}
+        - {x: -9, y: 7}
+        - {x: -9, y: 5}
+        - {x: -7, y: 3}
+        - {x: -5, y: 3}
+        - {x: -3, y: 5}
+        - {x: -3, y: 7}
+        - {x: -5, y: 9}
     - name: Effect_Healing_Front_7
       rect:
         serializedVersion: 2
-        x: 192
-        y: 128
-        width: 64
-        height: 64
+        x: 96
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4, y: -3}
+        - {x: -6, y: -2}
+        - {x: -10, y: -2}
+        - {x: -15, y: -5}
+        - {x: -15, y: -8}
+        - {x: -14, y: -13}
+        - {x: -12, y: -14}
+        - {x: -7, y: -14}
+        - {x: -4, y: -13}
+        - {x: -3, y: -11}
+        - {x: -3, y: -6}
+      - - {x: 14, y: -10}
+        - {x: 11, y: -5}
+        - {x: 6, y: -8}
+        - {x: 9, y: -13}
+      - - {x: -5, y: -5}
+        - {x: -5, y: -6}
+        - {x: 0, y: -10}
+        - {x: 3, y: -9}
+        - {x: 5, y: -4}
+        - {x: 0, y: 0}
+        - {x: -1, y: 0}
+      - - {x: 1, y: 10}
+        - {x: 1, y: -2}
+        - {x: 13, y: -2}
+        - {x: 13, y: 10}
     - name: Effect_Healing_Front_8
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
-        width: 64
-        height: 64
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 10}
+        - {x: -1, y: 10}
+        - {x: -15, y: 1}
+        - {x: -15, y: -14}
+        - {x: 2, y: -14}
+        - {x: 12, y: -5}
+        - {x: 13, y: 2}
+        - {x: 13, y: 8}
+      - - {x: 9, y: -6}
+        - {x: 7, y: -8}
+        - {x: 7, y: -11}
+        - {x: 8, y: -12}
+        - {x: 13, y: -12}
+        - {x: 13, y: -7}
+        - {x: 11, y: -6}
     - name: Effect_Healing_Front_9
       rect:
         serializedVersion: 2
-        x: 64
-        y: 64
-        width: 64
-        height: 64
+        x: 32
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: -11}
+        - {x: -14, y: -13}
+        - {x: -13, y: -14}
+        - {x: -2, y: -14}
+        - {x: 12, y: -2}
+        - {x: 12, y: 8}
+        - {x: 10, y: 9}
+        - {x: -10, y: 9}
+        - {x: -15, y: 3}
     - name: Effect_Healing_Front_10
       rect:
         serializedVersion: 2
-        x: 128
-        y: 64
-        width: 64
-        height: 64
+        x: 64
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: -8}
+        - {x: -14, y: -9}
+        - {x: -9, y: -13}
+        - {x: -6, y: -12}
+        - {x: -4, y: -7}
+        - {x: -9, y: -3}
+        - {x: -10, y: -3}
+      - - {x: -7, y: 8}
+        - {x: -7, y: -4}
+        - {x: 5, y: -4}
+        - {x: 11, y: 3}
+        - {x: 8, y: 8}
     - name: Effect_Healing_Front_11
       rect:
         serializedVersion: 2
-        x: 192
-        y: 64
-        width: 64
-        height: 64
+        x: 96
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: -9}
+        - {x: -8, y: -4}
+        - {x: -13, y: -7}
+        - {x: -10, y: -12}
+      - - {x: -7, y: -1}
+        - {x: -6, y: -3}
+        - {x: -4, y: -4}
+        - {x: 4, y: -4}
+        - {x: 10, y: 0}
+        - {x: 10, y: 8}
+        - {x: -4, y: 8}
+        - {x: -7, y: 3}
     - name: Effect_Healing_Front_12
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: -5}
+        - {x: -12, y: -6}
+        - {x: -12, y: -9}
+        - {x: -10, y: -11}
+        - {x: -7, y: -11}
+        - {x: -6, y: -10}
+        - {x: -6, y: -5}
+      - - {x: -6, y: 2}
+        - {x: -6, y: 1}
+        - {x: -1, y: -3}
+        - {x: 2, y: -2}
+        - {x: 4, y: 3}
+        - {x: -1, y: 7}
+        - {x: -2, y: 7}
     - name: Effect_Healing_Front_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 3, y: 1}
+        - {x: 0, y: 6}
+        - {x: -5, y: 3}
+        - {x: -2, y: -2}
+    - name: Effect_Healing_Front_14
       rect:
         serializedVersion: 2
         x: 64
         y: 0
-        width: 64
-        height: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Effect_Healing_Front_14
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Effect_Healing_Front_15
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 5}
+        - {x: -4, y: 3}
+        - {x: -4, y: 1}
+        - {x: -2, y: -1}
+        - {x: 0, y: -1}
+        - {x: 2, y: 1}
+        - {x: 2, y: 3}
+        - {x: 0, y: 5}
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

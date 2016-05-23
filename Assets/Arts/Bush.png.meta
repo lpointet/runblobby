@@ -1,9 +1,11 @@
 fileFormatVersion: 2
 guid: af973f5c8ad0faf4abcc655ae4853fc6
-timeCreated: 1454171466
+timeCreated: 1461870687
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Bush_0
+    21300002: Bush_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +40,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 6
@@ -49,7 +51,38 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Bush_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 64
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 13, y: 32}
+        - {x: 0, y: 20}
+        - {x: 0, y: 0}
+        - {x: 64, y: 0}
+        - {x: 64, y: 32}
+    - name: Bush_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 0}
+        - {x: 64, y: 0}
+        - {x: 64, y: 32}
+        - {x: 0, y: 32}
     outline: []
   spritePackingTag: 
   userData: 

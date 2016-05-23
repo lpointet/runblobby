@@ -183,7 +183,7 @@ MonoBehaviour:
   actifVolume: 0.7
   despawnSound: {fileID: 0}
   despawnVolume: 0
-  lifeTime: 10
+  lifeTime: 1000
   weight: 5
   spawnTime: 0.25
   offsetYToPlayer: 0.65

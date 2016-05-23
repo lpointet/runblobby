@@ -9,6 +9,7 @@ public class Pickup : MonoBehaviour {
     protected Collider2D myCollider;
 
 	protected SpriteRenderer myRender;
+	protected SpriteRenderer myBackRender;
 	protected Animator myAnim;
 
 	// Aurait pu être dans une classe à part...
@@ -36,7 +37,10 @@ public class Pickup : MonoBehaviour {
     protected virtual void Awake() {
 		myTransform = transform;
 		initialParent = myTransform.parent;
-		myRender = GetComponentInChildren<SpriteRenderer>();
+		SpriteRenderer[] tempSprite = GetComponentsInChildren<SpriteRenderer> ();
+		myRender = tempSprite [0];
+		if(tempSprite.Length > 1)
+			myBackRender = tempSprite [1];
 		myAnim = GetComponentInChildren<Animator>();
         soundSource = GetComponent<AudioSource>();
         myCollider = GetComponent<Collider2D>();
@@ -47,6 +51,15 @@ public class Pickup : MonoBehaviour {
 		picked = false;
         despawnCalled = false;
 		weakCalled = false;
+
+		if (myRender != null) {
+			myRender.enabled = true;
+			myRender.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
+		}
+		if (myBackRender != null) {
+			myBackRender.enabled = false;
+			myBackRender.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
+		}
     }
 
 	protected virtual void Update() {
@@ -116,9 +129,9 @@ public class Pickup : MonoBehaviour {
 			myTransform.parent = LevelManager.GetPlayer().transform;
 			myTransform.position = myTransform.parent.position;
         }
-
-		if (myRender != null)
-			myRender.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
+			
+		if (myBackRender != null)
+			myBackRender.enabled = true;
 
         LevelManager.GetPlayer().AddPickup( myCollider );
     }
@@ -128,9 +141,12 @@ public class Pickup : MonoBehaviour {
 
 		if (_StaticFunction.ExistsAndHasParameter ("picked", myAnim))
 			myAnim.SetBool ("picked", true);
-
-		else if (myRender != null) // On cache directement ceux qui n'ont pas d'animation de ramassage
+		
+		else if (myRender != null) { // On cache directement ceux qui n'ont pas d'animation de ramassage
 			myRender.enabled = false;
+			if (myBackRender != null)
+				myBackRender.enabled = true;
+		}
 	}
 
 	protected virtual void WeakEffect() {

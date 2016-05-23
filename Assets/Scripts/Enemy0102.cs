@@ -35,14 +35,6 @@ public class Enemy0102 : Enemy {
 	private bool grounded;
 	public float groundCheckRadius;
 
-	private Animator myAnim;
-
-	protected override void Awake () {
-		base.Awake();
-
-		myAnim = GetComponent<Animator> ();
-	}
-
 	void Start() {
 		currentOeuf -= pourcentOeuf; // Initialise à la première valeur de laché d'oeuf
 		//myAnim.SetFloat("ratioHP", 1f);
@@ -80,7 +72,7 @@ public class Enemy0102 : Enemy {
 
 	// Esquive des tirs du joueur
 	private void DodgeBullet() {
-		detectedBullet = Physics2D.OverlapArea (new Vector2 (myTransform.position.x - 1, myTransform.position.y + 0.4f), new Vector2 (myTransform.position.x - 2, myTransform.position.y - 1), playerMask);
+		detectedBullet = Physics2D.OverlapArea (new Vector2 (myTransform.position.x - 1, myTransform.position.y + 0.5f), new Vector2 (myTransform.position.x - 2.5f, myTransform.position.y - 1), playerMask);
 
 		// Si une balle entre dans la zone derrière la poule
 		if (detectedBullet != null && detectedBullet.CompareTag("Bullet")) {
@@ -92,8 +84,7 @@ public class Enemy0102 : Enemy {
 				// On compare à la probabilité d'esquiver
 				if (Random.Range(0f, 1f) < dodgeSkill) {
 					// On ajuste la puissance du saut en fonction du lieu d'impact de la balle
-					float powerJump = Mathf.Clamp(detectedBullet.transform.position.y, 1.3f, 3);
-
+					float powerJump = Mathf.Clamp(detectedBullet.transform.position.y, 1.5f, 2);
 					// On fait sauter la poule
 					myRb.velocity = new Vector2 (myRb.velocity.x, powerJump * GetJumpHeight ());
 				}
@@ -104,6 +95,11 @@ public class Enemy0102 : Enemy {
 			currentBulletID = 0;
 		}
 	}
+
+	/*private void OnDrawGizmos () {
+		Gizmos.color = Color.blue;
+		Gizmos.DrawLine(new Vector2 (myTransform.position.x - 1, myTransform.position.y + 0.5f),  new Vector2 (myTransform.position.x - 2.5f, myTransform.position.y - 1));
+	}*/
 
 	// Attaque du poulet vers le joueur s'il casse un oeuf
 	private void AngryChicken () {

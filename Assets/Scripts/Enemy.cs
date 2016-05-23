@@ -6,7 +6,7 @@ public class Enemy : Character {
 	/**
 	 * Enemy Stats
 	 */
-	public float distanceToKill;
+	public float timeToKill;
 	public int damageToGive;
 	public int pointScore;
 	public string firstName;
@@ -15,6 +15,7 @@ public class Enemy : Character {
 
 	protected Rigidbody2D myRb;
 	protected EnemySoundEffect myAudio;
+	protected Animator myAnim;
 
 	public float[] popPosition = new float[2];
 	public float[] startPosition = new float[2];
@@ -26,6 +27,7 @@ public class Enemy : Character {
 	public float mediumValue = 1.1f; // Offre une bien plus grande variété de feuilles que 1f
 	private CoinPickup[] coins; // Fait référence à ListManager
 	private CoinDrop[] possibleCoins;
+	public bool coinToGround; // True = les pièces vont au sol, False = les pièces restent là où elles sont
 	public LayerMask layerGround;
 	private float distanceParcourue = 0;
 	private float pointLastDropCheck = 0;
@@ -36,8 +38,8 @@ public class Enemy : Character {
 	/**
 	 * Getters & Setters
 	 */
-	public float GetDistanceToKill() {
-		return distanceToKill;
+	public float GetTimeToKill() {
+		return timeToKill;
 	}
 
 	public int GetDamageToGive() {
@@ -56,8 +58,8 @@ public class Enemy : Character {
 		return surName;
 	}
 
-	public void SetDistanceToKill( float value ) {
-		distanceToKill = value;
+	public void SetTimeToKill( float value ) {
+		timeToKill = value;
 	}
 
 	public void SetDamageToGive( int value ) {
@@ -99,6 +101,7 @@ public class Enemy : Character {
 
 		myRb = GetComponent<Rigidbody2D> ();
 		myAudio = GetComponent<EnemySoundEffect> ();
+		myAnim = GetComponent<Animator> ();
 
 		mySprite.enabled = false;
 	}
@@ -167,7 +170,7 @@ public class Enemy : Character {
 	}
 
 	protected virtual void GainExp() {
-		int pointDistance = Mathf.CeilToInt(LevelManager.levelManager.GetEnemyDistanceToKill () / 20);
+		int pointDistance = Mathf.CeilToInt(LevelManager.levelManager.GetEnemyTimeToKill ());
 		int pointBoss = 10 + LevelManager.levelManager.GetCurrentLevel (); // XP pour les boss, par défaut, à changer pour les boss finaux
 		ScoreManager.AddPoint (pointDistance + pointBoss, ScoreManager.Types.Experience);
 	}
@@ -233,9 +236,9 @@ public class Enemy : Character {
 			pointLastDropCheck = distanceParcourue;
 
 			if (Random.Range (0f, 1f) <= frequence) { // On pose une pièce en respectant la fréquence
-				
+
 				RaycastHit2D hit;
-				hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround); // On essaye de trouver le sol, sinon on ne fait rien
+				hit = Physics2D.Raycast (myTransform.position, Vector2.down, 25, layerGround); // On essaye de trouver le sol, sinon on ne fait rien
 
 				if (hit.collider != null) {
 					// On calcule quelle type de pièce doit tomber en fonction de ce qui est souhaité en moyenne et des pièces précédentes
@@ -252,7 +255,11 @@ public class Enemy : Character {
 							coin.gameObject.SetActive (true);
 
 							coin.transform.parent = hit.transform;
-							coin.transform.position = new Vector2 (myTransform.position.x, hit.transform.position.y + 0.25f);
+
+							if (coinToGround) // Si on veut que les pièces touchent le sol
+								coin.transform.position = new Vector2 (myTransform.position.x, hit.transform.position.y + 0.25f);
+							else // Sinon on les laisse sur place
+								coin.transform.position = new Vector2 (myTransform.position.x, myTransform.position.y);
 
 							mediumSum += mediumValue;
 							currentSum += possibleCoins [i].GetCoinValue ();

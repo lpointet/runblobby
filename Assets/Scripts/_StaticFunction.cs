@@ -6,6 +6,30 @@ using System.Collections;
 public static class _StaticFunction {
 
 	/**
+	 * PARTIE INTERACTION
+	 */
+	public static bool TouchOnLeftScreen(bool continuousTouch = false) {
+		if (!continuousTouch && Input.GetMouseButtonDown (0) && Camera.main.ScreenToViewportPoint (Input.mousePosition).x < 0.5f)
+			return true;
+		else if (continuousTouch && Input.GetMouseButton (0) && Camera.main.ScreenToViewportPoint (Input.mousePosition).x < 0.5f)
+			return true;
+		else 
+			return false;
+	}
+
+	public static bool TouchOnRightScreen(bool continuousTouch = false) {
+		if (!continuousTouch && Input.GetMouseButtonDown (0) && Camera.main.ScreenToViewportPoint (Input.mousePosition).x >= 0.5f)
+			return true;
+		else if (continuousTouch && Input.GetMouseButton (0) && Camera.main.ScreenToViewportPoint (Input.mousePosition).x >= 0.5f)
+			return true;
+		else 
+			return false;
+	}
+	/**
+	 * FIN PARTIE INTERACTION
+	 */
+
+	/**
 	 * PARTIE MATH
 	 */
 	// Loi de Poisson (avec k entier) : P(X=k, lambda) = (lambda^k * e^-lambda) / k!

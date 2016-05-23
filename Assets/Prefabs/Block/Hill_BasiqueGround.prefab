@@ -89,7 +89,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.238428, y: 11.064047, z: 0}
+  m_LocalPosition: {x: -14.839466, y: -47.040993, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 414876}
@@ -141,7 +141,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132014}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.03125, z: 0}
+  m_LocalPosition: {x: 0, y: -0.0625, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 409758}
@@ -231,17 +231,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ed1585fb0c29c4fa7fb14bffaa7a22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listDecor:
-  - {fileID: 146128, guid: f681f9ed7e1e7df439ecd759b2e5759b, type: 2}
-  - {fileID: 192966, guid: e29f36ac41248b14a9293faf8b152b03, type: 2}
-  - {fileID: 161070, guid: a271d701fa744d943bc6f4408e998291, type: 2}
-  - {fileID: 193258, guid: 418e784f2b6d55a4ebf1b4f70d6ce5cd, type: 2}
-  - {fileID: 106504, guid: 7b2966fb026df8642b8928ef17448030, type: 2}
-  - {fileID: 194370, guid: ac07efcd477cedf43ae2aa3e54ae1d9b, type: 2}
-  - {fileID: 137574, guid: 05c391e0db7a9764191fa08fa32a228f, type: 2}
-  - {fileID: 176532, guid: 25b0800cfad66f74b847ac88ae025a5f, type: 2}
-  - {fileID: 143080, guid: 05e3120da8d7bf1418923e7884107cbc, type: 2}
-  listDecorProba: 0f0000000f0000000f0000000f0000000a0000000a00000001000000c8000000c8000000
+  listeDecor:
+  - {fileID: 11494904, guid: ac07efcd477cedf43ae2aa3e54ae1d9b, type: 2}
+  - {fileID: 11401408, guid: f681f9ed7e1e7df439ecd759b2e5759b, type: 2}
+  - {fileID: 11461724, guid: e29f36ac41248b14a9293faf8b152b03, type: 2}
+  - {fileID: 11498184, guid: a271d701fa744d943bc6f4408e998291, type: 2}
+  - {fileID: 11482170, guid: 418e784f2b6d55a4ebf1b4f70d6ce5cd, type: 2}
+  - {fileID: 11496504, guid: 25b0800cfad66f74b847ac88ae025a5f, type: 2}
+  - {fileID: 11431606, guid: 05e3120da8d7bf1418923e7884107cbc, type: 2}
+  - {fileID: 11488742, guid: 7b2966fb026df8642b8928ef17448030, type: 2}
+  - {fileID: 11475876, guid: 05c391e0db7a9764191fa08fa32a228f, type: 2}
+  - {fileID: 11445690, guid: 651b9449c6b97ae42a6ea82aa34e8fbf, type: 2}
+  - {fileID: 11479844, guid: 1247bd18265b8ea43a35f9a0fbd8eba4, type: 2}
+  - {fileID: 11413014, guid: c8cbf7b8f5ccfae4c87954526941aff1, type: 2}
+  - {fileID: 11489000, guid: 6932833f857cfa946b4a78ede6aa360d, type: 2}
+  - {fileID: 11443860, guid: 12a423727c430da4fa1872872f254ebd, type: 2}
+  - {fileID: 11492438, guid: ec7f8d899916d2844ab68001f1a450fd, type: 2}
+  - {fileID: 11461934, guid: 5d8cdcec0db73cc4887c6ff7b6a53703, type: 2}
   probaApparition: 75
   sizeAvailable: 10
 --- !u!114 &11495378

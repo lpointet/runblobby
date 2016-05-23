@@ -5,7 +5,7 @@ public class CoinSpawn : MonoBehaviour {
 
 	public int coinValue;
 
-	private GameObject instantCoin;
+	//private GameObject instantCoin;
 	private Vector2 initialPosition;
 
 	private Transform myTransform;
@@ -21,9 +21,9 @@ public class CoinSpawn : MonoBehaviour {
 		transform.localPosition = initialPosition;
 
 		// On désactive les coins non prises, non mais.
-		if (null != instantCoin) {
+		/*if (null != instantCoin) {
 			instantCoin.SetActive (false);
-		}
+		}*/
 
 		isPop = false;
 	}
@@ -38,7 +38,7 @@ public class CoinSpawn : MonoBehaviour {
 			}
 
 			// On fait apparaître la pièce de la valeur demandée
-			instantCoin = PoolingManager.current.Spawn (ListManager.current.coins [choix].name);
+			GameObject instantCoin = PoolingManager.current.Spawn (ListManager.current.coins [choix].name);
 
 			instantCoin.SetActive (true);
 

@@ -22,10 +22,10 @@ public class PlayerController : Character {
 	private PlayerSoundEffect myAudio;
 	private Transform weapon;
 	public GameObject parachute;
-	
-	private bool grounded;
+
     [HideInInspector] public bool bounced = false;
     [HideInInspector] public bool wasFlying = false;
+	private bool grounded;
 	public Transform groundCheck;
 	public float groundCheckRadius;
 	public LayerMask layerGround;
@@ -190,7 +190,7 @@ public class PlayerController : Character {
 
 		isFlying = false;
         wasFlying = false;
-		SetZeroGravFlying (true); // TODO doit provenir de l'arbre des talents (v2)
+		SetZeroGravFlying (false); // TODO doit provenir de l'arbre des talents (v2)
     }
 	
 	void FixedUpdate() {
@@ -212,9 +212,10 @@ public class PlayerController : Character {
 		base.Update();
 
 		// Vol sur place du fantôme pendant la mort en l'air
-		if (IsDead () && !HasLastWish() && !IsGrounded () && myTransform.position.y > 3.5f) {
+		if (IsDead () && !HasLastWish() && !IsGrounded () && myTransform.position.y > LevelManager.levelManager.GetHeightStartBlock() - 3) {
 			yVariableAirDeath += TimeManager.deltaTime;
 			myTransform.position = new Vector2 (myTransform.position.x, yPosAirDeath + 0.2f * Mathf.Sin (yVariableAirDeath));
+			return;
 		}
 
         // Empêcher que des choses se passent durant la pause
@@ -232,18 +233,19 @@ public class PlayerController : Character {
 		}
 
 		// Action de voler
-		if (IsFlying() && Input.GetMouseButton (0)) {
+		if (IsFlying() && PlayerWantToJump(true)) {
+			float verticalCoef = 1.5f;
 			// Permet de suivre le "doigt" du joueur quand il vole en zéro gravité
 			if (IsZeroGravFlying ()) {
 				float cameraCursorY = Camera.main.ScreenToWorldPoint (Input.mousePosition).y;
 
 				// On ne bouge que si le curseur est suffisament loin du joueur (pour éviter des zigzags)
 				if (Mathf.Abs (cameraCursorY - myTransform.position.y) > 0.1f)
-					myRb.velocity = new Vector2 (0, Mathf.Sign ((cameraCursorY - myTransform.position.y)) * 1.5f);
+					myRb.velocity = new Vector2 (0, Mathf.Sign ((cameraCursorY - myTransform.position.y)) * verticalCoef);
 				else
 					myRb.velocity = Vector2.zero;
 			} else { // En vol normal, tant qu'on appuie, le joueur "monte"
-				myRb.velocity = new Vector2 (0, 1.5f);
+				myRb.velocity = new Vector2 (0, verticalCoef);
 			}
 		} else if (IsFlying() && IsZeroGravFlying ()) { // Si on n'appuie pas, on ne bouge pas
 			myRb.velocity = Vector2.zero;
@@ -254,7 +256,7 @@ public class PlayerController : Character {
 			currentJump = 0;
 		
 		// Gestion des sauts
-		if (Input.GetButtonDown ("Jump")) {
+		if (PlayerWantToJump()) {
 			if (IsGrounded () || bounced) {
 				Jump ();
 				bounced = false;
@@ -305,6 +307,16 @@ public class PlayerController : Character {
 		} else {
 			previousHP = GetHealthPoint ();
 		}
+	}
+
+	private bool PlayerWantToJump (bool continuous = false) {
+		// Si un ennemi est présent, on ne peut sauter qu'à gauche de l'écran
+		if (LevelManager.levelManager.GetEnemyEnCours () != null)
+			return _StaticFunction.TouchOnLeftScreen (continuous);
+		else if (continuous)
+			return Input.GetMouseButton (0);
+		else
+			return Input.GetMouseButtonDown (0);
 	}
 	
 	public void Jump() {
@@ -417,14 +429,14 @@ public class PlayerController : Character {
         SetMaxDoubleJump( initialMaxDoubleJump );
 		StartCoroutine (ChangeSpeed (GetMoveSpeed () / flySpeedCoeff));
 
-        // On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou
-        wasFlying = true;
-
         // On "force" le joueur à sauter avant l'atterrissage, signant en même temps la fin du vol
         //Jump();
 
 		// On fait atterrir le joueur avec le parachute
 		if (!IsGrounded ()) {
+			// On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou
+			wasFlying = true;
+
 			ActiveParachute (true);
 			// Rétablir une gravité "cohérente" avec un parachute
 			myRb.gravityScale = initialGravityScale / 3.5f;

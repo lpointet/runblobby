@@ -59,11 +59,31 @@ public class MainMenuManager : MonoBehaviour {
 	/* Fin de l'écran des crédits */
 	/******************************/
 
+	/***********************/
 	/* Ecran de chargement */
 	[Header("Loading Screen")]
 	public GameObject loadingScreen;
 	public Slider loadingBar;
 	/* Fin écran de chargement */
+	/***************************/
+
+	/*********************/
+	/* Ecran du tutoriel */
+	[Header("Tutoriel Menu")]
+	public GameObject wTutoriel;
+
+	public Button bNextTuto;
+	public Button bPreviousTuto;
+	public Button bSkipTuto;
+
+	private float dragTutoStart;
+	private float dragTutoEnd;
+
+	public GameObject[] listPageTuto;
+	private int currentPage = 0;
+	private bool isTutoFromOption = true; // Permet de savoir si on a lancé le tutoriel depuis le menu ou si c'est celui qui se lance avec un New Game
+	/* Fin de l'écran du tutoriel */
+	/******************************/
 
 	private Color32 colorOptionValue = _StaticFunction.ToColor (0x4DACF9);
 	private Color32 colorOptionNulle = _StaticFunction.ToColor(0xF94D4D);
@@ -108,38 +128,46 @@ public class MainMenuManager : MonoBehaviour {
     }
 
 	public void NewGame_Click() {
+		SetMenuActive(bNewGame);
 		// Demander confirmation avant de charger
 		if (GameData.gameData.existingGame)
 			wNewGame.SetActive (true);
 		else {
-			// Lancement du premier niveau si on a valider le message de confirmation
-			_GameData.currentLevel = 1;
-			_GameData.currentDifficulty = 0; // TODO difficulté : v2
-			_GameData.isStory = true;
-			_GameData.currentLevelName = GameData.gameData.playerData.levelData [0].levelName;
-
-			LoadLevel (1);
+			isTutoFromOption = false;
+			Tuto_Begin ();
 		}
     }
 
 	public void NewGame_No_Click() {
 		sfxSound.ButtonNoClick ();
-
 		wNewGame.SetActive (false);
+
+		ClearMenu ();
 	}
 
 	public void NewGame_Yes_Click() {
 		sfxSound.ButtonYesClick ();
+		wNewGame.SetActive (false);
 
 		_StaticFunction.Erase ();
 
-		// Lancement du premier niveau si on a valider le message de confirmation
-		_GameData.currentLevel = 1;
-		_GameData.currentDifficulty = 0; // TODO difficulté : v2
-		_GameData.isStory = true;
-		_GameData.currentLevelName = GameData.gameData.playerData.levelData [0].levelName;
+		isTutoFromOption = false;
+		Tuto_Begin ();
+	}
 
-		LoadLevel (1);
+	public void Tuto_Begin() {
+		if (listPageTuto.Length == 1) {
+			bPreviousTuto.gameObject.SetActive (false);
+		} else {
+			for (int i = 1; i < listPageTuto.Length; i++) {
+				listPageTuto [i].SetActive (false);
+			}
+			bPreviousTuto.gameObject.SetActive (false);
+		}
+		currentPage = 0;
+
+		listPageTuto [currentPage].SetActive (true);
+		wTutoriel.SetActive (true);
 	}
 
     public void Option_Click() {
@@ -187,7 +215,7 @@ public class MainMenuManager : MonoBehaviour {
 
 #if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
-#elif UNITY_STANDALONE
+#else
 		Application.Quit ();
 #endif
 	}
@@ -229,6 +257,60 @@ public class MainMenuManager : MonoBehaviour {
 		levelScrollView.GetComponent<LevelScrollList> ().DescendreLevel();
 	}
 
+	public void NextTuto_Click() {
+		if (currentPage == listPageTuto.Length - 1) {
+			SkipTuto_Click ();
+		} else {
+			listPageTuto [currentPage].SetActive (false);
+			listPageTuto [++currentPage].SetActive (true);
+		}
+		
+		bPreviousTuto.gameObject.SetActive (true);
+	}
+
+	public void PreviousTuto_Click() {
+		if (currentPage > 0) {
+			listPageTuto [currentPage].SetActive (false);
+			listPageTuto [--currentPage].SetActive (true);
+		}
+		if (currentPage == 0)
+			bPreviousTuto.gameObject.SetActive (false);
+		
+		bNextTuto.gameObject.SetActive (true);
+	}
+
+	public void SkipTuto_Click() {
+		wTutoriel.SetActive (false);
+
+		// Si on lance le tuto depuis New Game
+		if (!isTutoFromOption) {
+			// Lancement du premier niveau avec les bons paramètres pour une nouvelle partie
+			_GameData.currentLevel = 1;
+			_GameData.currentDifficulty = 0; // TODO difficulté : v2
+			_GameData.isStory = true;
+			_GameData.currentLevelName = GameData.gameData.playerData.levelData [0].levelName;
+
+			LoadLevel (1);
+		}
+	}
+
+	public void BeginDragTuto() {
+		dragTutoStart = Input.mousePosition.x;
+	}
+
+	public void EndDragTuto() {
+		dragTutoEnd = Input.mousePosition.x;
+
+		float direction = dragTutoEnd - dragTutoStart;
+		if (Mathf.Abs (direction) < 125)
+			return;
+
+		if (direction < 0)
+			NextTuto_Click ();
+		else
+			PreviousTuto_Click ();
+	}
+
 	private void SetMenuActive(Button menu, Button submenu = null) {
         ClearMenu();
 		sfxSound.ButtonYesClick ();
@@ -266,6 +348,8 @@ public class MainMenuManager : MonoBehaviour {
 
 			levelScrollView.SetActive (false);
 		}
+
+		wTutoriel.SetActive (false);
     }
 
 	private void ChangeMainScreen() {
