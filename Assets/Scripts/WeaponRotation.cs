@@ -10,21 +10,29 @@ public class WeaponRotation : MonoBehaviour {
 	private Transform myTransform;
 	private GameObject follow;
 
+	private Vector2 shootingFinger;
+
 	void Awake() {
 		myTransform = transform;
+	}
+
+	void Start() {
+		Mediator.current.Subscribe<TouchRight> (WeaponDirection);
 	}
 
 	// Permet à l'arme de suivre quelque chose dans la scène ou la souris (si jamais elle est visible, sinon donne le transform.rotation pour les balles au moins)
 	void Update () {
 		// On récupère l'objet à suivre à chaque Update pour etre sur qu'il est bien actif dans la scène
-		if( "" != followName ) {	
+		if( "" != followName ) {
 			follow = GameObject.Find( followName );
 			if( null == follow ) {
 				return;
 			}
 		}
+		// TODO Il faut mettre à jour l'information de la Touch, sinon on ne met pas à jour la position...
+		shootingFinger = TouchManager.current.rightTouchPosition;
 
-		followPosition = null == follow ? Camera.main.ScreenToWorldPoint(Input.mousePosition) : follow.transform.position;
+		followPosition = null == follow ? Camera.main.ScreenToWorldPoint(shootingFinger) : follow.transform.position;
 
 		vecteurWeapon = followPosition - myTransform.position;
 		vecteurWeapon.Normalize ();
@@ -32,5 +40,9 @@ public class WeaponRotation : MonoBehaviour {
 		rotaZ = Mathf.Atan2 (vecteurWeapon.y, vecteurWeapon.x) * Mathf.Rad2Deg; // Angle entre l'horizontal et le vecteur calculé précédemment
 
 		myTransform.rotation = Quaternion.Euler (0f, 0f, rotaZ);
+	}
+
+	private void WeaponDirection (TouchRight touch) {
+		shootingFinger = touch.rightTouchPosition;
 	}
 }

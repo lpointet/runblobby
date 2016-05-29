@@ -94,7 +94,7 @@ public class Enemy0103 : Enemy {
 					myBirdAnim.SetBool("picked", true);
 				}
 			}
-			if (!jumpToCatch && timeToSpawn < 0.1f) { // Le boss saute juste avant que l'oiseau n'arrive
+			if (!jumpToCatch && timeToSpawn < 0.1f / LevelManager.GetPlayer().GetRatioSpeed()) { // Le boss saute juste avant que l'oiseau n'arrive
 				minHeight = Mathf.CeilToInt(myTransform.position.y); // On retient sa position avant le saut comme le minimum pendant le vol, arrondi au supérieur
 
 				myRb.velocity = new Vector2(0, GetJumpHeight());

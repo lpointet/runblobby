@@ -9,10 +9,11 @@ public class CameraManager : MonoBehaviour {
 
 	public int unitsInWidth;
 	public int widthMin;
+	public float maxJumpHeight = 6.5f; // 6.5 est la valeur qui permet de sauter avec la plateforme le plus haut possible
 
 	public float xOffsetPourcentage;
 	private float xOffset;
-	[HideInInspector] public float yOffset;
+	public float yOffset  { get; private set; }
 
 	private Transform backKiller;
 	private Transform fallingKiller;
@@ -22,7 +23,7 @@ public class CameraManager : MonoBehaviour {
 
 	public GameObject bgContainer;
 
-    public float camRightEnd;
+	public float camRightEnd { get; private set; }
 
     void Awake() {
         if (cameraManager == null)
@@ -75,8 +76,8 @@ public class CameraManager : MonoBehaviour {
 
 		// On ne doit pas être plus bas qu'une certaine orthographicSize, sinon la hauteur ne sera plus suffisante pour les sauts les plus hauts
 		// 6.5 est la valeur qui permet de sauter avec la plateforme le plus haut possible
-		if (sizeCameraMinWidth < 6.5f)
-			sizeCameraMinWidth = 6.5f;
+		if (sizeCameraMinWidth < maxJumpHeight)
+			sizeCameraMinWidth = maxJumpHeight;
 
 		// On ajuste l'ortho selon la logique : il vaut mieux déformer les pixels mais avoir une bonne vision devant soi
 		//Camera.main.orthographicSize = sizeCameraMinWidth > sizeCameraPixelPerfect ? sizeCameraMinWidth : sizeCameraPixelPerfect;

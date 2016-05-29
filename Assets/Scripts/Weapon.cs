@@ -9,9 +9,13 @@ public class Weapon : MonoBehaviour {
 	private string bulletName = "Bullet";
 	public bool autoFire = false;
 
-	private float timeToFire;
+	private float timeToFire = 0;
 	private Transform firePoint;
 	private float timeToSpawnEffect; // Avec Raycast seulement
+
+	private bool wantToShoot = false;
+	private int shootingId;
+	//private Vector2 shootingFingerPosition;
 
 	private Character weaponOwner;
 
@@ -27,22 +31,35 @@ public class Weapon : MonoBehaviour {
 		weaponOwner = GetComponentInParent<Character> ();
 	}
 
+	void Start() {
+		Mediator.current.Subscribe<TouchRight> (ShootController);
+		Mediator.current.Subscribe<EndTouch> (ShootStop);
+	}
+
 	void Update () {
         // Empêcher que des choses se passent durant la pause
 		if (TimeManager.paused || weaponOwner.IsDead() || LevelManager.GetPlayer().IsDead())
             return;
 
-		if (fireRate == 0) {
-			// Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight() = Empêche de tirer quand on appuie sur le bouton PAUSE
-			if (_StaticFunction.TouchOnRightScreen() && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight()) {
-				Shoot ();
-			}
-		} else {
-			if ( ( autoFire || _StaticFunction.TouchOnRightScreen(true) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < LevelManager.GetPlayer().GetMaxHeight()) && TimeManager.time > timeToFire ) {
-				timeToFire = TimeManager.time + 1/fireRate;
-				Shoot();
-			}
+		if ( (autoFire || wantToShoot) && TimeManager.time > timeToFire ) {
+			timeToFire = TimeManager.time + 1 / fireRate;
+			Shoot();
 		}
+	}
+
+	private void ShootController(TouchRight touch) {
+		if (fireRate == 0) {
+			Shoot ();
+		} else {
+			wantToShoot = true;
+			shootingId = touch.rightId;
+			//shootingFingerPosition = touch.rightTouchPosition;
+		}
+	}
+
+	private void ShootStop(EndTouch touch) {
+		if (shootingId == touch.fingerId)
+			wantToShoot = false;
 	}
 
 	private void Shoot() {

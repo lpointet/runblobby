@@ -54,6 +54,7 @@ public class BackgroundScrolling : MonoBehaviour {
 	}
 }
 
+#if UNITY_EDITOR
 [CanEditMultipleObjects]
 [CustomEditor(typeof(MeshRenderer))]
 public class MeshRendererEditor : Editor
@@ -101,3 +102,4 @@ public class MeshRendererEditor : Editor
 		return (int[])sortingLayerUniqueIDsProperty.GetValue(null, new object[0]);
 	}
 }
+#endif

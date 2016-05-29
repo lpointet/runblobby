@@ -55,6 +55,9 @@ public class PlayerController : Character {
 	// Concerne le vol
 	private float flySpeedCoeff = 2f;
 	private bool isFlying = false;
+	private bool wantToFly = false;
+	private Vector2 flyingTouchPosition;
+	private int flyingTouchId = -1;
 	private bool zeroGravFlying = false;
 	private float yPosAirDeath;
 	private float yVariableAirDeath = 0f;
@@ -116,6 +119,10 @@ public class PlayerController : Character {
 
 	public bool IsFlying() {
 		return isFlying;
+	}
+
+	private bool WantToFly() {
+		return wantToFly;
 	}
 
 	public void SetZeroGravFlying(bool value) {
@@ -190,7 +197,11 @@ public class PlayerController : Character {
 
 		isFlying = false;
         wasFlying = false;
-		SetZeroGravFlying (false); // TODO doit provenir de l'arbre des talents (v2)
+		SetZeroGravFlying (true); // TODO doit provenir de l'arbre des talents (v2)
+
+		Mediator.current.Subscribe<TouchLeft> (PlayerActionLeft);
+		Mediator.current.Subscribe<TouchRight> (PlayerActionRight);
+		Mediator.current.Subscribe<EndTouch> (PlayerEndAction);
     }
 	
 	void FixedUpdate() {
@@ -225,7 +236,11 @@ public class PlayerController : Character {
 		// Rapprocher le joueur douuuucement si on est pas en x = 0
 		if (Mathf.Abs(myTransform.position.x - 0) > 0.05f)
 			myTransform.Translate (Mathf.Sign(myTransform.position.x) * Vector3.left * 0.005f);
-		
+
+		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
+		if (IsGrounded ())
+			currentJump = 0;
+
 		// Ajustement du saut et gravité en fonction de la vitesse
 		if (!IsFlying() && !wasFlying) {
 			SetJumpHeight (GetMoveSpeed () * constJump);
@@ -233,46 +248,36 @@ public class PlayerController : Character {
 		}
 
 		// Action de voler
-		if (IsFlying() && PlayerWantToJump(true)) {
+		if (IsFlying() && WantToFly()) {
 			float verticalCoef = 1.5f;
+			// TODO Il faut mettre à jour l'information de la Touch, sinon on ne met pas à jour la position...
+			flyingTouchPosition = flyingTouchId == TouchManager.current.leftTouchId ? TouchManager.current.leftTouchPosition : TouchManager.current.rightTouchPosition;
+
 			// Permet de suivre le "doigt" du joueur quand il vole en zéro gravité
 			if (IsZeroGravFlying ()) {
-				float cameraCursorY = Camera.main.ScreenToWorldPoint (Input.mousePosition).y;
+				float cameraCursorY = Camera.main.ScreenToWorldPoint (flyingTouchPosition).y;
 
 				// On ne bouge que si le curseur est suffisament loin du joueur (pour éviter des zigzags)
 				if (Mathf.Abs (cameraCursorY - myTransform.position.y) > 0.1f)
 					myRb.velocity = new Vector2 (0, Mathf.Sign ((cameraCursorY - myTransform.position.y)) * verticalCoef);
 				else
 					myRb.velocity = Vector2.zero;
-			} else { // En vol normal, tant qu'on appuie, le joueur "monte"
+			// En vol normal, tant qu'on appuie, le joueur "monte"
+			} else {
 				myRb.velocity = new Vector2 (0, verticalCoef);
 			}
-		} else if (IsFlying() && IsZeroGravFlying ()) { // Si on n'appuie pas, on ne bouge pas
+		// Si on n'appuie pas, on ne bouge pas
+		} else if (IsFlying() && IsZeroGravFlying ()) {
 			myRb.velocity = Vector2.zero;
 		}
-
-		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
-		if (IsGrounded ())
-			currentJump = 0;
-		
-		// Gestion des sauts
-		if (PlayerWantToJump()) {
-			if (IsGrounded () || bounced) {
-				Jump ();
-				bounced = false;
-			} else if (!IsGrounded () && currentJump < maxDoubleJump) {
-				Jump ();
-				currentJump++;
-			}
-		}
-
+			
         // Appelé à la fin d'un vol si en l'air et jusqu'à l'atterrisage
 		if(!IsGrounded () && wasFlying)
         {
             RaycastHit2D hit;
             CloudBlock cloudBlock;
 
-			hit = Physics2D.Raycast(myTransform.position, new Vector2(2, -4), 1, layerGround);
+			hit = Physics2D.Raycast(myTransform.position, new Vector2(2, -4), 2, layerGround);
 
             if (hit.collider != null)
             {
@@ -309,16 +314,64 @@ public class PlayerController : Character {
 		}
 	}
 
-	private bool PlayerWantToJump (bool continuous = false) {
+	/* Lorsqu'on appuie à GAUCHE de l'écran, le joueur peut :
+	 * - si un ennemi est là		SAUTER
+	 * - si aucun ennemi n'est là	SAUTER | VOLER
+	 */
+	private void PlayerActionLeft (TouchLeft touch) {
+		if (!IsFlying ())
+			JumpController ();
+		else {
+			if (WantToFly ())
+				return;
+			
+			wantToFly = true;
+
+			flyingTouchId = touch.leftId;
+			flyingTouchPosition = touch.leftTouchPosition;
+		}
+	}
+
+	/* Lorsqu'on appuie à DROITE de l'écran, le joueur peut :
+	 * - si un ennemi est là		TIRER
+	 * - si aucun ennemi n'est là	SAUTER | VOLER
+	 */
+	private void PlayerActionRight (TouchRight touch) {
 		// Si un ennemi est présent, on ne peut sauter qu'à gauche de l'écran
 		if (LevelManager.levelManager.GetEnemyEnCours () != null)
-			return _StaticFunction.TouchOnLeftScreen (continuous);
-		else if (continuous)
-			return Input.GetMouseButton (0);
-		else
-			return Input.GetMouseButtonDown (0);
+			return;
+		
+		if (!IsFlying ())
+			JumpController ();
+		else {
+			if (WantToFly ())
+				return;
+
+			wantToFly = true;
+
+			flyingTouchId = touch.rightId;
+			flyingTouchPosition = touch.rightTouchPosition;
+		}
 	}
-	
+
+	/* Quand le contact avec un doigt est rompu */
+	private void PlayerEndAction (EndTouch touch) {
+		// Si c'est le doigt qui servait à voler, on arrête le vol
+		if (touch.fingerId == flyingTouchId) {
+			wantToFly = false;
+		}
+	}
+
+	private void JumpController() {
+		if (IsGrounded () || bounced) {
+			Jump ();
+			bounced = false;
+		} else if (!IsGrounded () && currentJump < maxDoubleJump) {
+			Jump ();
+			currentJump++;
+		}
+	}
+
 	public void Jump() {
 		// Affichage d'un effet de "nuage" à l'endroit du saut s'il est effectué en l'air
 		if (!IsGrounded () && !IsFlying ()) {
