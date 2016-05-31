@@ -10,7 +10,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 1d4f49c6169b2c848959ff692052b145, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -129,8 +129,12 @@ Material:
         second: 0
       data:
         first:
+          name: _Cutout
+        second: 0.01
+      data:
+        first:
           name: _HueShift
-        second: 0
+        second: 92
       data:
         first:
           name: _Sat
@@ -143,6 +147,10 @@ Material:
         first:
           name: _Alpha
         second: 1
+      data:
+        first:
+          name: _InvFade
+        second: 1
     m_Colors:
       data:
         first:
@@ -152,3 +160,15 @@ Material:
         first:
           name: _Color
         second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _BaseColor
+        second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _TargetColor
+        second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _TintColor
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}

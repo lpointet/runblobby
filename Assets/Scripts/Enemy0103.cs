@@ -42,6 +42,10 @@ public class Enemy0103 : Enemy {
 	private float timeToSpawn = 2f;
 	// Fin éléments oiseau
 
+	[Header("Dialogue")]
+	public RuntimeAnimatorController[] portrait;
+	public DialogEntry[] dialog;
+
 	protected override void Awake () {
 		base.Awake();
 
@@ -62,6 +66,8 @@ public class Enemy0103 : Enemy {
 
 		myBirdAnim.SetBool("picked", false);
 		myBirdAnim.SetBool("weak", false);
+
+		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);StartCoroutine(WaitForLanding());
 	}
 
 	void FixedUpdate() {
@@ -217,17 +223,22 @@ public class Enemy0103 : Enemy {
 	protected override void Despawn () {
 		// L'oiseau s'envole
 		StartCoroutine( TakeOff(myBirdTransform) );
+		// Bob reprend une gravité cohérente (soit celle du héros)
+		myRb.gravityScale = LevelManager.GetPlayer().GetComponent<Rigidbody2D>().gravityScale;
 
 		Die ();
 
-		myAnim.SetTrigger ("dead");
+		// Coroutine jusqu'à ce qu'il touche le sol
+		StartCoroutine(WaitForLanding());
 
-		RaycastHit2D hit;
+		//myAnim.SetTrigger ("dead");
+
+		/*RaycastHit2D hit;
 		hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround);
 
 		if (hit.collider != null) {
 			myTransform.parent = hit.transform;
-		}
+		}*/
 	}
 
 	private IEnumerator TakeOff(Transform flyTransform) {
@@ -242,5 +253,15 @@ public class Enemy0103 : Enemy {
 
 		myBirdAudio.Stop();
 		flyTransform.gameObject.SetActive( false );
+	}
+
+	private IEnumerator WaitForLanding() {
+		while (!grounded) {
+			yield return null;
+		}
+		// Une fois qu'il a touché le sol, le dialogue peut débuter
+		Time.timeScale = 0;
+
+		StartCoroutine (FindObjectOfType<UIManager> ().RunDialog (portrait, dialog));
 	}
 }

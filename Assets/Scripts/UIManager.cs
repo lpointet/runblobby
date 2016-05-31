@@ -2,6 +2,17 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+
+// Une ligne de dialogue : le numéro de portrait, la position (gauche/droite), le texte
+[System.Serializable]
+public struct DialogEntry {
+	public enum PortraitPosition { left, right };
+
+	public int numCharacter;
+	public PortraitPosition portraitPosition;
+	[TextArea(3,10)] public string textLine;
+}
 
 public class UIManager : MonoBehaviour {
 
@@ -67,6 +78,13 @@ public class UIManager : MonoBehaviour {
 	private float timeUpdateValue;
 	private float delaySliderFull = 1.5f;
 
+	[Header("Dialog Menu")]
+	public GameObject dialogUI;
+
+	public Animator rightPortrait;
+	public Animator leftPortrait;
+	public Text dialogText;
+
 	[Header("Générique")]
 	public GameObject wQuit;
 	public Button bQuitYes;
@@ -105,6 +123,7 @@ public class UIManager : MonoBehaviour {
 
 		pauseUI.SetActive (false);
 		endUI.SetActive (false);
+		dialogUI.SetActive (false);
 		wQuit.SetActive (false);
 
 		ToggleEnemyGUI (false);
@@ -289,6 +308,52 @@ public class UIManager : MonoBehaviour {
 		}
 
 		UpdateValueScore ();
+	}
+
+	public IEnumerator RunDialog(RuntimeAnimatorController[] protagonist, DialogEntry[] dialogLine) {
+		dialogUI.SetActive (true);
+		standardUI.SetActive (false);
+		int currentLine = 0;
+
+		Image leftSprite = leftPortrait.GetComponent<Image> ();
+		Image rightSprite = rightPortrait.GetComponent<Image> ();
+		Color leftColor = leftSprite.color;
+		Color rightColor = rightSprite.color;
+
+		// Initialisation
+		leftPortrait.runtimeAnimatorController = protagonist [dialogLine [currentLine].numCharacter];
+		rightPortrait.runtimeAnimatorController = protagonist [dialogLine [currentLine].numCharacter];
+
+		// Tant qu'on n'a pas atteint la fin du dialogue, on défile
+		while (currentLine < dialogLine.Length) {
+			dialogText.text = dialogLine [currentLine].textLine;
+
+			if (dialogLine [currentLine].portraitPosition == DialogEntry.PortraitPosition.left) {
+				rightColor.a = 0.25f;
+				rightSprite.color = rightColor;
+				leftColor.a = 1;
+				leftSprite.color = leftColor;
+				leftPortrait.runtimeAnimatorController = protagonist [dialogLine [currentLine].numCharacter];
+				leftPortrait.enabled = true;
+				rightPortrait.enabled = false;
+			} else if (dialogLine [currentLine].portraitPosition == DialogEntry.PortraitPosition.right) {
+				rightColor.a = 1;
+				rightSprite.color = rightColor;
+				leftColor.a = 0.25f;
+				leftSprite.color = leftColor;
+				rightPortrait.runtimeAnimatorController = protagonist [dialogLine [currentLine].numCharacter];
+				rightPortrait.enabled = true;
+				leftPortrait.enabled = false;
+			}
+
+			// Si on appuie sur une touche, on affiche l'entrée suivante
+			if (Input.GetMouseButtonDown (0))
+				currentLine++;
+
+			yield return null;
+		}
+
+		dialogUI.SetActive (false);
 	}
 
 	private void UpdateValueScore() {

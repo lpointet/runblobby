@@ -104,7 +104,7 @@ public class TouchManager : MonoBehaviour {
 				}
 			}
 		}
-		// Si l'appareil n'est pas touch et multi-touch
+		// Si l'appareil n'est pas touch ou multi-touch
 		else {
 			if (Input.GetMouseButtonDown (0)) {
 				// Gauche

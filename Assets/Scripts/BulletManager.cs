@@ -15,13 +15,14 @@ public class BulletManager : MonoBehaviour {
 	private Weapon myWeapon;
 	private SpriteRenderer mySprite;
 
-	public ParticleUnscaled myParticle;
+	public GameObject myParticle;
 	private AudioSource myAudio;
 	public AudioClip bulletImpactSound;
 	private float initSoundVolume;
 	public float impactSoundVolume = 0.5f;
 
 	private Transform myTransform;
+	public GameObject myTrail;
 
 	public LayerMask layerCollision;
 	private LayerMask layerEnemy;
@@ -46,12 +47,12 @@ public class BulletManager : MonoBehaviour {
 	
 	void OnEnable () {
 		float camEdge = Camera.main.orthographicSize * Camera.main.aspect;
-		endOfScreen = Camera.main.transform.position.x + camEdge;// La fin de l'écran
-		startOfScreen = Camera.main.transform.position.x - camEdge;// Le début de l'écran
+		endOfScreen = Camera.main.transform.position.x + camEdge; // La fin de l'écran
+		startOfScreen = Camera.main.transform.position.x - camEdge; // Le début de l'écran
 
 		myRb.velocity = myTransform.right * moveSpeed;
 		mySprite.enabled = true;
-
+		myTrail.SetActive (true); // On réactive la trainée
 		/*if( direction == bulletDirection.left ) {
 			myRb.velocity *= -1;
 		}*/
@@ -61,8 +62,9 @@ public class BulletManager : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (myTransform.position.x > endOfScreen || myTransform.position.x < startOfScreen)
+		if (myTransform.position.x > endOfScreen || myTransform.position.x < startOfScreen) {
 			Despawn(); // on désactive s'il sort de l'écran pour éviter qu'il touche des objets
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -76,6 +78,7 @@ public class BulletManager : MonoBehaviour {
 			myAudio.volume = impactSoundVolume;
 			myAudio.PlayOneShot(bulletImpactSound);
 			mySprite.enabled = false; // On cache la balle
+			myTrail.SetActive (false); // On désactive la trainée
 			Invoke ("Despawn", 0.3f * Time.timeScale); // Durée des particles
 
 			// Effet de particule à l'impact
@@ -83,7 +86,7 @@ public class BulletManager : MonoBehaviour {
 				myParticle.transform.position = myTransform.position;
 				myParticle.transform.rotation = Quaternion.Euler (new Vector3 (360 - myTransform.rotation.eulerAngles.z, 90, 0));
 				myParticle.GetComponent<ParticleSystemRenderer> ().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.GetPlayer ().GetHealthPoint (), 0, LevelManager.GetPlayer ().GetHealthPointMax (), 210, 0));		
-				myParticle.gameObject.SetActive (true);
+				myParticle.SetActive (true);
 			}
 
 			// Si on rencontre un ennemi
