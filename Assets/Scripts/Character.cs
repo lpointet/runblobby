@@ -145,6 +145,9 @@ public class Character : MonoBehaviour {
 		int flashNumberMax = 4;
 		bool increment = false;
 
+		// TODO faire ça dans tous les override
+		SetInvincible (flashNumberMax * flashDelay);
+
 		while (flashNumber < flashNumberMax) {
 			if (increment)
 				tempColor.a += TimeManager.deltaTime / flashDelay;

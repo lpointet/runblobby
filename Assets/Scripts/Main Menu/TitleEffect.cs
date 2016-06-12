@@ -1,26 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TitleEffect : MonoBehaviour {
 
 	private Text[] letter;
 
-	private Color32 Blanc = _StaticFunction.ToColor (0xFFFFFF);
-	private Color32 BleuClair = _StaticFunction.ToColor (0x4DACF9);
-	private Color32 BleuFonce = _StaticFunction.ToColor(0x034590);
-
-	private Color32[] couleur;
+	public List<Color> randomColorLetter;
 
 	void Awake() {
 		letter = GetComponentsInChildren<Text> ();
-		couleur = new Color32[] {Blanc, BleuClair, BleuFonce};
+		randomColorLetter.Add (letter [0].color);
 	}
 	
 	public void Effect() {
-		int randLetter = Random.Range (0, 4);
-		int randColor = Random.Range (0, 3);
+		int randLetter = Random.Range (0, letter.Length);
 
-		letter [randLetter].color = couleur [randColor];
+		// On enlève de la liste la couleur de la lettre choisie, on choisit une couleur, puis on remet l'ancienne couleur dans la liste
+		// Ceci nous évite d'avoir la même couleur qui se réapplique sur la même lettre
+		randomColorLetter.Remove (letter [randLetter].color);
+		int randColor = Random.Range (0, randomColorLetter.Count);
+		randomColorLetter.Add (letter [randLetter].color);
+
+		letter [randLetter].color = randomColorLetter [randColor];
 	}
 }

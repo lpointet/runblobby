@@ -66,8 +66,14 @@ public class LevelManager : MonoBehaviour {
 	public FlyPickup flyEndBoss;	// Pour faire voler à l'infini durant le dernier boss
 	//* Fin partie ennemi intermédiaire
 
+	private static bool endingScene = false;
+
 	public static PlayerController GetPlayer() {
 		return player;
+	}
+
+	public List<GameObject> GetListBlock() {
+		return blockList;
 	}
 
 	public bool IsBlockPhase() {
@@ -147,6 +153,18 @@ public class LevelManager : MonoBehaviour {
 
 	public bool IsLevelStarted() {
 		return startLevel;
+	}
+
+	public void StartEndingScene() {
+		endingScene = true;
+	}
+
+	public void StopEndingScene() {
+		endingScene = false;
+	}
+
+	public static bool IsEndingScene() {
+		return endingScene;
 	}
 
     void Awake() {
@@ -259,7 +277,7 @@ public class LevelManager : MonoBehaviour {
 				}
             }
 			
-			if(enemyEnCours != null) {
+			if(enemyEnCours != null && !IsEndingScene()) {
 				// Le joueur peut tirer
 				GetPlayer().SetFireAbility( true );
 
@@ -326,7 +344,8 @@ public class LevelManager : MonoBehaviour {
 		}
 
         // Si le joueur n'est pas mort, on bouge le monde
-        if (!GetPlayer().IsDead() || GetPlayer().HasLastWish()) {
+		// Pour le premier niveau, si le boss de fin est mort mais n'a pas fini son dialogue, on ne bouge pas
+		if ((!GetPlayer().IsDead() || GetPlayer().HasLastWish()) && !IsEndingScene()) {
 			MoveWorld ();
 		}
 	}

@@ -90,7 +90,7 @@ public class LevelData {
 	public int levelNumber; // Premier level = 1...
 	public string levelName;
 	//public Sprite background;
-	public ArcadeData[] arcadeData; // Tableau des données selon la difficulté en mode Arcade : 0 = normal, 1 = hard, 2 = hell
+	public ArcadeData arcadeData; // Données en mode Arcade
 	public StoryData[] storyData; // Tableau des données selon la difficulté en mode Story : 0 = normal, 1 = hard, 2 = hell
 }
 

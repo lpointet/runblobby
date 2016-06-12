@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 5
-  healthPointMax: 10
+  healthPointMax: 1
   moveSpeed: 0
   jumpHeight: 0
   isDead: 0

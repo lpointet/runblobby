@@ -172,7 +172,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void PauseManager() { 
-		if (!endUI.activeInHierarchy) {
+		if (!endUI.activeInHierarchy && !dialogUI.activeInHierarchy) {
 			paused = !paused;
 
 			if (paused) {
@@ -310,7 +310,7 @@ public class UIManager : MonoBehaviour {
 		UpdateValueScore ();
 	}
 
-	public IEnumerator RunDialog(RuntimeAnimatorController[] protagonist, DialogEntry[] dialogLine) {
+	public IEnumerator RunDialog(RuntimeAnimatorController[] protagonist, DialogEntry[] dialogLine, System.Action<bool> callback) {
 		dialogUI.SetActive (true);
 		standardUI.SetActive (false);
 		int currentLine = 0;
@@ -354,6 +354,8 @@ public class UIManager : MonoBehaviour {
 		}
 
 		dialogUI.SetActive (false);
+		standardUI.SetActive (true);
+		callback (true);
 	}
 
 	private void UpdateValueScore() {

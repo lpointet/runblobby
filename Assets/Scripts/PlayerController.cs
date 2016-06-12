@@ -24,7 +24,7 @@ public class PlayerController : Character {
 	public GameObject parachute;
 
     [HideInInspector] public bool bounced = false;
-    [HideInInspector] public bool wasFlying = false;
+    public bool wasFlying = false;
 	private bool grounded;
 	public Transform groundCheck;
 	public float groundCheckRadius;
@@ -194,6 +194,7 @@ public class PlayerController : Character {
 		lerpingHP = GetHealthPoint ();
 		mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
 		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
+		mySprite.sharedMaterial.SetFloat ("_Val", 1);
 
 		isFlying = false;
         wasFlying = false;
@@ -229,12 +230,12 @@ public class PlayerController : Character {
 			return;
 		}
 
-        // Empêcher que des choses se passent durant la pause
+        // Empêcher que des choses se passent durant la pause ou la mort
 		if (TimeManager.paused || IsDead ())
             return;
 
 		// Rapprocher le joueur douuuucement si on est pas en x = 0
-		if (Mathf.Abs(myTransform.position.x - 0) > 0.05f)
+		if (Mathf.Abs(myTransform.position.x) > 0.05f)
 			myTransform.Translate (Mathf.Sign(myTransform.position.x) * Vector3.left * 0.005f);
 
 		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
@@ -273,7 +274,7 @@ public class PlayerController : Character {
 			
         // Appelé à la fin d'un vol si en l'air et jusqu'à l'atterrisage
 		if(!IsGrounded () && wasFlying)
-        {
+		{
             RaycastHit2D hit;
             CloudBlock cloudBlock;
 
@@ -363,6 +364,10 @@ public class PlayerController : Character {
 	}
 
 	private void JumpController() {
+		// On ne saute pas durant la pause, la mort, ou la scène de fin
+		if (TimeManager.paused || IsDead () || LevelManager.IsEndingScene ())
+			return;
+
 		if (IsGrounded () || bounced) {
 			Jump ();
 			bounced = false;
@@ -445,8 +450,9 @@ public class PlayerController : Character {
 	}
 
     public void Fly() {
-		// On note la gravité actuelle
-		initialGravityScale = myRb.gravityScale;
+		// On note la gravité actuelle s'il ne vole pas déjà
+		if (!IsFlying ())
+			initialGravityScale = myRb.gravityScale;
 
         // Abaisser la gravité et la hauteur du saut
 		if (IsZeroGravFlying ()) {
@@ -473,7 +479,7 @@ public class PlayerController : Character {
 		//SetMaxDoubleJump( 1000 );
     }
 
-    public void Land() {
+	public void Land() {
 		isFlying = false;
 
         // Remettre les paramètres initiaux
@@ -542,13 +548,13 @@ public class PlayerController : Character {
 
 		timeLerpHP = 0; // On prépare la nouvelle variation de couleur
 
-		base.Hurt (damage);
-
 		if (!IsInvincible() && !IsDead ())
 			myAudio.HurtSound ();
+
+		base.Hurt (damage);
 	}
 
-	protected override IEnumerator HurtEffect() {
+	/*protected override IEnumerator HurtEffect() {
 		float tempAlpha = mySprite.sharedMaterial.GetFloat ("_Alpha");
 		float flashDelay = 0.1f;
 		int flashNumber = 0;
@@ -573,5 +579,35 @@ public class PlayerController : Character {
 		}
 		// Retour à la "normale"
 		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
+	}*/
+
+	protected override IEnumerator HurtEffect() {
+		float backToNormalDelay = 0.5f;
+		float timeToNormal = backToNormalDelay;
+		float maxValue = 100f;
+		float minValue = 1f;
+		float tempValue = minValue;
+
+		float delaySwitch = 0.1f;
+		float timeToSwitch = 0;
+
+		SetInvincible (backToNormalDelay);
+
+		mySprite.sharedMaterial.SetFloat ("_Val", tempValue);
+
+		while (timeToNormal > 0) {
+			timeToNormal -= TimeManager.deltaTime;
+
+			if (TimeManager.time > timeToSwitch) {
+				timeToSwitch = TimeManager.time + delaySwitch;
+				tempValue = (tempValue == minValue) ? maxValue : minValue;
+				mySprite.sharedMaterial.SetFloat ("_Val", tempValue);
+			}
+
+			yield return null;
+		}
+
+		// Retour à la "normale"
+		mySprite.sharedMaterial.SetFloat ("_Val", minValue);
 	}
 }

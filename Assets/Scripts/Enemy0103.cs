@@ -42,9 +42,14 @@ public class Enemy0103 : Enemy {
 	private float timeToSpawn = 2f;
 	// Fin éléments oiseau
 
-	[Header("Dialogue")]
+	[Header("End of level")]
 	public RuntimeAnimatorController[] portrait;
 	public DialogEntry[] dialog;
+
+	private bool isLeaving = false;
+	public float leavingSpeed = 2f;
+
+	public AudioClip boulderSound;
 
 	protected override void Awake () {
 		base.Awake();
@@ -67,7 +72,7 @@ public class Enemy0103 : Enemy {
 		myBirdAnim.SetBool("picked", false);
 		myBirdAnim.SetBool("weak", false);
 
-		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);StartCoroutine(WaitForLanding());
+		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
 	}
 
 	void FixedUpdate() {
@@ -78,14 +83,19 @@ public class Enemy0103 : Enemy {
 	}
 
 	protected override void Update () {
-		base.Update();
-
 		// Pour qu'il ne bouge pas si le joueur meurt
 		if (LevelManager.GetPlayer ().IsDead ())
 			myRb.velocity = Vector2.zero;
 
-		if (IsDead () || LevelManager.GetPlayer ().IsDead () || TimeManager.paused)
+		if (isLeaving) {
+			// L'ennemi se déplace vers la sortie
+			myTransform.Translate (Vector3.right * TimeManager.deltaTime * leavingSpeed);
+		}
+
+		if (IsDead () || LevelManager.GetPlayer ().IsDead () || TimeManager.paused || LevelManager.IsEndingScene())
 			return;
+
+		base.Update();
 
 		/* OISEAU */
 		// L'oiseau approche du boss tant qu'il n'est pas sur lui, puis on le laisse le suivre comme un child
@@ -180,8 +190,11 @@ public class Enemy0103 : Enemy {
 
 		SetHealthPoint( GetHealthPoint() - damage );
 
-		if (GetHealthPoint() <= 0 && !IsDead())
-			LevelManager.Kill( this );
+		if (GetHealthPoint () <= 0 && !IsDead ()) {
+			//LevelManager.Kill (this);
+			Despawn();
+			LevelManager.levelManager.StartEndingScene ();
+		}
 
 		// Effet visuel de blessure
 		if (!IsDead ())
@@ -223,22 +236,21 @@ public class Enemy0103 : Enemy {
 	protected override void Despawn () {
 		// L'oiseau s'envole
 		StartCoroutine( TakeOff(myBirdTransform) );
-		// Bob reprend une gravité cohérente (soit celle du héros)
-		myRb.gravityScale = LevelManager.GetPlayer().GetComponent<Rigidbody2D>().gravityScale;
 
-		Die ();
+		// Bob reprend une gravité cohérente
+		myRb.gravityScale = 0.35f;
+
+		// On fait partir les pickups du héros
+		LevelManager.CleanPickup( LevelManager.GetPlayer().GetLastWish() );
+		// On rend le héros invincible pour éviter les missiles qui pourraient venir vers lui à ce moment
+		LevelManager.GetPlayer ().SetInvincible (30f);
+		// On coupe le son du héros
+		LevelManager.GetPlayer ().GetComponent<PlayerSoundEffect>().enabled = false;
+		// On empêche le joueur de sauter
+		LevelManager.GetPlayer ().SetMaxDoubleJump (0);
 
 		// Coroutine jusqu'à ce qu'il touche le sol
 		StartCoroutine(WaitForLanding());
-
-		//myAnim.SetTrigger ("dead");
-
-		/*RaycastHit2D hit;
-		hit = Physics2D.Raycast (myTransform.position, Vector2.down, 20, layerGround);
-
-		if (hit.collider != null) {
-			myTransform.parent = hit.transform;
-		}*/
 	}
 
 	private IEnumerator TakeOff(Transform flyTransform) {
@@ -259,9 +271,65 @@ public class Enemy0103 : Enemy {
 		while (!grounded) {
 			yield return null;
 		}
-		// Une fois qu'il a touché le sol, le dialogue peut débuter
-		Time.timeScale = 0;
 
-		StartCoroutine (FindObjectOfType<UIManager> ().RunDialog (portrait, dialog));
+		// Une fois qu'il a touché le sol, le dialogue peut débuter
+		StartCoroutine (UIManager.uiManager.RunDialog (portrait, dialog, (isOver => {
+			if (isOver) {
+				DestructionOfTheWorld ();
+			}
+		})));
+	}
+
+	private void DestructionOfTheWorld () {
+		// On lance la boucle de destruction des sols dans le Update() !
+		isLeaving = true;
+
+		// Suppression de toutes les feuilles qui restent
+		foreach (CoinPickup coin in GameObject.FindObjectsOfType<CoinPickup> ()) {
+			coin.gameObject.SetActive (false);
+		}
+
+		// Désactiver la mort par chute
+		CameraManager.cameraManager.fallingKiller.gameObject.SetActive(false);
+
+		// Les blocs tombent l'un après l'autre en suivant leur index
+		for (int i = 0; i < LevelManager.levelManager.GetListBlock ().Count; i++) {
+			StartCoroutine (FallingBlock(LevelManager.levelManager.GetListBlock ()[i].transform, 2f, 0.15f * i));
+		}
+		// On lance le compte-à-rebours avant la victoire en fonction du nombre de blocs et du temps de chute
+		Invoke("Victory", LevelManager.levelManager.GetListBlock ().Count * 0.15f * Time.timeScale + 2f);
+
+		// Son des rochers
+		AudioSource myAudio = GetComponent<AudioSource> ();
+		myAudio.clip = boulderSound;
+		myAudio.volume = 1;
+		myAudio.loop = true;
+		myAudio.Play ();
+	}
+
+	void OnBecameInvisible () {
+		// Pour l'empêcher de sauter dans le vide et de mourir (il doit toujours jouer le son !)
+		isLeaving = false;
+	}
+
+	private IEnumerator FallingBlock(Transform currentTransform, float transitionTime = 0, float delay = 0) {
+		yield return new WaitForSeconds (delay * Time.timeScale);
+
+		float timeToComplete = 0;
+		float currentTranslation = 5f;
+		float shakeSpeed = 75f;
+		float shakeAmount = 0.1f;
+
+		while (timeToComplete < transitionTime) {
+			currentTransform.Translate (new Vector2(shakeAmount * Mathf.Sin(TimeManager.time * shakeSpeed), -1 * TimeManager.deltaTime * currentTranslation));
+
+			timeToComplete += Time.deltaTime / Time.timeScale;
+			yield return null;
+		}
+	}
+
+	private void Victory() {
+		LevelManager.levelManager.StopEndingScene ();
+		Die ();
 	}
 }

@@ -27,7 +27,7 @@ public class BackgroundMoving : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!TimeManager.paused && !LevelManager.GetPlayer ().IsDead ()) {
+		if (!TimeManager.paused && !LevelManager.GetPlayer ().IsDead () && !LevelManager.IsEndingScene()) {
 			// Position du "soleil"
 			// Distance parcourue / Distance avant le dernier boss
 			float ratioDistance = LevelManager.levelManager.GetDistanceTraveled () / (float)LevelManager.levelManager.listPhase [LevelManager.levelManager.listPhase.Length - 1];

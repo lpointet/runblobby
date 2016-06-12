@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 0
-  healthPointMax: 15
+  healthPointMax: 1
   moveSpeed: 0
   jumpHeight: 0
   isDead: 0
@@ -506,6 +506,8 @@ MonoBehaviour:
     portraitPosition: 1
     textLine: "Mais c'est trop tard \xE0 pr\xE9sent !\nJ'esp\xE8re que tu aimes la
       chaleur...\nAhahahah ! Adieu, mon fr\xE8re !"
+  leavingSpeed: 4
+  boulderSound: {fileID: 8300000, guid: 0f7a2947724ec1e4c9864fbe9d514d53, type: 3}
 --- !u!114 &11481242
 MonoBehaviour:
   m_ObjectHideFlags: 1

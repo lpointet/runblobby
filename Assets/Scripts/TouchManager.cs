@@ -27,11 +27,11 @@ public class TouchManager : MonoBehaviour {
 
 	void Start() {
 		// Si l'appareil n'est pas tactile, on affiche un message d'excuse et on ferme le jeu au bout d'un certain temps
-		if (!Input.touchSupported) {
+		if (!Input.touchSupported) {Debug.Log("touch");
 			// TODO
 		}
 		// Si l'appareil ne supporte pas le multi-touch, on affiche un message expliquant que le jeu ne sera pas aussi agréable à jouer, mais quand même jouable
-		if (!Input.multiTouchEnabled) {
+		if (!Input.multiTouchEnabled) {Debug.Log("multi");
 			// TODO
 		}
 
@@ -59,21 +59,27 @@ public class TouchManager : MonoBehaviour {
 					switch (phase) {
 					// Lorsqu'un nouveau contact est effectué, on regarde s'il est à droite ou à gauche
 					case TouchPhase.Began:
-						// On ne dépasse pas la hauteur du "menu" en haut
-						if (touch.position.y < screenMaxHeight) {
 							// Gauche
 							if (touch.position.x < screenMidWidth) {
 								leftTouchId = touch.fingerId;
 								leftTouchPosition = touch.position;
-								Mediator.current.Publish<TouchLeft> (new TouchLeft () { leftTouchPosition = leftTouchPosition, leftId = leftTouchId });
+								Mediator.current.Publish<TouchLeft> (new TouchLeft () {
+									leftTouchPosition = leftTouchPosition,
+									leftId = leftTouchId
+								});
 							}
 							// Droite
 							else {
-								rightTouchId = touch.fingerId;
-								rightTouchPosition = touch.position;
-								Mediator.current.Publish<TouchRight> (new TouchRight () { rightTouchPosition = rightTouchPosition, rightId = rightTouchId });
+								// On ne dépasse pas la hauteur du "menu" en haut (touche "Pause")
+								if (touch.position.y < screenMaxHeight) {
+									rightTouchId = touch.fingerId;
+									rightTouchPosition = touch.position;
+									Mediator.current.Publish<TouchRight> (new TouchRight () {
+										rightTouchPosition = rightTouchPosition,
+										rightId = rightTouchId
+									});
+								}
 							}
-						}
 						break;
 					// Tant qu'on est en contact (qu'on bouge ou non), on met à jour la position du contact courant gauche et/ou droite
 					case TouchPhase.Moved:
@@ -105,19 +111,28 @@ public class TouchManager : MonoBehaviour {
 			}
 		}
 		// Si l'appareil n'est pas touch ou multi-touch
+		// TODO problème quand on change de moitié d'écran avec un bouton appuyé (sur le vol permanent c'est bien visible, d'ailleurs comment faire pour le maintenir appuyé ? GetMouseButton fait sauter en chaine)
 		else {
 			if (Input.GetMouseButtonDown (0)) {
 				// Gauche
 				if (Input.mousePosition.x < screenMidWidth) {
 					leftTouchId = 0;
 					leftTouchPosition = Input.mousePosition;
-					Mediator.current.Publish<TouchLeft> (new TouchLeft () { leftTouchPosition = leftTouchPosition, leftId = leftTouchId });
+					Mediator.current.Publish<TouchLeft> (new TouchLeft () {
+						leftTouchPosition = leftTouchPosition,
+						leftId = leftTouchId
+					});
 				}
 				// Droite
 				else {
-					rightTouchId = 1;
-					rightTouchPosition = Input.mousePosition;
-					Mediator.current.Publish<TouchRight> (new TouchRight () { rightTouchPosition = rightTouchPosition, rightId = rightTouchId });
+					if (Input.mousePosition.y < screenMaxHeight) {
+						rightTouchId = 1;
+						rightTouchPosition = Input.mousePosition;
+						Mediator.current.Publish<TouchRight> (new TouchRight () {
+							rightTouchPosition = rightTouchPosition,
+							rightId = rightTouchId
+						});
+					}
 				}
 			} else if (Input.GetMouseButtonUp (0)) {
 				// Gauche

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 9c93c30b45ab67e49ac88c45cbc93bb8
-timeCreated: 1463920286
+timeCreated: 1464734523
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -321,6 +321,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 22
+        y: 0
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UI_11px_23
+      rect:
+        serializedVersion: 2
+        x: 33
         y: 0
         width: 11
         height: 11

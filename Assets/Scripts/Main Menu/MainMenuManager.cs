@@ -9,6 +9,8 @@ public class MainMenuManager : MonoBehaviour {
 	public static MainMenuManager mainMenuManager;
 	private SFXMenu sfxSound;
 
+	public Color deactivatedColor;
+
 	/******************/
 	/* Menu d'accueil */
 	[Header("Main Menu")]
@@ -19,16 +21,21 @@ public class MainMenuManager : MonoBehaviour {
     public Button bNewGame;
 	public GameObject wNewGame;
 
-    public Button bOptions;
-	public GameObject wOptionPanel;
-	public Text tMusic;
-	public Text tMusicValue;
-	public Slider sMusic;
+	public Button bMusic;
+	private Slider sMusic;
 	public AudioMixer aMusicMixer;
-	public Text tSfx;
-	public Text tSfxValue;
+
+	public Button bSfx;
 	public AudioMixer aSfxMixer;
-	public Slider sSfx;
+	private Slider sSfx;
+
+	public Button bAchievement;
+
+	public Button bStats;
+
+	public Button bOption;
+
+	public Button bTutoriel;
 
     public Button bQuit;
 	public GameObject wQuit;
@@ -40,8 +47,11 @@ public class MainMenuManager : MonoBehaviour {
 	[Header("Player Menu")]
 	public GameObject wPlayerMenu;
 
+	public Text tTitle;
+
 	public Button bLevel;
-	public GameObject levelScrollView;
+	public GameObject wLevel;
+	private LevelItem[] listLevel;
 
 	public Button bTalent;
 
@@ -76,23 +86,26 @@ public class MainMenuManager : MonoBehaviour {
 	public Button bPreviousTuto;
 	public Button bSkipTuto;
 
-	private float dragTutoStart;
-	private float dragTutoEnd;
+	private Vector2 dragTutoStart;
+	private Vector2 dragTutoEnd;
 
 	public GameObject[] listPageTuto;
+	public RectTransform menuTutoButton;
+	public GameObject pageButton;
+	private GameObject[] listPageButton;
+	private Vector3 initialScale;
+	private Vector3 pageButtonActifScale;
 	private int currentPage = 0;
 	private bool isTutoFromOption = true; // Permet de savoir si on a lancé le tutoriel depuis le menu ou si c'est celui qui se lance avec un New Game
 	/* Fin de l'écran du tutoriel */
 	/******************************/
 
-	private Color32 colorOptionValue = _StaticFunction.ToColor (0x4DACF9);
-	private Color32 colorOptionNulle = _StaticFunction.ToColor(0xF94D4D);
-	private Color32 colorMenuNormal = _StaticFunction.ToColor (0xFFFFFF);
-	private Color32 colorMenuSelect = _StaticFunction.ToColor (0x4DACF9);
-
     void Awake() {
 		if (mainMenuManager == null)
 			mainMenuManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<MainMenuManager> ();
+
+		sMusic = bMusic.GetComponentInChildren<Slider> ();
+		sSfx = bSfx.GetComponentInChildren<Slider> ();
 
 		sfxSound = GetComponentInChildren<SFXMenu> ();
     }
@@ -101,35 +114,98 @@ public class MainMenuManager : MonoBehaviour {
 		sMusic.value = GameData.gameData.musicVolume;
 		sSfx.value = GameData.gameData.sfxVolume;
 
-		// On initialise les valeurs des textes et du son
-		tMusicValue.text = sMusic.value.ToString ();
-		AjusterVolume(aMusicMixer, "musicVolume", sMusic);
+		sMusic.gameObject.SetActive (false);
+		sSfx.gameObject.SetActive (false);
 
-		tSfxValue.text = sSfx.value.ToString ();
+		// On initialise les valeurs du son
+		AjusterVolume(aMusicMixer, "musicVolume", sMusic);
 		AjusterVolume(aSfxMixer, "sfxVolume", sSfx, -21, 3);
 
-		ClearMenu();
+		// On prépare le menu
+		CleanMenu();
+
+		// TODO boutons à activer avec leurs fonctions développées
+		DeactiveButton (bAchievement);
+		DeactiveButton (bStats);
+		DeactiveButton (bOption);
 
 		/* On charge l'écran de "jeu" */
 		if (_GameData.loadListLevel) {
-			ChangeMainScreen ();
+			ActivatePlayerMenu ();
 			Level_Click ();
 			_GameData.loadListLevel = false;
 		}
 	}
 
+	void Update () {
+		if (wQuit.activeInHierarchy)
+			bQuit.Select ();
+
+		if (wTutoriel.activeInHierarchy)
+			bTutoriel.Select ();
+
+		if (wLevel.activeInHierarchy)
+			bLevel.Select ();
+	}
+
+	// Effet qui doit apparaître pour tous les boutons : sons, effets...
+	private void ActiveMenu(Button menu) {
+		CleanMenu (menu);
+		menu.Select ();
+		sfxSound.ButtonYesClick ();
+	}
+
+	// Pour remettre le menu dans un état "neutre" (sauf le bouton éventuellement en paramètre)
+	private void CleanMenu(Button menu = null) {
+		if (wMainMenu.activeInHierarchy) {
+			// Les parties qui ne sont actives que pour un menu particulier sont éteintes ici
+			if (menu != bMusic)
+				sMusic.gameObject.SetActive (false);
+			if (menu != bSfx)
+				sSfx.gameObject.SetActive (false);
+
+			// Spécification du bouton "Continue" qui ne doit être que "New" si aucune partie n'est là
+			if (!GameData.gameData.existingGame) {
+				DeactiveButton (bNewGame);
+			}
+		} else if (wPlayerMenu.activeInHierarchy) {
+			bLevel.Select ();
+			wLevel.SetActive (true);
+		}
+
+		wTutoriel.SetActive (false);
+	}
+
+	// Permet de désactiver un bouton
+	private void DeactiveButton(Button deactivateButton) {
+		deactivateButton.interactable = false;
+		deactivateButton.GetComponent<Image> ().color = deactivatedColor;
+		deactivateButton.GetComponent<Image> ().raycastTarget = false;
+	}
+
+
+
+
+	/********************************************/
+	/********** PARTIE MENU PRINCIPALE **********/
+	/********************************************/
     public void Everywhere_Click() {
-        ClearMenu();
+		CleanMenu();
     }
 
     public void Continue_Click() {
-		ChangeMainScreen ();
-		Level_Click ();
+		// Le bouton se comporte différemment selon qu'une partie existe déjà ou non
+		if (!GameData.gameData.existingGame) {
+			NewGame_Click ();
+		} else {
+			ActivatePlayerMenu ();
+			Level_Click ();
+		}
     }
 
 	public void NewGame_Click() {
-		SetMenuActive(bNewGame);
-		// Demander confirmation avant de charger
+		ActiveMenu(bNewGame);
+		// Demander confirmation avant d'effacer la sauvegarde courante
 		if (GameData.gameData.existingGame)
 			wNewGame.SetActive (true);
 		else {
@@ -142,7 +218,7 @@ public class MainMenuManager : MonoBehaviour {
 		sfxSound.ButtonNoClick ();
 		wNewGame.SetActive (false);
 
-		ClearMenu ();
+		CleanMenu ();
 	}
 
 	public void NewGame_Yes_Click() {
@@ -155,57 +231,40 @@ public class MainMenuManager : MonoBehaviour {
 		Tuto_Begin ();
 	}
 
-	public void Tuto_Begin() {
-		if (listPageTuto.Length == 1) {
-			bPreviousTuto.gameObject.SetActive (false);
-		} else {
-			for (int i = 1; i < listPageTuto.Length; i++) {
-				listPageTuto [i].SetActive (false);
-			}
-			bPreviousTuto.gameObject.SetActive (false);
-		}
-		currentPage = 0;
-
-		listPageTuto [currentPage].SetActive (true);
-		wTutoriel.SetActive (true);
+	public void Music_Click() {
+		ActiveMenu(bMusic);
+		sMusic.gameObject.SetActive (true);
 	}
 
-    public void Option_Click() {
-		SetMenuActive(bOptions);
-    }
+	public void Sfx_Click() {
+		ActiveMenu(bSfx);
+		sSfx.gameObject.SetActive (true);
+	}
 
 	public void SliderMusic_Change() {
-		tMusicValue.text = sMusic.value.ToString ();
-		GameData.gameData.musicVolume = sMusic.value;
+		bMusic.Select ();
 
+		GameData.gameData.musicVolume = sMusic.value;
 		AjusterVolume(aMusicMixer, "musicVolume", sMusic);
 
-		if (sMusic.value > 0)
-			tMusicValue.color = colorOptionValue;
-		else {
-			tMusicValue.color = colorOptionNulle;
-			MuteSound(aMusicMixer, "musicVolume");
-		}
+		if (sMusic.value <= 0)
+			MuteSound (aMusicMixer, "musicVolume");
 	}
 
 	public void SliderSFX_Change() {
-		tSfxValue.text = sSfx.value.ToString ();
-		GameData.gameData.sfxVolume = sSfx.value;
+		bSfx.Select ();
 
+		GameData.gameData.sfxVolume = sSfx.value;
 		AjusterVolume(aSfxMixer, "sfxVolume", sSfx, -21, 3);
 
-		if (sSfx.value > 0)
-			tSfxValue.color = colorOptionValue;
-		else {
-			tSfxValue.color = colorOptionNulle;
-			MuteSound(aSfxMixer, "sfxVolume");
-		}
+		if (sSfx.value <= 0)
+			MuteSound (aSfxMixer, "sfxVolume");
 
 		sfxSound.ButtonYesClick ();
 	}
 
     public void Quit_Click() {
-		SetMenuActive(bQuit);
+		ActiveMenu(bQuit);
 
 		wQuit.SetActive (true);
     }
@@ -224,7 +283,7 @@ public class MainMenuManager : MonoBehaviour {
 		sfxSound.ButtonNoClick ();
 
 		wQuit.SetActive (false);
-		ClearMenu ();
+		CleanMenu ();
 	}
 
 	public void Credit_Click() {
@@ -232,51 +291,63 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	public void Credit_Back() {
-		wCreditMenu.SetActive (false);
-		wMainMenu.SetActive (true);
-		ClearMenu ();
-	}
-
-	public void Player_Back() {
 		sfxSound.ButtonNoClick ();
 
-		ChangeMainScreen ();
+		wCreditMenu.SetActive (false);
+		wMainMenu.SetActive (true);
+		CleanMenu ();
 	}
 
-	public void Level_Click() {
-		SetMenuActive(bLevel);
+	public void Tuto_Begin() {
+		ActiveMenu (bTutoriel);
 
-		levelScrollView.SetActive (true);
-	}
+		currentPage = 0;
+		listPageButton = new GameObject[listPageTuto.Length];
 
-	public void LevelUp_Click() {
-		levelScrollView.GetComponent<LevelScrollList> ().MonterLevel();
-	}
+		// On supprime tous les enfants s'il y en a
+		if (menuTutoButton.childCount > 0) {
+			for (int i = 0; i < menuTutoButton.childCount; i++) {
+				Destroy (menuTutoButton.GetChild (i).gameObject);
+			}
+		}
 
-	public void LevelDown_Click() {
-		levelScrollView.GetComponent<LevelScrollList> ().DescendreLevel();
+		// Création des boutons d'indexation
+		for (int i = 0; i < listPageTuto.Length; i++) {
+			GameObject newPage = Instantiate (pageButton) as GameObject;
+			newPage.transform.SetParent (menuTutoButton, false);
+			listPageButton [i] = newPage;
+		}
+
+		pageButtonActifScale = 3f * Vector3.one;
+		initialScale = listPageButton [currentPage].transform.localScale;
+
+		listPageTuto [currentPage].SetActive (true);
+		listPageButton [currentPage].transform.localScale = pageButtonActifScale;
+
+		wTutoriel.SetActive (true);
 	}
 
 	public void NextTuto_Click() {
 		if (currentPage == listPageTuto.Length - 1) {
+			listPageTuto [currentPage].SetActive (false);
 			SkipTuto_Click ();
 		} else {
 			listPageTuto [currentPage].SetActive (false);
 			listPageTuto [++currentPage].SetActive (true);
+
+			listPageButton [currentPage].transform.localScale = pageButtonActifScale;
+			listPageButton [currentPage - 1].transform.localScale = initialScale;
 		}
-		
-		bPreviousTuto.gameObject.SetActive (true);
 	}
 
 	public void PreviousTuto_Click() {
 		if (currentPage > 0) {
 			listPageTuto [currentPage].SetActive (false);
 			listPageTuto [--currentPage].SetActive (true);
+
+			listPageButton [currentPage].transform.localScale = pageButtonActifScale;
+			listPageButton [currentPage + 1].transform.localScale = initialScale;
 		}
-		if (currentPage == 0)
-			bPreviousTuto.gameObject.SetActive (false);
-		
-		bNextTuto.gameObject.SetActive (true);
 	}
 
 	public void SkipTuto_Click() {
@@ -295,73 +366,74 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	public void BeginDragTuto() {
-		dragTutoStart = Input.mousePosition.x;
+		dragTutoStart = Input.mousePosition;
 	}
 
 	public void EndDragTuto() {
-		dragTutoEnd = Input.mousePosition.x;
+		dragTutoEnd = Input.mousePosition;
 
-		float direction = dragTutoEnd - dragTutoStart;
-		if (Mathf.Abs (direction) < 125)
+		float directionX = dragTutoEnd.x - dragTutoStart.x;
+		float directionY = dragTutoEnd.y - dragTutoStart.y;
+		if (Mathf.Abs (directionX) < 125 || Mathf.Abs (directionX) < Mathf.Abs (directionY) )
 			return;
 
-		if (direction < 0)
+		if (directionX < 0)
 			NextTuto_Click ();
 		else
 			PreviousTuto_Click ();
 	}
 
-	private void SetMenuActive(Button menu, Button submenu = null) {
-        ClearMenu();
-		sfxSound.ButtonYesClick ();
+	private void ActivatePlayerMenu() {
+		CleanMenu(); // On nettoie l'écran actuel
 
-		menu.GetComponentInChildren<Text> ().color = colorMenuSelect;
+		wMainMenu.SetActive (false);
+		wPlayerMenu.SetActive (true);
+		// TODO boutons à activer avec leurs fonctions développées
+		DeactiveButton (bTalent);
+		DeactiveButton (bEquipment);
 
-        /*if (submenu != null)
-			submenu.GetComponentInChildren<Text> ().color = colorMenuSelect;*/
+		listLevel = GetComponentsInChildren<LevelItem> ();
 
-        // On active tout l'arbre descendant suivant le menu
-       if (menu == bOptions) {
-			wOptionPanel.SetActive (true);
-			//tMusic.gameObject.SetActive (true);
-			//tSfx.gameObject.SetActive (true);
-		}
-    }
+		CleanMenu(); // Et on nettoie l'écran du "jeu"
+	}
 
-    private void ClearMenu() {
-		if (wMainMenu.activeInHierarchy) {
-			bNewGame.GetComponentInChildren<Text> ().color = colorMenuNormal;
-			bOptions.GetComponentInChildren<Text> ().color = colorMenuNormal;
-			bQuit.GetComponentInChildren<Text> ().color = colorMenuNormal;
+	private void AjusterVolume(AudioMixer audioSource, string valueName, Slider curseur, int valeurMin = -24, int valeurMax = 0) {
+		audioSource.SetFloat (valueName, _StaticFunction.MappingScale(curseur.value, curseur.minValue, curseur.maxValue, valeurMin, valeurMax));
+	}
 
-			wOptionPanel.SetActive (false);
-			//tMusic.gameObject.SetActive (false);
-			//tSfx.gameObject.SetActive (false);
+	private void MuteSound(AudioMixer audiosource, string valueName) {
+		audiosource.SetFloat (valueName, -80);
+	}
+	/********************************************/
+	/******** FIN PARTIE MENU PRINCIPALE ********/
+	/********************************************/
 
-			if (!GameData.gameData.existingGame)
-				bContinue.gameObject.SetActive (false);
-			else
-				bContinue.GetComponentInChildren<Text> ().color = colorMenuNormal;
-			
-		} else if (wPlayerMenu.activeInHierarchy) {
-			bLevel.GetComponentInChildren<Text> ().color = colorMenuNormal;
 
-			levelScrollView.SetActive (false);
-		}
 
-		wTutoriel.SetActive (false);
-    }
+	/********************************************/
+	/************ PARTIE MENU JOUEUR ************/
+	/********************************************/
+	public void Player_Back() {
+		sfxSound.ButtonNoClick ();
 
-	private void ChangeMainScreen() {
-		ClearMenu(); // On nettoie l'ancien
-		if (wMainMenu.activeInHierarchy) {
-			wMainMenu.SetActive (false);
-			wPlayerMenu.SetActive (true);
-		} else if (wPlayerMenu.activeInHierarchy) {
-			wMainMenu.SetActive (true);
-			wPlayerMenu.SetActive (false);
-		}
-		ClearMenu(); // Et le nouveau
+		wMainMenu.SetActive (true);
+		wPlayerMenu.SetActive (false);
+		CleanMenu();
+	}
+
+	public void Level_Click() {
+		ActiveMenu(bLevel);
+		tTitle.text = "LEVEL";
+
+		wLevel.SetActive (true);
+	}
+
+	public void LevelUp_Click() {
+		wLevel.GetComponentInChildren<LevelScrollList> ().MonterLevel();
+	}
+
+	public void LevelDown_Click() {
+		wLevel.GetComponentInChildren<LevelScrollList> ().DescendreLevel();
 	}
 
 	public void LoadLevel(int level) {
@@ -383,11 +455,29 @@ public class MainMenuManager : MonoBehaviour {
 		}
 	}
 
-	private void AjusterVolume(AudioMixer audioSource, string valueName, Slider curseur, int valeurMin = -24, int valeurMax = 0) {
-		audioSource.SetFloat (valueName, _StaticFunction.MappingScale(curseur.value, curseur.minValue, curseur.maxValue, valeurMin, valeurMax));
+	public void Talent_Click() {
+		ActiveMenu(bTalent);
+		tTitle.text = "SKILL";
 	}
 
-	private void MuteSound(AudioMixer audiosource, string valueName) {
-		audiosource.SetFloat (valueName, -80);
+	public void Equipment_Click() {
+		ActiveMenu(bEquipment);
+		tTitle.text = "EQUIPMENT";
 	}
+
+	public void LevelSelection_Click(int level) {
+		foreach (LevelItem item in listLevel) {
+			// Activation du level cliqué
+			if (item.GetLevelNumber () == level) {
+				// Seulement s'il n'est pas déjà actif
+				//if (!item.IsSelected ())
+					item.SelectLevelItem ();
+			}
+			else
+				item.DeselectLevelItem ();
+		}
+	}
+	/********************************************/
+	/********** FIN PARTIE MENU JOUEUR **********/
+	/********************************************/
 }
