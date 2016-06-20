@@ -33,6 +33,8 @@ public class TimeManager : MonoBehaviour {
 	void OnApplicationPause(bool pauseStatus) {
 		if (pauseStatus) {
 			UIManager.uiManager.PauseManager ();
+			paused = true;
+			deltaTime = 0;
 		}
 	}
 

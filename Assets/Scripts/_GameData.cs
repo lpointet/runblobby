@@ -74,6 +74,7 @@ public class PlayerData {
 	public int level = 1;
 	public long distanceTotal = 0; // distance totale parcourue, tout confondu
 	public int enemyKilled = 0; // nombre d'ennemis tués
+	public int numberOfDeath = 0; // nombre de morts
 
 	/* STATISTIQUES DES LEVELS */
 	public List<LevelData> levelData = new List<LevelData>();

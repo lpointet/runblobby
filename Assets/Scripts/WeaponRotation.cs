@@ -29,7 +29,7 @@ public class WeaponRotation : MonoBehaviour {
 				return;
 			}
 		}
-		// TODO Il faut mettre à jour l'information de la Touch, sinon on ne met pas à jour la position...
+
 		shootingFinger = TouchManager.current.rightTouchPosition;
 
 		followPosition = null == follow ? Camera.main.ScreenToWorldPoint(shootingFinger) : follow.transform.position;

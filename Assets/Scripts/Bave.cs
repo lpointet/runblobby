@@ -4,6 +4,7 @@ using System.Collections;
 public class Bave : MonoBehaviour {
 
 	private AudioSource myAudio;
+	private Transform myTransform;
 
 	private Vector2 finalScale;
 	private float lerpingTime;
@@ -20,6 +21,7 @@ public class Bave : MonoBehaviour {
 
 	void Awake () {
 		myAudio = GetComponent<AudioSource> ();
+		myTransform = transform;
 	}
 
 	void Start() {
@@ -50,15 +52,15 @@ public class Bave : MonoBehaviour {
 
 		finalScale = new Vector2 (Random.Range (1.75f, 2.5f), Random.Range (1f, 1.5f)); // Pas toujours la même taille de flaque
 		lerpingTime = 0;
-		transform.localScale = Vector2.one;
+		myTransform.localScale = Vector2.one;
 
 		myAudio.Play ();
 	}
 
 	void Update() {
-		if (transform.localScale.x <= finalScale.x) {
+		if (myTransform.localScale.x <= finalScale.x) {
 			lerpingTime += TimeManager.deltaTime / 0.5f;
-			transform.localScale = Vector2.Lerp (Vector2.one, finalScale, lerpingTime);
+			myTransform.localScale = Vector2.Lerp (Vector2.one, finalScale, lerpingTime);
 		}
 	}
 

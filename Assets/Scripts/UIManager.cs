@@ -148,7 +148,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	void Update() {
+	void LateUpdate() {
 		enemyEnCours = LevelManager.levelManager.GetEnemyEnCours();
 
 		if (endUI.activeInHierarchy && Input.GetMouseButton(0) && timeUpdateValue < delaySliderFull) {
@@ -195,8 +195,9 @@ public class UIManager : MonoBehaviour {
 			lerpingTimeEnemyBar += TimeManager.deltaTime / LevelManager.levelManager.enemySpawnDelay;
 			enemyHealthBar.value = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
 
-			if (enemyHealthBar.value == 1) {
+			if (lerpingTimeEnemyBar > 1) {
 				enemyHealthBar.value = 1;
+				previousHP = 1; // Pour éviter que la première frame dans EnemyManager() montre un ratio d'HP = 0
 				LevelManager.levelManager.SetEnemyToSpawn (false); // On sort de la boucle d'apparition
 			}
 
@@ -232,7 +233,6 @@ public class UIManager : MonoBehaviour {
 		if( null != enemyEnCours ) {
 			if (!enemyGUIActive) {
 				ToggleEnemyGUI( true );
-				 // TODO pourquoi est-ce qu'on perd une frame ?
 			}
 			float realRatioHP = enemyEnCours.GetHealthPoint() / (float)enemyEnCours.GetHealthPointMax();
 
@@ -387,7 +387,6 @@ public class UIManager : MonoBehaviour {
 		int currentPlayerLevel = _StaticFunction.LevelFromExp (GameData.gameData.playerData.experience);
 		int nextPlayerLevel = currentPlayerLevel + 1;
 		// Affichage du niveau courant
-		//Debug.Log(_StaticFunction.LevelFromExp (GameData.gameData.playerData.experience) + " " + currentPlayerLevel);
 		tCurrentPlayerLevel.text = currentPlayerLevel.ToString();
 
 		int currentPlayerExpInLevel = GameData.gameData.playerData.experience - _StaticFunction.ExpFromLevel (currentPlayerLevel);

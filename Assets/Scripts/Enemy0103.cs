@@ -46,9 +46,6 @@ public class Enemy0103 : Enemy {
 	public RuntimeAnimatorController[] portrait;
 	public DialogEntry[] dialog;
 
-	private bool isLeaving = false;
-	public float leavingSpeed = 2f;
-
 	public AudioClip boulderSound;
 
 	protected override void Awake () {
@@ -72,7 +69,7 @@ public class Enemy0103 : Enemy {
 		myBirdAnim.SetBool("picked", false);
 		myBirdAnim.SetBool("weak", false);
 
-		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
+		//mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
 	}
 
 	void FixedUpdate() {
@@ -86,11 +83,6 @@ public class Enemy0103 : Enemy {
 		// Pour qu'il ne bouge pas si le joueur meurt
 		if (LevelManager.GetPlayer ().IsDead ())
 			myRb.velocity = Vector2.zero;
-
-		if (isLeaving) {
-			// L'ennemi se déplace vers la sortie
-			myTransform.Translate (Vector3.right * TimeManager.deltaTime * leavingSpeed);
-		}
 
 		if (IsDead () || LevelManager.GetPlayer ().IsDead () || TimeManager.paused || LevelManager.IsEndingScene())
 			return;
@@ -203,35 +195,7 @@ public class Enemy0103 : Enemy {
 		if (!IsInvincible())
 			mySpecialAudio.HurtSound ();
 	}
-
-	// Effet identique au héros
-	protected override IEnumerator HurtEffect() {
-		float tempAlpha = mySprite.sharedMaterial.GetFloat ("_Alpha");
-		float flashDelay = 0.1f;
-		int flashNumber = 0;
-		int flashNumberMax = 4;
-		bool increment = false;
-
-		while (flashNumber < flashNumberMax) {
-			if (increment)
-				tempAlpha += TimeManager.deltaTime / flashDelay;
-			else 
-				tempAlpha -= TimeManager.deltaTime / flashDelay;
-
-			if (tempAlpha > 1) {
-				increment = false;
-				flashNumber++;
-			}
-			else if (tempAlpha < 0.25f)
-				increment = true;
-
-			mySprite.sharedMaterial.SetFloat ("_Alpha", tempAlpha);
-			yield return null;
-		}
-		// Retour à la "normale"
-		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
-	}
-
+		
 	// A la mort, il s'enfuit mais ne "meurt" pas
 	protected override void Despawn () {
 		// L'oiseau s'envole
@@ -281,8 +245,8 @@ public class Enemy0103 : Enemy {
 	}
 
 	private void DestructionOfTheWorld () {
-		// On lance la boucle de destruction des sols dans le Update() !
-		isLeaving = true;
+		// On fait partir l'ennemi avec un rire méphistophélique
+		StartCoroutine(WalkingBoss(3f, 3f));
 
 		// Suppression de toutes les feuilles qui restent
 		foreach (CoinPickup coin in GameObject.FindObjectsOfType<CoinPickup> ()) {
@@ -307,9 +271,13 @@ public class Enemy0103 : Enemy {
 		myAudio.Play ();
 	}
 
-	void OnBecameInvisible () {
-		// Pour l'empêcher de sauter dans le vide et de mourir (il doit toujours jouer le son !)
-		isLeaving = false;
+	private IEnumerator WalkingBoss(float walkingTime, float leavingSpeed) {
+		// L'ennemi se déplace vers la sortie
+		while (walkingTime > 0) {
+			myTransform.Translate (Vector3.right * TimeManager.deltaTime * leavingSpeed);
+			walkingTime -= TimeManager.deltaTime;
+			yield return null;
+		}
 	}
 
 	private IEnumerator FallingBlock(Transform currentTransform, float transitionTime = 0, float delay = 0) {

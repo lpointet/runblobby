@@ -48,7 +48,7 @@ public class SpawnDecor : MonoBehaviour {
 		// On force le contenant à être sur le layer "Ground" pour la suppression de ce bloc spécifique dans le LevelManager
 	}
 
-	void Update () { // TODO : pourquoi les décors ne réapparaissent pas pendant les boss après un reload ? Ptet à cause du positionCurrentDecor qui reset pas ?
+	void Update () {
 		// Si l'objet est déjà apparu on annule tout
 		if (appeared || myTransform.position.x > LevelManager.levelManager.cameraEndPosition)
 			return;

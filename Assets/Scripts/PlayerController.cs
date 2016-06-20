@@ -35,7 +35,6 @@ public class PlayerController : Character {
 
 	// Concerne le saut
     private float initialGravityScale;
-    private float initialJumpHeight; // TODO à supprimer ?
     
 	// Calculé à partir des formules de portée et de hauteur max en partant des conditions initiales
 	// Permet de conserver une hauteur et une distance constante des sauts pour toutes les vitesses horizontales
@@ -182,8 +181,6 @@ public class PlayerController : Character {
 		myAudio = GetComponent<PlayerSoundEffect> ();
 
 		SetWeapon( myTransform.FindChild( "Weapon" ) );
-//        initialGravityScale = myRb.gravityScale;
-//        initialJumpHeight = GetJumpHeight();
         initialMaxDoubleJump = GetMaxDoubleJump();
     }
 	
@@ -193,8 +190,8 @@ public class PlayerController : Character {
 		SetMoveSpeed( GetInitialMoveSpeed() );
 		lerpingHP = GetHealthPoint ();
 		mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
-		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
-		mySprite.sharedMaterial.SetFloat ("_Val", 1);
+		//mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
+		//mySprite.sharedMaterial.SetFloat ("_Val", 1);
 
 		isFlying = false;
         wasFlying = false;
@@ -251,7 +248,6 @@ public class PlayerController : Character {
 		// Action de voler
 		if (IsFlying() && WantToFly()) {
 			float verticalCoef = 1.5f;
-			// TODO Il faut mettre à jour l'information de la Touch, sinon on ne met pas à jour la position...
 			flyingTouchPosition = flyingTouchId == TouchManager.current.leftTouchId ? TouchManager.current.leftTouchPosition : TouchManager.current.rightTouchPosition;
 
 			// Permet de suivre le "doigt" du joueur quand il vole en zéro gravité
@@ -422,8 +418,12 @@ public class PlayerController : Character {
 			
 			myAnim.SetTrigger ("dead");
 		}
-			
+
+		// STAT : on ajoute une mort à chaque... mort !
+		GameData.gameData.playerData.numberOfDeath++;
+
 		_StaticFunction.Save ();
+
 		StartCoroutine (WaitForDeadAnim (myAnim));
 	}
 
@@ -441,6 +441,8 @@ public class PlayerController : Character {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
 		SetMoveSpeed (0);
+
+		_StaticFunction.Save ();
 	}
 
 	public void ActiveParachute(bool active) {
@@ -471,25 +473,14 @@ public class PlayerController : Character {
 		isFlying = true;
 		myAnim.SetBool( "flying", isFlying ); // Permet d'annuler le parachute une fois au sol
 		myAnim.SetTrigger ("parachute"); // Animation de "parachute" pendant le vol
-
-		// Faire décoller le joueur
-		//Jump();
-
-		// Faire en sorte que le nombre de sauts soit illimité (= 1000, n'abusons pas !)
-		//SetMaxDoubleJump( 1000 );
     }
 
 	public void Land() {
 		isFlying = false;
 
         // Remettre les paramètres initiaux
-//        myRb.gravityScale = initialGravityScale;
-//        SetJumpHeight( initialJumpHeight );
         SetMaxDoubleJump( initialMaxDoubleJump );
 		StartCoroutine (ChangeSpeed (GetMoveSpeed () / flySpeedCoeff));
-
-        // On "force" le joueur à sauter avant l'atterrissage, signant en même temps la fin du vol
-        //Jump();
 
 		// On fait atterrir le joueur avec le parachute
 		if (!IsGrounded ()) {
@@ -552,62 +543,5 @@ public class PlayerController : Character {
 			myAudio.HurtSound ();
 
 		base.Hurt (damage);
-	}
-
-	/*protected override IEnumerator HurtEffect() {
-		float tempAlpha = mySprite.sharedMaterial.GetFloat ("_Alpha");
-		float flashDelay = 0.1f;
-		int flashNumber = 0;
-		int flashNumberMax = 4;
-		bool increment = false;
-
-		while (flashNumber < flashNumberMax) {
-			if (increment)
-				tempAlpha += TimeManager.deltaTime / flashDelay;
-			else 
-				tempAlpha -= TimeManager.deltaTime / flashDelay;
-
-			if (tempAlpha > 1) {
-				increment = false;
-				flashNumber++;
-			}
-			else if (tempAlpha < 0.25f)
-				increment = true;
-
-			mySprite.sharedMaterial.SetFloat ("_Alpha", tempAlpha);
-			yield return null;
-		}
-		// Retour à la "normale"
-		mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
-	}*/
-
-	protected override IEnumerator HurtEffect() {
-		float backToNormalDelay = 0.5f;
-		float timeToNormal = backToNormalDelay;
-		float maxValue = 100f;
-		float minValue = 1f;
-		float tempValue = minValue;
-
-		float delaySwitch = 0.1f;
-		float timeToSwitch = 0;
-
-		SetInvincible (backToNormalDelay);
-
-		mySprite.sharedMaterial.SetFloat ("_Val", tempValue);
-
-		while (timeToNormal > 0) {
-			timeToNormal -= TimeManager.deltaTime;
-
-			if (TimeManager.time > timeToSwitch) {
-				timeToSwitch = TimeManager.time + delaySwitch;
-				tempValue = (tempValue == minValue) ? maxValue : minValue;
-				mySprite.sharedMaterial.SetFloat ("_Val", tempValue);
-			}
-
-			yield return null;
-		}
-
-		// Retour à la "normale"
-		mySprite.sharedMaterial.SetFloat ("_Val", minValue);
 	}
 }

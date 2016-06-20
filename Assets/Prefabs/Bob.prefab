@@ -464,6 +464,8 @@ MonoBehaviour:
   jumpHeight: 0
   isDead: 0
   maxHeight: 7.5
+  invincibleTime: 0.5
+  invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
   timeToKill: 45
   damageToGive: 1
   pointScore: 0
@@ -506,7 +508,6 @@ MonoBehaviour:
     portraitPosition: 1
     textLine: "Mais c'est trop tard \xE0 pr\xE9sent !\nJ'esp\xE8re que tu aimes la
       chaleur...\nAhahahah ! Adieu, mon fr\xE8re !"
-  leavingSpeed: 4
   boulderSound: {fileID: 8300000, guid: 0f7a2947724ec1e4c9864fbe9d514d53, type: 3}
 --- !u!114 &11481242
 MonoBehaviour:

@@ -209,7 +209,7 @@ public class LevelManager : MonoBehaviour {
 		probabiliteBlock = new int[listPhase.Length][];
 		probabiliteBlock[0] = new int[5] {70, 30,  0,  0,  0};
 		probabiliteBlock[1] = new int[5] { 0, 40, 50, 10,  0};
-		probabiliteBlock[2] = new int[5] { 0, 0,  20, 60, 20};
+		probabiliteBlock[2] = new int[5] { 0,  0, 20, 60, 20};
 		// On met à 20 au cas où on dépasse les 3 phases et qu'on oublie
 		for (int i = 3; i < listPhase.Length; i++) {
 			probabiliteBlock [i] = new int[5] {20, 20, 20, 20, 20};
@@ -418,7 +418,6 @@ public class LevelManager : MonoBehaviour {
 
 	private void FinDuMonde () {
 		if (IsStory ()) {
-			GetPlayer ().OnVictory ();
 			CleanPickup( GetPlayer().GetLastWish() );
 
 			// On offre des points d'xp supplémentaires si c'est la première fois qu'il tue le boss
@@ -431,6 +430,8 @@ public class LevelManager : MonoBehaviour {
 			UIManager.uiManager.ToggleEndMenu (true);
 
 			endLevel = true;
+
+			GetPlayer ().OnVictory ();
 		}
 	}
 
@@ -450,6 +451,8 @@ public class LevelManager : MonoBehaviour {
 		} else {
 			character.Die ();
 			character.OnKill ();
+			// STAT : on ajoute un à chaque ennemi tué
+			GameData.gameData.playerData.enemyKilled++;
 		}
 	}
 

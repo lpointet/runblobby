@@ -73,7 +73,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400042}
   - 61: {fileID: 6139072}
-  - 114: {fileID: 11410816}
   - 114: {fileID: 11434760}
   m_Layer: 10
   m_Name: Cloud_space (4)
@@ -696,7 +695,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 406116}
   - 61: {fileID: 6138042}
-  - 114: {fileID: 11446238}
   - 114: {fileID: 11450946}
   m_Layer: 10
   m_Name: Cloud_space
@@ -752,7 +750,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &157186
 GameObject:
   m_ObjectHideFlags: 1
@@ -921,7 +919,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 415702}
   - 61: {fileID: 6147750}
-  - 114: {fileID: 11408862}
   - 114: {fileID: 11415678}
   m_Layer: 10
   m_Name: Cloud_space (2)
@@ -970,7 +967,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 405316}
   - 61: {fileID: 6125976}
-  - 114: {fileID: 11491474}
   - 114: {fileID: 11400624}
   m_Layer: 10
   m_Name: Cloud_space (1)
@@ -1147,7 +1143,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 430248}
   - 61: {fileID: 6109374}
-  - 114: {fileID: 11409426}
   - 114: {fileID: 11488064}
   m_Layer: 10
   m_Name: Cloud_space (5)
@@ -1181,7 +1176,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 461730}
   - 61: {fileID: 6165906}
-  - 114: {fileID: 11471080}
   - 114: {fileID: 11472298}
   m_Layer: 10
   m_Name: Cloud_space (3)
@@ -2946,30 +2940,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 1
---- !u!114 &11408862
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
---- !u!114 &11409426
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
 --- !u!114 &11410634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2982,18 +2952,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 1
---- !u!114 &11410816
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
 --- !u!114 &11411660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3496,18 +3454,6 @@ MonoBehaviour:
   - {fileID: 11461934, guid: 5d8cdcec0db73cc4887c6ff7b6a53703, type: 2}
   probaApparition: 75
   sizeAvailable: 10
---- !u!114 &11446238
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 153276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
 --- !u!114 &11446298
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3867,18 +3813,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 1
---- !u!114 &11471080
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
 --- !u!114 &11472298
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4092,18 +4026,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 1
---- !u!114 &11491474
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 169506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
 --- !u!114 &11492242
 MonoBehaviour:
   m_ObjectHideFlags: 1

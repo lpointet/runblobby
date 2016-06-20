@@ -12,7 +12,7 @@ public class CameraManager : MonoBehaviour {
 	public float maxJumpHeight = 6.5f; // 6.5 est la valeur qui permet de sauter avec la plateforme le plus haut possible
 
 	public float xOffsetPourcentage;
-	private float xOffset;
+	public float xOffset { get; private set; }
 	public float yOffset { get; private set; }
 
 	public Transform backKiller { get; private set; }

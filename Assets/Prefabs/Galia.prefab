@@ -280,6 +280,8 @@ MonoBehaviour:
   jumpHeight: 5
   isDead: 0
   maxHeight: 7.5
+  invincibleTime: 0.5
+  invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
   timeToKill: 30
   damageToGive: 1
   pointScore: 50

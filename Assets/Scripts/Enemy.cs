@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Enemy : Character {
 
@@ -271,4 +272,23 @@ public class Enemy : Character {
 			}
 		}
 	}
+
+	/*
+	protected override IEnumerator HurtEffect(float hurtingTime) {
+		float timeToNormal = hurtingTime;
+		Material ownMaterial = mySprite.material;
+
+		float delaySwitch = 0.1f;
+		float timeToSwitch = 0;
+
+		mySprite.material = invincibleMaterial;
+
+		while (hurtingTime > 0) {
+			hurtingTime -= TimeManager.deltaTime;
+			yield return null;
+		}
+
+		// Retour à la "normale"
+		mySprite.material = ownMaterial;
+	}*/
 }

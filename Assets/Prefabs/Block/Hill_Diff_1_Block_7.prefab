@@ -991,7 +991,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 443652}
   - 61: {fileID: 6193854}
-  - 114: {fileID: 11436728}
   - 114: {fileID: 11427862}
   m_Layer: 10
   m_Name: Cloud_space
@@ -1265,7 +1264,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 425350}
   - 61: {fileID: 6159676}
-  - 114: {fileID: 11428644}
   - 114: {fileID: 11404794}
   m_Layer: 10
   m_Name: Cloud_space (2)
@@ -1562,7 +1560,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &175914
 GameObject:
   m_ObjectHideFlags: 1
@@ -1846,7 +1844,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 475464}
   - 61: {fileID: 6166372}
-  - 114: {fileID: 11485522}
   - 114: {fileID: 11483724}
   m_Layer: 10
   m_Name: Cloud_space (1)
@@ -3388,7 +3385,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168932}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.03125, z: 0}
+  m_LocalPosition: {x: 0, y: -0.0625, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 447524}
@@ -7568,18 +7565,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 10
---- !u!114 &11428644
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 166092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
 --- !u!114 &11428824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7619,18 +7604,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 10
---- !u!114 &11436728
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 154152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
 --- !u!114 &11438818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8445,18 +8418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd61d8d6cbfd5fe4fba3bd694f67a4ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11485522
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 183468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd8af1808efb7db489d88939c0f1716c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  widthSize: 1
 --- !u!114 &11486264
 MonoBehaviour:
   m_ObjectHideFlags: 1

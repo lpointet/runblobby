@@ -7,22 +7,21 @@ public class LevelItem : MonoBehaviour {
 	[System.Serializable]
 	public class ModeButton {
 		public GameObject button;
-		public RectTransform rectTransform;
-		public Vector2 initialPosition;
+		[System.NonSerialized] public RectTransform rectTransform;
+		[System.NonSerialized] public Vector2 initialPosition;
 	}
 
 	[SerializeField] private int levelNumber;
 	private bool selected = false;
 
 	[Header("Main Button")]
-	[SerializeField] private Image background;
-	[SerializeField] private Animator myBGAnim;
-	[SerializeField] private GameObject selectBorder;
+	[SerializeField] private Image selectBorder;
 	[SerializeField] private Image myImage;
 	[SerializeField] private Animator myAnim;
 
 	[SerializeField] private Color selectColor;
 	[SerializeField] private Color deselectColor;
+	[SerializeField] private Color borderDeselectColor;
 
 	[Header("Mode Button")]
 	[SerializeField] private ModeButton storyNormal;
@@ -59,11 +58,9 @@ public class LevelItem : MonoBehaviour {
 	public void DeselectLevelItem() {
 		selected = false;
 
-		myBGAnim.StartPlayback ();
 		myAnim.StartPlayback ();
-		background.color = deselectColor;
 		myImage.color = deselectColor;
-		selectBorder.SetActive (false);
+		selectBorder.color = borderDeselectColor;
 
 		if (storyNormal.button != null) {
 			float transitionTime = 0.1f;
@@ -77,11 +74,9 @@ public class LevelItem : MonoBehaviour {
 	public void SelectLevelItem() {
 		selected = true;
 
-		myBGAnim.StopPlayback ();
 		myAnim.StopPlayback ();
-		background.color = selectColor;
 		myImage.color = selectColor;
-		selectBorder.SetActive (true);
+		selectBorder.color = selectColor;
 
 		if (storyNormal.button != null) {
 			float transitionTime = 0.25f;

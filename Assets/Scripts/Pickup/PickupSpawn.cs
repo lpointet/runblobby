@@ -67,7 +67,7 @@ public class PickupSpawn : MonoBehaviour {
 			int distanceSansbonus = 200;
 			int distanceMaxBonus = 1000;
 			calculusDistance = (float)_StaticFunction.MathPower ((levelManager.GetDistanceSinceLastBonus () - distanceSansbonus) / (float)(distanceMaxBonus - distanceSansbonus), 3);
-			calculusDistance = 1; // TODO supprimer après les tests d'apparition !!
+
 			// Ajuster le calcul de la distance pour que :
 			// Entre 0 et 200m : rien (pour assurer une distance mini sans bonus)
 			// Entre 200m et 1000m : on monte progressivement de 0 à 1, avec une valeur à 600m de 0.1

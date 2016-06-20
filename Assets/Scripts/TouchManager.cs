@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-
-
 public class TouchManager : MonoBehaviour {
 
 	public static TouchManager current;
@@ -10,7 +8,6 @@ public class TouchManager : MonoBehaviour {
 
 	private float screenMidWidth; // Le milieu de l'écran
 	private float screenMaxHeight; // Le haut de l'écran, en tenant compte de la hauteur maximale de saut
-	private float screenHeightForbidden = 64; // TODO : calculer en fonction de la hauteur du bouton "Pause" | Nombre de pixels de l'écran du menu
 
 	public int rightTouchId { get; private set; }
 	public Vector2 rightTouchPosition { get; private set; }
@@ -26,15 +23,8 @@ public class TouchManager : MonoBehaviour {
 	}
 
 	void Start() {
-		// Si l'appareil n'est pas tactile, on affiche un message d'excuse et on ferme le jeu au bout d'un certain temps
-		if (!Input.touchSupported) {Debug.Log("touch");
-			// TODO
-		}
-		// Si l'appareil ne supporte pas le multi-touch, on affiche un message expliquant que le jeu ne sera pas aussi agréable à jouer, mais quand même jouable
-		if (!Input.multiTouchEnabled) {Debug.Log("multi");
-			// TODO
-		}
-
+		int screenHeightForbidden; // La hauteur du bouton "Pause" | Nombre de pixels de l'écran du menu
+		screenHeightForbidden = 64 * Screen.height / 588; // Par défaut, dans l'éditeur, le canvas fait 588 pixels de haut, et le bouton 64
 		screenMidWidth = Screen.width / 2;
 		screenMaxHeight = Screen.height - screenHeightForbidden;
 
@@ -59,27 +49,27 @@ public class TouchManager : MonoBehaviour {
 					switch (phase) {
 					// Lorsqu'un nouveau contact est effectué, on regarde s'il est à droite ou à gauche
 					case TouchPhase.Began:
-							// Gauche
-							if (touch.position.x < screenMidWidth) {
-								leftTouchId = touch.fingerId;
-								leftTouchPosition = touch.position;
-								Mediator.current.Publish<TouchLeft> (new TouchLeft () {
-									leftTouchPosition = leftTouchPosition,
-									leftId = leftTouchId
+						// Gauche
+						if (touch.position.x < screenMidWidth) {
+							leftTouchId = touch.fingerId;
+							leftTouchPosition = touch.position;
+							Mediator.current.Publish<TouchLeft> (new TouchLeft () {
+								leftTouchPosition = leftTouchPosition,
+								leftId = leftTouchId
+							});
+						}
+						// Droite
+						else {
+							// On ne dépasse pas la hauteur du "menu" en haut (touche "Pause")
+							if (touch.position.y < screenMaxHeight) {
+								rightTouchId = touch.fingerId;
+								rightTouchPosition = touch.position;
+								Mediator.current.Publish<TouchRight> (new TouchRight () {
+									rightTouchPosition = rightTouchPosition,
+									rightId = rightTouchId
 								});
 							}
-							// Droite
-							else {
-								// On ne dépasse pas la hauteur du "menu" en haut (touche "Pause")
-								if (touch.position.y < screenMaxHeight) {
-									rightTouchId = touch.fingerId;
-									rightTouchPosition = touch.position;
-									Mediator.current.Publish<TouchRight> (new TouchRight () {
-										rightTouchPosition = rightTouchPosition,
-										rightId = rightTouchId
-									});
-								}
-							}
+						}
 						break;
 					// Tant qu'on est en contact (qu'on bouge ou non), on met à jour la position du contact courant gauche et/ou droite
 					case TouchPhase.Moved:
@@ -111,37 +101,53 @@ public class TouchManager : MonoBehaviour {
 			}
 		}
 		// Si l'appareil n'est pas touch ou multi-touch
-		// TODO problème quand on change de moitié d'écran avec un bouton appuyé (sur le vol permanent c'est bien visible, d'ailleurs comment faire pour le maintenir appuyé ? GetMouseButton fait sauter en chaine)
 		else {
-			if (Input.GetMouseButtonDown (0)) {
-				// Gauche
-				if (Input.mousePosition.x < screenMidWidth) {
-					leftTouchId = 0;
-					leftTouchPosition = Input.mousePosition;
-					Mediator.current.Publish<TouchLeft> (new TouchLeft () {
-						leftTouchPosition = leftTouchPosition,
-						leftId = leftTouchId
-					});
-				}
-				// Droite
-				else {
-					if (Input.mousePosition.y < screenMaxHeight) {
-						rightTouchId = 1;
-						rightTouchPosition = Input.mousePosition;
-						Mediator.current.Publish<TouchRight> (new TouchRight () {
-							rightTouchPosition = rightTouchPosition,
-							rightId = rightTouchId
+			if (Input.GetMouseButton (0)) {
+				// La première fois qu'on appuie, on regarde de quel côté on est pour "enregistrer" le bouton
+				if (Input.GetMouseButtonDown (0)) {
+					// Gauche
+					if (Input.mousePosition.x < screenMidWidth) {
+						leftTouchId = 0;
+						leftTouchPosition = Input.mousePosition;
+						Mediator.current.Publish<TouchLeft> (new TouchLeft () {
+							leftTouchPosition = leftTouchPosition,
+							leftId = leftTouchId
 						});
+					}
+					// Droite
+					else {
+						// On ne dépasse pas la hauteur du "menu" en haut (touche "Pause")
+						if (Input.mousePosition.y < screenMaxHeight) {
+							rightTouchId = 1;
+							rightTouchPosition = Input.mousePosition;
+							Mediator.current.Publish<TouchRight> (new TouchRight () {
+								rightTouchPosition = rightTouchPosition,
+								rightId = rightTouchId
+							});
+						}
+					}
+				}
+				// Si ce n'est pas la première fois qu'on appuie, on met à jour le bouton actuellement actif
+				else {
+					// Gauche
+					if (leftTouchId != -1) {
+						leftTouchPosition = Input.mousePosition;
+					}
+					// Droite
+					else {
+						rightTouchPosition = Input.mousePosition;
 					}
 				}
 			} else if (Input.GetMouseButtonUp (0)) {
 				// Gauche
-				if (Input.mousePosition.x < screenMidWidth) {
+				if (leftTouchId != -1) {
 					Mediator.current.Publish<EndTouch> (new EndTouch () { fingerId = leftTouchId });
+					leftTouchId = -1;
 				}
 				// Droite
 				else {
 					Mediator.current.Publish<EndTouch> (new EndTouch () { fingerId = rightTouchId });
+					rightTouchId = -1;
 				}
 			}
 		}

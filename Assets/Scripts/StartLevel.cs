@@ -20,7 +20,7 @@ public class StartLevel : MonoBehaviour {
 
 		CameraManager cameraManager = Camera.main.GetComponent<CameraManager> ();
 
-		endingScale = Camera.main.orthographicSize * 2 * 32 / 8; // Taille de l'écran * résoltuion par unité / rayon du cercle "visible"
+		endingScale = Camera.main.orthographicSize * 2 * 32 / 8; // Taille de l'écran * résolution par unité / rayon du cercle "visible"
 		// On place le joueur dans de bonnes conditions de chute en parachute
 		LevelManager.GetPlayer ().GetComponent<Rigidbody2D> ().gravityScale = 0.1f;
 		LevelManager.GetPlayer ().transform.position = new Vector2 (0, Camera.main.orthographicSize + cameraManager.yOffset + 1);

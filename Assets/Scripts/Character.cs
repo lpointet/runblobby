@@ -16,6 +16,9 @@ public class Character : MonoBehaviour {
 
     protected Transform myTransform;
 	protected SpriteRenderer mySprite;
+
+	[SerializeField] private float invincibleTime = 0.5f;
+	[SerializeField] protected Material invincibleMaterial;
     private bool invincible = false;
 
     /**
@@ -94,9 +97,9 @@ public class Character : MonoBehaviour {
 		// Let it live
 		Resurrect();
 		// On corrige l'alpha si besoin
-		Color tempColor = mySprite.color;
+		/*Color tempColor = mySprite.color;
 		tempColor.a = 1;
-		mySprite.color = tempColor;
+		mySprite.color = tempColor;*/
 	}
 	
 	public virtual void OnKill() {
@@ -112,9 +115,11 @@ public class Character : MonoBehaviour {
 		if (GetHealthPoint() <= 0 && !IsDead())
 			LevelManager.Kill( this );
 
-		// Effet visuel de blessure
-		if (!IsDead ())
-			StartCoroutine (HurtEffect ());
+		// Effet visuel de blessure et d'invincibilité
+		if (!IsDead ()) {
+			StartCoroutine (HurtEffect (invincibleTime));
+			SetInvincible (invincibleTime);
+		}
 	}
 	
 	public void FullHealth() {
@@ -138,34 +143,28 @@ public class Character : MonoBehaviour {
 		}
 	}
 
-	protected virtual IEnumerator HurtEffect() {
-		Color tempColor = mySprite.color;
-		float flashDelay = 0.1f;
-		int flashNumber = 0;
-		int flashNumberMax = 4;
-		bool increment = false;
+	protected virtual IEnumerator HurtEffect(float hurtingTime = 0.5f) {
+		bool isWhite = true;
+		Material ownMaterial = mySprite.material;
 
-		// TODO faire ça dans tous les override
-		SetInvincible (flashNumberMax * flashDelay);
+		float delaySwitch = 0.1f;
+		float timeToSwitch = 0;
 
-		while (flashNumber < flashNumberMax) {
-			if (increment)
-				tempColor.a += TimeManager.deltaTime / flashDelay;
-			else 
-				tempColor.a -= TimeManager.deltaTime / flashDelay;
+		mySprite.material = invincibleMaterial;
 
-			if (tempColor.a > 1) {
-				increment = false;
-				flashNumber++;
+		while (hurtingTime > 0) {
+			hurtingTime -= TimeManager.deltaTime;
+
+			if (TimeManager.time > timeToSwitch) {
+				timeToSwitch = TimeManager.time + delaySwitch;
+				mySprite.material = isWhite ? ownMaterial : invincibleMaterial;
+				isWhite = !isWhite;
 			}
-			else if (tempColor.a < 0.25f)
-				increment = true;
 
-			mySprite.color = tempColor;
 			yield return null;
 		}
+
 		// Retour à la "normale"
-		tempColor.a = 1;
-		mySprite.color = tempColor;
+		mySprite.material = ownMaterial;
 	}
 }
