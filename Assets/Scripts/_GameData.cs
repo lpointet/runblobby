@@ -23,7 +23,7 @@ public class _GameData : MonoBehaviour {
 	void Awake() {
 		if (current == null) {
 			current = this;
-			DontDestroyOnLoad (current);
+			//DontDestroyOnLoad (current); // TODO probablement à remettre quand on enlève le _GameData des levels
 		} else
 			DestroyObject (this);
 

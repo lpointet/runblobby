@@ -25,7 +25,7 @@ public class PoolingManager : MonoBehaviour {
 		if (current == null) {
 			current = this;
 			pooledObjectParent = GameObject.Find ("PooledObjects").transform;
-			DontDestroyOnLoad (gameObject);
+			//DontDestroyOnLoad (gameObject);
 		} else if (current != this) {
 			Destroy (gameObject);
 		}
