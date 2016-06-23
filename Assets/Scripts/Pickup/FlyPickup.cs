@@ -24,8 +24,8 @@ public class FlyPickup : Pickup {
 	}
 
 	void Start() {
-		playerTransform = LevelManager.GetPlayer().transform;
-		playerRb = LevelManager.GetPlayer().GetComponent<Rigidbody2D> ();
+		playerTransform = LevelManager.player.transform;
+		playerRb = LevelManager.player.GetComponent<Rigidbody2D> ();
 
 		birdStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition);
 
@@ -54,7 +54,7 @@ public class FlyPickup : Pickup {
 			if (timeToLive > weakTime) {
 				// Adaptation de l'animation et du son de l'oiseau à la vitesse verticale du joueur
 				myAnim.SetFloat ("verticalSpeed", playerRb.velocity.y);
-				if (playerRb.velocity.y > 0 || LevelManager.GetPlayer().IsZeroGravFlying()) {
+				if (playerRb.velocity.y > 0 || LevelManager.player.IsZeroGravFlying()) {
 					soundSource.pitch = basePitch;
 				} else {
 					soundSource.pitch = basePitch * 1.2f;
@@ -65,7 +65,7 @@ public class FlyPickup : Pickup {
 
 	protected override void OnPick() {
 		// Si jamais on prend un autre pickup en même temps, on le vire
-		Pickup[] pickups = LevelManager.GetPlayer().GetComponentsInChildren<Pickup>();
+		Pickup[] pickups = LevelManager.player.GetComponentsInChildren<Pickup>();
 
 		foreach (Pickup pickup in pickups) {
 			if (pickup.name.Contains ("Fly")) {
@@ -76,22 +76,22 @@ public class FlyPickup : Pickup {
 		// Règles spéciales pour le Fly
 		if( parentAttach ) {
 			// Attacher le bonus au joueur
-			myTransform.parent = LevelManager.GetPlayer().transform;
+			myTransform.parent = LevelManager.player.transform;
 			myTransform.position = myTransform.parent.position;
 		}
 
 		if (myRender != null)
 			myRender.transform.localPosition = new Vector2(1 / 16f, -5.4f / 16f); // On place le Sprite correctement par rapport au joueur
 
-		LevelManager.GetPlayer().AddPickup( myCollider );
+		LevelManager.player.AddPickup( myCollider );
 
-		if (LevelManager.GetPlayer().IsZeroGravFlying ())
+		if (LevelManager.player.IsZeroGravFlying ())
 			myAnim.SetBool ("eternal", true);
 		else
 			myAnim.SetBool ("eternal", false);
 
 		// On attend que l'oiseau arrive pour que le joueur "vole"
-		LevelManager.GetPlayer().Jump();
+		LevelManager.player.Jump();
 		StartCoroutine( WaitBeforeFly(spawnTime) );
 	}
 
@@ -103,8 +103,8 @@ public class FlyPickup : Pickup {
 	}
 		
 	protected override void OnDespawn() {
-		if (!LevelManager.GetPlayer().IsDead ())
-			LevelManager.GetPlayer().Land ();
+		if (!LevelManager.player.IsDead ())
+			LevelManager.player.Land ();
 
 		// Rétablissement de la vitesse d'animation
 		myAnim.speed = 1;
@@ -116,7 +116,7 @@ public class FlyPickup : Pickup {
     }
 
 	protected override void DespawnEffect() {
-		if (LevelManager.GetPlayer().IsDead ())
+		if (LevelManager.player.IsDead ())
 			despawnTime = 0; // Permet de faire décoller l'oiseau directement lorsque l'on meurt
 
 		base.DespawnEffect();
@@ -141,13 +141,13 @@ public class FlyPickup : Pickup {
 
 		soundSource.Stop();
 		flyTransform.gameObject.SetActive( false );
-		LevelManager.GetPlayer().RemovePickup( flyTransform.GetComponent<Collider2D>() );
+		LevelManager.player.RemovePickup( flyTransform.GetComponent<Collider2D>() );
 	}
 
 	// On attend un certain temps avant que l'oiseau récupère le joueur
 	private IEnumerator WaitBeforeFly(float delay) {
 		yield return new WaitForSeconds (delay * Time.timeScale);
 
-		LevelManager.GetPlayer().Fly();
+		LevelManager.player.Fly();
 	}
 }

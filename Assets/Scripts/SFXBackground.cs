@@ -44,7 +44,7 @@ public class SFXBackground : MonoBehaviour {
 	}
 
 	void Update () {
-		if (LevelManager.GetPlayer().IsDead ()) {
+		if (LevelManager.player.IsDead ()) {
 			myAudio.Stop ();
 			return;
 		}

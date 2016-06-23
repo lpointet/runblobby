@@ -19,7 +19,7 @@ public class HealPickup : Pickup {
 		base.OnPick();
 
 		// Ajouter la vie au joueur
-        LevelManager.GetPlayer().SetHealthPoint( LevelManager.GetPlayer().GetHealthPoint() + heal );
+        LevelManager.player.healthPoint += heal;
     }
 
 	protected override void PickEffect() {

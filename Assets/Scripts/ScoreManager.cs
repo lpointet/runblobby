@@ -46,7 +46,7 @@ public class ScoreManager : MonoBehaviour {
 	}
 
 	public static void AddPoint(int numberPoint, Types type) {
-		if (LevelManager.GetPlayer ().IsDead ()) // Empêcher de récupérer des sous/xp après la mort
+		if (LevelManager.player.IsDead ()) // Empêcher de récupérer des sous/xp après la mort
 			return;
 
 		Multiplier multiplier;

@@ -34,7 +34,7 @@ public class TouchManager : MonoBehaviour {
 
 	void Update () {
 		// On désactive ces touches si le joueur est mort ou si le jeu est en pause
-		if (TimeManager.paused || LevelManager.GetPlayer().IsDead ())
+		if (TimeManager.paused || LevelManager.player.IsDead ())
 			return;
 		
 		// Si l'appareil est touch et multi-touch

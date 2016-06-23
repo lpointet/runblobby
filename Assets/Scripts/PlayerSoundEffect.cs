@@ -31,7 +31,7 @@ public class PlayerSoundEffect : MonoBehaviour {
 
 	void Awake() {
 		soundSource = GetComponent<AudioSource> ();
-		player = LevelManager.GetPlayer ();
+		player = LevelManager.player;
 	}
 
 	void Start() {
@@ -51,7 +51,7 @@ public class PlayerSoundEffect : MonoBehaviour {
 			else if (!soundSource.isPlaying && player.IsGrounded () && !player.IsFlying () && TimeManager.time > timeToMove) {
 				FootStepSound();
 
-				timeToMove = TimeManager.time + (player.GetInitialMoveSpeed () / player.GetMoveSpeed()) * (4 / 7f); // Infinity si MoveSpeed = 0
+				timeToMove = TimeManager.time + (player.initialMoveSpeed / player.moveSpeed) * (4 / 7f); // Infinity si MoveSpeed = 0
 			}
 		}
 		wasGrounded = player.IsGrounded (); // Connaitre l'état de la précédente frame

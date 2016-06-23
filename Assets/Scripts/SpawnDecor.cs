@@ -20,7 +20,7 @@ public class SpawnDecor : MonoBehaviour {
 
 	// Permet de reset les variables static
 	public static void Reset() {
-		positionCurrentDecor = LevelManager.GetPlayer ().transform;
+		positionCurrentDecor = LevelManager.player.transform;
 		sizeCurrentDecor = 0;
 	}
 
@@ -29,7 +29,7 @@ public class SpawnDecor : MonoBehaviour {
 		initialParent = transform.parent;
 
 		if (positionCurrentDecor == null) {
-			positionCurrentDecor = LevelManager.GetPlayer ().transform;
+			positionCurrentDecor = LevelManager.player.transform;
 		}
 
 		// Somme des probabilités

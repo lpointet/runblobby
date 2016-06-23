@@ -67,6 +67,6 @@ public class AutoCoinPickup : Pickup {
 		}
 
         // Attirer toutes les pièces vers le joueur
-        LevelManager.GetPlayer().AttractCoins( radius, layerCoins );
+        LevelManager.player.AttractCoins( radius, layerCoins );
     }
 }

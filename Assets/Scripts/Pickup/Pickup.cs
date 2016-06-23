@@ -112,10 +112,10 @@ public class Pickup : MonoBehaviour {
 		// On contrôle que le joueur n'a pas déjà un pickup du même type, auquel cas on augmente la durée de vie du pickup en cours
 		// Si c'est une pièce, on ne rentre pas dans le processus
 		if (this.GetType () != typeof(CoinPickup)) {
-			Pickup existingPickup = LevelManager.GetPlayer ().HasTypePickup (this.GetType ());
+			Pickup existingPickup = LevelManager.player.HasTypePickup (this.GetType ());
 
 			if (existingPickup != null) {
-				if (!LevelManager.GetPlayer ().HasLastWish ()) // Si le pickup concerne un lastWish, on ne change pas la durée
+				if (!LevelManager.player.HasLastWish ()) // Si le pickup concerne un lastWish, on ne change pas la durée
 					existingPickup.timeToLive += lifeTime;
 				Disable ();
 				despawnTime = 0;
@@ -126,14 +126,14 @@ public class Pickup : MonoBehaviour {
 
 		if( parentAttach ) {
 			// Attacher le bonus au joueur
-			myTransform.parent = LevelManager.GetPlayer().transform;
+			myTransform.parent = LevelManager.player.transform;
 			myTransform.position = myTransform.parent.position;
         }
 			
 		if (myBackRender != null)
 			myBackRender.enabled = true;
 
-        LevelManager.GetPlayer().AddPickup( myCollider );
+        LevelManager.player.AddPickup( myCollider );
     }
 
 	protected virtual void PickEffect() {
@@ -169,7 +169,7 @@ public class Pickup : MonoBehaviour {
 			myTransform.parent = initialParent;
 		}
 
-        LevelManager.GetPlayer().RemovePickup( myCollider );
+        LevelManager.player.RemovePickup( myCollider );
 		gameObject.SetActive( false );
     }
 

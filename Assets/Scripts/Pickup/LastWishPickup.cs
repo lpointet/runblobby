@@ -39,13 +39,13 @@ public class LastWishPickup : Pickup {
     }
 
     void Start() {
-		playerTransform = LevelManager.GetPlayer().transform;
+		playerTransform = LevelManager.player.transform;
 
 		angelStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition) - 2; // Voir dans LevelManager pour la position par défaut
 	}
 
 	public void Launch() {
-		LevelManager.GetPlayer().Resurrect();
+		LevelManager.player.Resurrect();
 		Effect();
 		launched = true;
 	}
@@ -63,7 +63,7 @@ public class LastWishPickup : Pickup {
 		// Effet commence
 		if ( launched ) {
 			// T'as un magnet
-			LevelManager.GetPlayer().AttractCoins( radiusMagnet, layerCoins );
+			LevelManager.player.AttractCoins( radiusMagnet, layerCoins );
 		} else {
 			// Ce pickup ne doit jamais disparaitre jusqu'à la mort du joueur
 			timeToLive = lifeTime;
@@ -96,15 +96,15 @@ public class LastWishPickup : Pickup {
     protected override void OnPick() {
 		base.OnPick();
 
-		if( !LevelManager.GetPlayer().HasLastWish() )
-			LevelManager.GetPlayer().SetLastWish( this );
+		if( !LevelManager.player.HasLastWish() )
+			LevelManager.player.SetLastWish( this );
     }
 
 	public void Cancel() {
 		base.OnDespawn();
 
 		// Supprimer la référence dans le joueur
-		LevelManager.GetPlayer().SetLastWish( null );
+		LevelManager.player.SetLastWish( null );
 	}
 
     protected override void OnDespawn() {
@@ -113,11 +113,11 @@ public class LastWishPickup : Pickup {
         if( effectOnGoing ) {
 			if( timeToLive <= 0 ) {
 				// Tuer le joueur, vraiment.
-				LevelManager.Kill( LevelManager.GetPlayer() );
+				LevelManager.Kill( LevelManager.player );
 			}
 
 			// Supprimer la référence dans le joueur
-			LevelManager.GetPlayer().SetLastWish( null );
+			LevelManager.player.SetLastWish( null );
 		}
 	}
 	
@@ -140,7 +140,7 @@ public class LastWishPickup : Pickup {
 		soundSource.volume = 1;
 
 		// Tu voles
-		LevelManager.GetPlayer().Fly(); // Pour que le joueur vole immédiatement
+		LevelManager.player.Fly(); // Pour que le joueur vole immédiatement
 		flyPickup.gameObject.SetActive (true);
 		//flyPickup.transform.position = playerTransform.position + Vector3.right * 0.25f; // On donne au joueur un pickup fly personnalisé pour ce mode
 		flyPickup.transform.parent = playerTransform;
@@ -148,7 +148,7 @@ public class LastWishPickup : Pickup {
 		flyPickup.transform.parent = null; // Quelques lignes assez étrange, mais l'autre solution ne fonctionnait pas systématiqueement
 
 		// T'es invul
-		LevelManager.GetPlayer().SetInvincible( lifeTime );
+		LevelManager.player.SetInvincible( lifeTime );
     }
 
 	// Effet visuel au moment où on ramasse l'item
@@ -160,16 +160,16 @@ public class LastWishPickup : Pickup {
 
 	protected override void DespawnEffect() {
 		// On s'assure de ne pas déclencher le Despawn d'un pickup qu'on vient de ramasser en plus de celui qu'on a déjà
-		if (LevelManager.GetPlayer().GetLastWish () != this)
+		if (LevelManager.player.GetLastWish () != this)
 			return;
 
 		effectEnding = true;
 
-		LevelManager.GetPlayer().Die (); // Le joueur est mort au début de l'effet, on ne peut pas utiliser d'animation pour cela
-		LevelManager.GetPlayer().SetFireAbility (false); // Il n'est pas encore vraiment mort, donc il faut l'empêcher de tirer à ce moment
+		LevelManager.player.Die (); // Le joueur est mort au début de l'effet, on ne peut pas utiliser d'animation pour cela
+		LevelManager.player.SetFireAbility (false); // Il n'est pas encore vraiment mort, donc il faut l'empêcher de tirer à ce moment
 
 		// On désactive ses colliders pour éviter les obstacles quand il remonte
-		Collider2D[] playerCollider = LevelManager.GetPlayer().GetComponentsInChildren<Collider2D> ();
+		Collider2D[] playerCollider = LevelManager.player.GetComponentsInChildren<Collider2D> ();
 		foreach (Collider2D col in playerCollider)
 			col.enabled = false;
 
@@ -190,7 +190,7 @@ public class LastWishPickup : Pickup {
 		divineMesh.SetActive (true);
 
 		// On supprime tous les pickups potentiels, pour que ce soit plus beau...
-		Pickup[] pickups = LevelManager.GetPlayer().GetComponentsInChildren<Pickup> ();
+		Pickup[] pickups = LevelManager.player.GetComponentsInChildren<Pickup> ();
 		foreach (Pickup pickup in pickups) {
 			if (pickup != this) {
 				pickup.Disable ();

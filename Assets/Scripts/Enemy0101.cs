@@ -8,9 +8,9 @@ using System.Collections;
 public class Enemy0101 : Enemy {
 
 	[Header("Gaston Special")]
-	public float delayBaving = 2f;
+	[SerializeField] private float delayBaving = 2f;
+	[SerializeField] private string baveName = "Bave";
 	private float timeToBave;
-	public string baveName = "Bave";
 
 	protected override void Awake () {
 		base.Awake();
@@ -25,11 +25,11 @@ public class Enemy0101 : Enemy {
 	protected override void Update () {
 		base.Update();
 
-		if (IsDead () || LevelManager.GetPlayer ().IsDead () || TimeManager.paused)
+		if (IsDead () || LevelManager.player.IsDead () || TimeManager.paused)
 			return;
 
 		// L'ennemi se rapproche du joueur au fil du temps (joueur considéré en position (0, 0)) pour finir à mi-chemin
-		myTransform.Translate(Vector3.left * TimeManager.deltaTime * startPosition[0] / (GetTimeToKill() * 2));
+		myTransform.Translate(Vector3.left * TimeManager.deltaTime * startPosition[0] / (timeToKill * 2));
 
 		if (TimeManager.time > timeToBave) {
 			timeToBave = TimeManager.time + Random.Range(delayBaving / 2f, 3 * delayBaving / 2f);
@@ -57,7 +57,7 @@ public class Enemy0101 : Enemy {
 	public override void Hurt(int damage) {
 		base.Hurt (damage);
 
-		myAnim.SetFloat("ratioHP", GetHealthPoint() / (float)GetHealthPointMax());
+		myAnim.SetFloat("ratioHP", healthPoint / (float)healthPointMax);
 	}
 
 	// A la mort, attacher l'ennemi au sol, et laisser la carapace

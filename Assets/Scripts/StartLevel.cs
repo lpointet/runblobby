@@ -22,11 +22,11 @@ public class StartLevel : MonoBehaviour {
 
 		endingScale = Camera.main.orthographicSize * 2 * 32 / 8; // Taille de l'écran * résolution par unité / rayon du cercle "visible"
 		// On place le joueur dans de bonnes conditions de chute en parachute
-		LevelManager.GetPlayer ().GetComponent<Rigidbody2D> ().gravityScale = 0.1f;
-		LevelManager.GetPlayer ().transform.position = new Vector2 (0, Camera.main.orthographicSize + cameraManager.yOffset + 1);
+		LevelManager.player.GetComponent<Rigidbody2D> ().gravityScale = 0.1f;
+		LevelManager.player.transform.position = new Vector2 (0, Camera.main.orthographicSize + cameraManager.yOffset + 1);
 
 		// On accroche le parachute au joueur
-		LevelManager.GetPlayer ().ActiveParachute (true);
+		LevelManager.player.ActiveParachute (true);
 
 		if (_GameData.currentLevelName == null)
 			_GameData.currentLevelName = "Nameless Level";
@@ -51,7 +51,7 @@ public class StartLevel : MonoBehaviour {
 			transform.localScale = Vector2.one * currentScaling;
 
 			// On fait suivre au cercle le joueur (mais pas sur z)
-			transform.position = new Vector3 (LevelManager.GetPlayer ().transform.position.x, LevelManager.GetPlayer ().transform.position.y, transform.position.z);
+			transform.position = new Vector3 (LevelManager.player.transform.position.x, LevelManager.player.transform.position.y, transform.position.z);
 		}
 	}
 

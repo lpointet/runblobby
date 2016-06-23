@@ -14,7 +14,7 @@ public class CoinPickup : Pickup {
 		base.Awake();
 		initialPosition = myTransform.position;
 
-		playerTransform = LevelManager.GetPlayer ().transform;
+		playerTransform = LevelManager.player.transform;
 
 		despawnTime = 1f;
 	}
@@ -44,7 +44,7 @@ public class CoinPickup : Pickup {
 	protected override void OnEnable() {
 		base.OnEnable();
 		// On s'assure que le collider n'est plus dans la table
-		LevelManager.GetPlayer().RemovePickup( myCollider );
+		LevelManager.player.RemovePickup( myCollider );
 		// Réinitialiser les positions
 		Reset();
 	}

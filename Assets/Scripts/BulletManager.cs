@@ -85,7 +85,7 @@ public class BulletManager : MonoBehaviour {
 			if (myParticle != null) {
 				myParticle.transform.position = myTransform.position;
 				myParticle.transform.rotation = Quaternion.Euler (new Vector3 (360 - myTransform.rotation.eulerAngles.z, 90, 0));
-				myParticle.GetComponent<ParticleSystemRenderer> ().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.GetPlayer ().GetHealthPoint (), 0, LevelManager.GetPlayer ().GetHealthPointMax (), 210, 0));		
+				myParticle.GetComponent<ParticleSystemRenderer> ().sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.player.healthPoint, 0, LevelManager.player.healthPointMax, 210, 0));		
 				myParticle.SetActive (true);
 			}
 
@@ -97,7 +97,7 @@ public class BulletManager : MonoBehaviour {
 
 			// Si on rencontre un joueur
 			if(other.gameObject.layer == layerPlayer) {
-				LevelManager.GetPlayer().Hurt(bulletPower);
+				LevelManager.player.Hurt(bulletPower);
 			}
 		}
 	}

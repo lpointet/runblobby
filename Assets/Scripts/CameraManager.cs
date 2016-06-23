@@ -60,7 +60,7 @@ public class CameraManager : MonoBehaviour {
 		#endif
 
 		if (isFollowing) {
-			transform.position = new Vector3 (LevelManager.GetPlayer().transform.position.x + xOffset, LevelManager.GetPlayer().transform.position.y + yOffset, transform.position.z);
+			transform.position = new Vector3 (LevelManager.player.transform.position.x + xOffset, LevelManager.player.transform.position.y + yOffset, transform.position.z);
 		}
 	}
 

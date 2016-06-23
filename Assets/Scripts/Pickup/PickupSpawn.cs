@@ -81,11 +81,11 @@ public class PickupSpawn : MonoBehaviour {
 
 			for (int i = 0; i < listeBonus.Count; i++) {
 				// Si le joueur est full life, on ne fait pas apparaître de "soin"
-				if (listeBonus [i].GetType () == typeof(HealPickup) && LevelManager.GetPlayer ().GetHealthPoint () >= LevelManager.GetPlayer ().GetHealthPointMax ())
+				if (listeBonus [i].GetType () == typeof(HealPickup) && LevelManager.player.healthPoint >= LevelManager.player.healthPointMax)
 					continue;
 
 				// Si le joueur a le pickup, on l'enlève de la liste
-				if (!LevelManager.GetPlayer ().HasTypePickup (listeBonus [i].GetType ())) {
+				if (!LevelManager.player.HasTypePickup (listeBonus [i].GetType ())) {
 					tempBonus.Add (listeBonus [i]);
 					tempWeigh.Add (weightBonus [i]);
 

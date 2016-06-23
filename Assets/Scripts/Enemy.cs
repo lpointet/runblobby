@@ -4,92 +4,52 @@ using System.Collections;
 
 public class Enemy : Character {
 
-	/**
-	 * Enemy Stats
-	 */
-	public float timeToKill;
-	public int damageToGive;
-	public int pointScore;
-	public string firstName;
-	public string surName;
-	/* End of Stats */
-
 	protected Rigidbody2D myRb;
 	protected EnemySoundEffect myAudio;
 	protected Animator myAnim;
 
-	public float[] popPosition = new float[2];
-	public float[] startPosition = new float[2];
+	/**
+	 * Enemy Stats
+	 */
+	[Header("Stats ennemies")]
+	[SerializeField] private float _timeToKill;
+	[SerializeField] private int damageToGive;
+	[SerializeField] private string _firstName;
+	[SerializeField] private string _surName;
+	/* End of Stats */
+
+	[SerializeField] protected float[] popPosition = new float[2];
+	[SerializeField] protected float[] startPosition = new float[2];
 	private float lerpBeforeFight = 0;
 	private bool popEnemy = false;
 
 	[Header("Coin Drop")]
-	public float frequence = 0.01f;
-	public float mediumValue = 1.1f; // Offre une bien plus grande variété de feuilles que 1f
+	[SerializeField] protected float frequence = 0.01f;
+	[SerializeField] protected float mediumValue = 1.1f; // Offre une bien plus grande variété de feuilles que 1f
 	private CoinPickup[] coins; // Fait référence à ListManager
 	private CoinDrop[] possibleCoins;
-	public bool coinToGround; // True = les pièces vont au sol, False = les pièces restent là où elles sont
-	public LayerMask layerGround;
+	[SerializeField] protected bool coinToGround; // True = les pièces vont au sol, False = les pièces restent là où elles sont
+	[SerializeField] protected LayerMask layerGround;
 	private float distanceParcourue = 0;
 	private float pointLastDropCheck = 0;
-	public float intervalleDrop = 0.5f;
+	[SerializeField] protected float intervalleDrop = 0.5f;
 	private float mediumSum; // Somme des mediumValue à chaque pièce qui tombe + 1 (= total optimal futur)
 	private float currentSum = 0f; // Somme des value de coin réellement tombées (= total courant)
 
 	/**
 	 * Getters & Setters
 	 */
-	public float GetTimeToKill() {
-		return timeToKill;
+	public float timeToKill {
+		get { return _timeToKill; }
+		set { _timeToKill = value; }
 	}
-
-	public int GetDamageToGive() {
-		return damageToGive;
+	public string firstName {
+		get { return _firstName; }
+		set { _firstName = value; }
 	}
-
-	public int GetPointScore() {
-		return pointScore;
-	}
-
-	public string GetName() {
-		return firstName;
-	}
-
-	public string GetSurName() {
-		return surName;
-	}
-
-	public void SetTimeToKill( float value ) {
-		timeToKill = value;
-	}
-
-	public void SetDamageToGive( int value ) {
-		damageToGive = value;
-	}
-
-	public void SetPointScore( int value ) {
-		pointScore = value;
-	}
-
-	public void SetName( string value ) {
-		name = value;
-	}
-
-	public void SetSurName( string value ) {
-		surName = value;
-	}
-
-	public Vector2 GetStartPosition () {
-		return new Vector2 (startPosition [0], startPosition [1]);
-	}
-
-	protected void SetPopPosition (Vector2 vector) {
-		popPosition [0] = vector.x;
-		popPosition [1] = vector.y;
-	}
-
-	protected Vector2 GetPopPosition () {
-		return new Vector2 (popPosition [0], popPosition [1]);
+	public string surName {
+		get { return _surName; }
+		set { _surName = value; }
 	}
 	/* End of Getters & Setters */
 
@@ -113,9 +73,12 @@ public class Enemy : Character {
 		PossibleCoin ();
 
 		// On le place à sa position AVANT début du combat
-		SetPopPosition (new Vector2(LevelManager.levelManager.cameraEndPosition - 3.5f, GetStartPosition().y));
-		myTransform.position = GetPopPosition ();
+		popPosition[0] = LevelManager.levelManager.cameraEndPosition;
+		popPosition[1] = startPosition[1];
+
+		myTransform.position = new Vector2(popPosition[0], popPosition[1]);
 		myTransform.rotation = Quaternion.identity;
+
 		popEnemy = true;
 		mySprite.enabled = true;
 	}
@@ -123,12 +86,12 @@ public class Enemy : Character {
 	protected override void Update () {
 		base.Update();
 
-		if (LevelManager.GetPlayer ().IsDead () || IsDead() || TimeManager.paused)
+		if (LevelManager.player.IsDead () || IsDead() || TimeManager.paused)
 			return;
 
 		// Déplacement avant le combat
 		if (popEnemy) {
-			myTransform.position = new Vector2 (Mathf.Lerp(GetPopPosition().x, GetStartPosition().x, lerpBeforeFight), myTransform.position.y);
+			myTransform.position = new Vector2 (Mathf.Lerp(popPosition[0], startPosition[0], lerpBeforeFight), myTransform.position.y);
 
 			lerpBeforeFight += TimeManager.deltaTime / LevelManager.levelManager.enemySpawnDelay;
 
@@ -148,7 +111,7 @@ public class Enemy : Character {
 			return;
 
 		if (other.name == "Heros")
-			LevelManager.GetPlayer ().Hurt(GetDamageToGive());
+			LevelManager.player.Hurt(damageToGive);
 	}
 
 	public override void Hurt(int damage) {
@@ -272,23 +235,4 @@ public class Enemy : Character {
 			}
 		}
 	}
-
-	/*
-	protected override IEnumerator HurtEffect(float hurtingTime) {
-		float timeToNormal = hurtingTime;
-		Material ownMaterial = mySprite.material;
-
-		float delaySwitch = 0.1f;
-		float timeToSwitch = 0;
-
-		mySprite.material = invincibleMaterial;
-
-		while (hurtingTime > 0) {
-			hurtingTime -= TimeManager.deltaTime;
-			yield return null;
-		}
-
-		// Retour à la "normale"
-		mySprite.material = ownMaterial;
-	}*/
 }

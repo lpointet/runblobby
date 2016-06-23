@@ -17,7 +17,7 @@ public class ThunderStrike : MonoBehaviour {
 	public AudioClip audioFire;
 
 	void Awake () {
-		playerTransform = LevelManager.GetPlayer ().transform;
+		playerTransform = LevelManager.player.transform;
 		myTransform = transform;
 		myCollider = GetComponent<Collider2D> ();
 		myAnim = GetComponent<Animator> ();
@@ -32,7 +32,7 @@ public class ThunderStrike : MonoBehaviour {
 
 	void Update () {
 		// Distance d'apparition en fonction de la vitesse du joueur
-		distanceFromPlayer = 7 * LevelManager.GetPlayer ().GetRatioSpeed();
+		distanceFromPlayer = 7 * LevelManager.player.RatioSpeed();
 
 		// On déclenche la foudre dès qu'il apparait dans le champ de vision
 		if (!thunderAppeared && myTransform.position.x <= playerTransform.position.x + distanceFromPlayer) {

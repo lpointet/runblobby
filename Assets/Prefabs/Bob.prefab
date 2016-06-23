@@ -114,6 +114,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.03125, y: 0.3125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 434900}
   m_RootOrder: 2
@@ -126,6 +127,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 434900}
   m_RootOrder: 3
@@ -138,6 +140,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 472052}
   m_RootOrder: 0
@@ -150,6 +153,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.2764235, y: -10.274921, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 494238}
   - {fileID: 472052}
@@ -166,6 +170,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 424418}
   m_Father: {fileID: 434900}
@@ -179,6 +184,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.25, y: -0.46875, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 434900}
   m_RootOrder: 0
@@ -458,19 +464,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a3fcae73a41d0941872835671de3a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 0
-  healthPointMax: 1
-  moveSpeed: 0
-  jumpHeight: 0
-  isDead: 0
-  maxHeight: 7.5
-  invincibleTime: 0.5
+  _healthPoint: 0
+  _healthPointMax: 0
+  _moveSpeed: 0
+  _jumpHeight: 0
+  _maxHeight: 7.5
+  _invincibleTime: 0.5
   invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
-  timeToKill: 45
+  _timeToKill: 45
   damageToGive: 1
-  pointScore: 0
-  firstName: Bob
-  surName: The hero's brother
+  _firstName: Bob
+  _surName: The hero's brother
   popPosition:
   - 0
   - 0.75

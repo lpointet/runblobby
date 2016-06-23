@@ -19,7 +19,7 @@ public class InviciblePickup : Pickup {
 	protected override void OnPick() {
 		base.OnPick();
 
-		LevelManager.GetPlayer().SetInvincible( lifeTime );
+		LevelManager.player.SetInvincible( lifeTime );
 	}
 
 	protected override void WeakEffect() {

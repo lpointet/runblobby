@@ -10,8 +10,8 @@ using System.Collections.Generic;
 public class Enemy0103 : Enemy {
 
 	[Header("Bob Special")]
-	public Transform groundCheck;
-	public float groundCheckRadius;
+	[SerializeField] private Transform groundCheck;
+	[SerializeField] private float groundCheckRadius;
 	private bool grounded;
 
 	private float ratioWeakBoss = 1 / 3f;
@@ -29,7 +29,7 @@ public class Enemy0103 : Enemy {
 	private PlayerSoundEffect mySpecialAudio;
 
 	// Eléments de l'oiseau
-	public Transform myBirdTransform;
+	[SerializeField] private Transform myBirdTransform;
 	private Animator myBirdAnim;
 	private AudioSource myBirdAudio;
 	private float birdBasePitch;
@@ -43,10 +43,10 @@ public class Enemy0103 : Enemy {
 	// Fin éléments oiseau
 
 	[Header("End of level")]
-	public RuntimeAnimatorController[] portrait;
-	public DialogEntry[] dialog;
+	[SerializeField] private RuntimeAnimatorController[] portrait;
+	[SerializeField] private DialogEntry[] dialog;
 
-	public AudioClip boulderSound;
+	[SerializeField] private AudioClip boulderSound;
 
 	protected override void Awake () {
 		base.Awake();
@@ -57,7 +57,7 @@ public class Enemy0103 : Enemy {
 	}
 
 	void Start() {
-		SetJumpHeight (LevelManager.GetPlayer ().GetJumpHeight ());
+		jumpHeight = LevelManager.player.jumpHeight;
 
 		catchedBird = false;
 		weakBird = false;
@@ -68,8 +68,6 @@ public class Enemy0103 : Enemy {
 
 		myBirdAnim.SetBool("picked", false);
 		myBirdAnim.SetBool("weak", false);
-
-		//mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
 	}
 
 	void FixedUpdate() {
@@ -81,10 +79,10 @@ public class Enemy0103 : Enemy {
 
 	protected override void Update () {
 		// Pour qu'il ne bouge pas si le joueur meurt
-		if (LevelManager.GetPlayer ().IsDead ())
+		if (LevelManager.player.IsDead ())
 			myRb.velocity = Vector2.zero;
 
-		if (IsDead () || LevelManager.GetPlayer ().IsDead () || TimeManager.paused || LevelManager.IsEndingScene())
+		if (IsDead () || LevelManager.player.IsDead () || TimeManager.paused || LevelManager.IsEndingScene())
 			return;
 
 		base.Update();
@@ -102,10 +100,10 @@ public class Enemy0103 : Enemy {
 					myBirdAnim.SetBool("picked", true);
 				}
 			}
-			if (!jumpToCatch && timeToSpawn < 0.1f / LevelManager.GetPlayer().GetRatioSpeed()) { // Le boss saute juste avant que l'oiseau n'arrive
+			if (!jumpToCatch && timeToSpawn < 0.1f / LevelManager.player.RatioSpeed()) { // Le boss saute juste avant que l'oiseau n'arrive
 				minHeight = Mathf.CeilToInt(myTransform.position.y); // On retient sa position avant le saut comme le minimum pendant le vol, arrondi au supérieur
 
-				myRb.velocity = new Vector2(0, GetJumpHeight());
+				myRb.velocity = new Vector2(0, jumpHeight);
 				mySpecialAudio.JumpSound ();
 
 				// On le fait décoller
@@ -126,7 +124,7 @@ public class Enemy0103 : Enemy {
 			myBirdAudio.pitch = birdBasePitch * 1.2f;
 
 		// Quand le boss n'a plus beaucoup de vie, on affaibli l'oiseau
-		if (GetHealthPoint () / (float)GetHealthPointMax () <= ratioWeakBoss) {
+		if (healthPoint / (float)healthPointMax <= ratioWeakBoss) {
 			weakBird = true;
 			myBirdAnim.SetBool("weak", true);
 		}
@@ -149,8 +147,8 @@ public class Enemy0103 : Enemy {
 			myRb.velocity = new Vector2 (0, switchDirection * switchSpeed);
 
 			// On limite sa hauteur mini et maxi
-			if (myTransform.position.y > GetMaxHeight ())
-				myTransform.position = new Vector2 (myTransform.position.x, GetMaxHeight());
+			if (myTransform.position.y > maxHeight)
+				myTransform.position = new Vector2 (myTransform.position.x, maxHeight);
 			else if (myTransform.position.y < minHeight)
 				myTransform.position = new Vector2 (myTransform.position.x, minHeight);
 		}
@@ -158,15 +156,15 @@ public class Enemy0103 : Enemy {
 
 	void OnGUI() {
 		// Rose = 25 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
-		if (lerpingHP != GetHealthPoint ()) {
+		if (lerpingHP != healthPoint) {
 			timeLerpHP += TimeManager.deltaTime / delayLerpHP;
-			lerpingHP = Mathf.Lerp (previousHP, GetHealthPoint (), timeLerpHP);
+			lerpingHP = Mathf.Lerp (previousHP, healthPoint, timeLerpHP);
 			// sharedMaterial pour que les boules changent de couleur aussi
 			if (!IsDead ())
-				mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 25, 0));
+				mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, healthPointMax, 25, 0));
 
 		} else {
-			previousHP = GetHealthPoint ();
+			previousHP = healthPoint;
 		}
 	}
 
@@ -175,14 +173,14 @@ public class Enemy0103 : Enemy {
 			return;
 
 		// Si les "anciens" HP sont égaux aux "nouveaux" HP, on met à jour, sinon on garde l'encore plus vieille valeur
-		if (previousHP == GetHealthPoint ())
-			previousHP = GetHealthPoint ();
+		if (previousHP == healthPoint)
+			previousHP = healthPoint;
 
 		timeLerpHP = 0; // On prépare la nouvelle variation de couleur
 
-		SetHealthPoint( GetHealthPoint() - damage );
+		healthPoint -= damage;
 
-		if (GetHealthPoint () <= 0 && !IsDead ()) {
+		if (healthPoint <= 0 && !IsDead ()) {
 			//LevelManager.Kill (this);
 			Despawn();
 			LevelManager.levelManager.StartEndingScene ();
@@ -205,13 +203,13 @@ public class Enemy0103 : Enemy {
 		myRb.gravityScale = 0.35f;
 
 		// On fait partir les pickups du héros
-		LevelManager.CleanPickup( LevelManager.GetPlayer().GetLastWish() );
+		LevelManager.CleanPickup( LevelManager.player.GetLastWish() );
 		// On rend le héros invincible pour éviter les missiles qui pourraient venir vers lui à ce moment
-		LevelManager.GetPlayer ().SetInvincible (30f);
+		LevelManager.player.SetInvincible (30f);
 		// On coupe le son du héros
-		LevelManager.GetPlayer ().GetComponent<PlayerSoundEffect>().enabled = false;
+		LevelManager.player.GetComponent<PlayerSoundEffect>().enabled = false;
 		// On empêche le joueur de sauter
-		LevelManager.GetPlayer ().SetMaxDoubleJump (0);
+		LevelManager.player.maxDoubleJump = 0;
 
 		// Coroutine jusqu'à ce qu'il touche le sol
 		StartCoroutine(WaitForLanding());

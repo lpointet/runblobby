@@ -21,7 +21,7 @@ public class EnemyFlying : MonoBehaviour {
 	bool isOverPrevious;
 
 	void Start () {
-		playerTransform = LevelManager.GetPlayer ().transform;
+		playerTransform = LevelManager.player.transform;
 		myTransform = transform;
 	}
 

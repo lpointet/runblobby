@@ -38,7 +38,7 @@ public class Weapon : MonoBehaviour {
 
 	void Update () {
         // Empêcher que des choses se passent durant la pause
-		if (TimeManager.paused || weaponOwner.IsDead() || LevelManager.GetPlayer().IsDead() || LevelManager.IsEndingScene())
+		if (TimeManager.paused || weaponOwner.IsDead() || LevelManager.player.IsDead() || LevelManager.IsEndingScene())
             return;
 
 		if ( (autoFire || wantToShoot) && TimeManager.time > timeToFire ) {

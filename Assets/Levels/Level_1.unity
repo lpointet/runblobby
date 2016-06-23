@@ -9237,24 +9237,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94954136ecda8dd438ca5a82e2f0d838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoint: 3
-  healthPointMax: 5
-  moveSpeed: 5
-  jumpHeight: 20
-  isDead: 0
-  maxHeight: 7.5
-  invincibleTime: 0.5
+  _healthPoint: 0
+  _healthPointMax: 5
+  _moveSpeed: 0
+  _jumpHeight: 0
+  _maxHeight: 7.5
+  _invincibleTime: 0.5
   invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
-  initialMoveSpeed: 2.3
-  maxDoubleJump: 5
-  parachute: {fileID: 1896537998}
+  _initialMoveSpeed: 2.3
+  _maxDoubleJump: 5
   bounced: 0
-  wasFlying: 0
   groundCheck: {fileID: 1686453329}
   groundCheckRadius: 0.1
   layerGround:
     serializedVersion: 2
     m_Bits: 1024
+  parachute: {fileID: 1896537998}
+  flySpeedCoeff: 2
 --- !u!95 &830211157
 Animator:
   serializedVersion: 3
@@ -9795,7 +9794,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentCheckPoint: {fileID: 0}
-  respawnDelay: 1
   moneyMat: {fileID: 2100000, guid: bc2f98da42a6dea4887603ad96e79c0d, type: 2}
   BaseColor: {r: 1, g: 1, b: 1, a: 1}
   blockStart: {fileID: 1999002542}

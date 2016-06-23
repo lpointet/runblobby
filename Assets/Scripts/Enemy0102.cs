@@ -10,16 +10,16 @@ using System.Collections.Generic;
 public class Enemy0102 : Enemy {
 
 	[Header("Galia Special")]
-	public LayerMask playerMask;
-	public ParticleUnscaled smokeParticle;
-	public ParticleUnscaled featherParticle;
-	public float dodgeSkill;
-	public int pourcentOeuf = 10;
+	[SerializeField] private LayerMask playerMask;
+	[SerializeField] private ParticleUnscaled smokeParticle;
+	[SerializeField] private ParticleUnscaled featherParticle;
+	[SerializeField] private float dodgeSkill;
+	[SerializeField] private int pourcentOeuf = 10;
+	[SerializeField] private string oeufName = "Oeuf";
 	private int currentOeuf = 100;
-	public string oeufName = "Oeuf";
 
 	private float attackSpeed;
-	public float easyAttackSpeed = 10f;
+	[SerializeField] private float easyAttackSpeed = 10f;
 
 	private List<Oeuf> listeOeufs = new List<Oeuf>();
 	private bool angry = false;
@@ -33,7 +33,7 @@ public class Enemy0102 : Enemy {
 
 	// Détection du sol
 	private bool grounded;
-	public float groundCheckRadius;
+	[SerializeField] private float groundCheckRadius;
 
 	void Start() {
 		currentOeuf -= pourcentOeuf; // Initialise à la première valeur de laché d'oeuf
@@ -47,7 +47,7 @@ public class Enemy0102 : Enemy {
 	protected override void Update () {
 		base.Update();
 
-		if (IsDead () || LevelManager.GetPlayer ().IsDead () || TimeManager.paused)
+		if (IsDead () || LevelManager.player.IsDead () || TimeManager.paused)
 			return;
 
 		AngryChicken ();
@@ -62,11 +62,11 @@ public class Enemy0102 : Enemy {
 
 			// Si elle n'est pas à sa place initiale, elle s'y avance régulièrement
 			if (myTransform.position.x < startPosition [0]) {
-				SetMoveSpeed (attackSpeed);
+				moveSpeed = attackSpeed;
 			} else {
-				SetMoveSpeed (0);
+				moveSpeed = 0;
 			}
-			myRb.velocity = new Vector2 (GetMoveSpeed (), myRb.velocity.y);
+			myRb.velocity = new Vector2 (moveSpeed, myRb.velocity.y);
 		}
 	}
 
@@ -86,7 +86,7 @@ public class Enemy0102 : Enemy {
 					// On ajuste la puissance du saut en fonction du lieu d'impact de la balle
 					float powerJump = Mathf.Clamp(detectedBullet.transform.position.y, 1.5f, 2);
 					// On fait sauter la poule
-					myRb.velocity = new Vector2 (myRb.velocity.x, powerJump * GetJumpHeight ());
+					myRb.velocity = new Vector2 (myRb.velocity.x, powerJump * jumpHeight);
 				}
 			}
 		}
@@ -119,13 +119,13 @@ public class Enemy0102 : Enemy {
 		// Si elle vient de s'énervée, elle fonce vers le joueur
 		if (angry) {
 			// Si elle n'est pas encore un peu avant le joueur, elle s'avance vers lui
-			if (myTransform.position.x > LevelManager.GetPlayer ().transform.position.x - 0.5f) {
+			if (myTransform.position.x > LevelManager.player.transform.position.x - 0.5f) {
 				// On le fait accélérer
 				if (lerpingAngryTime < 1) {
 					lerpingAngryTime += TimeManager.deltaTime / delayRunAngry;
-					SetMoveSpeed (Mathf.Lerp (0, -attackSpeed, lerpingAngryTime));
+					moveSpeed = Mathf.Lerp (0, -attackSpeed, lerpingAngryTime);
 				}
-				myRb.velocity = new Vector2 (GetMoveSpeed (), myRb.velocity.y);
+				myRb.velocity = new Vector2 (moveSpeed, myRb.velocity.y);
 			} else {
 				angry = false;
 				myAnim.SetFloat ("angry", 0);
@@ -143,7 +143,7 @@ public class Enemy0102 : Enemy {
 		}
 
 		// Calculer le pourcentage de vie restant
-		int pourcentVie = Mathf.FloorToInt(100 * GetHealthPoint() / (float)GetHealthPointMax());
+		int pourcentVie = Mathf.FloorToInt(100 * healthPoint / (float)healthPointMax);
 		// Si la différence vaut plus que la valeur oeufale courante (selon difficulté) et que le poulet n'est pas mort, on lâche un oeuf
 		if (pourcentVie <= currentOeuf && !IsDead()) {
 			EggDrop ();
@@ -155,8 +155,6 @@ public class Enemy0102 : Enemy {
 				currentOeuf -= pourcentOeuf;
 			} while(currentOeuf > pourcentVie);
 		}
-
-//		myAnim.SetFloat("ratioHP", GetHealthPoint() / (float)GetHealthPointMax());
 	}
 
 	// Laché d'oeufs

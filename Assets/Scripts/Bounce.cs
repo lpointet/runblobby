@@ -25,7 +25,7 @@ public class Bounce : MonoBehaviour {
 
 			// Dans le cas où le contact se fait par dessus, on rebondit
 			if (other.transform.position.y - offsetCheckBounce > transform.position.y) {
-				herosRb.velocity = new Vector2 (0, bouncePower * LevelManager.GetPlayer().GetJumpHeight ());
+				herosRb.velocity = new Vector2 (0, bouncePower * LevelManager.player.jumpHeight);
 
 				LevelManager.MaybeKill (transform);
 
@@ -33,7 +33,7 @@ public class Bounce : MonoBehaviour {
 				myAudio.Play ();
 
 				// Permettre au héros de sauter même après un bounce
-				LevelManager.GetPlayer().bounced = true;
+				LevelManager.player.bounced = true;
 
 				// Ne pas déclencher d'autres actions avec ce collider, il a fait son job
 				myCollider.enabled = false;
@@ -41,7 +41,7 @@ public class Bounce : MonoBehaviour {
 				// On fournit l'xp au joueur
 				ScoreManager.AddPoint (experienceToGive, ScoreManager.Types.Experience);
 			} else {
-				LevelManager.GetPlayer().Hurt(damageToGive);
+				LevelManager.player.Hurt(damageToGive);
 			}
 		}
 	}

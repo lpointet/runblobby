@@ -234,7 +234,7 @@ public class UIManager : MonoBehaviour {
 			if (!enemyGUIActive) {
 				ToggleEnemyGUI( true );
 			}
-			float realRatioHP = enemyEnCours.GetHealthPoint() / (float)enemyEnCours.GetHealthPointMax();
+			float realRatioHP = enemyEnCours.healthPoint / (float)enemyEnCours.healthPointMax;
 
 			// Si la valeur courante de la barre est plus haute que la valeur réelle des PV, on la fait descendre
 			if (enemyHealthBar.value > realRatioHP) {
@@ -261,10 +261,10 @@ public class UIManager : MonoBehaviour {
 			meterText.color = Color.Lerp( warningTextColor, warningTextColorBis, Mathf.Sin( 7f * enemyTimeToKill ) ); // Variation entre deux couleurs
 
             // Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
-			scaleFonctionDistance = ( 2 / Mathf.Pow( enemyEnCours.GetTimeToKill(), 2 ) ) * _StaticFunction.MathPower( enemyEnCours.GetTimeToKill() - enemyTimeToKill, 2 ) + 1;
+			scaleFonctionDistance = ( 2 / Mathf.Pow( enemyEnCours.timeToKill, 2 ) ) * _StaticFunction.MathPower( enemyEnCours.timeToKill - enemyTimeToKill, 2 ) + 1;
             meterText.transform.localScale = new Vector2( scaleFonctionDistance, scaleFonctionDistance ) * scaleInitial;
         }
-        else if( !LevelManager.GetPlayer().IsDead() && !LevelManager.levelManager.IsEnemyToSpawn() ) {
+        else if( !LevelManager.player.IsDead() && !LevelManager.levelManager.IsEnemyToSpawn() ) {
             meterText.text = Mathf.RoundToInt( LevelManager.levelManager.GetDistanceTraveled() ) + "m"; // Mise à jour de la distance parcourue affichée
             meterText.color = defaultTextColor;
             meterText.transform.localScale = new Vector2( scaleInitial, scaleInitial );
@@ -295,7 +295,7 @@ public class UIManager : MonoBehaviour {
 		endUI.SetActive (active);
 		standardUI.SetActive (!active);
 
-		if (LevelManager.GetPlayer ().IsDead ()) {
+		if (LevelManager.player.IsDead ()) {
 			endUI.GetComponent<AudioSource> ().PlayOneShot (endFailure);
 			bNextLevel.SetActive (false);
 			tTitreEndGame.text = "YOU LOSE...";
@@ -505,7 +505,7 @@ public class UIManager : MonoBehaviour {
 	public void Quit_Click() {
 		// Change le texte selon l'état du joueur : mort ou vivant ou pause
 		string content;
-		if (LevelManager.GetPlayer ().IsDead ()) {
+		if (LevelManager.player.IsDead ()) {
 			content = "Are you really sure you want to quit?\nYou just died, but don't be afraid. This kind of misadventure happens at least once in a life.";
 		} else if (!paused) {
 			content = "Are you really sure you want to quit?\nYou just succeeded, why would you leave?";

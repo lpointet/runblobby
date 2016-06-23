@@ -9,7 +9,7 @@ public class Parallaxing : MonoBehaviour {
 	private PlayerController player;
 
 	void Awake() {
-		player = LevelManager.GetPlayer ();
+		player = LevelManager.player;
 		backgrounds = LevelManager.levelManager.GetBackgrounds();
 	}
 
@@ -24,7 +24,7 @@ public class Parallaxing : MonoBehaviour {
 		if (!player.IsDead()) {
 			for (int i = 0; i < backgrounds.Length; i++) {
 				// la parallaxe est l'opposé du mouvement du joueur (scale < 0)
-				float parallax = (Time.deltaTime * player.GetMoveSpeed()) * parallaxScales [i];
+				float parallax = (Time.deltaTime * player.moveSpeed) * parallaxScales [i];
 
 				// créé la position future du background (sa position x + parallax)
 				Vector3 backgroundTargetPos = new Vector3 (backgrounds [i].position.x + parallax, backgrounds [i].position.y, backgrounds [i].position.z);

@@ -3,39 +3,12 @@ using System.Collections;
 using UnityEngine;
 
 public class PlayerController : Character {
-	
-	/**
-	 * Player Stats
-	 */
-	[SerializeField] private float initialMoveSpeed;
-	[SerializeField] private int maxDoubleJump;
-	/* End of Stats */
-	
-	// GUI
-	private float previousHP; // Permet de faire un changement dégressif des HP
-	private float delayLerpHP = 1f;
-	private float timeLerpHP;
-	private float lerpingHP;
-	
+
 	private Rigidbody2D myRb;
 	private Animator myAnim;
 	private PlayerSoundEffect myAudio;
 	private Transform weapon;
-	public GameObject parachute;
 
-    [HideInInspector] public bool bounced = false;
-    public bool wasFlying = false;
-	private bool grounded;
-	public Transform groundCheck;
-	public float groundCheckRadius;
-	public LayerMask layerGround;
-	
-	private int currentJump = 0;
-	private int initialMaxDoubleJump;
-
-	// Concerne le saut
-    private float initialGravityScale;
-    
 	// Calculé à partir des formules de portée et de hauteur max en partant des conditions initiales
 	// Permet de conserver une hauteur et une distance constante des sauts pour toutes les vitesses horizontales
 	private const float maxJumpHeight = 3;
@@ -43,37 +16,68 @@ public class PlayerController : Character {
 	private const float constJump = 4 * maxJumpHeight / jumpDistance;
 	private const float constGravity = 0.5f / maxJumpHeight / 10f;
 
+	/**
+	 * Player Stats
+	 */
+	[Header("Stats joueur")]
+	[SerializeField] private float _initialMoveSpeed;
+	[SerializeField] private int _maxDoubleJump;
+	/* End of Stats */
+	
+	// GUI
+	private float previousHP; // Permet de faire un changement dégressif des HP
+	private float delayLerpHP = 1f;
+	private float timeLerpHP;
+	private float lerpingHP;
+
+    [HideInInspector] public bool bounced = false;
+
+	private bool grounded;
+	[SerializeField] private Transform groundCheck;
+	[SerializeField] private float groundCheckRadius;
+	[SerializeField] private LayerMask layerGround;
+
+	// Pickup
     private List<Collider2D> pickups = new List<Collider2D>();
     private LastWishPickup lastWish = null;
-
     // Attract Coins
     private int nbCoins = 0;                                // Nombre de pièces à ramasser
     private Collider2D[] coins = new Collider2D[40];        // Liste des pièces existantes
     private Vector3 direction; 	 							// Vecteur entre le joueur et une pièce
 
-	// Concerne le vol
-	private float flySpeedCoeff = 2f;
-	private bool isFlying = false;
-	private bool wantToFly = false;
+	private bool zeroGravFlying = false; // Selon le type de pickup vol débloqué
+
+	// Saut
+	private int currentJump = 0;
+	private int initialMaxDoubleJump;
+
+	[Header("Vol")]
+	[SerializeField] private GameObject parachute;
+	[SerializeField] private float flySpeedCoeff = 2f; // Multiplication de vitesse durant le vol
+	private float initialGravityScale;
+	private bool isFlying = false; // Pendant le vol
+	private bool wasFlying = false; // A la fin d'un vol avant l'atterrissage
+	private bool wantToFly = false; // Quand le joueur touche l'écran pour sauter
 	private Vector2 flyingTouchPosition;
 	private int flyingTouchId = -1;
-	private bool zeroGravFlying = false;
+
 	private float yPosAirDeath;
 	private float yVariableAirDeath = 0f;
 
     /**
 	 * Getters & Setters
 	 */
-    public float GetInitialMoveSpeed() {
-		return initialMoveSpeed;
+	public float initialMoveSpeed {
+		get { return _initialMoveSpeed; }
+		set { _initialMoveSpeed = Mathf.Clamp (value, 0, healthPointMax); }
 	}
-	
-	public void SetInitialMoveSpeed( float value ) {
-		initialMoveSpeed = value;
+	public int maxDoubleJump {
+		get { return _maxDoubleJump; }
+		set { _maxDoubleJump = Mathf.Clamp (value, 0, healthPointMax); }
 	}
 
-	public float GetRatioSpeed () {
-		return GetMoveSpeed () / (float)GetInitialMoveSpeed ();
+	public float RatioSpeed () {
+		return moveSpeed / (float)initialMoveSpeed;
 	}
 	
 	public Transform GetWeapon() {
@@ -84,12 +88,20 @@ public class PlayerController : Character {
 		weapon = value;
 	}
 
-	public int GetMaxDoubleJump() {
-		return maxDoubleJump;
+	public void SetFireAbility( bool able ) {
+		if( null != weapon ) {
+			weapon.gameObject.SetActive( able );
+		}
 	}
 
-	public void SetMaxDoubleJump( int value ) {
-		maxDoubleJump = value;
+	public bool GetFireAbility() {
+		bool active = false;
+
+		if( null != weapon ) {
+			active = weapon.gameObject.activeSelf;
+		}
+
+		return active;
 	}
 
     public bool HasLastWish() {
@@ -120,32 +132,12 @@ public class PlayerController : Character {
 		return isFlying;
 	}
 
-	private bool WantToFly() {
-		return wantToFly;
-	}
-
 	public void SetZeroGravFlying(bool value) {
 		zeroGravFlying = value;
 	}
 
 	public bool IsZeroGravFlying() {
 		return zeroGravFlying;
-	}
-
-	public void SetFireAbility( bool able ) {
-		if( null != weapon ) {
-			weapon.gameObject.SetActive( able );
-		}
-	}
-
-	public bool GetFireAbility() {
-		bool active = false;
-
-		if( null != weapon ) {
-			active = weapon.gameObject.activeSelf;
-		}
-
-		return active;
 	}
 
 	public void AddPickup( Collider2D pickup ) {
@@ -181,14 +173,14 @@ public class PlayerController : Character {
 		myAudio = GetComponent<PlayerSoundEffect> ();
 
 		SetWeapon( myTransform.FindChild( "Weapon" ) );
-        initialMaxDoubleJump = GetMaxDoubleJump();
+        initialMaxDoubleJump = maxDoubleJump;
     }
 	
 	protected override void Init() {
 		base.Init();
 
-		SetMoveSpeed( GetInitialMoveSpeed() );
-		lerpingHP = GetHealthPoint ();
+		moveSpeed = initialMoveSpeed;
+		lerpingHP = healthPoint;
 		mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
 		//mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
 		//mySprite.sharedMaterial.SetFloat ("_Val", 1);
@@ -208,7 +200,7 @@ public class PlayerController : Character {
 		myAnim.SetBool ("grounded", grounded);
 		myAnim.SetFloat ("verticalSpeed", myRb.velocity.y);
 		// Ajuster la vitesse d'animation du héros en fonction de sa vitesse de déplacement
-		myAnim.SetFloat("moveSpeed", GetRatioSpeed());
+		myAnim.SetFloat("moveSpeed", RatioSpeed());
 	}
 	
 	protected override void Update () {
@@ -241,12 +233,12 @@ public class PlayerController : Character {
 
 		// Ajustement du saut et gravité en fonction de la vitesse
 		if (!IsFlying() && !wasFlying) {
-			SetJumpHeight (GetMoveSpeed () * constJump);
-			myRb.gravityScale = GetJumpHeight () * GetJumpHeight () * constGravity;
+			jumpHeight = moveSpeed * constJump;
+			myRb.gravityScale = jumpHeight * jumpHeight * constGravity;
 		}
 
 		// Action de voler
-		if (IsFlying() && WantToFly()) {
+		if (IsFlying() && wantToFly) {
 			float verticalCoef = 1.5f;
 			flyingTouchPosition = flyingTouchId == TouchManager.current.leftTouchId ? TouchManager.current.leftTouchPosition : TouchManager.current.rightTouchPosition;
 
@@ -299,15 +291,15 @@ public class PlayerController : Character {
 	
 	void OnGUI() {
 		// Rouge = 230 ou -140 (on se laisse une marge de 5 pour approcher davantage de la couleur, vu qu'on l'atteint à la mort seulement)
-		if (lerpingHP != GetHealthPoint ()) {
+		if (lerpingHP != healthPoint) {
 			timeLerpHP += TimeManager.deltaTime / delayLerpHP;
-			lerpingHP = Mathf.Lerp (previousHP, GetHealthPoint (), timeLerpHP);
+			lerpingHP = Mathf.Lerp (previousHP, healthPoint, timeLerpHP);
 			// sharedMaterial pour que les boules changent de couleur aussi
 			if (!IsDead ())
-				mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, GetHealthPointMax (), 230, 0));
+				mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, healthPointMax, 230, 0));
 
 		} else {
-			previousHP = GetHealthPoint ();
+			previousHP = healthPoint;
 		}
 	}
 
@@ -319,7 +311,7 @@ public class PlayerController : Character {
 		if (!IsFlying ())
 			JumpController ();
 		else {
-			if (WantToFly ())
+			if (wantToFly)
 				return;
 			
 			wantToFly = true;
@@ -341,7 +333,7 @@ public class PlayerController : Character {
 		if (!IsFlying ())
 			JumpController ();
 		else {
-			if (WantToFly ())
+			if (wantToFly)
 				return;
 
 			wantToFly = true;
@@ -386,7 +378,7 @@ public class PlayerController : Character {
 			}
 		}
 
-		myRb.velocity = new Vector2(0, GetJumpHeight());
+		myRb.velocity = new Vector2(0, jumpHeight);
 		myAudio.JumpSound ();
     }
 		
@@ -440,7 +432,7 @@ public class PlayerController : Character {
 	public void OnVictory() {
 		// On ne peut plus tirer...
 		SetFireAbility( false );
-		SetMoveSpeed (0);
+		moveSpeed = 0;
 
 		_StaticFunction.Save ();
 	}
@@ -457,19 +449,18 @@ public class PlayerController : Character {
 			initialGravityScale = myRb.gravityScale;
 
         // Abaisser la gravité et la hauteur du saut
-		if (IsZeroGravFlying ()) {
+		if (IsZeroGravFlying ())
 			myRb.gravityScale = 0;
-			SetJumpHeight (0);
-		} else {
+		else
 			myRb.gravityScale = 0.1f;
-			SetJumpHeight (0);
-		}
+		
+		jumpHeight = 0;
 
 		// Augmenter la vitesse si pas déjà en vol
 		if (!IsFlying ())
-			StartCoroutine (ChangeSpeed (GetMoveSpeed () * flySpeedCoeff));
+			StartCoroutine (ChangeSpeed (moveSpeed * flySpeedCoeff));
 
-		//SetMoveSpeed( GetMoveSpeed() * flySpeedCoeff );
+		//SetMoveSpeed( moveSpeed * flySpeedCoeff );
 		isFlying = true;
 		myAnim.SetBool( "flying", isFlying ); // Permet d'annuler le parachute une fois au sol
 		myAnim.SetTrigger ("parachute"); // Animation de "parachute" pendant le vol
@@ -479,8 +470,8 @@ public class PlayerController : Character {
 		isFlying = false;
 
         // Remettre les paramètres initiaux
-        SetMaxDoubleJump( initialMaxDoubleJump );
-		StartCoroutine (ChangeSpeed (GetMoveSpeed () / flySpeedCoeff));
+		maxDoubleJump = initialMaxDoubleJump;
+		StartCoroutine (ChangeSpeed (moveSpeed / flySpeedCoeff));
 
 		// On fait atterrir le joueur avec le parachute
 		if (!IsGrounded ()) {
@@ -496,15 +487,15 @@ public class PlayerController : Character {
     }
 
 	private IEnumerator ChangeSpeed(float newSpeed, float delay = 1) {
-		float oldSpeed = GetMoveSpeed ();
+		float oldSpeed = moveSpeed;
 		float acceleration = 0;
 
-		while (GetMoveSpeed () != newSpeed) {
+		while (moveSpeed != newSpeed) {
 			acceleration += TimeManager.deltaTime / delay;
-			SetMoveSpeed (Mathf.Lerp (oldSpeed, newSpeed, acceleration));
+			moveSpeed = Mathf.Lerp (oldSpeed, newSpeed, acceleration);
 
-			if (GetMoveSpeed () >= newSpeed)
-				SetMoveSpeed (newSpeed);
+			if (moveSpeed >= newSpeed)
+				moveSpeed = newSpeed;
 
 			yield return null;
 		}
@@ -519,7 +510,7 @@ public class PlayerController : Character {
             }
 
             // Vérifier que le joueur n'a pas déjà pris cette pièce
-            if( LevelManager.GetPlayer().HasPickup( coins[i] ) ) {
+            if( LevelManager.player.HasPickup( coins[i] ) ) {
                 continue;
             }
 
@@ -534,8 +525,8 @@ public class PlayerController : Character {
 
 	public override void Hurt(int damage) {
 		// Si les "anciens" HP sont égaux aux "nouveaux" HP, on met à jour, sinon on garde l'encore plus vieille valeur
-		if (previousHP == GetHealthPoint ())
-			previousHP = GetHealthPoint ();
+		if (previousHP == healthPoint)
+			previousHP = healthPoint;
 
 		timeLerpHP = 0; // On prépare la nouvelle variation de couleur
 

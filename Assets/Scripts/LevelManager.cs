@@ -7,8 +7,7 @@ using Tiled2Unity;
 public class LevelManager : MonoBehaviour {
 
 	public static LevelManager levelManager;
-	private Camera kamera;
-	private static PlayerController player;
+	private static PlayerController _player;
 
 	private AudioSource sourceSound;
 	private float soundVolumeInit;
@@ -18,22 +17,17 @@ public class LevelManager : MonoBehaviour {
 
 	// Mort, Respawn
 	public GameObject currentCheckPoint;
-	public float respawnDelay;
 
 	[Header("Reset divers")]
-	public Material moneyMat;
-	public Color BaseColor;
+	[SerializeField] private Material moneyMat;
+	[SerializeField] private Color BaseColor;
 
 	// Création du monde et déplacement
 	[Header("Création du monde")]
-	private int currentLevel;
-	private int currentDifficulty;
-	private bool isStory;
-
-	public GameObject blockStart;
+	[SerializeField] private GameObject blockStart;
+	[SerializeField] private GameObject blockEnd;
+	[SerializeField] private GameObject[] blockEnemy;
 	private float heightStartBlock = 0.25f;
-	public GameObject blockEnd;
-	public GameObject[] blockEnemy;
 	private List<GameObject> blockList;
 	private int[][] probabiliteBlock; // Probabilités d'apparition de chaque bloc par phase
 	private string[] listeDifficulte; // Liste des difficultés possibles pour les blocs
@@ -55,21 +49,21 @@ public class LevelManager : MonoBehaviour {
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
 	private int currentPhase;	// Phase en cours
 	private bool blockPhase;	// Phase avec des blocs ou avec un ennemi
-	public LayerMask layerNotGround; // Permet de supprimer les pièces que les ennemis "perdent", ou autres obstacles invoqués (bombes...)
+	[SerializeField] private LayerMask layerNotGround; // Permet de supprimer les pièces que les ennemis "perdent", ou autres obstacles invoqués (bombes...)
 	private bool premierBlock = false;	// Instantier le premier bloc ennemi
-	public Enemy[] enemyMiddle;	// Liste des ennemis
+	[SerializeField] private Enemy[] enemyMiddle;	// Liste des ennemis
 	private Enemy enemyEnCours;
 	private bool enemyToSpawn = false;	// Bool modifiable pour savoir à quel moment il faut invoquer l'ennemi
     private bool enemySpawnLaunched = false; // Bool pour savoir si l'appel du spawn a déjà été fait ou pas
 	public float enemySpawnDelay;
 	private float enemyTimeToKill;
-	public FlyPickup flyEndBoss;	// Pour faire voler à l'infini durant le dernier boss
+	[SerializeField] private FlyPickup flyEndBoss;	// Pour faire voler à l'infini durant le dernier boss
 	//* Fin partie ennemi intermédiaire
 
 	private static bool endingScene = false;
 
-	public static PlayerController GetPlayer() {
-		return player;
+	public static PlayerController player {
+		get { return _player; }
 	}
 
 	public List<GameObject> GetListBlock() {
@@ -108,27 +102,15 @@ public class LevelManager : MonoBehaviour {
     }
 
 	public int GetCurrentLevel() {
-		return currentLevel;
-	}
-
-	public void SetCurrentLevel(int value) {
-		currentLevel = value;
+		return _GameData.currentLevel;
 	}
 
 	public int GetCurrentDifficulty() {
-		return currentDifficulty;
-	}
-
-	public void SetCurrentDifficulty(int value) {
-		currentDifficulty = value;
+		return _GameData.currentDifficulty;
 	}
 
 	public bool IsStory() {
-		return isStory;
-	}
-
-	public void SetStoryMode(bool value) {
-		isStory = value;
+		return _GameData.isStory;
 	}
 
 	public float GetLocalDistance() {
@@ -171,8 +153,7 @@ public class LevelManager : MonoBehaviour {
 		if (levelManager == null)
 			levelManager = FindObjectOfType<LevelManager>();
 
-		player = FindObjectOfType<PlayerController> ();
-		kamera = Camera.main;
+		_player = FindObjectOfType<PlayerController> ();
 		sourceSound = GetComponent<AudioSource> ();
 	}
 
@@ -187,10 +168,6 @@ public class LevelManager : MonoBehaviour {
 		blockPhase = true;
         SetEnemyTimeToKill( 0 );
 
-		SetCurrentLevel (_GameData.currentLevel); // Information mise à jour par le UIManager > SampleLevel
-		SetStoryMode (_GameData.isStory);
-		SetCurrentDifficulty (_GameData.currentDifficulty);
-
 		// Ajustement de l'apparition du boss de fin (par rapport à la distance maximum du level)
 		listPhase [listPhase.Length - 1] = GameData.gameData.playerData.levelData[GetCurrentLevel () - GameData.gameData.firstLevel].storyData[GetCurrentDifficulty ()].distanceMax;
 
@@ -198,7 +175,7 @@ public class LevelManager : MonoBehaviour {
 		moneyMat.SetColor("_TargetColor", BaseColor);
 
 		// On commence le niveau dans une phase "block" et non une phase "ennemi", le joueur ne peut donc pas tirer
-		GetPlayer().SetFireAbility( false );
+		player.SetFireAbility( false );
 
 		soundVolumeInit = sourceSound.volume;
 		PlayBackgroundMusic ();
@@ -215,8 +192,8 @@ public class LevelManager : MonoBehaviour {
 			probabiliteBlock [i] = new int[5] {20, 20, 20, 20, 20};
 		}
 
-		cameraStartPosition = kamera.transform.position.x - kamera.orthographicSize * kamera.aspect - 3;
-		cameraEndPosition = kamera.transform.position.x + kamera.orthographicSize * kamera.aspect + 5;
+		cameraStartPosition = Camera.main.transform.position.x - Camera.main.orthographicSize * Camera.main.aspect - 3;
+		cameraEndPosition = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect + 5;
 
         // Initialisation avec le Block Start
         blockList = new List<GameObject> {blockStart};
@@ -236,7 +213,7 @@ public class LevelManager : MonoBehaviour {
 
 		// Empêcher que des choses se passent durant la pause
 		// En plus de baisser le volume si l'écran de fin arrive
-		if (TimeManager.paused || GetPlayer().IsDead () || endLevel) {
+		if (TimeManager.paused || player.IsDead () || endLevel) {
 			sourceSound.volume = 0.1f;
 			return;
 		}
@@ -249,7 +226,7 @@ public class LevelManager : MonoBehaviour {
 		sourceSound.volume = soundVolumeInit;
 	
 		// Distance parcourue depuis le dernier update
-		localDistance = GetPlayer().GetMoveSpeed() * Time.smoothDeltaTime;
+		localDistance = player.moveSpeed * Time.smoothDeltaTime;
 
 		// Définir dans quelle phase on se situe
 		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
@@ -268,24 +245,24 @@ public class LevelManager : MonoBehaviour {
 
 				// On fait voler le joueur si c'est le dernier ennemi
 				if (currentPhase == listPhase.Length - 1) {
-					CleanPickup( GetPlayer().GetLastWish() );
+					CleanPickup( player.GetLastWish() );
 					// On créer un pickup de vol sur le joueur, en vol infini (1000s...)
-					GetPlayer ().SetZeroGravFlying (true);
+					player.SetZeroGravFlying (true);
 					flyEndBoss.lifeTime = 1000;
-					flyEndBoss = Instantiate (flyEndBoss, GetPlayer ().transform.position, Quaternion.identity) as FlyPickup;
+					flyEndBoss = Instantiate (flyEndBoss, player.transform.position, Quaternion.identity) as FlyPickup;
 					flyEndBoss.gameObject.SetActive (true);
 				}
             }
 			
 			if(enemyEnCours != null && !IsEndingScene()) {
 				// Le joueur peut tirer
-				GetPlayer().SetFireAbility( true );
+				player.SetFireAbility( true );
 
                 // Si on est en phase "ennemie" et qu'on a dépassé le temps alloué pour le tuer, on meurt
 				SetEnemyTimeToKill( GetEnemyTimeToKill() - TimeManager.deltaTime );
 
 				if( GetEnemyTimeToKill() <= 0 ) {
-					LevelManager.Kill( GetPlayer() );
+					LevelManager.Kill( player );
 				}
 
 				// On créé le dernier bloc qui n'est pas un bloc du milieu
@@ -298,10 +275,10 @@ public class LevelManager : MonoBehaviour {
 					premierBlock = false;
 
                     // Le joueur ne peut plus tirer
-					GetPlayer().SetFireAbility( false );
+					player.SetFireAbility( false );
 
 					// On fait accélérer le joueur à chaque nouvelle phase bloc
-					GetPlayer().SetMoveSpeed(GetPlayer().GetMoveSpeed() * 1.15f);
+					player.moveSpeed *= 1.15f;
 				}
 			}
 		}
@@ -311,7 +288,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
         // On actualise la distance parcourue si le joueur n'est pas mort, et que l'ennemi n'est pas là
-		if (!GetPlayer().IsDead() && !IsEnemyToSpawn() && enemyEnCours == null) {
+		if (!player.IsDead() && !IsEnemyToSpawn() && enemyEnCours == null) {
 			distanceTraveled += localDistance;
 			distanceSinceLastBonus += localDistance;
 		}
@@ -345,7 +322,7 @@ public class LevelManager : MonoBehaviour {
 
         // Si le joueur n'est pas mort, on bouge le monde
 		// Pour le premier niveau, si le boss de fin est mort mais n'a pas fini son dialogue, on ne bouge pas
-		if ((!GetPlayer().IsDead() || GetPlayer().HasLastWish()) && !IsEndingScene()) {
+		if ((!player.IsDead() || player.HasLastWish()) && !IsEndingScene()) {
 			MoveWorld ();
 		}
 	}
@@ -405,20 +382,20 @@ public class LevelManager : MonoBehaviour {
 	private IEnumerator SpawnEnemy(Enemy enemy) {
 		Enemy tempEnemy = Instantiate(enemy) as Enemy; // Permet d'accéder à l'ennemi avant qu'il ne soit visible pour le joueur
 
-		UIManager.uiManager.enemyName.text = tempEnemy.GetName ();
-		UIManager.uiManager.enemySurname.text = tempEnemy.GetSurName ();
+		UIManager.uiManager.enemyName.text = tempEnemy.firstName;
+		UIManager.uiManager.enemySurname.text = tempEnemy.surName;
 
 		yield return new WaitForSeconds( enemySpawnDelay * Time.timeScale );
 
 		enemyEnCours = tempEnemy;
 		tempEnemy = null;
 
-		enemyTimeToKill = enemyEnCours.GetTimeToKill();
+		enemyTimeToKill = enemyEnCours.timeToKill;
 	}
 
 	private void FinDuMonde () {
 		if (IsStory ()) {
-			CleanPickup( GetPlayer().GetLastWish() );
+			CleanPickup( player.GetLastWish() );
 
 			// On offre des points d'xp supplémentaires si c'est la première fois qu'il tue le boss
 			if (!GameData.gameData.playerData.levelData [GetCurrentLevel ()].storyData [GetCurrentDifficulty ()].isBossDead) {
@@ -431,14 +408,14 @@ public class LevelManager : MonoBehaviour {
 
 			endLevel = true;
 
-			GetPlayer ().OnVictory ();
+			player.OnVictory ();
 		}
 	}
 
 	public static void Kill( Character character ) {
-		LastWishPickup lastWish = GetPlayer().GetLastWish();
+		LastWishPickup lastWish = player.GetLastWish();
 
-		if (character == GetPlayer ()) {
+		if (character == player) {
 			CleanPickup (lastWish);
 
 			if (lastWish == null || lastWish.IsLaunched ()) {
@@ -472,7 +449,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public static void CleanPickup (LastWishPickup lastWish = null) {
-		Pickup[] pickups = GetPlayer().GetComponentsInChildren<Pickup>();
+		Pickup[] pickups = player.GetComponentsInChildren<Pickup>();
 
 		foreach( Pickup pickup in pickups ) {
 			if( pickup != lastWish || lastWish.IsLaunched() ) {

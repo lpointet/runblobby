@@ -2,83 +2,62 @@
 using System.Collections;
 
 public class Character : MonoBehaviour {
-	
+
+	protected Transform myTransform;
+	protected SpriteRenderer mySprite;
+
 	/**
 	 * Character Stats 
 	 */
-	[SerializeField] private int healthPoint;
-	[SerializeField] private int healthPointMax;
-	[SerializeField] private float moveSpeed;
-	[SerializeField] private float jumpHeight;
-	[SerializeField] private bool isDead;
-	[SerializeField] private float maxHeight = 7.5f;
+	[Header("Stats générales")]
+	[SerializeField] private int _healthPoint;
+	[SerializeField] private int _healthPointMax;
+	[SerializeField] private float _moveSpeed;
+	[SerializeField] private float _jumpHeight;
+	[SerializeField] private float _maxHeight = 7.5f;
+	[SerializeField] private float _invincibleTime = 0.5f;
     /* End of Stats */
 
-    protected Transform myTransform;
-	protected SpriteRenderer mySprite;
+	protected bool isDead;
 
-	[SerializeField] private float invincibleTime = 0.5f;
 	[SerializeField] protected Material invincibleMaterial;
     private bool invincible = false;
 
     /**
 	 * Getters & Setters
 	 */
-    public int GetHealthPoint() {
-		return healthPoint;
+	public int healthPoint {
+		get { return _healthPoint; }
+		set { _healthPoint = Mathf.Clamp (value, 0, healthPointMax); }
 	}
-	
-	public int GetHealthPointMax() {
-		return healthPointMax;
+	public int healthPointMax {
+		get { return _healthPointMax; }
+		set { _healthPointMax = value; }
 	}
-	
-	public float GetMoveSpeed() {
-		return moveSpeed;
+	public float moveSpeed {
+		get { return _moveSpeed; }
+		set { _moveSpeed = value; }
 	}
-	
-	public float GetJumpHeight() {
-		return jumpHeight;
+	public float jumpHeight {
+		get { return _jumpHeight; }
+		set { _jumpHeight = value; }
 	}
-	
-	public bool IsDead() {
-		return isDead;
+	public float maxHeight {
+		get { return _maxHeight; }
+		set { _maxHeight = value; }
+	}
+	public float invincibleTime {
+		get { return _invincibleTime; }
+		set { _invincibleTime = value; }
 	}
 
-	public float GetMaxHeight() {
-		return maxHeight;
-	}
+	public bool IsInvincible () { return invincible; }
 
-    public void SetHealthPoint( int value ) {
-		healthPoint = Mathf.Clamp( value, 0, GetHealthPointMax() );
-	}
-	
-	public void SetHealthPointMax( int value ) {
-		healthPointMax = value;
-	}
-	
-	public void SetMoveSpeed( float value ) {
-		moveSpeed = value;
-	}
-	
-	public void SetJumpHeight( float value ) {
-		jumpHeight = value;
-	}
-	
+	public bool IsDead() { return isDead; }
 	// Créer 2 setters pour isDead parce que les noms sont plus cool :)
-	public void Die() {
-		isDead = true;
-	}
-	public void Resurrect() {
-		isDead = false;
-	}
+	public void Die() { isDead = true; }
+	public void Resurrect() { isDead = false; }
 
-	public void SetMaxHeight( float value ) {
-		maxHeight = value;
-	}
-
-	public bool IsInvincible () {
-		return invincible;
-	}
     /* End of Getters & Setters */
 
     protected virtual void Awake() {
@@ -88,7 +67,7 @@ public class Character : MonoBehaviour {
 
     void Start() {
 		Init();
-		SetMaxHeight (Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager> ().yOffset - 1.5f);
+		maxHeight = Camera.main.orthographicSize + Camera.main.GetComponent<CameraManager> ().yOffset - 1.5f;
 	}
 	
 	protected virtual void Init() {
@@ -96,10 +75,12 @@ public class Character : MonoBehaviour {
 		FullHealth();
 		// Let it live
 		Resurrect();
-		// On corrige l'alpha si besoin
-		/*Color tempColor = mySprite.color;
-		tempColor.a = 1;
-		mySprite.color = tempColor;*/
+	}
+
+	protected virtual void Update() {
+		if( transform.position.y >= maxHeight && !IsDead() ) {
+			transform.position = new Vector3( transform.position.x, maxHeight, transform.position.z );
+		}
 	}
 	
 	public virtual void OnKill() {
@@ -110,9 +91,9 @@ public class Character : MonoBehaviour {
 		if( IsInvincible () || IsDead() )
 			return;
 		
-		SetHealthPoint( GetHealthPoint() - damage );
+		healthPoint -= damage;
 		
-		if (GetHealthPoint() <= 0 && !IsDead())
+		if (healthPoint <= 0 && !IsDead())
 			LevelManager.Kill( this );
 
 		// Effet visuel de blessure et d'invincibilité
@@ -123,7 +104,7 @@ public class Character : MonoBehaviour {
 	}
 	
 	public void FullHealth() {
-		SetHealthPoint( GetHealthPointMax() );
+		healthPoint = healthPointMax;
 	}
 	
 	public void SetInvincible( float time ) {
@@ -135,12 +116,6 @@ public class Character : MonoBehaviour {
 	
 	public void SetDamageable() {
 		invincible = false;
-	}
-
-	protected virtual void Update() {
-		if( transform.position.y >= GetMaxHeight() && !IsDead() ) {
-			transform.position = new Vector3( transform.position.x, GetMaxHeight(), transform.position.z );
-		}
 	}
 
 	protected virtual IEnumerator HurtEffect(float hurtingTime = 0.5f) {

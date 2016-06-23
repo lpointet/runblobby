@@ -55,7 +55,7 @@ public class PollenEffect : MonoBehaviour {
 		pollenGauge = GetComponentInChildren<Slider> ();
 		myAudio = GetComponent<AudioSource> ();
 
-		playerRb = LevelManager.GetPlayer ().GetComponent<Rigidbody2D> ();
+		playerRb = LevelManager.player.GetComponent<Rigidbody2D> ();
 	}
 
 	void Start () {
@@ -123,7 +123,7 @@ public class PollenEffect : MonoBehaviour {
 	}
 
 	void Update() {
-		if (TimeManager.paused || LevelManager.GetPlayer ().IsDead () || LevelManager.IsEndingScene()) {
+		if (TimeManager.paused || LevelManager.player.IsDead () || LevelManager.IsEndingScene()) {
 			pollenGauge.gameObject.SetActive (false);
 			return;
 		} else
@@ -159,14 +159,14 @@ public class PollenEffect : MonoBehaviour {
 
 	// Quand le joueur entre, on met à jour le bool pour charger la barre
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.name == "Heros" && !LevelManager.GetPlayer().IsDead()) {
+		if (other.name == "Heros" && !LevelManager.player.IsDead()) {
 			inCharge = true;
 		}
 	}
 
 	// Quand le joueur sort, on met à jour le bool pour décharger la barre
 	void OnTriggerExit2D(Collider2D other) {
-		if (other.name == "Heros" && !LevelManager.GetPlayer().IsDead()) {
+		if (other.name == "Heros" && !LevelManager.player.IsDead()) {
 			inCharge = false;
 		}
 	}
@@ -174,7 +174,7 @@ public class PollenEffect : MonoBehaviour {
 	private IEnumerator SneezeThePlayer() {
 		// On attend que le joueur soit au sol pour le faire reculer
 		// S'il vole, on éternue tout de suite
-		while (!LevelManager.GetPlayer ().IsGrounded () && !LevelManager.GetPlayer ().IsFlying ())
+		while (!LevelManager.player.IsGrounded () && !LevelManager.player.IsFlying ())
 			yield return null;
 
 		playerRb.AddForce (Vector2.left * backForce);
