@@ -5,24 +5,25 @@ public class CameraManager : MonoBehaviour {
 
     public static CameraManager cameraManager;
 
-	public bool isFollowing;
-
-	public int unitsInWidth;
-	public int widthMin;
-	public float maxJumpHeight = 6.5f; // 6.5 est la valeur qui permet de sauter avec la plateforme le plus haut possible
-
-	public float xOffsetPourcentage;
-	public float xOffset { get; private set; }
-	public float yOffset { get; private set; }
+	public static float cameraStartPosition;
+	public static float cameraEndPosition;
 
 	public Transform backKiller { get; private set; }
 	public Transform fallingKiller { get; private set; }
 	private Collider2D backKillerCollider;
 	private Collider2D fallingKillerCollider;
 
-	public GameObject bgContainer;
+	[SerializeField] private GameObject bgContainer;
 
-	public float camRightEnd { get; private set; }
+	[SerializeField] private bool isFollowing;
+
+	[SerializeField] private int unitsInWidth;
+	[SerializeField] private int widthMin;
+	[SerializeField] private float maxJumpHeight = 6.5f; // 6.5 est la valeur qui permet de sauter avec la plateforme le plus haut possible
+
+	[SerializeField] private float xOffsetPourcentage;
+	public float xOffset { get; private set; }
+	public float yOffset { get; private set; }
 
     void Awake() {
         if (cameraManager == null)
@@ -51,7 +52,9 @@ public class CameraManager : MonoBehaviour {
 		float xScale = Camera.main.orthographicSize * Camera.main.aspect * 2 / firstBG.bounds.size.x;
 		bgContainer.transform.localScale = new Vector3 (xScale, yScale, bgContainer.transform.localScale.z);
 
-        camRightEnd = xOffset + Camera.main.orthographicSize * Camera.main.aspect;
+		// Décalé pour pouvoir prendre en compte des potentielles latences
+		cameraStartPosition = Camera.main.transform.position.x - Camera.main.orthographicSize * Camera.main.aspect - 3;
+		cameraEndPosition = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect + 5;
     }
 
 	void Update () {

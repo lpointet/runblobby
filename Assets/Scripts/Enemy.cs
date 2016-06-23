@@ -73,7 +73,7 @@ public class Enemy : Character {
 		PossibleCoin ();
 
 		// On le place à sa position AVANT début du combat
-		popPosition[0] = LevelManager.levelManager.cameraEndPosition;
+		popPosition[0] = CameraManager.cameraEndPosition;
 		popPosition[1] = startPosition[1];
 
 		myTransform.position = new Vector2(popPosition[0], popPosition[1]);

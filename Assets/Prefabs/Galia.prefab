@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthPoint: 0
-  _healthPointMax: 0
+  _healthPointMax: 1
   _moveSpeed: 0
   _jumpHeight: 0
   _maxHeight: 7.5
@@ -287,7 +287,6 @@ MonoBehaviour:
   invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
   _timeToKill: 30
   damageToGive: 1
-  pointScore: 50
   _firstName: Gallia
   _surName: The stupid gallinacean
   popPosition:

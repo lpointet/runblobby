@@ -29,7 +29,7 @@ public class CoinSpawn : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!isPop && myTransform.position.x < LevelManager.levelManager.cameraEndPosition) {
+		if (!isPop && myTransform.position.x < CameraManager.cameraEndPosition) {
 			// On choisit la bonne pièce ou la plus proche si mauvaise valeur
 			int choix = 0;
 			for (int i = 0; i < ListManager.current.coins.Length; i++) {

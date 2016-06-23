@@ -30,8 +30,6 @@ public class PlayerController : Character {
 	private float timeLerpHP;
 	private float lerpingHP;
 
-    [HideInInspector] public bool bounced = false;
-
 	private bool grounded;
 	[SerializeField] private Transform groundCheck;
 	[SerializeField] private float groundCheckRadius;
@@ -48,6 +46,7 @@ public class PlayerController : Character {
 	private bool zeroGravFlying = false; // Selon le type de pickup vol débloqué
 
 	// Saut
+	private bool _bounced = false;
 	private int currentJump = 0;
 	private int initialMaxDoubleJump;
 
@@ -69,22 +68,23 @@ public class PlayerController : Character {
 	 */
 	public float initialMoveSpeed {
 		get { return _initialMoveSpeed; }
-		set { _initialMoveSpeed = Mathf.Clamp (value, 0, healthPointMax); }
+		set { _initialMoveSpeed = value; }
 	}
 	public int maxDoubleJump {
 		get { return _maxDoubleJump; }
-		set { _maxDoubleJump = Mathf.Clamp (value, 0, healthPointMax); }
+		set { _maxDoubleJump = value; }
+	}
+
+	public bool bounced {
+		get { return _bounced; }
+		set { _bounced = value; }
 	}
 
 	public float RatioSpeed () {
 		return moveSpeed / (float)initialMoveSpeed;
 	}
-	
-	public Transform GetWeapon() {
-		return weapon;
-	}
-	
-	public void SetWeapon( Transform value ) {
+
+	public void EquipWeapon( Transform value ) {
 		weapon = value;
 	}
 
@@ -172,7 +172,7 @@ public class PlayerController : Character {
 		myAnim = GetComponent<Animator> ();
 		myAudio = GetComponent<PlayerSoundEffect> ();
 
-		SetWeapon( myTransform.FindChild( "Weapon" ) );
+		EquipWeapon( myTransform.FindChild( "Weapon" ) );
         initialMaxDoubleJump = maxDoubleJump;
     }
 	
@@ -182,8 +182,6 @@ public class PlayerController : Character {
 		moveSpeed = initialMoveSpeed;
 		lerpingHP = healthPoint;
 		mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
-		//mySprite.sharedMaterial.SetFloat ("_Alpha", 1);
-		//mySprite.sharedMaterial.SetFloat ("_Val", 1);
 
 		isFlying = false;
         wasFlying = false;
@@ -505,7 +503,7 @@ public class PlayerController : Character {
         nbCoins = Physics2D.OverlapCircleNonAlloc( myTransform.position, radius, coins, layerCoins );
 
         for( int i = 0; i < nbCoins; i++ ) {
-            if( coins[i].transform.position.x > myTransform.position.x + CameraManager.cameraManager.camRightEnd ) {
+            if( coins[i].transform.position.x > myTransform.position.x + CameraManager.cameraEndPosition ) {
                 continue;
             }
 

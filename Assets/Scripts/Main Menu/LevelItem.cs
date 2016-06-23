@@ -46,7 +46,11 @@ public class LevelItem : MonoBehaviour {
 			InitModeButton (arcade);
 		}
 
-		DeselectLevelItem();
+		// On active le level en cours, et on "ferme" les autres
+		if (_GameData.currentLevel != GetLevelNumber ())
+			DeselectLevelItem ();
+		else
+			SelectLevelItem ();
 	}
 
 	private void InitModeButton(ModeButton mode) {

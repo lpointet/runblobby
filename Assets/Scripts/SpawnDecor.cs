@@ -50,11 +50,11 @@ public class SpawnDecor : MonoBehaviour {
 
 	void Update () {
 		// Si l'objet est déjà apparu on annule tout
-		if (appeared || myTransform.position.x > LevelManager.levelManager.cameraEndPosition)
+		if (appeared || myTransform.position.x > CameraManager.cameraEndPosition)
 			return;
 		
 		// Si l'objet entre dans le champ, on considère qu'il est apparu (même s'il n'y aura pas de sprite)
-		if (myTransform.position.x < LevelManager.levelManager.cameraEndPosition)
+		if (myTransform.position.x < CameraManager.cameraEndPosition)
 			appeared = true;
 		
 		// On teste si on doit faire apparaître un objet ou non

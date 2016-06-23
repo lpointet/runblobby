@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour {
 	private bool startLevel = false;
 	private bool endLevel = false;
 
-	// Mort, Respawn
+	// Respawn
 	public GameObject currentCheckPoint;
 
 	[Header("Reset divers")]
@@ -34,9 +34,6 @@ public class LevelManager : MonoBehaviour {
 
 	private float sizeLastBlock;
 	private float sizeFirstBlock;
-
-	[HideInInspector] public float cameraStartPosition;
-	[HideInInspector] public float cameraEndPosition;
 	// Fin création du monde et déplacement
 
 	// Distance parcourue
@@ -97,10 +94,6 @@ public class LevelManager : MonoBehaviour {
 		enemyTimeToKill = value;
     }
 
-    public int GetDistanceTraveled() {
-		return Mathf.RoundToInt(distanceTraveled);
-    }
-
 	public int GetCurrentLevel() {
 		return _GameData.currentLevel;
 	}
@@ -112,6 +105,10 @@ public class LevelManager : MonoBehaviour {
 	public bool IsStory() {
 		return _GameData.isStory;
 	}
+
+    public int GetDistanceTraveled() {
+		return Mathf.RoundToInt(distanceTraveled);
+    }
 
 	public float GetLocalDistance() {
 		return localDistance;
@@ -191,9 +188,6 @@ public class LevelManager : MonoBehaviour {
 		for (int i = 3; i < listPhase.Length; i++) {
 			probabiliteBlock [i] = new int[5] {20, 20, 20, 20, 20};
 		}
-
-		cameraStartPosition = Camera.main.transform.position.x - Camera.main.orthographicSize * Camera.main.aspect - 3;
-		cameraEndPosition = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect + 5;
 
         // Initialisation avec le Block Start
         blockList = new List<GameObject> {blockStart};
@@ -294,7 +288,7 @@ public class LevelManager : MonoBehaviour {
 		}
 
 		// Suppression du premier bloc dès qu'il disparait de la caméra
-		if (blockList [0].transform.position.x + sizeFirstBlock < cameraStartPosition) {
+		if (blockList [0].transform.position.x + sizeFirstBlock < CameraManager.cameraStartPosition) {
 			// On supprime les objets qui ne sont pas sur la couche "Ground" si on est sur les blocs du boss
 			// Supprime les pièces, les bombes...
 			if(blockList[0].name.Contains(blockEnemy[1].name)) {
@@ -316,7 +310,7 @@ public class LevelManager : MonoBehaviour {
 		}
 		
 		// Création du prochain bloc si le dernier bloc en cours approche de la fin de la caméra
-		if (blockList [blockList.Count - 1].transform.position.x + sizeLastBlock < cameraEndPosition) {
+		if (blockList [blockList.Count - 1].transform.position.x + sizeLastBlock < CameraManager.cameraEndPosition) {
 			PositionBlock (GetNewBlock (blockPhase));
 		}
 

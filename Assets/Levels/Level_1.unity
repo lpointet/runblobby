@@ -3870,12 +3870,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c49c5b63af2443645891e547f8bfd48a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgContainer: {fileID: 56625957}
   isFollowing: 0
   unitsInWidth: 24
   widthMin: 24
   maxJumpHeight: 6.5
   xOffsetPourcentage: 0.5
-  bgContainer: {fileID: 56625957}
 --- !u!1 &380668170
 GameObject:
   m_ObjectHideFlags: 0
@@ -9246,7 +9246,6 @@ MonoBehaviour:
   invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
   _initialMoveSpeed: 2.3
   _maxDoubleJump: 5
-  bounced: 0
   groundCheck: {fileID: 1686453329}
   groundCheckRadius: 0.1
   layerGround:
@@ -9801,8 +9800,6 @@ MonoBehaviour:
   blockEnemy:
   - {fileID: 197204, guid: a1fca6b1769193f4786a789e54a69ff9, type: 2}
   - {fileID: 158232, guid: d3f95c408d1708e4cb4e1c80f4de3305, type: 2}
-  cameraStartPosition: 0
-  cameraEndPosition: 0
   listPhase: 1e00000058020000e8030000
   layerNotGround:
     serializedVersion: 2

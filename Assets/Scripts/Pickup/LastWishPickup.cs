@@ -41,7 +41,7 @@ public class LastWishPickup : Pickup {
     void Start() {
 		playerTransform = LevelManager.player.transform;
 
-		angelStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition) - 2; // Voir dans LevelManager pour la position par défaut
+		angelStartPosition = Mathf.Abs (CameraManager.cameraStartPosition) - 2; // Voir dans LevelManager pour la position par défaut
 	}
 
 	public void Launch() {

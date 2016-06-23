@@ -61,7 +61,7 @@ public class PickupSpawn : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!activated && myTransform.position.x < levelManager.cameraEndPosition) {
+		if (!activated && myTransform.position.x < CameraManager.cameraEndPosition) {
 			activated = true;
 
 			int distanceSansbonus = 200;

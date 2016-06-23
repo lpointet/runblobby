@@ -27,7 +27,7 @@ public class FlyPickup : Pickup {
 		playerTransform = LevelManager.player.transform;
 		playerRb = LevelManager.player.GetComponent<Rigidbody2D> ();
 
-		birdStartPosition = Mathf.Abs (LevelManager.levelManager.cameraStartPosition);
+		birdStartPosition = Mathf.Abs (CameraManager.cameraStartPosition);
 
 		basePitch = this.soundSource.pitch;
 	}

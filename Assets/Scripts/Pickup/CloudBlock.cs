@@ -9,8 +9,6 @@ public class CloudBlock : MonoBehaviour {
 	private Transform mySpriteTransform;
 	private BoxCollider2D myCollider;
 
-    private float camRightLimit;
-
 	private float delayScaleY; // Permet de décaler le mouvement selon Y de selon X
 	private float randomStart; // Permet de ne pas avoir le même mouvement pour tous les nuages
 	private float vectorScaleX; // Modification de scale X des nuages
@@ -29,7 +27,6 @@ public class CloudBlock : MonoBehaviour {
 	}
 
     void Start() {
-        camRightLimit = CameraManager.cameraManager.camRightEnd + 1;
 		randomStart = Random.Range (0f, 2 * Mathf.PI); // Démarrage aléatoire
 		delayScaleY = Random.Range (Mathf.PI, 3 * Mathf.PI / 2f); // Décalage de l'axe Y
 		speedScale = Random.Range(0.15f, 0.35f);
@@ -42,7 +39,7 @@ public class CloudBlock : MonoBehaviour {
     }
 
 	void Update () {
-		if (transform.position.x > camRightLimit || TimeManager.paused)
+		if (transform.position.x > CameraManager.cameraEndPosition || TimeManager.paused)
             return;
         
         // On ne met à jour que s'il y a un changement de la variable static et que le nuage n'est pas déjà actif

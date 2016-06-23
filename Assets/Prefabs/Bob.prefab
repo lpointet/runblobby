@@ -465,7 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthPoint: 0
-  _healthPointMax: 0
+  _healthPointMax: 1
   _moveSpeed: 0
   _jumpHeight: 0
   _maxHeight: 7.5
@@ -506,8 +506,8 @@ MonoBehaviour:
       Tous les Blobs meurent de faim par ta faute !'
   - numCharacter: 1
     portraitPosition: 1
-    textLine: "Vous n'avez jamais accept\xE9 ma couleur.\nC'est n'est pas ma faute
-      si je suis orange..."
+    textLine: "Vous n'avez jamais accept\xE9 ma couleur.\nCe n'est pas ma faute si
+      je suis orange..."
   - numCharacter: 1
     portraitPosition: 1
     textLine: "Mais c'est trop tard \xE0 pr\xE9sent !\nJ'esp\xE8re que tu aimes la
