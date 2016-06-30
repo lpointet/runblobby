@@ -126,12 +126,12 @@ public static class _StaticFunction {
 	private static void TraitementData() {
 		GameData.gameData.existingGame = true;
 
-		GameData.gameData.playerData.experience += ScoreManager.GetExperience ();
-		GameData.gameData.playerData.level = LevelFromExp (GameData.gameData.playerData.experience);
-		GameData.gameData.playerData.distanceTotal += LevelManager.levelManager.GetDistanceTraveled ();
-
 		// Sauvegardes spécifiques au level
 		if (LevelManager.levelManager != null) {
+			GameData.gameData.playerData.experience += ScoreManager.GetExperience ();
+			GameData.gameData.playerData.level = LevelFromExp (GameData.gameData.playerData.experience);
+			GameData.gameData.playerData.distanceTotal += LevelManager.levelManager.GetDistanceTraveled ();
+
 			LevelData levelCourant = GameData.gameData.playerData.levelData [LevelManager.levelManager.GetCurrentLevel () - 1]; // Correction de l'indice du level
 			int difficulty = LevelManager.levelManager.GetCurrentDifficulty ();
 

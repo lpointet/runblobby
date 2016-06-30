@@ -179,6 +179,9 @@ public class PlayerController : Character {
 	protected override void Init() {
 		base.Init();
 
+		// Add talent points
+		AddTalent();
+
 		moveSpeed = initialMoveSpeed;
 		lerpingHP = healthPoint;
 		mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
@@ -191,6 +194,11 @@ public class PlayerController : Character {
 		Mediator.current.Subscribe<TouchRight> (PlayerActionRight);
 		Mediator.current.Subscribe<EndTouch> (PlayerEndAction);
     }
+
+
+	protected virtual void AddTalent() {
+		defense += GameData.gameData.playerData.talent.defense;
+	}
 	
 	void FixedUpdate() {
 		// Assure qu'on soit au sol lorsqu'on est en contact

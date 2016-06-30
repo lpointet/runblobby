@@ -16,6 +16,8 @@ public class Character : MonoBehaviour {
 	[SerializeField] private float _jumpHeight;
 	[SerializeField] private float _maxHeight = 7.5f;
 	[SerializeField] private float _invincibleTime = 0.5f;
+
+	[SerializeField] private int _defense = 1;
     /* End of Stats */
 
 	protected bool isDead;
@@ -49,6 +51,11 @@ public class Character : MonoBehaviour {
 	public float invincibleTime {
 		get { return _invincibleTime; }
 		set { _invincibleTime = value; }
+	}
+
+	public int defense {
+		get { return _defense; }
+		set { _defense = value; }
 	}
 
 	public bool IsInvincible () { return invincible; }

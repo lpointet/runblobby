@@ -49,8 +49,6 @@ public class MainMenuManager : MonoBehaviour {
 	[Header("Player Menu")]
 	public GameObject wPlayerMenu;
 
-	public Text tTitle;
-
 	public Button bLevel;
 	public GameObject wLevel;
 	private LevelItem[] listLevel;
@@ -112,6 +110,35 @@ public class MainMenuManager : MonoBehaviour {
 	/* Fin de l'écran des statistiques */
 	/***********************************/
 
+	/**************************/
+	/* Ecran des statistiques */
+	[Header("Talent Menu")]
+	public GameObject wTalent;
+
+	public GameObject wDescription;
+	private RectTransform wDescriTransfom;
+	public Text tTitreTalent;
+	public Text tDetailTalent;
+	public Text tGainTalent;
+	public Text tCurrentTalent;
+	public Text tLevelTalent;
+	public Text tCostTalent;
+	public Text tTotalLeaf;
+	private Color initialLeafColor;
+	private float shakeTime;
+
+	public static TalentButton[] listTalent { get; private set; }		// Contient la liste des tous les talents existants
+
+	public GameObject wArmoryTalent;
+	public GameObject wArenaTalent;
+	public GameObject wSanctuaryTalent;
+	public GameObject wGardenTalent;
+	public GameObject wAcademyTalent;
+	public GameObject wAlchemyTalent;
+	public GameObject wHorologyTalent;
+	/* Fin de l'écran des statistiques */
+	/***********************************/
+
     void Awake() {
 		if (mainMenuManager == null)
 			mainMenuManager = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<MainMenuManager> ();
@@ -148,6 +175,9 @@ public class MainMenuManager : MonoBehaviour {
 			Level_Click ();
 			_GameData.loadListLevel = false;
 		}
+
+		listTalent = wTalent.GetComponentsInChildren<TalentButton> (); // TODO supprimer après les tests sur les talents
+		initialLeafColor = tTotalLeaf.color; // TODO aussi
 	}
 
 	void Update () {
@@ -159,6 +189,9 @@ public class MainMenuManager : MonoBehaviour {
 
 		if (wLevel.activeInHierarchy)
 			bLevel.Select ();
+
+		if (wTalent.activeInHierarchy)
+			bTalent.Select ();
 	}
 
 	// Contrôle que l'écran est tactile / mutlitouch
@@ -220,8 +253,15 @@ public class MainMenuManager : MonoBehaviour {
 				DeactiveButton (bNewGame);
 			}
 		} else if (wPlayerMenu.activeInHierarchy) {
-			bLevel.Select ();
-			wLevel.SetActive (true);
+			wLevel.SetActive (false);
+			wTalent.SetActive (false);
+
+			if (menu == bLevel || menu == null)
+				wLevel.SetActive (true);
+			if (menu == bTalent)
+				wTalent.SetActive (true);
+
+			// TODO equipement
 		}
 
 		wTutoriel.SetActive (false);
@@ -475,10 +515,13 @@ public class MainMenuManager : MonoBehaviour {
 		wMainMenu.SetActive (false);
 		wPlayerMenu.SetActive (true);
 		// TODO boutons à activer avec leurs fonctions développées
-		DeactiveButton (bTalent);
 		DeactiveButton (bEquipment);
 
+		// Level
 		listLevel = GetComponentsInChildren<LevelItem> ();
+		// Talent
+		initialLeafColor = tTotalLeaf.color;
+		listTalent = wTalent.GetComponentsInChildren<TalentButton> ();
 
 		CleanMenu(); // Et on nettoie l'écran du "jeu"
 	}
@@ -493,9 +536,6 @@ public class MainMenuManager : MonoBehaviour {
 
 	public void Level_Click() {
 		ActiveMenu(bLevel);
-		tTitle.text = "LEVEL";
-
-		wLevel.SetActive (true);
 	}
 
 	public void LoadLevel(int level) {
@@ -532,12 +572,16 @@ public class MainMenuManager : MonoBehaviour {
 
 	public void Talent_Click() {
 		ActiveMenu(bTalent);
-		tTitle.text = "SKILL";
+
+		// On cache le panneau de description tant qu'aucun talent n'est sélectionné
+		wDescriTransfom = wDescription.GetComponent<RectTransform> ();
+		wDescription.SetActive (false);
+
+		UpdateTalent ();
 	}
 
 	public void Equipment_Click() {
 		ActiveMenu(bEquipment);
-		tTitle.text = "EQUIPMENT";
 	}
 	/********************************************/
 	/********** FIN PARTIE MENU JOUEUR **********/
@@ -571,4 +615,141 @@ public class MainMenuManager : MonoBehaviour {
 	/********************************************/
 	/********** FIN PARTIE STATISTIQUE **********/
 	/********************************************/
+
+	/***************************************/
+	/************ PARTIE TALENT ************/
+	/***************************************/
+	public void UpdateTalent () {
+		// Parcours de l'ensemble des talents pour activer les nouvelles parties
+		// Appelé à chaque ajout de point dans un talent
+		// ARMURERIE
+		if (GameData.gameData.playerData.talent.armory <= 0) {
+			// Test si inactif
+			if (GameData.gameData.playerData.talent.backPack >= 1) {
+				wArmoryTalent.SetActive (true);
+			} else
+				wArmoryTalent.SetActive (false);
+		} else
+			wArmoryTalent.SetActive (true);
+
+		// ARENA
+		if (GameData.gameData.playerData.talent.arena <= 0) {
+			// Test si inactif
+			if (GameData.gameData.playerData.talent.armory >= 20) {
+				wArenaTalent.SetActive (true);
+			} else
+				wArenaTalent.SetActive (false);
+		} else
+			wArenaTalent.SetActive (true);
+
+		// GARDEN
+		if (GameData.gameData.playerData.talent.garden <= 0) {
+			// Test si inactif
+			if (GameData.gameData.playerData.talent.backPack >= 1) {
+				wGardenTalent.SetActive (true);
+			} else
+				wGardenTalent.SetActive (false);
+		} else
+			wGardenTalent.SetActive (true);
+
+		// ACADEMY
+		if (GameData.gameData.playerData.talent.academy <= 0) {
+			// Test si inactif
+			if (GameData.gameData.playerData.talent.backPack >= 1) {
+				wAcademyTalent.SetActive (true);
+			} else
+				wAcademyTalent.SetActive (false);
+		} else
+			wAcademyTalent.SetActive (true);
+
+		// ALCHEMY
+		if (GameData.gameData.playerData.talent.alchemy <= 0) {
+			// Test si inactif
+			if (GameData.gameData.playerData.talent.backPack >= 1) {
+				wAlchemyTalent.SetActive (true);
+			} else
+				wAlchemyTalent.SetActive (false);
+		} else
+			wAlchemyTalent.SetActive (true);
+
+		// HOROLOGY
+		if (GameData.gameData.playerData.talent.horology <= 0) {
+			// Test si inactif
+			if (GameData.gameData.playerData.talent.flight >= 1 &&
+				GameData.gameData.playerData.talent.tornado >= 1 &&
+				GameData.gameData.playerData.talent.shield >= 1 &&
+				GameData.gameData.playerData.talent.leaf >= 1 &&
+				GameData.gameData.playerData.talent.heal >= 1 &&
+				GameData.gameData.playerData.talent.lastWish >= 1 &&
+				GameData.gameData.playerData.talent.cloud >= 1) {
+				wHorologyTalent.SetActive (true);
+			} else
+				wHorologyTalent.SetActive (false);
+		} else
+			wHorologyTalent.SetActive (true);
+
+		// Parcours de l'ensemble des talents pour activer ceux qui sont débloqués
+		// Appelé à chaque ajout de point dans un talent
+		for (int i = 0; i < listTalent.Length; i++) {
+			if (!listTalent [i].IsActivated () && listTalent [i].IsAvailable ()) {
+				listTalent [i].ActivateTalent ();
+			}
+		}
+	}
+
+	public void DisplayTalent (Transform talent, string title, string detail, string mathText, float gainPerPoint, int currentValue, int valueMax, int leafCost) {
+		// On place le panneau selon la position du talent choisi
+		if (Camera.main.WorldToViewportPoint (talent.position).x > 0.6f) {
+			if (wDescriTransfom.anchoredPosition.x == 0)
+				wDescriTransfom.anchoredPosition -= Vector2.right * Camera.main.pixelWidth * 0.55f;
+		} else {
+			if (wDescriTransfom.anchoredPosition.x < 0)
+				wDescriTransfom.anchoredPosition += Vector2.right * Camera.main.pixelWidth * 0.55f;
+		}
+		// On affiche le panneau
+		wDescription.SetActive (true);
+
+		tTitreTalent.text = title;
+		tDetailTalent.text = detail;
+		tGainTalent.text = mathText.Replace ("{value}", gainPerPoint.ToString ());
+		tCurrentTalent.text = mathText.Replace ("{value}", (gainPerPoint * currentValue).ToString());
+		tLevelTalent.text = string.Format ("{0}/{1}", currentValue, valueMax);
+		tCostTalent.text = leafCost.ToString();
+
+		// On écrase des valeurs dans le cas où l'amélioration est complète
+		if (currentValue == valueMax) {
+			tGainTalent.text = "-";
+			tCostTalent.text = "-";
+		}
+
+		tTotalLeaf.text = GameData.gameData.playerData.leaf.ToString();
+	}
+
+	public void DeselectAllTalent() {
+		// On désélectionne tous les talents
+		for (int i = 0; i < listTalent.Length; i++) {
+			listTalent [i].DeselectTalent ();
+		}
+		// On enlève l'affichage de l'écran de description
+		wDescription.SetActive(false);
+	}
+
+	public IEnumerator ShakeLeaves () {
+		// On actualise la durée si on relance la fonction
+		shakeTime = 2.5f;
+
+		if (shakeTime > 0) {
+			while (shakeTime > 0) {
+				tTotalLeaf.color = Color.Lerp (Color.red, initialLeafColor, (1 - shakeTime));
+
+				shakeTime -= Time.deltaTime;
+				yield return null;
+			}
+		}
+
+		tTotalLeaf.color = initialLeafColor;
+	}
+	/***************************************/
+	/********** FIN PARTIE TALENT **********/
+	/***************************************/
 }

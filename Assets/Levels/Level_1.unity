@@ -4440,6 +4440,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 126242, guid: b0dc04048e300b14d94ae856fc1f9524, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b0dc04048e300b14d94ae856fc1f9524, type: 2}
   m_IsPrefabParent: 0
@@ -9243,6 +9247,7 @@ MonoBehaviour:
   _jumpHeight: 0
   _maxHeight: 7.5
   _invincibleTime: 0.5
+  _defense: 1
   invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
   _initialMoveSpeed: 2.3
   _maxDoubleJump: 5

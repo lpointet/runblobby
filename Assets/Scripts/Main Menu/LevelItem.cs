@@ -115,6 +115,8 @@ public class LevelItem : MonoBehaviour {
 		}
 
 		obj.rectTransform.localScale = Vector3.one;
+		obj.rectTransform.anchorMax = obj.initialPosition;
+		obj.rectTransform.anchorMin = obj.initialPosition;
 	}
 
 	private IEnumerator DepopButton(ModeButton obj, float transitionTime = 0) {

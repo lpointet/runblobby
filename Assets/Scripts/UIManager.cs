@@ -257,7 +257,7 @@ public class UIManager : MonoBehaviour {
     private void MeterTextManager() {
         if( null != enemyEnCours ) {
 			enemyTimeToKill = LevelManager.levelManager.GetEnemyTimeToKill();
-			meterText.text = Mathf.RoundToInt( enemyTimeToKill ) + "s"; // Mise à jour du temps restant pour tuer le boss
+			meterText.text = Mathf.RoundToInt (enemyTimeToKill).ToString ("0s"); // Mise à jour du temps restant pour tuer le boss
 			meterText.color = Color.Lerp( warningTextColor, warningTextColorBis, Mathf.Sin( 7f * enemyTimeToKill ) ); // Variation entre deux couleurs
 
             // Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
@@ -265,7 +265,7 @@ public class UIManager : MonoBehaviour {
             meterText.transform.localScale = new Vector2( scaleFonctionDistance, scaleFonctionDistance ) * scaleInitial;
         }
         else if( !LevelManager.player.IsDead() && !LevelManager.levelManager.IsEnemyToSpawn() ) {
-            meterText.text = Mathf.RoundToInt( LevelManager.levelManager.GetDistanceTraveled() ) + "m"; // Mise à jour de la distance parcourue affichée
+			meterText.text = Mathf.RoundToInt( LevelManager.levelManager.GetDistanceTraveled() ).ToString("0m");// Mise à jour de la distance parcourue affichée
             meterText.color = defaultTextColor;
             meterText.transform.localScale = new Vector2( scaleInitial, scaleInitial );
         }
