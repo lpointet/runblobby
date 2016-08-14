@@ -14,6 +14,9 @@ public class TouchManager : MonoBehaviour {
 	public int leftTouchId { get; private set; }
 	public Vector2 leftTouchPosition { get; private set; }
 
+	private RaycastHit2D hit; // Sert à vérifier qu'on ne touche pas une zone "cliquable"
+	//public Vector2 clickableTouchPosition  { get; private set; }
+
 	void Awake () {
 		if (current == null) {
 			current = this;
@@ -105,6 +108,37 @@ public class TouchManager : MonoBehaviour {
 			if (Input.GetMouseButton (0)) {
 				// La première fois qu'on appuie, on regarde de quel côté on est pour "enregistrer" le bouton
 				if (Input.GetMouseButtonDown (0)) {
+					// On intercepte si on est sur une zone "cliquable" et que le joueur peut cliquer
+					// On n'intercepte pas autrement pour ne pas perdre des zones pour sauter/tirer
+					LayerMask layerHit = LayerMask.NameToLayer("TouchLayer"); // TODO garder cette layer ? elle ne fonctionne pas pour l'instant
+
+					hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero, Mathf.Infinity, layerHit.value);
+
+					// Lorsque l'on clique sur une zone que l'on peut casser
+					if (LevelManager.player.canBreakByClick > 0 && hit.collider != null) {
+						Mediator.current.Publish<TouchClickable> (new TouchClickable () {
+							touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition),
+							objectId = hit.collider.gameObject.GetInstanceID ()
+						});
+						return;
+					}
+
+					// Lorsque l'on clique sur les anges pendant que LastWish est actif
+					if (LevelManager.player.canCollectAngel && hit.collider != null) {
+						Mediator.current.Publish<TouchClickable> (new TouchClickable () {
+							touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition),
+							objectId = hit.collider.gameObject.GetInstanceID ()
+						});
+						return;
+					}
+
+					// Lorsque l'on clique sur le joueur
+					// On prend en compte la distance du clic par rapport au joueur, vu qu'il peut y avoir de nombreux obstacles sur le chemin du joueur pour détecter un collider
+					if (LevelManager.player.CanShieldAttract() && Vector2.Distance(LevelManager.player.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1.5f) {
+						Mediator.current.Publish<TouchPlayer> (new TouchPlayer () {	});
+						return;
+					}
+
 					// Gauche
 					if (Input.mousePosition.x < screenMidWidth) {
 						leftTouchId = 0;
@@ -134,7 +168,7 @@ public class TouchManager : MonoBehaviour {
 						leftTouchPosition = Input.mousePosition;
 					}
 					// Droite
-					else {
+					else if (rightTouchId != -1) {
 						rightTouchPosition = Input.mousePosition;
 					}
 				}
@@ -145,7 +179,7 @@ public class TouchManager : MonoBehaviour {
 					leftTouchId = -1;
 				}
 				// Droite
-				else {
+				else if (rightTouchId != -1) {
 					Mediator.current.Publish<EndTouch> (new EndTouch () { fingerId = rightTouchId });
 					rightTouchId = -1;
 				}

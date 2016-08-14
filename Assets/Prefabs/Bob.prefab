@@ -446,11 +446,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad76c34e6dab0f4b8f019765f9ae61b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 0.5
   weaponPower: 1
-  whatToHit:
-    serializedVersion: 2
-    m_Bits: 256
+  weaponPenetration: 0
+  weaponCritical: 0
+  weaponCritPower: 0
+  weaponFireRate: 0
+  delayMini: 0.5
+  weaponSpeed: 0
+  weaponDoubleShot: 0
+  weaponAmmunition: 1
+  remoteBullet: 1
+  numberBulletRebound: 5
   bulletType: {fileID: 11498158, guid: b87aaba46f8e4644c85da419da253dd0, type: 2}
   autoFire: 1
 --- !u!114 &11433486
@@ -465,11 +471,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthPoint: 0
-  _healthPointMax: 1
+  _healthPointMax: 10
+  _defense: 0
+  _dodge: 0
+  _sendBack: 0
+  _reflection: 0
+  _invulnerabilityTime: 0.5
+  _vampirisme: 100
+  _regeneration: 0
+  _attack: 0
+  _attackDelay: 5
+  _attackSpeed: 100
+  _criticalHit: 10
+  _criticalPower: 150
+  _sharp: 0
+  _machineGun: 0
+  _shotDouble: 0
+  _shotWidth: 0
+  _shotRemote: 0
   _moveSpeed: 0
   _jumpHeight: 0
   _maxHeight: 7.5
-  _invincibleTime: 0.5
   invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
   _timeToKill: 45
   damageToGive: 1

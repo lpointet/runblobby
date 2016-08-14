@@ -44,8 +44,9 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 147170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 495566}
   m_RootOrder: 0
@@ -56,8 +57,9 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 107998}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.37, y: -15.3, z: 0}
+  m_LocalPosition: {x: 11.594845, y: 9.65122, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 437198}
   m_Father: {fileID: 0}
@@ -92,7 +94,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.07
+  m_Radius: 0.15
 --- !u!82 &8287620
 AudioSource:
   m_ObjectHideFlags: 1
@@ -211,7 +213,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Time: 0.25
+  m_Time: 0.5
   m_StartWidth: 0.05
   m_EndWidth: 0
   m_Colors:
@@ -230,7 +232,7 @@ TrailRenderer:
     m_Color[4]:
       serializedVersion: 2
       rgba: 16777215
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.25
   m_Autodestruct: 0
 --- !u!114 &11498158
 MonoBehaviour:
@@ -243,15 +245,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5774da8ddaed883469d2a877f0a8ba09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
-  bulletPower: 1
-  myParticle: {fileID: 0}
+  initialMoveSpeed: 3
+  initialBulletPower: 0
+  initialBulletPenetration: 0
+  isRemote: 0
+  initialNumberRebound: 0
   bulletImpactSound: {fileID: 8300000, guid: 49aeb1f0ed566c746a21e46225583719, type: 3}
   impactSoundVolume: 0.75
-  myTrail: {fileID: 147170}
-  layerCollision:
-    serializedVersion: 2
-    m_Bits: 1280
+  myTrail: {fileID: 9601202}
 --- !u!212 &21245846
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -12,6 +12,8 @@ public class PickupSpawn : MonoBehaviour {
 	private List<int> weightBonus = new List<int>();
 	private int poidsTotal = 100;
 
+	public int distanceSansbonus = 200;
+	public int distanceMaxBonus = 1000;
 	private float calculusDistance = 0;
 	private Vector2 initialPosition;
 	private GameObject instantPickup;
@@ -26,6 +28,10 @@ public class PickupSpawn : MonoBehaviour {
 		// Si on ne veut pas de la liste classique, on doit renseigner ceux que l'on veut ainsi que les poids associés
 		if (specificPickup.Length > 0) {
 			for (int i = 0; i < specificPickup.Length; i++) {
+				// Si le pickup n'est pas activé, on passe au suivant
+				if (!IsPickupActivated (specificPickup [i]))
+					continue;
+				
 				listeBonus.Add (specificPickup[i]);
 
 				int currentWeight = 0;
@@ -36,15 +42,23 @@ public class PickupSpawn : MonoBehaviour {
 					currentWeight = specificPickup [i].weight;
 				}
 				weightBonus.Add (currentWeight);
-
-				//poidsTotal += currentWeight;
 			}
 		} else {
 			for (int i = 0; i < ListManager.current.powerups.Length; i++) {
+				// Si le pickup n'est pas activé, on passe au suivant
+				if (!IsPickupActivated (ListManager.current.powerups[i]))
+					continue;
+				
 				listeBonus.Add (ListManager.current.powerups[i]);
 				weightBonus.Add (ListManager.current.powerups[i].weight);
 			}
 		}
+	}
+
+	void Start () {
+		// Ajout des points de talent
+		distanceSansbonus = Mathf.RoundToInt (distanceSansbonus * (100 - GameData.gameData.playerData.talent.buffDelay * GameData.gameData.playerData.talent.buffDelayPointValue) / 100f);
+		distanceMaxBonus = Mathf.RoundToInt (distanceMaxBonus * (100 - GameData.gameData.playerData.talent.buffDelay * GameData.gameData.playerData.talent.buffDelayPointValue) / 100f);
 	}
 
 	void OnEnable () {
@@ -61,16 +75,18 @@ public class PickupSpawn : MonoBehaviour {
 	}
 
 	void Update () {
+		// On ne fait pas apparaître d'autres pickups si le joueur est actuellement sous Last Wish actif
+		if (LevelManager.player.HasLastWish () && LevelManager.player.GetLastWish ().IsLaunched ())
+			return;
+		
 		if (!activated && myTransform.position.x < CameraManager.cameraEndPosition) {
 			activated = true;
 
-			int distanceSansbonus = 200;
-			int distanceMaxBonus = 1000;
 			calculusDistance = (float)_StaticFunction.MathPower ((levelManager.GetDistanceSinceLastBonus () - distanceSansbonus) / (float)(distanceMaxBonus - distanceSansbonus), 3);
-
+			calculusDistance = 1;
 			// Ajuster le calcul de la distance pour que :
-			// Entre 0 et 200m : rien (pour assurer une distance mini sans bonus)
-			// Entre 200m et 1000m : on monte progressivement de 0 à 1, avec une valeur à 600m de 0.1
+			// Entre 0 					et distanceSansbonus : rien (pour assurer une distance mini sans bonus)
+			// Entre distanceSansbonus 	et distanceMaxBonus  : on monte progressivement de 0 à 1, avec une valeur à (distanceMaxBonus + distanceSansbonus) / 2 de 0.1
 			if (Mathf.Max (0, calculusDistance) < Random.value)
 				return;
 
@@ -93,6 +109,10 @@ public class PickupSpawn : MonoBehaviour {
 				}
 			}
 
+			// S'il n'y a aucun pickup ou qu'ils n'ont aucun poids, on ne fait rien
+			if (poidsTotal <= 0)
+				return;
+
 			levelManager.ResetBonusDistance ();
 
 			// On parcourt l'ensemble des pickups possibles, chacun avec sa probabilité d'apparition relative à l'ensemble des possibilités
@@ -112,6 +132,23 @@ public class PickupSpawn : MonoBehaviour {
 			instantPickup.transform.localPosition = Vector3.zero;
 		}
     }
+
+	private bool IsPickupActivated (Pickup pickup) {
+
+		if (pickup.GetType () == typeof(MultiplierPickup))
+			return GameData.gameData.playerData.talent.leaf > 0 ? true : false;
+		
+		if (pickup.GetType () == typeof(HealPickup))
+			return GameData.gameData.playerData.talent.heal > 0 ? true : false;
+		
+		if (pickup.GetType () == typeof(CloudPickup))
+			return GameData.gameData.playerData.talent.cloud > 0 ? true : false;
+		
+		if (pickup.GetType () == typeof(LastWishPickup))
+			return GameData.gameData.playerData.talent.lastWish > 0 ? true : false;
+
+		return true;
+	}
 
 	void OnDrawGizmos() {
 		Gizmos.color = Color.red;

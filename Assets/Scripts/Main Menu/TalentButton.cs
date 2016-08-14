@@ -6,7 +6,7 @@ public class TalentButton : MonoBehaviour {
 	
 	private Transform myTransform;
 	[SerializeField] private Image myImage;
-	private Talent talent;								// GameData.gameData.playerData.talent
+	private Talent talent;								// = GameData.gameData.playerData.talent
 
 	[SerializeField] private Image selectImage;			// Zone qui montre qu'un talent est sélectionné
 	private bool selected = false;						// Savoir si le talent a déjà été sélectionné
@@ -19,13 +19,13 @@ public class TalentButton : MonoBehaviour {
 	[SerializeField] private string title;				// Nom du talent
 	[SerializeField][TextArea(3,10)] private string textDescription;	// Description textuelle du talent (eg: Gain attack)
 	[SerializeField][TextArea(3,10)] private string mathDescription;	// Description "mathématique" du talent (eg: +{value} Attack)
-	[SerializeField] private float gainPerPoint;		// Gain par point de talent (eg: 5)
 
 	[Header("Technical")]
 	[SerializeField] private string section;			// Nom de la section dans laquelle se trouve le talent (eg: armory)
 	[SerializeField] private string gameValueName;		// Nom de la variable à changer dans le GameData
 	public int currentValue { get; private set; }		// Nombre de points actuellement dans le talent
 	[SerializeField] private int maxValue;				// Valeur maximale du talent
+	private float gainPerPoint;							// Gain par point de talent (eg: 5) dans le GameData
 	private bool activated = false;						// TRUE lorsque les prérequis du talent sont validés
 	private bool fullActivation = false;				// TRUE lorsque le talent est au maximum
 	[SerializeField] private Text textValue;			// Texte contenant la valeur
@@ -73,6 +73,7 @@ public class TalentButton : MonoBehaviour {
 
 	void Start () {
 		talent = GameData.gameData.playerData.talent;
+		gainPerPoint = (float)talent.GetType ().GetField (gameValueName + "PointValue").GetValue (talent);
 		suffixValue = "/" + maxValue.ToString ();
 
 		if (!IsAvailable ())
@@ -102,7 +103,6 @@ public class TalentButton : MonoBehaviour {
 		}
 
 		if (fullActivation || !activated) {
-			//DisplayTalent ();
 			return;
 		}
 
@@ -121,7 +121,7 @@ public class TalentButton : MonoBehaviour {
 		if (GameData.gameData.playerData.leaf >= leafCost [currentValue]) {
 			GameData.gameData.playerData.leaf -= leafCost [currentValue];
 			ValueChange ();
-			DisplayTalent ();
+			DisplayTalent (true);
 
 			return true;
 		}
@@ -149,7 +149,9 @@ public class TalentButton : MonoBehaviour {
 		if (currentValue == maxValue)
 			FullActivation ();
 
-		// TODO SAVE ICI
+		// Sauvegarde si la valeur change
+		if (addValue != 0)
+			_StaticFunction.Save ();
 	}
 
 	private IEnumerator PopTalent () {
@@ -211,9 +213,9 @@ public class TalentButton : MonoBehaviour {
 		selectImage.enabled = false;
 	}
 
-	private void DisplayTalent() {
+	private void DisplayTalent(bool bought = false) {
 		if (currentValue < maxValue)
-			MainMenuManager.mainMenuManager.DisplayTalent (myTransform, title, textDescription, mathDescription, gainPerPoint, currentValue, maxValue, leafCost [currentValue]);
+			MainMenuManager.mainMenuManager.DisplayTalent (myTransform, title, textDescription, mathDescription, gainPerPoint, currentValue, maxValue, leafCost [currentValue], bought);
 		else
 			MainMenuManager.mainMenuManager.DisplayTalent (myTransform, title, textDescription, mathDescription, gainPerPoint, currentValue, maxValue, 0);
 	}

@@ -41,7 +41,7 @@ public class Bounce : MonoBehaviour {
 				// On fournit l'xp au joueur
 				ScoreManager.AddPoint (experienceToGive, ScoreManager.Types.Experience);
 			} else {
-				LevelManager.player.Hurt(damageToGive);
+				LevelManager.player.Hurt(damageToGive, 0, true);
 			}
 		}
 	}

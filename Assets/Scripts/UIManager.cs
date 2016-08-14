@@ -14,6 +14,9 @@ public struct DialogEntry {
 	[TextArea(3,10)] public string textLine;
 }
 
+// Choix possible d'affichage du CombatLog
+public enum LogType { damage, heal, pickup, special };
+
 public class UIManager : MonoBehaviour {
 
 	public static UIManager uiManager;
@@ -43,6 +46,16 @@ public class UIManager : MonoBehaviour {
 	public Slider enemyHealthBar;
 	private float previousHP = 0;
 
+	// Munition
+	public Slider ammunition;
+
+	[Header("Combat Log")]
+	public Text combatText;
+	public Color damageColor;
+	public Color healColor;
+	public Color pickupColor;
+	public Color specialColor;
+
 	[Header("Pause Menu")]
 	public GameObject pauseUI;
 	public Text distancePause;
@@ -63,6 +76,7 @@ public class UIManager : MonoBehaviour {
 	public Slider distanceSliderEnd;
 	public Text moneyEnd;
 	public Slider moneySliderEnd;
+	public Text moneyBonus;
 	public Text experience;
 	public Slider experienceSliderEnd;
 	public Text gainLevel;
@@ -161,18 +175,18 @@ public class UIManager : MonoBehaviour {
 		if (TimeManager.paused)
 			return;
 
-        // Compteur
-        MeterTextManager();
+		// Compteur
+		MeterTextManager();
 		if (LevelManager.levelManager.IsStory ())
 			MeterBarManager ();
-    
-		EnemyManager();
 
 		EnemySpawnManager();
-    }
+
+		EnemyManager();
+	}
 
     public void PauseManager() { 
-		if (!endUI.activeInHierarchy && !dialogUI.activeInHierarchy) {
+		if (!endUI.activeInHierarchy && !dialogUI.activeInHierarchy && !cdObject.activeInHierarchy && !LevelManager.player.IsDead()) {
 			paused = !paused;
 
 			if (paused) {
@@ -195,7 +209,8 @@ public class UIManager : MonoBehaviour {
 			lerpingTimeEnemyBar += TimeManager.deltaTime / LevelManager.levelManager.enemySpawnDelay;
 			enemyHealthBar.value = Mathf.Lerp (0, 1, lerpingTimeEnemyBar);
 
-			if (lerpingTimeEnemyBar > 1) {
+			// Quand l'ennemi est là, on "force" des valeurs
+			if (enemyEnCours != null) {
 				enemyHealthBar.value = 1;
 				previousHP = 1; // Pour éviter que la première frame dans EnemyManager() montre un ratio d'HP = 0
 				LevelManager.levelManager.SetEnemyToSpawn (false); // On sort de la boucle d'apparition
@@ -290,6 +305,10 @@ public class UIManager : MonoBehaviour {
 
 		enemyHealthBar.gameObject.SetActive (active);
     }
+
+	public void ToggleAmmoGUI (bool active) {
+		ammunition.gameObject.SetActive (active);
+	}
 
 	public void ToggleEndMenu(bool active) {
 		endUI.SetActive (active);
@@ -437,17 +456,20 @@ public class UIManager : MonoBehaviour {
 			timeUpdateMultiLevel += TimeManager.deltaTime * (diffLevel + 1);
 			yield return null;
 		}
+
+		// Lorsque les sliders ont terminés leurs courses
+		StartCoroutine (PopText (moneyBonus, ScoreManager.GetBonusScore ()));
 	}
 
 	private IEnumerator PopText(Text text, int valueGainLevel) {
 		float timeScalePop = 0;
-		float delayPop = 0.2f;
+		float delayPop = 0.15f;
 		float popScale = 0;
 		float initialScale = text.rectTransform.localScale.x;
 
 		if (valueGainLevel > 0) {
-			gainLevel.gameObject.SetActive (true);
-			gainLevel.text = "+" + valueGainLevel;
+			text.gameObject.SetActive (true);
+			text.text = valueGainLevel.ToString ("+0");
 		}
 
 		text.GetComponent<AudioSource> ().Play ();
@@ -461,6 +483,67 @@ public class UIManager : MonoBehaviour {
 		}
 
 		text.rectTransform.localScale = new Vector2 (initialScale, initialScale);
+	}
+
+	public IEnumerator CombatText (Transform parentTransform, string combatLog, LogType type = LogType.special, System.Action<bool> callback = null) {
+		GameObject obj = PoolingManager.current.Spawn ("CombatText");
+
+		if (obj != null) {
+			Text combatText = obj.GetComponent<Text> ();
+			float floatingTime = 1f;
+			float elapsedTime = 0;
+
+			obj.SetActive (true);
+			obj.transform.SetParent (transform, false);
+			obj.transform.position = parentTransform.position;
+			obj.transform.rotation = Quaternion.identity;
+			combatText.text = combatLog;
+
+			// Choix de la couleur
+			Color startColor;
+			switch (type) {
+			case LogType.damage:
+				startColor = damageColor;
+				break;
+			case LogType.heal:
+				startColor = healColor;
+				break;
+			case LogType.pickup:
+				startColor = pickupColor;
+				break;
+			case LogType.special:
+			default:
+				startColor = specialColor;
+				break;
+			}
+
+			Color endColor = startColor;
+			endColor.a = 0;
+
+			combatText.color = startColor;
+
+			// Le texte flotte au-dessus du character touché
+			while (elapsedTime < floatingTime) {
+				if(TimeManager.paused)
+					combatText.color = endColor;
+				else
+					combatText.color = startColor;
+					
+				obj.transform.position = parentTransform.position + Vector3.up * (0.5f + elapsedTime);
+				//combatText.color = Color.Lerp (startColor, endColor, elapsedTime);
+
+				elapsedTime += TimeManager.deltaTime;
+				yield return null;
+			}
+
+			combatText.color = endColor;
+			obj.transform.SetParent (PoolingManager.pooledObjectParent, false);
+			obj.SetActive (false);
+		}
+
+		// On prévient que l'action est terminée, si besoin
+		if (callback != null)
+			callback (true);
 	}
 
 	public void ResumeGame() {

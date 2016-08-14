@@ -116,7 +116,6 @@ public class MainMenuManager : MonoBehaviour {
 	public GameObject wTalent;
 
 	public GameObject wDescription;
-	private RectTransform wDescriTransfom;
 	public Text tTitreTalent;
 	public Text tDetailTalent;
 	public Text tGainTalent;
@@ -125,6 +124,7 @@ public class MainMenuManager : MonoBehaviour {
 	public Text tCostTalent;
 	public Text tTotalLeaf;
 	private Color initialLeafColor;
+	public Color warningLeafColor;
 	private float shakeTime;
 
 	public static TalentButton[] listTalent { get; private set; }		// Contient la liste des tous les talents existants
@@ -178,6 +178,9 @@ public class MainMenuManager : MonoBehaviour {
 
 		listTalent = wTalent.GetComponentsInChildren<TalentButton> (); // TODO supprimer après les tests sur les talents
 		initialLeafColor = tTotalLeaf.color; // TODO aussi
+
+		// Force le timeScale au cas où on vient du menu
+		Time.timeScale = 3;
 	}
 
 	void Update () {
@@ -505,7 +508,6 @@ public class MainMenuManager : MonoBehaviour {
 	/********************************************/
 
 
-
 	/********************************************/
 	/************ PARTIE MENU JOUEUR ************/
 	/********************************************/
@@ -574,7 +576,6 @@ public class MainMenuManager : MonoBehaviour {
 		ActiveMenu(bTalent);
 
 		// On cache le panneau de description tant qu'aucun talent n'est sélectionné
-		wDescriTransfom = wDescription.GetComponent<RectTransform> ();
 		wDescription.SetActive (false);
 
 		UpdateTalent ();
@@ -586,7 +587,6 @@ public class MainMenuManager : MonoBehaviour {
 	/********************************************/
 	/********** FIN PARTIE MENU JOUEUR **********/
 	/********************************************/
-
 
 	/********************************************/
 	/************ PARTIE STATISTIQUE ************/
@@ -600,6 +600,10 @@ public class MainMenuManager : MonoBehaviour {
 		}
 
 		wStatistique.SetActive (true);
+	}
+
+	public void Close_Stat () {
+		wStatistique.SetActive (false);
 	}
 
 	private void CreateStatItem(string name, float value, RectTransform parent) {
@@ -697,15 +701,7 @@ public class MainMenuManager : MonoBehaviour {
 		}
 	}
 
-	public void DisplayTalent (Transform talent, string title, string detail, string mathText, float gainPerPoint, int currentValue, int valueMax, int leafCost) {
-		// On place le panneau selon la position du talent choisi
-		if (Camera.main.WorldToViewportPoint (talent.position).x > 0.6f) {
-			if (wDescriTransfom.anchoredPosition.x == 0)
-				wDescriTransfom.anchoredPosition -= Vector2.right * Camera.main.pixelWidth * 0.55f;
-		} else {
-			if (wDescriTransfom.anchoredPosition.x < 0)
-				wDescriTransfom.anchoredPosition += Vector2.right * Camera.main.pixelWidth * 0.55f;
-		}
+	public void DisplayTalent (Transform talent, string title, string detail, string mathText, float gainPerPoint, int currentValue, int valueMax, int leafCost, bool bought = false) {
 		// On affiche le panneau
 		wDescription.SetActive (true);
 
@@ -722,10 +718,21 @@ public class MainMenuManager : MonoBehaviour {
 			tCostTalent.text = "-";
 		}
 
-		tTotalLeaf.text = GameData.gameData.playerData.leaf.ToString();
+		// Si on achète, on affiche une décrémentation du compteur de feuilles
+		if (bought)
+			StartCoroutine (BuyTalent ());
+		else
+			tTotalLeaf.text = GameData.gameData.playerData.leaf.ToString ();
+		
+		// Test pour choisir la couleur du total de feuille
+		int valueTotalLeaf = 0;
+		if (!int.TryParse (tTotalLeaf.text, out valueTotalLeaf) || valueTotalLeaf < leafCost)
+			tTotalLeaf.color = warningLeafColor;
+		else
+			tTotalLeaf.color = initialLeafColor;
 	}
 
-	public void DeselectAllTalent() {
+	public void DeselectAllTalent () {
 		// On désélectionne tous les talents
 		for (int i = 0; i < listTalent.Length; i++) {
 			listTalent [i].DeselectTalent ();
@@ -736,18 +743,40 @@ public class MainMenuManager : MonoBehaviour {
 
 	public IEnumerator ShakeLeaves () {
 		// On actualise la durée si on relance la fonction
-		shakeTime = 2.5f;
+		shakeTime = 2f;
+		float currentRandom;
 
 		if (shakeTime > 0) {
 			while (shakeTime > 0) {
-				tTotalLeaf.color = Color.Lerp (Color.red, initialLeafColor, (1 - shakeTime));
+				currentRandom = 1.5f + shakeTime;
+				tTotalLeaf.rectTransform.anchoredPosition = new Vector2 (Random.Range (-currentRandom, currentRandom), Random.Range (-currentRandom, currentRandom));
 
 				shakeTime -= Time.deltaTime;
 				yield return null;
 			}
 		}
 
-		tTotalLeaf.color = initialLeafColor;
+		// Paramètres initiaux
+		tTotalLeaf.rectTransform.anchoredPosition = Vector2.zero;
+	}
+
+	public IEnumerator BuyTalent () {
+		float countTime = 1f;
+		float currentTimer = 0;
+
+		int currentCount;
+		int finalCount = GameData.gameData.playerData.leaf;
+
+		if (int.TryParse(tTotalLeaf.text, out currentCount)) {
+			while (currentTimer < countTime) {
+				tTotalLeaf.text = Mathf.RoundToInt (Mathf.Lerp (currentCount, finalCount, currentTimer / countTime)).ToString ();
+
+				currentTimer += Time.deltaTime;
+				yield return null;
+			}
+		}
+
+		tTotalLeaf.text = finalCount.ToString ();
 	}
 	/***************************************/
 	/********** FIN PARTIE TALENT **********/

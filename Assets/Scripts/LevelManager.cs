@@ -55,6 +55,9 @@ public class LevelManager : MonoBehaviour {
 	public float enemySpawnDelay;
 	private float enemyTimeToKill;
 	[SerializeField] private FlyPickup flyEndBoss;	// Pour faire voler à l'infini durant le dernier boss
+
+	public static int reduceEnemyDefense; // Valeur à soustraire à la DEFENSE du prochain ennemi
+	public static int reduceEnemyHealth; // Valeur à soustraire au HP du prochain ennemi
 	//* Fin partie ennemi intermédiaire
 
 	private static bool endingScene = false;
@@ -422,6 +425,9 @@ public class LevelManager : MonoBehaviour {
 		} else {
 			character.Die ();
 			character.OnKill ();
+			// On enlève la possibilité de réduire la vie et la défense du prochain ennemi
+			reduceEnemyDefense = 0;
+			reduceEnemyHealth = 0;
 			// STAT : on ajoute un à chaque ennemi tué
 			GameData.gameData.playerData.enemyKilled++;
 		}

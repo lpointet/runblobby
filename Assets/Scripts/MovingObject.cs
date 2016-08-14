@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DustJump : MonoBehaviour {
+public class MovingObject : MonoBehaviour {
 
 	private Transform myTransform;
 

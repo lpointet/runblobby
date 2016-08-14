@@ -54,8 +54,11 @@ public class Enemy0101 : Enemy {
 		}
 	}
 
-	public override void Hurt(int damage) {
-		base.Hurt (damage);
+	public override void Hurt(float damage, int penetration = 0, bool ignoreDefense = false, Character attacker = null) {
+		if (IsDead () || LevelManager.player.IsDead())
+			return;
+		
+		base.Hurt (damage, penetration, ignoreDefense, attacker);
 
 		myAnim.SetFloat("ratioHP", healthPoint / (float)healthPointMax);
 	}

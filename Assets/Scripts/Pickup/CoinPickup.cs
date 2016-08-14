@@ -25,11 +25,6 @@ public class CoinPickup : Pickup {
 
 		if (!counted && myTransform.position.x < playerTransform.position.x + 1f) { // On prend un peu d'avance sur le joueur
 			CountNewLeaf();
-		} else if (myTransform.position.x < CameraManager.cameraStartPosition) {
-			// On ne veut pas pouvoir interagir avec cette pièce si elle n'est plus visible (cf. AutoCoinPickup)
-			// On vérifie que le despawn n'est pas déjà en cours
-			if (!despawnCalled)
-				base.OnDespawn ();
 		}
 
 		base.Update ();

@@ -18,8 +18,8 @@ public class Enemy0102 : Enemy {
 	[SerializeField] private string oeufName = "Oeuf";
 	private int currentOeuf = 100;
 
-	private float attackSpeed;
-	[SerializeField] private float easyAttackSpeed = 10f;
+	private float moveBackSpeed;
+	[SerializeField] private float easyMoveBackSpeed = 10f;
 
 	private List<Oeuf> listeOeufs = new List<Oeuf>();
 	private bool angry = false;
@@ -39,7 +39,7 @@ public class Enemy0102 : Enemy {
 		currentOeuf -= pourcentOeuf; // Initialise à la première valeur de laché d'oeuf
 		//myAnim.SetFloat("ratioHP", 1f);
 
-		attackSpeed = easyAttackSpeed;
+		moveBackSpeed = easyMoveBackSpeed;
 
 		smokeParticle.gameObject.SetActive (false);
 	}
@@ -62,7 +62,7 @@ public class Enemy0102 : Enemy {
 
 			// Si elle n'est pas à sa place initiale, elle s'y avance régulièrement
 			if (myTransform.position.x < startPosition [0]) {
-				moveSpeed = attackSpeed;
+				moveSpeed = moveBackSpeed;
 			} else {
 				moveSpeed = 0;
 			}
@@ -123,7 +123,7 @@ public class Enemy0102 : Enemy {
 				// On le fait accélérer
 				if (lerpingAngryTime < 1) {
 					lerpingAngryTime += TimeManager.deltaTime / delayRunAngry;
-					moveSpeed = Mathf.Lerp (0, -attackSpeed, lerpingAngryTime);
+					moveSpeed = Mathf.Lerp (0, -moveBackSpeed, lerpingAngryTime);
 				}
 				myRb.velocity = new Vector2 (moveSpeed, myRb.velocity.y);
 			} else {
@@ -134,13 +134,14 @@ public class Enemy0102 : Enemy {
 		}
 	}
 
-	public override void Hurt(int damage) {
-		base.Hurt (damage);
+	public override void Hurt(float damage, int penetration = 0, bool ignoreDefense = false, Character attacker = null) {
+		if (IsDead () || LevelManager.player.IsDead())
+			return;
+		
+		base.Hurt (damage, penetration, ignoreDefense, attacker);
 
 		// Impact de balles
-		if (!IsDead()) {
-			featherParticle.Play ();
-		}
+		featherParticle.Play ();
 
 		// Calculer le pourcentage de vie restant
 		int pourcentVie = Mathf.FloorToInt(100 * healthPoint / (float)healthPointMax);

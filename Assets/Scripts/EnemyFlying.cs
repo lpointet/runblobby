@@ -26,7 +26,8 @@ public class EnemyFlying : MonoBehaviour {
 	}
 
 	void Update () {
-		if (TimeManager.paused)
+		// On n'active l'ennemi qu'à partir du moment où il est visible
+		if (TimeManager.paused || myTransform.position.x > CameraManager.cameraEndPosition)
 			return;
 
 		if (enemyIsHere && !enemyIsOnPlayerY) {

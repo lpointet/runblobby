@@ -8,6 +8,8 @@ TagManager:
   - Bullet
   - LevelCanvas
   - SFX
+  - TouchArea
+  - TouchPlayer
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - EnemyDrop
   - PlayerBullet
   - EnemyBullet
-  - 
+  - Touch
   - 
   - 
   - 

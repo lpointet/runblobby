@@ -205,12 +205,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b340d38bb98f2d742b2b054511f04ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthPoint: 0
-  _healthPointMax: 1
+  _healthPoint: 10
+  _healthPointMax: 10
+  _defense: 30
+  _dodge: 0
+  _sendBack: 0
+  _reflection: 0
+  _invulnerabilityTime: 0.5
+  _vampirisme: 0
+  _regeneration: 0
+  _attack: 0
+  _attackDelay: 0
+  _attackSpeed: 0
+  _criticalHit: 0
+  _criticalPower: 0
+  _sharp: 0
+  _machineGun: 0
+  _shotDouble: 0
+  _shotWidth: 0
+  _shotRemote: 0
   _moveSpeed: 0
   _jumpHeight: 0
   _maxHeight: 7.5
-  _invincibleTime: 0.5
   invincibleMaterial: {fileID: 2100000, guid: ee1f40d82575aca4db4e9d3ef6db1981, type: 2}
   _timeToKill: 30
   damageToGive: 1

@@ -168,7 +168,7 @@ public class Enemy0103 : Enemy {
 		}
 	}
 
-	public override void Hurt(int damage) {
+	public override void Hurt(float damage, int penetration = 0, bool ignoreDefense = false, Character attacker = null) { // TODO reporter les modifications de Character.cs
 		if (IsInvincible () || IsDead())
 			return;
 
@@ -178,17 +178,19 @@ public class Enemy0103 : Enemy {
 
 		timeLerpHP = 0; // On prépare la nouvelle variation de couleur
 
-		healthPoint -= damage;
+		healthPoint -= Mathf.RoundToInt (damage);
 
-		if (healthPoint <= 0 && !IsDead ()) {
+		if (healthPoint <= 0 && !IsDead () && !LevelManager.player.IsDead()) {
 			//LevelManager.Kill (this);
 			Despawn();
 			LevelManager.levelManager.StartEndingScene ();
 		}
 
 		// Effet visuel de blessure
-		if (!IsDead ())
-			StartCoroutine (HurtEffect ());
+		if (!IsDead ()) {
+			StartCoroutine (HurtEffect (invulnerabilityTime));
+			SetInvincible (invulnerabilityTime);
+		}
 
 		if (!IsInvincible())
 			mySpecialAudio.HurtSound ();
@@ -244,6 +246,7 @@ public class Enemy0103 : Enemy {
 
 	private void DestructionOfTheWorld () {
 		// On fait partir l'ennemi avec un rire méphistophélique
+		// TODO son rire
 		StartCoroutine(WalkingBoss(3f, 3f));
 
 		// Suppression de toutes les feuilles qui restent
@@ -254,12 +257,14 @@ public class Enemy0103 : Enemy {
 		// Désactiver la mort par chute
 		CameraManager.cameraManager.fallingKiller.gameObject.SetActive(false);
 
+		float fallingTime = 2f;
+		float delayBetweenBlock = 0.15f;
 		// Les blocs tombent l'un après l'autre en suivant leur index
 		for (int i = 0; i < LevelManager.levelManager.GetListBlock ().Count; i++) {
-			StartCoroutine (FallingBlock(LevelManager.levelManager.GetListBlock ()[i].transform, 2f, 0.15f * i));
+			StartCoroutine (FallingBlock(LevelManager.levelManager.GetListBlock ()[i].transform, fallingTime, delayBetweenBlock * i));
 		}
 		// On lance le compte-à-rebours avant la victoire en fonction du nombre de blocs et du temps de chute
-		Invoke("Victory", LevelManager.levelManager.GetListBlock ().Count * 0.15f * Time.timeScale + 2f);
+		Invoke("Victory", LevelManager.levelManager.GetListBlock ().Count * delayBetweenBlock * Time.timeScale + fallingTime);
 
 		// Son des rochers
 		AudioSource myAudio = GetComponent<AudioSource> ();

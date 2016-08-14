@@ -14,7 +14,7 @@ public class PoolingScript : MonoBehaviour {
 
 	public void Init() {
 		if (poolName == "")
-			poolName = name;
+			poolName = pooledObject.name;
 	}
 
 	public void Awake() {
@@ -25,7 +25,7 @@ public class PoolingScript : MonoBehaviour {
 		for (int i = 0; i < pooledAmount; i++) {
 			GameObject obj = (GameObject)Instantiate (pooledObject);
 			obj.SetActive (false);
-			obj.transform.parent = PoolingManager.pooledObjectParent;
+			obj.transform.SetParent (PoolingManager.pooledObjectParent, false);
 			pooledObjects.Add (obj);
 		}
 	}
@@ -40,7 +40,7 @@ public class PoolingScript : MonoBehaviour {
 		if (willGrow) {
 			GameObject obj = (GameObject)Instantiate (pooledObject);
 			obj.SetActive (false);
-			obj.transform.parent = PoolingManager.pooledObjectParent;
+			obj.transform.SetParent (PoolingManager.pooledObjectParent, false);
 			pooledObjects.Add (obj);
 			return obj;
 		}

@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 458226}
   - 58: {fileID: 5885192}
   - 114: {fileID: 11455428}
-  - 82: {fileID: 8218076}
   m_Layer: 14
   m_Name: Pickup_Fly
   m_TagString: Untagged
@@ -18,6 +17,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &106060
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 436188}
+  - 58: {fileID: 5865284}
+  - 114: {fileID: 11413662}
+  m_Layer: 14
+  m_Name: Pickup_Magnet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &112252
 GameObject:
   m_ObjectHideFlags: 1
@@ -97,9 +113,23 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 447086}
   m_RootOrder: 0
+--- !u!4 &436188
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106060}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.020145, y: -3.5897617, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 458226}
+  m_RootOrder: 1
 --- !u!4 &447086
 Transform:
   m_ObjectHideFlags: 1
@@ -107,8 +137,9 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 159458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29, y: 0.25, z: 0}
+  m_LocalPosition: {x: 3.1998572, y: 0.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 419136}
   - {fileID: 449482}
@@ -124,6 +155,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 9, z: 1}
   m_LocalScale: {x: 2, y: 20, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 447086}
   m_RootOrder: 1
@@ -136,8 +168,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 496876}
+  - {fileID: 436188}
   m_Father: {fileID: 447086}
   m_RootOrder: 2
 --- !u!4 &496876
@@ -149,6 +183,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 458226}
   m_RootOrder: 0
@@ -185,6 +220,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154932}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!58 &5865284
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106060}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.25
 --- !u!58 &5885192
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -213,81 +262,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
---- !u!82 &8218076
-AudioSource:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102916}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300001, guid: 327b8b3b218a7f644a2b7efc7f9a656c,
-    type: 2}
-  m_audioClip: {fileID: 8300000, guid: 00b7a0948ba1e3942a3f204eaca5768e, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 0.7
-  m_Pitch: 1.2
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  Priority: 10
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
 --- !u!82 &8250338
 AudioSource:
   m_ObjectHideFlags: 1
@@ -472,6 +446,29 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11413662
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f66f0c02f89614195813feac84abe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickupSound: {fileID: 0}
+  pickupVolume: 0
+  actifSound: {fileID: 0}
+  actifVolume: 0.15
+  despawnSound: {fileID: 0}
+  despawnVolume: 0
+  lifeTime: 1000
+  weight: 0
+  radius: 10
+  layerCoins:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!114 &11429064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -491,7 +488,6 @@ MonoBehaviour:
   despawnVolume: 0
   lifeTime: 10
   weight: 5
-  radiusMagnet: 10
   layerCoins:
     serializedVersion: 2
     m_Bits: 2048
@@ -499,6 +495,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   flyPickup: {fileID: 11455428}
+  flyingAngel: {fileID: 187276, guid: 805b22318d1119d459a9a5dc0a7b7263, type: 2}
 --- !u!114 &11455428
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -520,6 +517,7 @@ MonoBehaviour:
   weight: 5
   spawnTime: 0.25
   offsetYToPlayer: 0.65
+  autoCoinBonus: {fileID: 11413662}
 --- !u!212 &21202582
 SpriteRenderer:
   m_ObjectHideFlags: 1

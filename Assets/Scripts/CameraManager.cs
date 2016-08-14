@@ -8,6 +8,11 @@ public class CameraManager : MonoBehaviour {
 	public static float cameraStartPosition;
 	public static float cameraEndPosition;
 
+	public static float cameraRightPosition;
+	public static float cameraLeftPosition;
+	public static float cameraUpPosition;
+	public static float cameraDownPosition;
+
 	public Transform backKiller { get; private set; }
 	public Transform fallingKiller { get; private set; }
 	private Collider2D backKillerCollider;
@@ -51,6 +56,12 @@ public class CameraManager : MonoBehaviour {
 		float yScale = Camera.main.orthographicSize * 2 / firstBG.bounds.size.y;
 		float xScale = Camera.main.orthographicSize * Camera.main.aspect * 2 / firstBG.bounds.size.x;
 		bgContainer.transform.localScale = new Vector3 (xScale, yScale, bgContainer.transform.localScale.z);
+
+		// Position réelle du bord de la caméra
+		cameraRightPosition = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;
+		cameraLeftPosition = Camera.main.transform.position.x - Camera.main.orthographicSize * Camera.main.aspect;
+		cameraUpPosition = Camera.main.transform.position.y + Camera.main.orthographicSize;
+		cameraDownPosition = Camera.main.transform.position.y - Camera.main.orthographicSize;
 
 		// Décalé pour pouvoir prendre en compte des potentielles latences
 		cameraStartPosition = Camera.main.transform.position.x - Camera.main.orthographicSize * Camera.main.aspect - 3;

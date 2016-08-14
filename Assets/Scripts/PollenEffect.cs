@@ -17,10 +17,6 @@ public class PollenEffect : MonoBehaviour {
 	private ParticleSystem.EmissionModule ballEmission;
 	private ParticleSystem.MinMaxCurve ballRate;
 
-	public Image pollenImage;
-
-	private Slider pollenGauge;
-	public Image pollenGaugeImage;
 	public Color cleanColor;
 	public Color sneezeColor;
 
@@ -52,7 +48,6 @@ public class PollenEffect : MonoBehaviour {
 	void Awake () {
 		pollenParticle = GetComponentInChildren<ParticleSystem> ();
 		pollenCollider = GetComponent<BoxCollider2D> ();
-		pollenGauge = GetComponentInChildren<Slider> ();
 		myAudio = GetComponent<AudioSource> ();
 
 		playerRb = LevelManager.player.GetComponent<Rigidbody2D> ();
@@ -62,9 +57,9 @@ public class PollenEffect : MonoBehaviour {
 		// Chargement différent selon la difficulté
 		switch (LevelManager.levelManager.GetCurrentDifficulty ()) {
 		// Normal
-		case 0: //TODO remove
-			//gameObject.SetActive (false);
-			//break;
+		case 0:
+			gameObject.SetActive (false);
+			break;
 		// Hard
 		case 1:
 			gameObject.SetActive (true);
@@ -91,7 +86,7 @@ public class PollenEffect : MonoBehaviour {
 			break;
 		}
 	}
-	// TODO nettoyer une fois que décidé sur la jauge
+
 	private void LoadPollen() {
 		// Positionnement en bas de l'écran
 		transform.position = new Vector3 (CameraManager.cameraManager.xOffset, CameraManager.cameraManager.yOffset - (1 - ratioHeight) * Camera.main.orthographicSize, transform.position.z);
@@ -115,19 +110,13 @@ public class PollenEffect : MonoBehaviour {
 		emission = pollenParticle.emission;
 		emission.rate = numberParticle;
 
-		// Jauge
-		pollenGauge.maxValue = maxCharge;
-
 		// Balle
 		ballEmission = pollenBall.emission;
 	}
 
 	void Update() {
-		if (TimeManager.paused || LevelManager.player.IsDead () || LevelManager.IsEndingScene()) {
-			pollenGauge.gameObject.SetActive (false);
+		if (TimeManager.paused || LevelManager.player.IsDead () || LevelManager.IsEndingScene())
 			return;
-		} else
-			pollenGauge.gameObject.SetActive (true);
 		
 		if (inCharge) {
 			currentCharge += chargeSpeed * TimeManager.deltaTime;
@@ -145,15 +134,9 @@ public class PollenEffect : MonoBehaviour {
 		}
 
 		if (!goingToSneeze) {
-			pollenGauge.value = currentCharge;
-			pollenGaugeImage.color = Color.Lerp (cleanColor, sneezeColor, currentCharge / maxCharge);
-
 			ballRate = new ParticleSystem.MinMaxCurve (Mathf.FloorToInt (Mathf.Lerp (0, 25, currentCharge / maxCharge)));
 			ballEmission.rate = ballRate;
 			pollenBall.startColor = Color.Lerp (cleanColor, sneezeColor, currentCharge / maxCharge);
-
-			pollenImage.rectTransform.localScale = Vector3.one * Mathf.Lerp (0, 1, currentCharge / maxCharge);
-			pollenImage.color = Color.Lerp (cleanColor, sneezeColor, currentCharge / maxCharge);
 		}
 	}
 
@@ -194,15 +177,9 @@ public class PollenEffect : MonoBehaviour {
 		while (timeToClean > 0) {
 			currentTime = (0.5f - timeToClean) / timeToClean;
 
-			pollenGauge.value = Mathf.Lerp (maxCharge, currentCharge, currentTime);
-			pollenGaugeImage.color = Color.Lerp (sneezeColor, cleanColor, currentTime);
-
 			ballRate = new ParticleSystem.MinMaxCurve (Mathf.FloorToInt (Mathf.Lerp (25, 0, currentTime)));
 			ballEmission.rate = ballRate;
 			pollenBall.startColor = Color.Lerp (sneezeColor, cleanColor, currentTime);
-
-			pollenImage.rectTransform.localScale = Vector3.one * Mathf.Lerp (1, currentCharge / maxCharge, currentTime);
-			pollenImage.color = Color.Lerp (sneezeColor, cleanColor, currentTime);
 
 			timeToClean -= TimeManager.deltaTime;
 			yield return null;

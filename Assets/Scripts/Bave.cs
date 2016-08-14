@@ -73,7 +73,7 @@ public class Bave : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (damageOnEnter > 0 && other.name == "Heros" && LevelManager.player.IsGrounded() && !LevelManager.player.IsFlying()) {
-			LevelManager.player.Hurt (damageOnEnter);
+			LevelManager.player.Hurt (damageOnEnter, 0, true);
 		}
 	}
 }

@@ -81,6 +81,15 @@ public class Enemy : Character {
 
 		popEnemy = true;
 		mySprite.enabled = true;
+
+		// Ajout du temps des talents
+		timeToKill += GameData.gameData.playerData.talent.bossLengthBonus * GameData.gameData.playerData.talent.bossLengthBonusPointValue;
+
+		// Diminution de la défense de l'ennemi (si talent + pickup récupéré)
+		defense = Mathf.Max (0, defense + LevelManager.reduceEnemyDefense);
+
+		// Diminution de la vie de l'ennemi (si talent + pickup récupéré)
+		healthPoint = Mathf.Max (1, healthPoint + LevelManager.reduceEnemyHealth);
 	}
 
 	protected override void Update () {
@@ -111,14 +120,14 @@ public class Enemy : Character {
 			return;
 
 		if (other.name == "Heros")
-			LevelManager.player.Hurt(damageToGive);
+			LevelManager.player.Hurt(damageToGive, sharp);
 	}
 
-	public override void Hurt(int damage) {
-		if( IsDead() )
+	public override void Hurt(float damage, int penetration = 0, bool ignoreDefense = false, Character attacker = null) {
+		if( IsDead() || LevelManager.player.IsDead() )
 			return;
 
-		base.Hurt (damage);
+		base.Hurt (damage, penetration, ignoreDefense, attacker);
 
 		if (myAudio != null) {
 			if (!IsDead ())

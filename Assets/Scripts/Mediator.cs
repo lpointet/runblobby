@@ -18,6 +18,11 @@ public class TouchRight : Command
 	public Vector2 rightTouchPosition;
 }
 public class EndTouch : Command { public int fingerId; }
+public class TouchClickable : Command {
+	public Vector2 touchPosition;
+	public int objectId;
+}
+public class TouchPlayer : Command { }
 
 public delegate void MediatorCallback<T>(T c) where T : Command;
 

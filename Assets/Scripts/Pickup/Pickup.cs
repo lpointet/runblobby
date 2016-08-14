@@ -38,12 +38,16 @@ public class Pickup : MonoBehaviour {
 		myTransform = transform;
 		initialParent = myTransform.parent;
 		SpriteRenderer[] tempSprite = GetComponentsInChildren<SpriteRenderer> ();
-		myRender = tempSprite [0];
+		if (tempSprite.Length > 0)
+			myRender = tempSprite [0];
 		if(tempSprite.Length > 1)
 			myBackRender = tempSprite [1];
 		myAnim = GetComponentInChildren<Animator>();
         soundSource = GetComponent<AudioSource>();
         myCollider = GetComponent<Collider2D>();
+
+		// Ajout des talents pour la durée des pickups
+		lifeTime += GameData.gameData.playerData.talent.buffLength * GameData.gameData.playerData.talent.buffLengthPointValue;
     }
 
 	protected virtual void OnEnable() {
@@ -117,8 +121,11 @@ public class Pickup : MonoBehaviour {
 			if (existingPickup != null) {
 				if (!LevelManager.player.HasLastWish ()) // Si le pickup concerne un lastWish, on ne change pas la durée
 					existingPickup.timeToLive += lifeTime;
-				Disable ();
-				despawnTime = 0;
+				else if (this.GetType () == typeof(FlyPickup)) { // Si le pickup concerne un le vol, on annule celui en cours pour que le vol change d'oiseau
+					Disable ();
+					despawnTime = 0;
+				} else
+					this.gameObject.SetActive (false);
 
 				return;
 			}

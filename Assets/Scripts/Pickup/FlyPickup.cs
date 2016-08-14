@@ -15,6 +15,13 @@ public class FlyPickup : Pickup {
 	private float distancetoPlayer = 10f;
 	public float offsetYToPlayer = 0f;
 
+	public AutoCoinPickup autoCoinBonus;
+
+	void OnValidate () {
+		if (autoCoinBonus != null && autoCoinBonus.lifeTime != lifeTime)
+			autoCoinBonus.lifeTime = lifeTime;
+	}
+
     protected override void Awake() {
 		base.Awake();
 
@@ -29,7 +36,8 @@ public class FlyPickup : Pickup {
 
 		birdStartPosition = Mathf.Abs (CameraManager.cameraStartPosition);
 
-		basePitch = this.soundSource.pitch;
+		if (soundSource != null)
+			basePitch = this.soundSource.pitch;
 	}
 
 	protected override void Update() {
@@ -54,10 +62,13 @@ public class FlyPickup : Pickup {
 			if (timeToLive > weakTime) {
 				// Adaptation de l'animation et du son de l'oiseau à la vitesse verticale du joueur
 				myAnim.SetFloat ("verticalSpeed", playerRb.velocity.y);
-				if (playerRb.velocity.y > 0 || LevelManager.player.IsZeroGravFlying()) {
-					soundSource.pitch = basePitch;
-				} else {
-					soundSource.pitch = basePitch * 1.2f;
+
+				if (soundSource != null) {
+					if (playerRb.velocity.y > 0 || LevelManager.player.IsZeroGravFlying ()) {
+						soundSource.pitch = basePitch;
+					} else {
+						soundSource.pitch = basePitch * 1.2f;
+					}
 				}
 			}
 		}
@@ -93,13 +104,18 @@ public class FlyPickup : Pickup {
 		// On attend que l'oiseau arrive pour que le joueur "vole"
 		LevelManager.player.Jump();
 		StartCoroutine( WaitBeforeFly(spawnTime) );
+
+		// On lui donne un bonus d'AutoCoin réduit
+		autoCoinBonus.ForceOnPick();
+		autoCoinBonus.gameObject.SetActive(true);
 	}
 
 	protected override void WeakEffect() {
 		// Accélération de la vitesse de battement d'ailes avant la fin et du son
 		myAnim.SetBool ("end", true);
 		myAnim.speed += TimeManager.deltaTime / weakTime;
-		soundSource.pitch = basePitch * myAnim.speed;
+		if (soundSource != null)
+			soundSource.pitch = basePitch * myAnim.speed;
 	}
 		
 	protected override void OnDespawn() {
@@ -108,11 +124,16 @@ public class FlyPickup : Pickup {
 
 		// Rétablissement de la vitesse d'animation
 		myAnim.speed = 1;
-		soundSource.pitch = basePitch;
+		if (soundSource != null)
+			soundSource.pitch = basePitch;
+		
 		catched = false;
 
 		// Montée de l'oiseau avant de supprimer
 		StartCoroutine( TakeOff(myTransform) );
+
+		autoCoinBonus.ForceOnDespawn();
+		autoCoinBonus.gameObject.SetActive(false);
     }
 
 	protected override void DespawnEffect() {
@@ -139,7 +160,8 @@ public class FlyPickup : Pickup {
 			flyTransform.parent = initialParent;
 		}
 
-		soundSource.Stop();
+		if (soundSource != null)
+			soundSource.Stop ();
 		flyTransform.gameObject.SetActive( false );
 		LevelManager.player.RemovePickup( flyTransform.GetComponent<Collider2D>() );
 	}
