@@ -19,7 +19,7 @@ public class Character : MonoBehaviour {
 	[SerializeField] private int _reflection;
 	[SerializeField] private float _invulnerabilityTime = 0.5f;
 	[SerializeField] private int _vampirisme;
-	[SerializeField] private int _regeneration;
+	[SerializeField] private float _regeneration;
 	[SerializeField] private int _attack;
 	[SerializeField] private int _attackDelay;
 	[SerializeField] private int _attackSpeed;
@@ -79,7 +79,7 @@ public class Character : MonoBehaviour {
 		get { return _vampirisme; }
 		set { _vampirisme = value; }
 	}
-	public int regeneration {
+	public float regeneration {
 		get { return _regeneration; }
 		set { _regeneration = value; }
 	}

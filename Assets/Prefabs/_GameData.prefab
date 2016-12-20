@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -78,49 +79,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelList:
   - levelNumber: 1
-    levelName: "La for\xEAt magique"
+    levelName: Whimsical forest
     arcadeData:
-    - scoreRecord: 0
-      distanceRecord: 0
-    - scoreRecord: 0
-      distanceRecord: 0
-    - scoreRecord: 0
+      scoreRecord: 0
+      scoreRatioRecord: 0
       distanceRecord: 0
     storyData:
     - scoreRecord: 0
-      distanceRecord: 150
+      scoreRatioRecord: 0
+      distanceRecord: 0
+      distanceMax: 200
+      isBossDead: 0
+      healthRatioRecord: 0
+    - scoreRecord: 0
+      scoreRatioRecord: 0
+      distanceRecord: 0
       distanceMax: 1000
       isBossDead: 0
+      healthRatioRecord: 0
     - scoreRecord: 0
+      scoreRatioRecord: 0
       distanceRecord: 0
-      distanceMax: 800
+      distanceMax: 1000
       isBossDead: 0
-    - scoreRecord: 0
-      distanceRecord: 0
-      distanceMax: 1200
-      isBossDead: 0
+      healthRatioRecord: 0
   - levelNumber: 2
     levelName: Le lac des cygnes
     arcadeData:
-    - scoreRecord: 0
-      distanceRecord: 0
-    - scoreRecord: 0
-      distanceRecord: 0
-    - scoreRecord: 0
+      scoreRecord: 0
+      scoreRatioRecord: 0
       distanceRecord: 0
     storyData:
     - scoreRecord: 0
-      distanceRecord: 150
+      scoreRatioRecord: 0
+      distanceRecord: 0
       distanceMax: 500
-      isBossDead: 1
+      isBossDead: 0
+      healthRatioRecord: 0
     - scoreRecord: 0
+      scoreRatioRecord: 0
       distanceRecord: 0
       distanceMax: 800
       isBossDead: 0
+      healthRatioRecord: 0
     - scoreRecord: 0
+      scoreRatioRecord: 0
       distanceRecord: 0
       distanceMax: 1200
       isBossDead: 0
+      healthRatioRecord: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

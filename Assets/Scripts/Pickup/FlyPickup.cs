@@ -102,7 +102,7 @@ public class FlyPickup : Pickup {
 			myAnim.SetBool ("eternal", false);
 
 		// On attend que l'oiseau arrive pour que le joueur "vole"
-		LevelManager.player.Jump();
+		LevelManager.player.Jump(LevelManager.player.jumpHeight);
 		StartCoroutine( WaitBeforeFly(spawnTime) );
 
 		// On lui donne un bonus d'AutoCoin réduit

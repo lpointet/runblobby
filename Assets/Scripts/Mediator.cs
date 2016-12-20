@@ -23,6 +23,10 @@ public class TouchClickable : Command {
 	public int objectId;
 }
 public class TouchPlayer : Command { }
+public class TouchWaterLevel2 : Command {
+	public Vector2 touchPosition;
+	public int objectId;
+}
 
 public delegate void MediatorCallback<T>(T c) where T : Command;
 

@@ -190,7 +190,6 @@ public class LevelScrollList : MonoBehaviour {
 		// On joue un son quand le level actuellement sélectionné est différent du précédent (quand ça bouge en gros)
 		if (recordMinButton != minButtonNum && !sfxSound.IsPlaying()) {
 			recordMinButton = minButtonNum;
-			sfxSound.ChangeLevel();
 		}
 	}
 }

@@ -82,6 +82,31 @@ public static class _StaticFunction {
 				GameData.gameData.firstLevel = tempData.firstLevel;
 				GameData.gameData.lastLevel = tempData.lastLevel;
 
+				// Copie des données Equipment
+				GameData.gameData.playerData.equipment.totalWeight = tempData.playerData.equipment.totalWeight;
+				// Arme
+				GameData.gameData.playerData.equipment.weapon = tempData.playerData.equipment.weapon;
+				GameData.gameData.playerData.equipment.attack = tempData.playerData.equipment.attack;
+				GameData.gameData.playerData.equipment.criticalHit = tempData.playerData.equipment.criticalHit;
+				GameData.gameData.playerData.equipment.criticalPower = tempData.playerData.equipment.criticalPower;
+				GameData.gameData.playerData.equipment.weaponWeight = tempData.playerData.equipment.weaponWeight;
+				// Shield
+				GameData.gameData.playerData.equipment.shield = tempData.playerData.equipment.shield;
+				GameData.gameData.playerData.equipment.defense = tempData.playerData.equipment.defense;
+				GameData.gameData.playerData.equipment.dodge = tempData.playerData.equipment.dodge;
+				GameData.gameData.playerData.equipment.reflect = tempData.playerData.equipment.reflect;
+				GameData.gameData.playerData.equipment.shieldWeight = tempData.playerData.equipment.shieldWeight;
+				// Helm
+				GameData.gameData.playerData.equipment.helm = tempData.playerData.equipment.helm;
+				GameData.gameData.playerData.equipment.healthPoint = tempData.playerData.equipment.healthPoint;
+				GameData.gameData.playerData.equipment.thorn = tempData.playerData.equipment.thorn;
+				GameData.gameData.playerData.equipment.helmWeight = tempData.playerData.equipment.helmWeight;
+				// Perfume
+				GameData.gameData.playerData.equipment.perfume = tempData.playerData.equipment.perfume;
+				GameData.gameData.playerData.equipment.regeneration = tempData.playerData.equipment.regeneration;
+				GameData.gameData.playerData.equipment.speed = tempData.playerData.equipment.speed;
+				GameData.gameData.playerData.equipment.perfumeWeight = tempData.playerData.equipment.perfumeWeight;
+
 				// Copie des données PlayerData
 				GameData.gameData.playerData.name = tempData.playerData.name;
 				GameData.gameData.playerData.isStory = tempData.playerData.isStory;
@@ -282,8 +307,21 @@ public static class _StaticFunction {
 			LevelData levelCourant = GameData.gameData.playerData.levelData [LevelManager.levelManager.GetCurrentLevel () - 1]; // Correction de l'indice du level
 			int difficulty = LevelManager.levelManager.GetCurrentDifficulty ();
 
+			// Enregistrement en mode Histoire
 			if (LevelManager.levelManager.IsStory ()) {
 				levelCourant.storyData [difficulty].distanceRecord = Mathf.Max (levelCourant.storyData [difficulty].distanceRecord, LevelManager.levelManager.GetDistanceTraveled ());
+				// Enregistrement du ratio de feuilles et de vie max seulement si le héros a survécu
+				if (!LevelManager.player.IsDead ()) {
+					levelCourant.storyData [difficulty].scoreRatioRecord = Mathf.Max (levelCourant.storyData [difficulty].scoreRatioRecord, ScoreManager.GetRatioLeaf ());
+					levelCourant.storyData [difficulty].scoreRecord = Mathf.Max (levelCourant.storyData [difficulty].scoreRecord, ScoreManager.GetLeaf ());
+					levelCourant.storyData [difficulty].healthRatioRecord = Mathf.Max (levelCourant.storyData [difficulty].healthRatioRecord, Mathf.Clamp01 (LevelManager.player.minHealthRatio));
+				}
+			}
+			// Enregistrement en mode Arcade
+			else {
+				levelCourant.arcadeData.distanceRecord = Mathf.Max (levelCourant.arcadeData.distanceRecord, LevelManager.levelManager.GetDistanceTraveled ());
+				levelCourant.arcadeData.scoreRatioRecord = Mathf.Max (levelCourant.arcadeData.scoreRatioRecord, ScoreManager.GetRatioLeaf ());
+				levelCourant.arcadeData.scoreRecord = Mathf.Max (levelCourant.arcadeData.scoreRecord, ScoreManager.GetLeaf ());
 			}
 		}
 	}

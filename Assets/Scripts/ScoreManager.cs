@@ -33,7 +33,7 @@ public class ScoreManager : MonoBehaviour {
 	private static float experience; // Expérience de la session - PlayerData pour l'exp totale
 
 	public static float GetRatioLeaf() {
-		return leafMax == 0 ? 1 : (float)leaf / leafMax;
+		return leafMax == 0 ? 1 : Mathf.Clamp01 ((float)leaf / leafMax);
 	}
 
 	public static int GetScore() {

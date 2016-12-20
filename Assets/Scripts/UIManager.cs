@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour {
 	private bool enemyGUIActive = false;
 	public Text enemyName;
 	public Text enemySurname;
+	public Text enemyBarName;
 
 	// Barre de vie
 	private float lerpingTimeEnemyBar = 0f;
@@ -203,6 +204,7 @@ public class UIManager : MonoBehaviour {
 			// On affiche la barre de vie vide, pour pouvoir la remplir le temps du spawn (= timer d'apparition)
 			if (!enemyGUIActive) {
 				ToggleEnemyGUI (true);
+				enemyBarName.gameObject.SetActive (false);
 			}
 
 			// On remplit la barre de vie en fonction du temps de spawn 100% = ennemi apparait
@@ -230,9 +232,12 @@ public class UIManager : MonoBehaviour {
 				float lerpTime = (LevelManager.levelManager.enemySpawnDelay - textTimeMid - textTimeToEnd - textTimeTotal) / textTimeToEnd;
 				MoveIntroEnemyText (enemyName, lerpTime, positionNameBeforeEndMove.x, -namePosition.x);
 				MoveIntroEnemyText (enemySurname, lerpTime, positionSurnameBeforeEndMove.x, -surnamePosition.x);
+				// On affiche le nom du boss
+				enemyBarName.text = enemyName.text;
+				enemyBarName.gameObject.SetActive (true);
 			}
 			textTimeTotal -= TimeManager.deltaTime;
-		} else { // Si on n'est pas dans le compte-à-rebours, on cache les textes
+		} else { // Si on n'est pas dans le compte-à-rebours, on cache les textes d'apparition
 			enemyName.gameObject.SetActive (false);
 			enemySurname.gameObject.SetActive (false);
 			textTimeTotal = LevelManager.levelManager.enemySpawnDelay;
@@ -249,6 +254,7 @@ public class UIManager : MonoBehaviour {
 			if (!enemyGUIActive) {
 				ToggleEnemyGUI( true );
 			}
+
 			float realRatioHP = enemyEnCours.healthPoint / (float)enemyEnCours.healthPointMax;
 
 			// Si la valeur courante de la barre est plus haute que la valeur réelle des PV, on la fait descendre
@@ -277,12 +283,12 @@ public class UIManager : MonoBehaviour {
 
             // Fonction type f(x) = ax² + b, avec a = (scaleMaxAtteint-1) / distanceMaxPossible² et b = 1
 			scaleFonctionDistance = ( 2 / Mathf.Pow( enemyEnCours.timeToKill, 2 ) ) * _StaticFunction.MathPower( enemyEnCours.timeToKill - enemyTimeToKill, 2 ) + 1;
-            meterText.transform.localScale = new Vector2( scaleFonctionDistance, scaleFonctionDistance ) * scaleInitial;
+			meterText.transform.parent.transform.localScale = new Vector2( scaleFonctionDistance, scaleFonctionDistance ) * scaleInitial;
         }
         else if( !LevelManager.player.IsDead() && !LevelManager.levelManager.IsEnemyToSpawn() ) {
 			meterText.text = Mathf.RoundToInt( LevelManager.levelManager.GetDistanceTraveled() ).ToString("0m");// Mise à jour de la distance parcourue affichée
             meterText.color = defaultTextColor;
-            meterText.transform.localScale = new Vector2( scaleInitial, scaleInitial );
+			meterText.transform.parent.transform.localScale = new Vector2( scaleInitial, scaleInitial );
         }
     }
 
@@ -302,6 +308,7 @@ public class UIManager : MonoBehaviour {
 
 		enemyName.gameObject.SetActive (active);
 		enemySurname.gameObject.SetActive (active);
+		enemyBarName.gameObject.SetActive (active);
 
 		enemyHealthBar.gameObject.SetActive (active);
     }
@@ -593,7 +600,7 @@ public class UIManager : MonoBehaviour {
 		} else if (!paused) {
 			content = "Are you really sure you want to quit?\nYou just succeeded, why would you leave?";
 		} else {
-			content = "Are you really sure you want to quit?\nYou can make a pause, and come back later!";
+			content = "Are you really sure you want to quit?\nYou can make a pause, and come back later!\nNothing will be save, you know? :(";
 		}
 		tQuitContent.text = content;
 
@@ -602,7 +609,9 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void Quit_Yes_Click() {
-		_StaticFunction.Save ();
+		if (!paused)
+			_StaticFunction.Save ();
+		
 		sfxSound.ButtonYesClick ();
 
 		#if UNITY_EDITOR

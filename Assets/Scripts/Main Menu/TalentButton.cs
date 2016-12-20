@@ -8,13 +8,15 @@ public class TalentButton : MonoBehaviour {
 	[SerializeField] private Image myImage;
 	private Talent talent;								// = GameData.gameData.playerData.talent
 
-	[SerializeField] private Image selectImage;			// Zone qui montre qu'un talent est sélectionné
+	[SerializeField] private Image borderImage;			// Zone qui montre qui entoure le talent
 	private bool selected = false;						// Savoir si le talent a déjà été sélectionné
 
 	[Header("Appearance")]
 	[SerializeField] private Color disableColor;		// Tant qu'aucun point n'est dans le talent
 	[SerializeField] private Color activeColor;			// Tant que le talent a des points
 	[SerializeField] private Color fullColor;			// Quand le talent est full
+	[SerializeField] private Color selectBGColor;		// Quand le talent est sélectionné, le BG
+	[SerializeField] private Color fullBGColor;			// Quand le talent est full, le BG
 
 	[SerializeField] private string title;				// Nom du talent
 	[SerializeField][TextArea(3,10)] private string textDescription;	// Description textuelle du talent (eg: Gain attack)
@@ -51,7 +53,7 @@ public class TalentButton : MonoBehaviour {
 		// Si le talent est déjà actif, il est actif !
 		if (activated)
 			return true;
-
+		
 		// Contrôle des prérequis sur les autres talents
 		for (int i = 0; i < requiredValueName.Length; i++) {
 			if ((int)talent.GetType ().GetField (requiredValueName [i]).GetValue (talent) < requiredValueCost [i])
@@ -66,13 +68,12 @@ public class TalentButton : MonoBehaviour {
 	}
 
 
-
 	void Awake () {
 		myTransform = transform;
+		talent = GameData.gameData.playerData.talent;
 	}
 
 	void Start () {
-		talent = GameData.gameData.playerData.talent;
 		gainPerPoint = (float)talent.GetType ().GetField (gameValueName + "PointValue").GetValue (talent);
 		suffixValue = "/" + maxValue.ToString ();
 
@@ -80,7 +81,7 @@ public class TalentButton : MonoBehaviour {
 			DisableTalent ();
 		// Sinon, on affiche la valeur courante du talent
 		else {
-			ActivateTalent ();
+			ActivateTalent (false);
 			ValueChange (0);
 		}
 	}
@@ -114,6 +115,8 @@ public class TalentButton : MonoBehaviour {
 
 		MainMenuManager.mainMenuManager.UpdateTalent ();
 		StartCoroutine (PopTalent ());
+
+		MainMenuManager.sfxSound.ChangeClick ();
 	}
 
 	// Achète un talent
@@ -175,6 +178,7 @@ public class TalentButton : MonoBehaviour {
 		fullActivation = true;
 
 		myImage.color = fullColor;
+		borderImage.color = fullBGColor;
 		textValue.color = fullColor;
 		textValue.text = "Max";
 	}
@@ -187,7 +191,7 @@ public class TalentButton : MonoBehaviour {
 		textValue.text = "";
 	}
 
-	public void ActivateTalent () {
+	public void ActivateTalent (bool firstTime = true) {
 		if (currentValue == maxValue) {
 			FullActivation ();
 			return;
@@ -200,17 +204,25 @@ public class TalentButton : MonoBehaviour {
 		currentValue = 0;
 		textValue.text = currentValue.ToString () + suffixValue;
 
-		StartCoroutine (PopTalent ());
+		if (isActiveAndEnabled && firstTime) {
+			MainMenuManager.sfxSound.ButtonYesClick ();
+			StartCoroutine (PopTalent ());
+		}
 	}
 
 	public void SelectTalent () {
 		selected = true;
-		selectImage.enabled = true;
+		//selectImage.enabled = true;
+		borderImage.color = selectBGColor;
 	}
 
 	public void DeselectTalent () {
 		selected = false;
-		selectImage.enabled = false;
+		//selectImage.enabled = false;
+		if (fullActivation)
+			borderImage.color = fullBGColor;
+		else
+			borderImage.color = Color.black;
 	}
 
 	private void DisplayTalent(bool bought = false) {

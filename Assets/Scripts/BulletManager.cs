@@ -73,7 +73,10 @@ public class BulletManager : MonoBehaviour {
 
 			// Ajustement de la couche de collisions selon l'appartenance de l'arme
 			// Détection de l'autoguidage et récupération de la cible
+			// Couleur de la balle
 			if (myWeapon.weaponOwner.GetType () == typeof(PlayerController)) {
+				mySprite.material.SetFloat ("_HueShift", _StaticFunction.MappingScale (LevelManager.player.healthPoint, 0, LevelManager.player.healthPointMax, 230, 0));
+
 				layerCollision = layerCollisionEnemy;
 				isRemote = GameData.gameData.playerData.talent.shotRemote > 0 || myWeapon.remoteBullet;
 				numberRebound = GameData.gameData.playerData.talent.shotRemote * (int)GameData.gameData.playerData.talent.shotRemotePointValue + myWeapon.numberBulletRebound;
@@ -82,6 +85,8 @@ public class BulletManager : MonoBehaviour {
 					targetTransform = target.transform;
 				}
 			} else {
+				mySprite.material.SetFloat ("_HueShift", _StaticFunction.MappingScale (myWeapon.weaponOwner.healthPoint, 0, myWeapon.weaponOwner.healthPointMax, 25, 0));
+
 				layerCollision = layerCollisionPlayer;
 				isRemote = myWeapon.remoteBullet;
 				numberRebound = initialNumberRebound + myWeapon.numberBulletRebound;

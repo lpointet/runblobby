@@ -5,7 +5,7 @@ public class SFXMenu : MonoBehaviour {
 
 	public AudioClip buttonYesClick;
 	public AudioClip buttonNoClick;
-	public AudioClip changeLevel;
+	public AudioClip changeClick;
 
 	private AudioSource sourceSfx;
 	
@@ -21,8 +21,8 @@ public class SFXMenu : MonoBehaviour {
 		sourceSfx.PlayOneShot (buttonNoClick);
 	}
 
-	public void ChangeLevel() {
-		sourceSfx.PlayOneShot (changeLevel);
+	public void ChangeClick() {
+		sourceSfx.PlayOneShot (changeClick);
 	}
 
 	public bool IsPlaying() {

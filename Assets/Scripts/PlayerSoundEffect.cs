@@ -97,7 +97,7 @@ public class PlayerSoundEffect : MonoBehaviour {
 		soundSource.Play ();
 	}
 
-	private void EndHurtingSound () {
+	public void EndHurtingSound () {
 		hurted = false;
 	}
 }

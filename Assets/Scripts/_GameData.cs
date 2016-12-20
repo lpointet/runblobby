@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 public class _GameData : MonoBehaviour {
 
 	public static _GameData current;
 
 	public List<LevelData> levelList;
+
 	public static string saveFile;
 
 	/* Permet de gérer le chargement de la liste des levels (passage d'arguments) */
 	public static bool loadListLevel = false;
 
 	/* Passage d'informations au LevelManager depuis le Menu */
-	public static int currentLevel = 1;
+	public static int currentLevel = 2; // TODO ajuster
 	public static int currentDifficulty = 0;
 	public static bool isStory = true;
 	public static string currentLevelName;
@@ -68,11 +69,11 @@ public class PlayerData {
 	public bool isStory = true;
 	public int currentLevel = 1;
 	public int currentDifficulty = 0;
-	public int leaf = 300; // TODO mettre à 0
+	public int leaf = 0; // Nombre de feuilles actuellement en possession
 
 	/* STATISTIQUES GLOBALES DU JOUEUR */
 	public int experience = 0;
-	public int level = 1;
+	public int level = 1; // niveau du joueur
 	public long distanceTotal = 0; // distance totale parcourue, tout confondu
 	public int enemyKilled = 0; // nombre d'ennemis tués
 	public int numberOfDeath = 0; // nombre de morts
@@ -80,6 +81,9 @@ public class PlayerData {
 
 	/* TALENTS */
 	public Talent talent = new Talent();
+
+	/* EQUIPEMENTS */
+	public Equipment equipment = new Equipment ();
 
 	/* STATISTIQUES DES LEVELS */
 	public List<LevelData> levelData = new List<LevelData>();
@@ -92,10 +96,37 @@ public class PlayerData {
 }
 
 [Serializable]
+public class Equipment {
+	public int totalWeight = 0; // Poids total des objets actuellement équipés
+
+	public int weapon = 0; // Numéro de l'arme actuellement équipée
+	public int attack = 0; // Valeur d'attaque de l'arme équipée
+	public int criticalHit = 0;
+	public int criticalPower = 0;
+	public int weaponWeight = 0;
+
+	public int shield = 0;
+	public int defense = 0;
+	public int dodge = 0;
+	public int reflect = 0;
+	public int shieldWeight = 0;
+
+	public int helm = 0;
+	public int healthPoint = 0;
+	public int thorn = 0;
+	public int helmWeight = 0;
+
+	public int perfume = 0;
+	public int regeneration = 0;
+	public int speed = 100; // A 100 car on multiplie le speedRatio du joueur par speed / 100f
+	public int perfumeWeight = 0;
+}
+
+[Serializable]
 public class Talent {
 	// Sac à dos
 	public int backPack = 0;
-	public float backPackPointValue = 10;
+	public float backPackPointValue = 3;
 
 	// Armurerie
 	public int armory = 0;
@@ -119,7 +150,7 @@ public class Talent {
 	public int criticalPower = 0;
 	public float criticalPowerPointValue = 5; // Coup critique = ((150 + P. CRITIQUE) / 100 )* ATTAQUE
 	public int attack = 0;
-	public float attackPointValue = 1; // Dégâts infligés  = ATTAQUE * (10 / (10 + DEFENSE (ennemie))
+	public float attackPointValue = 1; // Dégâts infligés = ATTAQUE * (10 / (10 + DEFENSE (ennemie))
 	public int sharp = 0;
 	public float sharpPointValue = 2; // DEFENSE (ennemie) = DEFENSE (ennemie) * (1 - PENETRATION / 100)
 	public int machineGun = 0;
@@ -247,13 +278,16 @@ public class LevelData {
 [Serializable]
 public class ArcadeData {
 	public int scoreRecord; // score maximum obtenu
+	public float scoreRatioRecord; // ratio de score maximum obtenu
 	public int distanceRecord; // distance maximum parcourue
 }
 
 [Serializable]
 public class StoryData {
 	public int scoreRecord; // score maximum obtenu
+	public float scoreRatioRecord; // ratio de score maximum obtenu
 	public int distanceRecord; // distance maximum parcourue
 	public int distanceMax; // distance maximum du niveau
 	public bool isBossDead; // true = boss mort
+	public float healthRatioRecord; // ratio minimal de vie sur le niveau
 }

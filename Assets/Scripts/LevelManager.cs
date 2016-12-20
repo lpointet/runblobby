@@ -15,9 +15,6 @@ public class LevelManager : MonoBehaviour {
 	private bool startLevel = false;
 	private bool endLevel = false;
 
-	// Respawn
-	public GameObject currentCheckPoint;
-
 	[Header("Reset divers")]
 	[SerializeField] private Material moneyMat;
 	[SerializeField] private Color BaseColor;
@@ -25,8 +22,6 @@ public class LevelManager : MonoBehaviour {
 	// Création du monde et déplacement
 	[Header("Création du monde")]
 	[SerializeField] private GameObject blockStart;
-	[SerializeField] private GameObject blockEnd;
-	[SerializeField] private GameObject[] blockEnemy;
 	private float heightStartBlock = 0.25f;
 	private List<GameObject> blockList;
 	private int[][] probabiliteBlock; // Probabilités d'apparition de chaque bloc par phase
@@ -41,6 +36,12 @@ public class LevelManager : MonoBehaviour {
 	private float localDistance; // variation permanente de la distance
 	private float distanceSinceLastBonus; // distance depuis l'apparition du dernier bonus
 
+	// Mode Arcade
+	[Header("Arcade")]
+	[SerializeField] private float distanceBetweenAcceleration; // distance entre deux accélérations en Arcade
+	[SerializeField] private float speedBoostArcade; // distance entre deux accélérations en Arcade
+	private float accelerationPoint; // distance à laquelle il faut augmenter la vitesse
+
 	//* Partie Ennemi intermédiaire
 	[Header("Ennemis/Boss")]
 	public int[] listPhase;		// Valeur relative à parcourir avant de rencontrer un ennemi
@@ -49,6 +50,11 @@ public class LevelManager : MonoBehaviour {
 	[SerializeField] private LayerMask layerNotGround; // Permet de supprimer les pièces que les ennemis "perdent", ou autres obstacles invoqués (bombes...)
 	private bool premierBlock = false;	// Instantier le premier bloc ennemi
 	[SerializeField] private Enemy[] enemyMiddle;	// Liste des ennemis
+	private Enemy tempEnemy; // Permet d'avoir accès à l'ennemi avant qu'il apparaisse
+	private GameObject firstEnemyBlock; // Référence au premier bloc posé par un ennemi (pour savoir quand déclencher le boss)
+	private GameObject blockStartEnemy; // Bloc à faire apparaître au début du boss
+	private GameObject blockEndEnemy; // Bloc à faire apparaître durant le boss
+	private GameObject blockCurrentEnemy; // Bloc à faire apparaître quand le boss est mort
 	private Enemy enemyEnCours;
 	private bool enemyToSpawn = false;	// Bool modifiable pour savoir à quel moment il faut invoquer l'ennemi
     private bool enemySpawnLaunched = false; // Bool pour savoir si l'appel du spawn a déjà été fait ou pas
@@ -167,9 +173,10 @@ public class LevelManager : MonoBehaviour {
 		currentPhase = 0;
 		blockPhase = true;
         SetEnemyTimeToKill( 0 );
+		accelerationPoint = distanceBetweenAcceleration;
 
 		// Ajustement de l'apparition du boss de fin (par rapport à la distance maximum du level)
-		listPhase [listPhase.Length - 1] = GameData.gameData.playerData.levelData[GetCurrentLevel () - GameData.gameData.firstLevel].storyData[GetCurrentDifficulty ()].distanceMax;
+		listPhase [listPhase.Length - 1] = GameData.gameData.playerData.levelData[GetCurrentLevel () - 1].storyData[GetCurrentDifficulty ()].distanceMax;
 
 		moneyMat.SetColor("_BaseColor", BaseColor);
 		moneyMat.SetColor("_TargetColor", BaseColor);
@@ -226,13 +233,23 @@ public class LevelManager : MonoBehaviour {
 		localDistance = player.moveSpeed * Time.smoothDeltaTime;
 
 		// Définir dans quelle phase on se situe
-		if (currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
+		if (IsStory() && currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
 			blockPhase = false;
 
 			// On créé le premier bloc qui n'est pas un bloc du milieu
 			if(!premierBlock) {
-				PositionBlock(Instantiate(blockEnemy[0]));
+				PreLoadEnemy (enemyMiddle[currentPhase]);
+
+				firstEnemyBlock = Instantiate (blockStartEnemy);
+				PositionBlock (firstEnemyBlock);
+
 				premierBlock = true;
+			}
+
+			// Si le premier bloc est "proche" du héros (distance arbitraire de 10 unités), on invoque le boss
+			if (firstEnemyBlock != null && firstEnemyBlock.transform.position.x < player.transform.position.x + 10) {
+				SetEnemyToSpawn (true);
+				firstEnemyBlock = null;
 			}
 
 			// Variable changée par la classe StartEnemyBlock sur le OnTriggerEnter2D, marque le début du compte à rebours pour le boss
@@ -243,7 +260,7 @@ public class LevelManager : MonoBehaviour {
 				// On fait voler le joueur si c'est le dernier ennemi
 				if (currentPhase == listPhase.Length - 1) {
 					CleanPickup( player.GetLastWish() );
-					// On créer un pickup de vol sur le joueur, en vol infini (1000s...)
+					// On crée un pickup de vol sur le joueur, en vol infini (1000s...)
 					player.SetZeroGravFlying (true);
 					flyEndBoss.lifeTime = 1000;
 					flyEndBoss = Instantiate (flyEndBoss, player.transform.position, Quaternion.identity) as FlyPickup;
@@ -266,7 +283,7 @@ public class LevelManager : MonoBehaviour {
 				// Quand l'ennemi est mort
 				if( enemyEnCours.IsDead() ) {
 					enemyEnCours = null;
-					PositionBlock(Instantiate(blockEnemy[1]));
+					PositionBlock(Instantiate(blockEndEnemy));
 
 					currentPhase++;
 					premierBlock = false;
@@ -293,13 +310,20 @@ public class LevelManager : MonoBehaviour {
 		// Suppression du premier bloc dès qu'il disparait de la caméra
 		if (blockList [0].transform.position.x + sizeFirstBlock < CameraManager.cameraStartPosition) {
 			// On supprime les objets qui ne sont pas sur la couche "Ground" si on est sur les blocs du boss
-			// Supprime les pièces, les bombes...
-			if(blockList[0].name.Contains(blockEnemy[1].name)) {
+			if (blockCurrentEnemy != null && blockList [0].name.Contains (blockCurrentEnemy.name)) {
+				// Supprime les pièces, les bombes...
 				foreach (Transform t in blockList[0].GetComponentsInChildren(typeof(Transform), true)) {
-				//foreach (Transform t in blockList[0].transform) {
+					//foreach (Transform t in blockList[0].transform) {
 					if ((1 << t.gameObject.layer & layerNotGround) != 0) {
 						// Teste les spécificités : ici, les "feuilles" sont imbriquées, mais il ne faut pas détacher le contenu du contenant
-						if (!t.name.Contains ("Sprite")) {
+						// Idem pour les objets qui ont un rayon d'explosion
+						/*if (!t.name.Contains ("Sprite") || !t.name.Contains ("Explosion_Radius")) {
+							t.parent = PoolingManager.pooledObjectParent;
+							t.gameObject.SetActive (false);
+						}*/
+						// Si le parent de l'objet n'est pas sur la couche "Ground", on n'y touche pas
+						// Il s'agit d'un sous-objet
+						if ((1 << t.parent.gameObject.layer & layerNotGround) == 0) {
 							t.parent = PoolingManager.pooledObjectParent;
 							t.gameObject.SetActive (false);
 						}
@@ -317,6 +341,15 @@ public class LevelManager : MonoBehaviour {
 			PositionBlock (GetNewBlock (blockPhase));
 		}
 
+		// Si on est en mode Arcade, on accélère de temps en temps
+		if (!IsStory ()) {
+			// Si l'accélération n'est pas déjà faite, et qu'on a parcouru la distance nécessaire, on augmente
+			if (GetDistanceTraveled () > accelerationPoint) {
+				player.moveSpeed += speedBoostArcade;
+				accelerationPoint += distanceBetweenAcceleration;
+			}
+		}
+
         // Si le joueur n'est pas mort, on bouge le monde
 		// Pour le premier niveau, si le boss de fin est mort mais n'a pas fini son dialogue, on ne bouge pas
 		if ((!player.IsDead() || player.HasLastWish()) && !IsEndingScene()) {
@@ -324,16 +357,17 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	private GameObject GetNewBlock(bool isBlockPhase) {
+	private GameObject GetNewBlock (bool isBlockPhase) {
 		if (isBlockPhase) {
-			string randomBlock = PoolingManager.current.RandomPoolName ("Block", RandomDifficulty(currentPhase)); // Random Block de difficulté adaptée à la currentPhase
+			string randomBlock = PoolingManager.current.RandomPoolName ("Block", RandomDifficulty (currentPhase)); // Random Block de difficulté adaptée à la currentPhase
 			return PoolingManager.current.Spawn (randomBlock);
-		}
-		else
-			return PoolingManager.current.Spawn ("BasiqueGround");
+		} else if (blockCurrentEnemy != null)
+			return PoolingManager.current.Spawn (blockCurrentEnemy.name);
+		else 
+			return null;
 	}
 
-	private string RandomDifficulty(int phase) {
+	private string RandomDifficulty (int phase) {
 		int[] probabilite; // liste des probabilités d'appeler le choixDifficulte
 		int sum = 0;
 
@@ -354,7 +388,7 @@ public class LevelManager : MonoBehaviour {
 		return listeDifficulte [choix-1];
 	}
 
-	private void PositionBlock(GameObject obj) {
+	private void PositionBlock (GameObject obj) {
 		if (obj == null)
 			return;
 
@@ -370,17 +404,27 @@ public class LevelManager : MonoBehaviour {
 		blockList.Add (obj); // On ajoute à la liste le bloc
 	}
 
-	private void MoveWorld() {
+	private void MoveWorld () {
 		foreach(GameObject block in blockList) {
 			block.transform.Translate (Vector2.left * localDistance);
 		}
 	}
 
-	private IEnumerator SpawnEnemy(Enemy enemy) {
-		Enemy tempEnemy = Instantiate(enemy) as Enemy; // Permet d'accéder à l'ennemi avant qu'il ne soit visible pour le joueur
+	private void PreLoadEnemy (Enemy enemy) {
+		tempEnemy = Instantiate(enemy) as Enemy; // Permet d'accéder à l'ennemi avant qu'il ne soit visible pour le joueur
 
 		UIManager.uiManager.enemyName.text = tempEnemy.firstName;
 		UIManager.uiManager.enemySurname.text = tempEnemy.surName;
+
+		blockStartEnemy = tempEnemy.startGround;
+		blockCurrentEnemy = tempEnemy.arenaGround;
+		blockEndEnemy = tempEnemy.endGround;
+
+		tempEnemy.gameObject.SetActive (false); // On le désactive pour qu'il ne commence pas sa séquence avant son temps de spawn
+	}
+
+	private IEnumerator SpawnEnemy (Enemy enemy) {
+		tempEnemy.gameObject.SetActive (true);
 
 		yield return new WaitForSeconds( enemySpawnDelay * Time.timeScale );
 
@@ -395,7 +439,7 @@ public class LevelManager : MonoBehaviour {
 			CleanPickup( player.GetLastWish() );
 
 			// On offre des points d'xp supplémentaires si c'est la première fois qu'il tue le boss
-			if (!GameData.gameData.playerData.levelData [GetCurrentLevel ()].storyData [GetCurrentDifficulty ()].isBossDead) {
+			if (!GameData.gameData.playerData.levelData [GetCurrentLevel () - 1].storyData [GetCurrentDifficulty ()].isBossDead) {
 				ScoreManager.AddPoint (250 + 25 * GetCurrentLevel () * GetCurrentLevel (), ScoreManager.Types.Experience); // XP fin de niveau première fois
 			} else { // Si on a déjà tué le boss
 				ScoreManager.AddPoint (10 * GetCurrentLevel () * GetCurrentLevel (), ScoreManager.Types.Experience); // XP fin de niveau autre fois

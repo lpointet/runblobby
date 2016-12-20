@@ -13,6 +13,8 @@ public class EnemyFlying : MonoBehaviour {
 	public bool isSinus = false;		// vole en sinus
 	public bool isPingPong = false;		// vole en zigzag
 	public bool isBoomerang = false;	// revient en volant quand il est au bord de l'écran
+	public float amplitude = 1;
+	public float waveFrequence = 1;
 
 	private float enemyPositionY;	// Pour savoir selon qu'elle ligne se diriger selon l'effet
 	private float mouvement = 0;	// Permet de toujours commencer de la meme façon le mouvement non-linéaire
@@ -36,7 +38,7 @@ public class EnemyFlying : MonoBehaviour {
 			if (isOver)
 				myTransform.Translate (new Vector2(-1,-2).normalized * Time.fixedDeltaTime * flySpeed / 2.0f);
 			else
-				myTransform.Translate (new Vector2(-1,2).normalized * Time.fixedDeltaTime * flySpeed / 2.0f);
+				myTransform.Translate (new Vector2(-1, 2).normalized * Time.fixedDeltaTime * flySpeed / 2.0f);
 			
 			IsOverPlayer ();
 			
@@ -52,9 +54,9 @@ public class EnemyFlying : MonoBehaviour {
 		if (enemyIsOnPlayerY) {
 			if(isSinus || isPingPong) {
 				if(isSinus) // On donne une vitesse sinusoidale
-					myTransform.position = new Vector2(myTransform.position.x - TimeManager.deltaTime * flySpeed, enemyPositionY + Mathf.Sin (2 * flySpeed * mouvement) / 2.0f);
+					myTransform.position = new Vector2(myTransform.position.x - TimeManager.deltaTime * flySpeed, enemyPositionY + amplitude * Mathf.Sin (waveFrequence * mouvement));
 				else if (isPingPong) // On donne une vitesse pingpongidale
-					myTransform.position = new Vector2(myTransform.position.x - TimeManager.deltaTime * flySpeed, enemyPositionY + Mathf.PingPong (flySpeed / 2.0f * mouvement, 0.5f));
+					myTransform.position = new Vector2(myTransform.position.x - TimeManager.deltaTime * flySpeed, enemyPositionY + amplitude * Mathf.PingPong (waveFrequence * mouvement, 0.5f));
 
 				mouvement += TimeManager.deltaTime;
 			}

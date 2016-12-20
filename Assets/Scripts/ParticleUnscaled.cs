@@ -21,13 +21,15 @@ public class ParticleUnscaled : MonoBehaviour {
 			if (timePlaying >= particle.duration) {
 				isPlaying = false;
 				timePlaying = 0;
-				particle.Simulate (0.0f, true, true); // Corrige un bug Unity : https://issuetracker.unity3d.com/issues/particle-system-plays-only-once
+				particle.Simulate (0.0f, true, true); // TODO Corrige un bug Unity : https://issuetracker.unity3d.com/issues/particle-system-plays-only-once
 			}
 		}
 	}
 
 	public void Play() {
-		isPlaying = true;
-		particle.Clear ();
+		if (!particle.isPlaying) {
+			isPlaying = true;
+			particle.Clear ();
+		}
 	}
 }

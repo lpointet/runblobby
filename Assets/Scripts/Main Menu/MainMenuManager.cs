@@ -7,7 +7,7 @@ using System.Collections;
 public class MainMenuManager : MonoBehaviour {
 
 	public static MainMenuManager mainMenuManager;
-	private SFXMenu sfxSound;
+	public static SFXMenu sfxSound;
 
 	public Color deactivatedColor;
 
@@ -110,8 +110,8 @@ public class MainMenuManager : MonoBehaviour {
 	/* Fin de l'écran des statistiques */
 	/***********************************/
 
-	/**************************/
-	/* Ecran des statistiques */
+	/*********************/
+	/* Ecran des talents */
 	[Header("Talent Menu")]
 	public GameObject wTalent;
 
@@ -127,7 +127,7 @@ public class MainMenuManager : MonoBehaviour {
 	public Color warningLeafColor;
 	private float shakeTime;
 
-	public static TalentButton[] listTalent { get; private set; }		// Contient la liste des tous les talents existants
+	public static TalentButton[] listTalent { get; private set; }		// Contient la liste de tous les talents existants
 
 	public GameObject wArmoryTalent;
 	public GameObject wArenaTalent;
@@ -136,8 +136,65 @@ public class MainMenuManager : MonoBehaviour {
 	public GameObject wAcademyTalent;
 	public GameObject wAlchemyTalent;
 	public GameObject wHorologyTalent;
-	/* Fin de l'écran des statistiques */
-	/***********************************/
+	/* Fin de l'écran des talents */
+	/******************************/
+
+	/*************************/
+	/* Ecran des équipements */
+	[Header("Equipment Menu")]
+	public GameObject wEquipment;
+
+	public Button bWeapon;
+	public Button bShield;
+	public Button bHelm;
+	public Button bPerfume;
+
+	public Sprite defaultWeapon;
+	public Sprite defaultShield;
+	public Sprite defaultHelm;
+	public Sprite defaultPerfume;
+
+	public GameObject wItemObtention;
+	public GameObject wItemSelection;
+	public GameObject wWeaponList;
+	public GameObject wShieldList;
+	public GameObject wHelmList;
+	public GameObject wPerfumeList;
+	public RectTransform iSelectedSlotItem;
+
+	public Text tItemName;
+	public Text tItemDescription;
+
+	public Slider sItemWeight;
+	public Text tItemWeight;
+	public Color weightNormal;
+	public Color weightOverload;
+
+	public static ItemButton[] listItem { get; private set; }	// Contient la liste de tous les items existants
+
+	public Text tAttack;
+	public Text tCriticalHit;
+	public Text tCriticalPower;
+	public Text tHealthPoint;
+	public Text tDodge;
+	public Text tReflect;
+	public Text tDefense;
+	public Text tThorn;
+	public Text tRegeneration;
+	public Text tSpeed;
+
+	public Text tDeltaAttack;
+	public Text tDeltaCriticalHit;
+	public Text tDeltaCriticalPower;
+	public Text tDeltaHealthPoint;
+	public Text tDeltaDodge;
+	public Text tDeltaReflect;
+	public Text tDeltaDefense;
+	public Text tDeltaThorn;
+	public Text tDeltaRegeneration;
+	public Text tDeltaSpeed;
+	/* Fin de l'écran des équipements */
+	/**********************************/
 
     void Awake() {
 		if (mainMenuManager == null)
@@ -177,6 +234,7 @@ public class MainMenuManager : MonoBehaviour {
 		}
 
 		listTalent = wTalent.GetComponentsInChildren<TalentButton> (); // TODO supprimer après les tests sur les talents
+		listItem = wItemSelection.GetComponentsInChildren<ItemButton> ();
 		initialLeafColor = tTotalLeaf.color; // TODO aussi
 
 		// Force le timeScale au cas où on vient du menu
@@ -195,6 +253,9 @@ public class MainMenuManager : MonoBehaviour {
 
 		if (wTalent.activeInHierarchy)
 			bTalent.Select ();
+
+		if (wEquipment.activeInHierarchy)
+			bEquipment.Select ();
 	}
 
 	// Contrôle que l'écran est tactile / mutlitouch
@@ -258,13 +319,14 @@ public class MainMenuManager : MonoBehaviour {
 		} else if (wPlayerMenu.activeInHierarchy) {
 			wLevel.SetActive (false);
 			wTalent.SetActive (false);
+			wEquipment.SetActive (false);
 
 			if (menu == bLevel || menu == null)
 				wLevel.SetActive (true);
 			if (menu == bTalent)
 				wTalent.SetActive (true);
-
-			// TODO equipement
+			if (menu == bEquipment)
+				wEquipment.SetActive (true);
 		}
 
 		wTutoriel.SetActive (false);
@@ -277,8 +339,6 @@ public class MainMenuManager : MonoBehaviour {
 		deactivateButton.GetComponent<Image> ().color = deactivatedColor;
 		deactivateButton.GetComponent<Image> ().raycastTarget = false;
 	}
-
-
 
 
 	/********************************************/
@@ -516,8 +576,6 @@ public class MainMenuManager : MonoBehaviour {
 
 		wMainMenu.SetActive (false);
 		wPlayerMenu.SetActive (true);
-		// TODO boutons à activer avec leurs fonctions développées
-		DeactiveButton (bEquipment);
 
 		// Level
 		listLevel = GetComponentsInChildren<LevelItem> ();
@@ -578,11 +636,56 @@ public class MainMenuManager : MonoBehaviour {
 		// On cache le panneau de description tant qu'aucun talent n'est sélectionné
 		wDescription.SetActive (false);
 
-		UpdateTalent ();
+		UpdateTalent (false);
 	}
 
 	public void Equipment_Click() {
 		ActiveMenu(bEquipment);
+
+		DisplayItemStat ();
+
+		wItemObtention.SetActive (true);
+		wItemSelection.SetActive (false);
+
+		// Initialisation du slider de poids
+		sItemWeight.maxValue = Mathf.RoundToInt (GameData.gameData.playerData.talent.backPack * GameData.gameData.playerData.talent.backPackPointValue);
+		sItemWeight.value = GameData.gameData.playerData.equipment.totalWeight;
+
+		// Zone de sélection du slot d'item
+		iSelectedSlotItem.gameObject.SetActive (false);
+
+		// Affichage des items dans le choix
+		listItem = wItemSelection.GetComponentsInChildren<ItemButton> (true);
+
+		foreach (ItemButton item in listItem) {
+			item.Init ();
+			switch (item.itemType) {
+			case ItemType.weapon:
+				if (item.itemNumber == GameData.gameData.playerData.equipment.weapon) {
+					bWeapon.GetComponentsInChildren<Image> () [1].sprite = item.itemImage.sprite;
+					item.EquipItemAtStart ();
+				}
+				break;
+			case ItemType.shield:
+				if (item.itemNumber == GameData.gameData.playerData.equipment.shield) {
+					bShield.GetComponentsInChildren<Image> () [1].sprite = item.itemImage.sprite;
+					item.EquipItemAtStart ();
+				}
+				break;
+			case ItemType.helm:
+				if (item.itemNumber == GameData.gameData.playerData.equipment.helm) {
+					bHelm.GetComponentsInChildren<Image> () [1].sprite = item.itemImage.sprite;
+					item.EquipItemAtStart ();
+				}
+				break;
+			case ItemType.perfume:
+				if (item.itemNumber == GameData.gameData.playerData.equipment.perfume) {
+					bPerfume.GetComponentsInChildren<Image> () [1].sprite = item.itemImage.sprite;
+					item.EquipItemAtStart ();
+				}
+				break;
+			}
+		}
 	}
 	/********************************************/
 	/********** FIN PARTIE MENU JOUEUR **********/
@@ -623,7 +726,7 @@ public class MainMenuManager : MonoBehaviour {
 	/***************************************/
 	/************ PARTIE TALENT ************/
 	/***************************************/
-	public void UpdateTalent () {
+	public void UpdateTalent (bool checkTalent = true) {
 		// Parcours de l'ensemble des talents pour activer les nouvelles parties
 		// Appelé à chaque ajout de point dans un talent
 		// ARMURERIE
@@ -694,9 +797,11 @@ public class MainMenuManager : MonoBehaviour {
 
 		// Parcours de l'ensemble des talents pour activer ceux qui sont débloqués
 		// Appelé à chaque ajout de point dans un talent
-		for (int i = 0; i < listTalent.Length; i++) {
-			if (!listTalent [i].IsActivated () && listTalent [i].IsAvailable ()) {
-				listTalent [i].ActivateTalent ();
+		if (checkTalent) {
+			for (int i = 0; i < listTalent.Length; i++) {
+				if (!listTalent [i].IsActivated () && listTalent [i].IsAvailable ()) {
+					listTalent [i].ActivateTalent ();
+				}
 			}
 		}
 	}
@@ -781,4 +886,129 @@ public class MainMenuManager : MonoBehaviour {
 	/***************************************/
 	/********** FIN PARTIE TALENT **********/
 	/***************************************/
+
+	/*******************************************/
+	/************ PARTIE EQUIPEMENT ************/
+	/*******************************************/
+	public void EquipItem (Sprite newItemSprite, ItemType itemType) {
+		switch (itemType) {
+		case ItemType.weapon:
+			bWeapon.GetComponentsInChildren<Image> () [1].sprite = newItemSprite;
+			break;
+		case ItemType.shield:
+			bShield.GetComponentsInChildren<Image> () [1].sprite = newItemSprite;
+			break;
+		case ItemType.helm:
+			bHelm.GetComponentsInChildren<Image> () [1].sprite = newItemSprite;
+			break;
+		case ItemType.perfume:
+			bPerfume.GetComponentsInChildren<Image> () [1].sprite = newItemSprite;
+			break;
+		}
+
+		DisplayItemStat ();
+	}
+
+	public void DesequipItem (ItemType itemType) {
+		switch (itemType) {
+		case ItemType.weapon:
+			bWeapon.GetComponentsInChildren<Image> () [1].sprite = defaultWeapon;
+			break;
+		case ItemType.shield:
+			bShield.GetComponentsInChildren<Image> () [1].sprite = defaultShield;
+			break;
+		case ItemType.helm:
+			bHelm.GetComponentsInChildren<Image> () [1].sprite = defaultHelm;
+			break;
+		case ItemType.perfume:
+			bPerfume.GetComponentsInChildren<Image> () [1].sprite = defaultPerfume;
+			break;
+		}
+
+		DisplayItemStat ();
+	}
+
+	public void DisplayItemStat () {
+		tAttack.text = GameData.gameData.playerData.equipment.attack.ToString ("+0");
+		tCriticalHit.text = GameData.gameData.playerData.equipment.criticalHit.ToString ("+0");
+		tCriticalPower.text = GameData.gameData.playerData.equipment.criticalPower.ToString ("+0");
+		tHealthPoint.text = GameData.gameData.playerData.equipment.healthPoint.ToString ("+0");
+		tDodge.text = GameData.gameData.playerData.equipment.dodge.ToString ("+0");
+		tReflect.text = GameData.gameData.playerData.equipment.reflect.ToString ("+0");
+		tDefense.text = GameData.gameData.playerData.equipment.defense.ToString ("+0");
+		tThorn.text = GameData.gameData.playerData.equipment.thorn.ToString ("+0");
+		tRegeneration.text = (GameData.gameData.playerData.equipment.regeneration / 10f).ToString ("+0.#");
+		tSpeed.text = GameData.gameData.playerData.equipment.speed.ToString ("0'%'");
+
+		ChangeWeightValue (GameData.gameData.playerData.equipment.totalWeight);
+	}
+
+	public void ChangeWeightValue (int value) {
+		// Si la valeur dépasse la valeur maximale, on change les couleurs
+		if (value > sItemWeight.maxValue) {
+			sItemWeight.fillRect.GetComponent<Image> ().color = weightOverload;
+			tItemWeight.color = weightOverload;
+		} else {
+			sItemWeight.fillRect.GetComponent<Image> ().color = weightNormal;
+			tItemWeight.color = weightNormal;
+		}
+
+		sItemWeight.value = value;
+		tItemWeight.text = string.Format ("{0}/{1}", value, sItemWeight.maxValue);
+	}
+
+	public void DisplayItemDescription (string itemName, string itemDescription) {
+		tItemName.text = itemName;
+		tItemDescription.text = itemDescription;
+	}
+
+	private void CleanItemSelectionMenu () {
+		wItemObtention.SetActive (false);
+
+		wItemSelection.SetActive (true);
+		wWeaponList.SetActive (false);
+		wShieldList.SetActive (false);
+		wHelmList.SetActive (false);
+		wPerfumeList.SetActive (false);
+
+		ItemButton.ResetDeltaStat ();
+
+		sfxSound.ChangeClick ();
+	}
+
+	private void SelectItemSlotMenu (Button activeButton) {
+		iSelectedSlotItem.gameObject.SetActive (true);
+
+		RectTransform buttonTransform = activeButton.GetComponent<RectTransform> ();
+
+		iSelectedSlotItem.anchorMin = buttonTransform.anchorMin;
+		iSelectedSlotItem.anchorMax = buttonTransform.anchorMax;
+	}
+
+	public void DisplayWeapon () {
+		CleanItemSelectionMenu ();
+		wWeaponList.SetActive (true);
+		SelectItemSlotMenu (bWeapon);
+	}
+
+	public void DisplayShield () {
+		CleanItemSelectionMenu ();
+		wShieldList.SetActive (true);
+		SelectItemSlotMenu (bShield);
+	}
+
+	public void DisplayHelm () {
+		CleanItemSelectionMenu ();
+		wHelmList.SetActive (true);
+		SelectItemSlotMenu (bHelm);
+	}
+
+	public void DisplayPerfume () {
+		CleanItemSelectionMenu ();
+		wPerfumeList.SetActive (true);
+		SelectItemSlotMenu (bPerfume);
+	}
+	/*******************************************/
+	/********** FIN PARTIE EQUIPEMENT **********/
+	/*******************************************/
 }

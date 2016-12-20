@@ -15,7 +15,7 @@ public class TouchManager : MonoBehaviour {
 	public Vector2 leftTouchPosition { get; private set; }
 
 	private RaycastHit2D hit; // Sert à vérifier qu'on ne touche pas une zone "cliquable"
-	//public Vector2 clickableTouchPosition  { get; private set; }
+	private LayerMask layerHit; // On n'intercepte pas autrement pour ne pas perdre des zones pour sauter/tirer - On intercepte si on est sur une zone "cliquable" et que le joueur peut cliquer
 
 	void Awake () {
 		if (current == null) {
@@ -29,10 +29,12 @@ public class TouchManager : MonoBehaviour {
 		int screenHeightForbidden; // La hauteur du bouton "Pause" | Nombre de pixels de l'écran du menu
 		screenHeightForbidden = 64 * Screen.height / 588; // Par défaut, dans l'éditeur, le canvas fait 588 pixels de haut, et le bouton 64
 		screenMidWidth = Screen.width / 2;
-		screenMaxHeight = Screen.height - screenHeightForbidden;
+		screenMaxHeight = Screen.height - screenHeightForbidden; // TODO on dirait qu'on considère le bas de l'écran pour ça et pas le haut
 
 		rightTouchId = -1;
 		leftTouchId = -1;
+
+		layerHit = LayerMask.NameToLayer("Touch");
 	}
 
 	void Update () {
@@ -53,7 +55,7 @@ public class TouchManager : MonoBehaviour {
 					// Lorsqu'un nouveau contact est effectué, on regarde s'il est à droite ou à gauche
 					case TouchPhase.Began:
 						// Gauche
-						if (touch.position.x < screenMidWidth) {
+						if (touch.position.x < screenMidWidth && Input.mousePosition.y < screenMaxHeight) {
 							leftTouchId = touch.fingerId;
 							leftTouchPosition = touch.position;
 							Mediator.current.Publish<TouchLeft> (new TouchLeft () {
@@ -108,11 +110,17 @@ public class TouchManager : MonoBehaviour {
 			if (Input.GetMouseButton (0)) {
 				// La première fois qu'on appuie, on regarde de quel côté on est pour "enregistrer" le bouton
 				if (Input.GetMouseButtonDown (0)) {
-					// On intercepte si on est sur une zone "cliquable" et que le joueur peut cliquer
-					// On n'intercepte pas autrement pour ne pas perdre des zones pour sauter/tirer
-					LayerMask layerHit = LayerMask.NameToLayer("TouchLayer"); // TODO garder cette layer ? elle ne fonctionne pas pour l'instant
+					
+					hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero, Mathf.Infinity, 1 << layerHit);
 
-					hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero, Mathf.Infinity, layerHit.value);
+					// Lorsque l'on clique sur de l'eau dans le niveau 2
+					if (LevelManager.levelManager.GetCurrentLevel() == 2 && hit.collider != null && hit.collider.name == "BallofWater") {
+						Mediator.current.Publish<TouchWaterLevel2> (new TouchWaterLevel2 () {
+							touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition),
+							objectId = hit.collider.gameObject.GetInstanceID ()
+						});
+						return;
+					}
 
 					// Lorsque l'on clique sur une zone que l'on peut casser
 					if (LevelManager.player.canBreakByClick > 0 && hit.collider != null) {
@@ -140,7 +148,7 @@ public class TouchManager : MonoBehaviour {
 					}
 
 					// Gauche
-					if (Input.mousePosition.x < screenMidWidth) {
+					if (Input.mousePosition.x < screenMidWidth && Input.mousePosition.y < screenMaxHeight) {
 						leftTouchId = 0;
 						leftTouchPosition = Input.mousePosition;
 						Mediator.current.Publish<TouchLeft> (new TouchLeft () {

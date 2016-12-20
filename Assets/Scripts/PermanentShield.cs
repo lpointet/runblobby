@@ -28,6 +28,11 @@ public class PermanentShield : MonoBehaviour {
 	}
 
 	void Update () {
+		// Si le joueur est mort, on enlève tout le bouclier
+		if (LevelManager.player.IsDead ()) {
+			HitShield (listOfBall.Count);
+		}
+
 		// On fait tourner le contenant des balles
 		if (LevelManager.player.permanentShield > 0) {
 			//myTransform.Rotate (Vector3.back * (TimeManager.deltaTime * rotationSpeed));

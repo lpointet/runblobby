@@ -23,6 +23,7 @@ public class PlayerController : Character {
 	[SerializeField] private int _speedRatio;
 	[SerializeField] private float _initialMoveSpeed;
 	[SerializeField] private int _maxDoubleJump;
+	public float minHealthRatio { get; private set; }
 	/* End of Stats */
 	
 	// GUI
@@ -37,6 +38,8 @@ public class PlayerController : Character {
 	[SerializeField] private Transform groundCheck;
 	[SerializeField] private float groundCheckRadius;
 	[SerializeField] private LayerMask layerGround;
+
+	private bool _pooled = false; // Permet de savoir si le joueur est déjà dans une flaque ou non
 
 	//* Pickup
     private List<Collider2D> pickups = new List<Collider2D>();
@@ -101,6 +104,10 @@ public class PlayerController : Character {
 		get { return _bounced; }
 		set { _bounced = value; }
 	}
+	public bool pooled {
+		get { return _pooled; }
+		set { _pooled = value; }
+	}
 
 	public bool canCollectAngel {
 		get { return _canCollectAngel; }
@@ -141,8 +148,6 @@ public class PlayerController : Character {
 
 	public void EquipWeapon( Weapon value ) {
 		weapon = value;
-		// TODO ajouter les valeurs de dégâts de l'arme (eg: critic = _critic + weaponCrit)
-		// TODO passer la fonction dans Character.cs, avec les autres pièces d'équipements
 	}
 
 	public Weapon GetWeapon () {
@@ -246,18 +251,22 @@ public class PlayerController : Character {
 
 		EquipWeapon (myTransform.FindChild ("Weapon").GetComponent<Weapon> ());
         initialMaxDoubleJump = maxDoubleJump;
+		minHealthRatio = 1;
     }
 	
 	protected override void Init() {
 		// On ajoute les points des talents
 		AddTalent();
 
+		// On ajoute les points de l'équipement
+		AddEquipment ();
+
 		base.Init();
 
 		moveSpeed = initialMoveSpeed * speedRatio / 100f;
 		flySpeedCoeff += GameData.gameData.playerData.talent.flightDef * GameData.gameData.playerData.talent.flightDefPointValue;
 		lerpingHP = healthPoint;
-		mySprite.sharedMaterial.SetFloat ("_HueShift", 0);
+		mySprite.material.SetFloat ("_HueShift", 0);
 
 		isFlying = false;
         wasFlying = false;
@@ -280,7 +289,7 @@ public class PlayerController : Character {
 		reflection += Mathf.RoundToInt(talent.reflection * talent.reflectionPointValue);
 		invulnerabilityTime += talent.invulnerabilityTime * talent.invulnerabilityTime;
 		vampirisme += Mathf.RoundToInt(talent.vampirisme * talent.vampirismePointValue);
-		regeneration += Mathf.RoundToInt(talent.regeneration * talent.regenerationPointValue);
+		regeneration += talent.regeneration * talent.regenerationPointValue;
 		attack += Mathf.RoundToInt(talent.attack * talent.attackPointValue);
 		attackDelay += Mathf.RoundToInt(talent.attackDelay * talent.attackDelayPointValue);
 		attackSpeed += Mathf.RoundToInt(talent.attackSpeed * talent.attackSpeedPointValue);
@@ -296,6 +305,25 @@ public class PlayerController : Character {
 		speedRatio += Mathf.RoundToInt(talent.speedBonus * talent.speedBonusPointValue);
 		initialMaxDoubleJump += Mathf.RoundToInt(talent.tornadoSkill * talent.tornadoSkillPointValue);
 		maxDoubleJump = initialMaxDoubleJump;
+	}
+
+	// Les valeurs sont ajoutées APRES les talents, et donc ne bénéficient pas des multiplications potentielles
+	private void AddEquipment () {
+		Equipment equipment = GameData.gameData.playerData.equipment;
+
+		// Character.cs
+		attack += equipment.attack;
+		criticalHit += equipment.criticalHit;
+		criticalPower += equipment.criticalPower;
+		healthPointMax += equipment.healthPoint;
+		reflection += equipment.thorn;
+		defense += equipment.defense;
+		dodge += equipment.dodge;
+		sendBack += equipment.reflect;
+		regeneration += equipment.regeneration / 10f;
+
+		// PlayerController.cs
+		speedRatio = Mathf.RoundToInt(speedRatio * equipment.speed / 100f);
 	}
 	
 	void FixedUpdate() {
@@ -398,9 +426,8 @@ public class PlayerController : Character {
 		if (lerpingHP != healthPoint) {
 			timeLerpHP += TimeManager.deltaTime / delayLerpHP;
 			lerpingHP = Mathf.Lerp (previousHP, healthPoint, timeLerpHP);
-			// sharedMaterial pour que les boules changent de couleur aussi
 			if (!IsDead ())
-				mySprite.sharedMaterial.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, healthPointMax, 230, 0));
+				mySprite.material.SetFloat ("_HueShift", _StaticFunction.MappingScale (lerpingHP, 0, healthPointMax, 230, 0));
 
 		} else {
 			previousHP = healthPoint;
@@ -467,15 +494,15 @@ public class PlayerController : Character {
 			return;
 
 		if (IsGrounded () || bounced) {
-			Jump ();
+			Jump (jumpHeight);
 			bounced = false;
 		} else if (!IsGrounded () && currentJump < maxDoubleJump) {
-			Jump ();
+			Jump (jumpHeight);
 			currentJump++;
 		}
 	}
 
-	public void Jump() {
+	public void Jump (float jumpValue) {
 		// Affichage d'un effet de "nuage" à l'endroit du saut s'il est effectué en l'air
 		if (!IsGrounded () && !IsFlying ()) {
 			GameObject dust = PoolingManager.current.Spawn("AerialDust");
@@ -488,7 +515,7 @@ public class PlayerController : Character {
 			}
 		}
 
-		myRb.velocity = new Vector2(0, jumpHeight);
+		myRb.velocity = new Vector2 (0, jumpValue);
 		myAudio.JumpSound ();
     }
 		
@@ -596,7 +623,7 @@ public class PlayerController : Character {
 		StartCoroutine (ChangeSpeed (moveSpeed / (flySpeedCoeff + flySpeedBonusLastWish)));
 
 		// On fait atterrir le joueur avec le parachute
-		if (!IsGrounded () && !HasTypePickup (typeof(FlyPickup))) {
+		if (!IsGrounded () && HasTypePickup (typeof(FlyPickup))) {
 			// On signale au joueur qu'il était en train de voler, pour faire apparaître des nuages s'il tombe dans un trou
 			wasFlying = true;
 
@@ -733,5 +760,8 @@ public class PlayerController : Character {
 		}
 
 		base.Hurt (damage, penetration, ignoreDefense, attacker);
+
+		// On met à jour le ratio minHealthRatio si HP/HPmax est inférieur
+		minHealthRatio = Mathf.Min (healthPoint / (float)healthPointMax, minHealthRatio);
 	}
 }

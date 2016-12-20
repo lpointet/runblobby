@@ -8,6 +8,7 @@ public class AmmoManager : MonoBehaviour {
 	private Slider ammunition;
 	[SerializeField] private Image ammoReloadBar;
 	[SerializeField] private Slider ammoMask;
+	[SerializeField] private Slider ammoShadowMask;
 
 	void Awake () {
 		ammunition = GetComponent<Slider> ();
@@ -16,6 +17,7 @@ public class AmmoManager : MonoBehaviour {
 	void Update () {
 		if (LevelManager.levelManager.GetEnemyEnCours () != null) {
 			ammoMask.value = LevelManager.player.GetWeapon ().currentWeaponAmmunition;
+			ammoShadowMask.value = LevelManager.player.GetWeapon ().currentWeaponAmmunition;
 			ammunition.value = Mathf.FloorToInt (LevelManager.player.GetWeapon ().GetCurrentAmmo ());
 			ammoReloadBar.fillAmount = LevelManager.player.GetWeapon ().GetCurrentAmmo () % 1;
 		}

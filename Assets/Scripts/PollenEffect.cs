@@ -9,13 +9,17 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class PollenEffect : MonoBehaviour {
 
+	public static PollenEffect current;
+
 	private ParticleSystem pollenParticle;
 	private BoxCollider2D pollenCollider;
 	private AudioSource myAudio;
 
 	public ParticleSystem pollenBall;
+	private ParticleSystem.ShapeModule ballShape;
 	private ParticleSystem.EmissionModule ballEmission;
 	private ParticleSystem.MinMaxCurve ballRate;
+	private Transform pollenBallTransform;
 
 	public Color cleanColor;
 	public Color sneezeColor;
@@ -26,7 +30,7 @@ public class PollenEffect : MonoBehaviour {
 
 	// Données concernant la charge de pollen
 	private bool inCharge = true;		// Permet de savoir s'il faut charger ou décharger
-	private bool goingToSneeze = false;	// Permet de savoir si on a atteint la jauge maximale puor ne pas la baisser dans ce cas
+	private bool goingToSneeze = false;	// Permet de savoir si on a atteint la jauge maximale pour ne pas la baisser dans ce cas
 	private float currentCharge = 0f;	// Charge actuelle
 	private float maxCharge = 10f;		// Charge à partir de laquelle le joueur commence à éternuer
 	private float chargeSpeed = 1f;		// Gain de charge dans la zone pendant 1 seconde
@@ -46,11 +50,16 @@ public class PollenEffect : MonoBehaviour {
 	public float hellBackForce;
 
 	void Awake () {
+		if (current == null)
+			current = this;
+		
 		pollenParticle = GetComponentInChildren<ParticleSystem> ();
 		pollenCollider = GetComponent<BoxCollider2D> ();
 		myAudio = GetComponent<AudioSource> ();
 
 		playerRb = LevelManager.player.GetComponent<Rigidbody2D> ();
+
+		pollenBallTransform = pollenBall.transform;
 	}
 
 	void Start () {
@@ -59,6 +68,7 @@ public class PollenEffect : MonoBehaviour {
 		// Normal
 		case 0:
 			gameObject.SetActive (false);
+
 			break;
 		// Hard
 		case 1:
@@ -112,12 +122,16 @@ public class PollenEffect : MonoBehaviour {
 
 		// Balle
 		ballEmission = pollenBall.emission;
+		ballShape = pollenBall.shape;
 	}
 
 	void Update() {
-		if (TimeManager.paused || LevelManager.player.IsDead () || LevelManager.IsEndingScene())
+		if (TimeManager.paused || LevelManager.player.IsDead () || LevelManager.IsEndingScene ())
 			return;
-		
+
+		// Positionnement au pied du joueur
+		pollenBallTransform.position = LevelManager.player.transform.position;
+
 		if (inCharge) {
 			currentCharge += chargeSpeed * TimeManager.deltaTime;
 
@@ -137,6 +151,7 @@ public class PollenEffect : MonoBehaviour {
 			ballRate = new ParticleSystem.MinMaxCurve (Mathf.FloorToInt (Mathf.Lerp (0, 25, currentCharge / maxCharge)));
 			ballEmission.rate = ballRate;
 			pollenBall.startColor = Color.Lerp (cleanColor, sneezeColor, currentCharge / maxCharge);
+			ballShape.arc = Mathf.Lerp (0, 360, currentCharge / maxCharge);
 		}
 	}
 
@@ -165,26 +180,31 @@ public class PollenEffect : MonoBehaviour {
 		myAudio.Play ();
 
 		// On enlève la charge de pollen quand il tousse
-		StartCoroutine(ResetPollenCharge());
+		StartCoroutine(RemovePollen(1));
 	}
 
-	private IEnumerator ResetPollenCharge() {
-		float timeToClean = 0.5f;
-		float currentTime;
+	// Permet de lancer la Coroutine depuis une autre fonction
+	public void CoroutineRemovePollen(float pollenDischarge, float timeToClean = 0.5f) {
+		StartCoroutine(RemovePollen(pollenDischarge, timeToClean));
+	}
 
-		currentCharge = 0;
+	private IEnumerator RemovePollen(float pollenDischarge, float timeToClean = 0.5f) {
+		// pollenDischarge représente la valeur de pollen qu'on enlève en taux, donc entre 0 et 1
+		pollenDischarge = Mathf.Clamp01 (pollenDischarge);
+		
+		float currentTime = 0;
 
-		while (timeToClean > 0) {
-			currentTime = (0.5f - timeToClean) / timeToClean;
+		float startingCharge = currentCharge;
+		float endingCharge = currentCharge - pollenDischarge * currentCharge;
 
-			ballRate = new ParticleSystem.MinMaxCurve (Mathf.FloorToInt (Mathf.Lerp (25, 0, currentTime)));
-			ballEmission.rate = ballRate;
-			pollenBall.startColor = Color.Lerp (sneezeColor, cleanColor, currentTime);
+		while (currentTime < timeToClean) {
+			currentCharge = Mathf.Lerp (startingCharge, endingCharge, currentTime / timeToClean);
 
-			timeToClean -= TimeManager.deltaTime;
+			currentTime += TimeManager.deltaTime * timeToClean;
 			yield return null;
 		}
 
+		// On vient de lui enlever du pollen, il ne va pas éternuer
 		goingToSneeze = false;
 	}
 }
