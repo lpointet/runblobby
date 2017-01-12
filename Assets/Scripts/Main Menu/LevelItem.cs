@@ -125,7 +125,7 @@ public class LevelItem : MonoBehaviour {
 
 	private IEnumerator PopButton(ModeButton obj, float transitionTime = 0, float delay = 0) {
 		if (delay > 0)
-			yield return new WaitForSeconds (delay * Time.timeScale);
+			yield return new WaitForSecondsRealtime (delay);
 
 		obj.rectTransform.localScale = Vector3.zero;
 		obj.gameObject.SetActive (true);

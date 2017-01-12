@@ -7,11 +7,6 @@ public enum ItemStatName { attack, criticalHit, criticalPower, healthPoint, dodg
 
 public class ItemButton : MonoBehaviour {
 
-	// Variables pour les contrôles des prérequis
-	private int distanceLimitPerfume = 5000;
-	private float ratioHealthShield = 0.75f;
-	private float ratioScoreHelm = 0.8f;
-
 	public int itemNumber { get; private set; }			// ID unique de l'objet = level requis * 100 + mode de difficulté (0 = normal, 1 = hard, 2 = hell, 9 = arcade)
 	private Equipment equipment;						// GameData.gameData.playerData.equipment
 
@@ -79,7 +74,7 @@ public class ItemButton : MonoBehaviour {
 			case 1:
 			case 2:
 				// On vérifie que le joueur n'est jamais descendu sous les "ratioHealthShield" HP pendant le niveau
-				if (GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].healthRatioRecord < ratioHealthShield)
+				if (GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].healthRatioRecord < GameData.gameData.ratioHealthShield)
 					return false;
 				break;
 			}
@@ -89,14 +84,14 @@ public class ItemButton : MonoBehaviour {
 			case 1:
 			case 2:
 				// On vérifie que le joueur a récupéré au moins "ratioScoreHelm" des feuilles sur le niveau
-				if (GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].scoreRatioRecord < ratioScoreHelm)
+				if (GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].scoreRatioRecord < GameData.gameData.ratioScoreHelm)
 					return false;
 				break;
 			}
 			break;
 		case ItemType.perfume:
 			// On vérifie que le joueur a parcouru au moins "distanceLimitPerfume"m en mode Arcade
-			if (levelMode == 9 && GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].arcadeData.distanceRecord < distanceLimitPerfume)
+			if (levelMode == 9 && GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].arcadeData.distanceRecord < GameData.gameData.distanceLimitPerfume)
 				return false;
 			break;
 		}

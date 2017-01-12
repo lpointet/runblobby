@@ -41,17 +41,13 @@ public class Firewall : MonoBehaviour {
 		timeToCreate = TimeManager.time + Random.Range (1f, 3f);
 	}
 
-	void OnEnable () {
-		
-	}
-
 	void Start () {
 		// Chargement différent selon la difficulté
 		switch (LevelManager.levelManager.GetCurrentDifficulty ()) {
 		// Normal
 		case 0:
-			/*gameObject.SetActive (false);
-			break;*/ // TODO remove
+			gameObject.SetActive (false);
+			break; // TODO remove
 		// Hard
 		case 1:
 			gameObject.SetActive (true);

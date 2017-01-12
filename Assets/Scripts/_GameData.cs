@@ -12,12 +12,13 @@ public class _GameData : MonoBehaviour {
 
 	public static string saveFile;
 
-	/* Permet de gérer le chargement de la liste des levels (passage d'arguments) */
+	/* Permet de gérer le chargement de divers écrans (passage d'arguments) */
 	public static bool loadListLevel = false;
+	public static bool loadArmory = false;
 
 	/* Passage d'informations au LevelManager depuis le Menu */
 	public static int currentLevel = 2; // TODO ajuster
-	public static int currentDifficulty = 0;
+	public static int currentDifficulty = 1; // TODO ajuster
 	public static bool isStory = true;
 	public static string currentLevelName;
 
@@ -49,6 +50,11 @@ public class GameData {
 
 	public int firstLevel = 1; // Correspond au numéro de scène du premier level, permet de corriger le numéro du level dans certaines fonctions (chargement level depuis le menu)
 	public int lastLevel = 1; // Numéro de scène du dernier level (corriger dans le constructeur, ceci est un fallback)
+
+	// Utilisés dans ItemButton et UIManager et ModeButton
+	public int distanceLimitPerfume = 5000; // Distance mini à parcourir pour débloquer les "parfums"
+	public float ratioHealthShield = 0.75f; // Ratio de vie à ne pas dépasser (en-dessous) pour débloquer les "boucliers"
+	public float ratioScoreHelm = 0.8f; // Ratio de feuilles à obtenir pour débloquer les "casques"
 
 	/* PARAMETRES DU JOUEUR */
 	public PlayerData playerData;

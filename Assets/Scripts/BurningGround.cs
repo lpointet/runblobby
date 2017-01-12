@@ -11,6 +11,7 @@ public class BurningGround : MonoBehaviour {
 	public static BurningGround current;
 
 	private ParticleSystem burningParticle;
+	private ParticleSystem.MainModule burningMain;
 	private ParticleSystem.EmissionModule burningEmission;
 	private float maxParticleRate = 20f;
 	private float maxParticleSize = 0.25f;
@@ -89,9 +90,11 @@ public class BurningGround : MonoBehaviour {
 		// Positionnement au pied du joueur
 		transform.position = LevelManager.player.transform.position + Vector3.down * 7/16f;
 
+		burningMain = burningParticle.main;
+
 		// Initialisation à 0 particule
 		burningEmission = burningParticle.emission;
-		burningEmission.rate = new ParticleSystem.MinMaxCurve (0);
+		burningEmission.rateOverTime = new ParticleSystem.MinMaxCurve (0);
 	}
 
 	void Update() {
@@ -123,10 +126,10 @@ public class BurningGround : MonoBehaviour {
 		}
 
 		// Quantité de particules
-		burningEmission.rate = new ParticleSystem.MinMaxCurve (Mathf.Lerp (0, maxParticleRate, currentCharge / maxCharge));
+		burningEmission.rateOverTime = new ParticleSystem.MinMaxCurve (Mathf.Lerp (0, maxParticleRate, currentCharge / maxCharge));
 
 		// Taille de particules
-		burningParticle.startSize = Mathf.Lerp (0.1f, maxParticleSize, currentCharge / maxCharge);
+		burningMain.startSize = Mathf.Lerp (0.1f, maxParticleSize, currentCharge / maxCharge);
 	}
 
 	private void ForceJumpPlayer() {

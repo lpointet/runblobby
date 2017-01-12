@@ -393,8 +393,7 @@ public class PlayerController : Character {
 		}
 			
         // Appelé à la fin d'un vol si en l'air et jusqu'à l'atterrisage
-		if(!IsGrounded () && wasFlying)
-		{
+		if(!IsGrounded () && wasFlying) {
             RaycastHit2D hit;
             CloudBlock cloudBlock;
 
@@ -564,14 +563,6 @@ public class PlayerController : Character {
 
 		myRb.Sleep();
 		UIManager.uiManager.ToggleEndMenu (true);
-	}
-
-	public void OnVictory() {
-		// On ne peut plus tirer...
-		SetFireAbility( false );
-		moveSpeed = 0;
-
-		_StaticFunction.Save ();
 	}
 
 	public void ActiveParachute(bool active) {

@@ -5,17 +5,17 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 423794}
-  - 212: {fileID: 21229402}
-  - 114: {fileID: 11423508}
-  - 50: {fileID: 5001962}
-  - 68: {fileID: 6814790}
-  - 58: {fileID: 5837010}
-  - 95: {fileID: 9537032}
-  - 82: {fileID: 8278240}
-  - 114: {fileID: 11419894}
+  - component: {fileID: 423794}
+  - component: {fileID: 21229402}
+  - component: {fileID: 11423508}
+  - component: {fileID: 5001962}
+  - component: {fileID: 6814790}
+  - component: {fileID: 5837010}
+  - component: {fileID: 9537032}
+  - component: {fileID: 8278240}
+  - component: {fileID: 11419894}
   m_Layer: 9
   m_Name: Lvl_1_01_Gaston
   m_TagString: Untagged
@@ -32,23 +32,26 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.4847445, y: -11.914009, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &5001962
 Rigidbody2D:
-  serializedVersion: 2
+  serializedVersion: 4
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180460}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_IsKinematic: 0
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -99,6 +102,7 @@ AudioSource:
   Loop: 0
   Mute: 0
   Spatialize: 0
+  SpatializePostEffects: 0
   Priority: 50
   DopplerLevel: 1
   MinDistance: 1
@@ -111,12 +115,14 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
+    - serializedVersion: 2
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -127,7 +133,8 @@ AudioSource:
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -138,7 +145,8 @@ AudioSource:
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -149,7 +157,8 @@ AudioSource:
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -205,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b340d38bb98f2d742b2b054511f04ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthPoint: 10
+  _healthPoint: 1
   _healthPointMax: 1
   _defense: 30
   _dodge: 0
@@ -236,10 +245,10 @@ MonoBehaviour:
   delayBetweenAtttack: 1.75
   popPosition:
   - 0
-  - 0.75
+  - 1
   startPosition:
   - 14
-  - 0.75
+  - 1
   _startGround: {fileID: 197204, guid: a1fca6b1769193f4786a789e54a69ff9, type: 2}
   _arenaGround: {fileID: 158232, guid: d3f95c408d1708e4cb4e1c80f4de3305, type: 2}
   _endGround: {fileID: 197204, guid: a1fca6b1769193f4786a789e54a69ff9, type: 2}
@@ -265,7 +274,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -273,7 +284,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 1
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89

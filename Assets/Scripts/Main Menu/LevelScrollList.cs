@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// TODO à supprimer pour le build final
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;

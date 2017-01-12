@@ -35,7 +35,7 @@ public class Enemy : Character {
 	[SerializeField] protected GameObject _endGround;
 
 	[Header("Coin Drop")]
-	[SerializeField] protected float frequence = 0.01f;
+	[Range(0, 1)] [SerializeField] protected float frequence = 0.01f;
 	[SerializeField] protected float mediumValue = 1.1f; // Offre une bien plus grande variété de feuilles que 1f
 	private CoinPickup[] coins; // Fait référence à ListManager
 	private CoinDrop[] possibleCoins;
@@ -73,7 +73,11 @@ public class Enemy : Character {
 	}
 	/* End of Getters & Setters */
 
-	void OnEnable() {
+	void OnValidate () {
+		healthPoint = healthPointMax;
+	}
+
+	protected virtual void OnEnable() {
 		Init();
 	}
 	
@@ -93,7 +97,7 @@ public class Enemy : Character {
 		PossibleCoin ();
 
 		// On le place à sa position AVANT début du combat
-		popPosition[0] = CameraManager.cameraEndPosition;
+		popPosition[0] = CameraManager.cameraRightPosition + 2f;
 		popPosition[1] = startPosition[1];
 
 		myTransform.position = new Vector2(popPosition[0], popPosition[1]);

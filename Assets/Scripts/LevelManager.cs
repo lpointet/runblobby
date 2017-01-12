@@ -120,6 +120,9 @@ public class LevelManager : MonoBehaviour {
     }
 
 	public float GetLocalDistance() {
+		if (TimeManager.paused || player.IsDead ())
+			return 0;
+		
 		return localDistance;
 	}
 
@@ -426,7 +429,7 @@ public class LevelManager : MonoBehaviour {
 	private IEnumerator SpawnEnemy (Enemy enemy) {
 		tempEnemy.gameObject.SetActive (true);
 
-		yield return new WaitForSeconds( enemySpawnDelay * Time.timeScale );
+		yield return new WaitForSecondsRealtime ( enemySpawnDelay );
 
 		enemyEnCours = tempEnemy;
 		tempEnemy = null;
@@ -449,7 +452,8 @@ public class LevelManager : MonoBehaviour {
 
 			endLevel = true;
 
-			player.OnVictory ();
+			player.SetFireAbility( false );
+			player.moveSpeed = 0;
 		}
 	}
 

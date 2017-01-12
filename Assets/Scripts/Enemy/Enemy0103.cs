@@ -344,7 +344,7 @@ public class Enemy0103 : Enemy {
 	}
 
 	private IEnumerator FallingBlock(Transform currentTransform, float transitionTime = 0, float delay = 0) {
-		yield return new WaitForSeconds (delay * Time.timeScale);
+		yield return new WaitForSecondsRealtime (delay);
 
 		float timeToComplete = 0;
 		float currentTranslation = 5f;
@@ -362,8 +362,5 @@ public class Enemy0103 : Enemy {
 	private void Victory() {
 		LevelManager.levelManager.StopEndingScene ();
 		Die ();
-
-		// Mise à jour du GameData
-		GameData.gameData.playerData.levelData[LevelManager.levelManager.GetCurrentLevel() - 1].storyData[LevelManager.levelManager.GetCurrentDifficulty()].isBossDead = true;
 	}
 }

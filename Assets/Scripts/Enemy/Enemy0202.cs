@@ -20,13 +20,13 @@ public class Enemy0202 : Enemy {
 	[SerializeField] private Image groundStingBlackScreen;
 
 	private float groundStingLength; // Temps de déplacement du dard
-	[SerializeField] private float groundStingNormalLength;
-	[SerializeField] private float groundStingHardLength;
-	[SerializeField] private float groundStingHellLength;
+	[SerializeField] private float gsNormalLength;
+	[SerializeField] private float gsHardLength;
+	[SerializeField] private float gsHellLength;
 	private float groundStingDamage; // Dégât du dard
-	[SerializeField] private float groundStingNormalDamage;
-	[SerializeField] private float groundStingHardDamage;
-	[SerializeField] private float groundStingHellDamage;
+	[SerializeField] private float gsNormalDamage;
+	[SerializeField] private float gsHardDamage;
+	[SerializeField] private float gsHellDamage;
 
 	[Header("Atk 2 : Angry Wait")]
 	[SerializeField] private float angryWaitAttackLength = 3f;
@@ -34,8 +34,6 @@ public class Enemy0202 : Enemy {
 	[SerializeField] private GameObject inavoidableSting;
 
 	void Start() {
-		//myAnim.SetFloat("ratioHP", 1f);
-
 		groundSting.SetActive (false);
 		groundStingCollider = groundSting.GetComponent<CircleCollider2D> ();
 		groundStingSprite = groundSting.GetComponent<SpriteRenderer> ();
@@ -45,18 +43,18 @@ public class Enemy0202 : Enemy {
 	}
 
 	protected override void NormalLoad () {
-		groundStingLength = groundStingNormalLength;
-		groundStingDamage = groundStingNormalDamage;
+		groundStingLength = gsNormalLength;
+		groundStingDamage = gsNormalDamage;
 	}
 
 	protected override void HardLoad () {
-		groundStingLength = groundStingHardLength;
-		groundStingDamage = groundStingHardDamage;
+		groundStingLength = gsHardLength;
+		groundStingDamage = gsHardDamage;
 	}
 
 	protected override void HellLoad () {
-		groundStingLength = groundStingHellLength;
-		groundStingDamage = groundStingHellDamage;
+		groundStingLength = gsHellLength;
+		groundStingDamage = gsHellDamage;
 	}
 
 	protected override void ChooseAttack (int numberAttack) {
@@ -162,21 +160,29 @@ public class Enemy0202 : Enemy {
 	}
 
 	private void InavoidableStings () {
-		Vector2 startingPoint = myTransform.position + Vector3.one * 0.65f; // Position de départ des dards
-		Vector2 vectorSting; // Direction des dards, recalculée à chaque itération
+		float stingAngle;
+		float higherPointAngle;
+		float lowerPointAngle;
+		float numberOfStings;
+		Vector2 startingPoint;
 
-		float numberOfSting = Mathf.CeilToInt (CameraManager.cameraUpPosition) - 2; // Le joueur ne peut pas être tout en haut, donc -2
+		startingPoint = myTransform.position + Vector3.one * 0.65f; // Position de départ des dards
 
-		for (int i = 0; i < numberOfSting; i++) {
+		higherPointAngle = Mathf.Rad2Deg * Mathf.Atan2 (CameraManager.cameraUpPosition - myTransform.position.y, myTransform.position.x); // On considère que le héros est toujours en 0
+		lowerPointAngle = Mathf.Rad2Deg * Mathf.Atan2 (myTransform.position.y + 1f, myTransform.position.x); // Le point le plus bas est le héros en position (x, y) = (0, 0)
+		stingAngle = lowerPointAngle + higherPointAngle;
+
+		numberOfStings = Mathf.CeilToInt (stingAngle / 4f); // Un "dard" tous les 4 degrés
+
+		for (int i = 0; i < numberOfStings; i++) {
+
 			GameObject obj = PoolingManager.current.Spawn (inavoidableSting.name);
 
 			if (obj != null) {
 				obj.transform.position = new Vector2 (startingPoint.x, startingPoint.y);
+				obj.transform.rotation = Quaternion.Euler (0, 0, i * stingAngle / (float)(numberOfStings - 1) - higherPointAngle + 90); // +90 pour l'angle du Sprite
 
 				obj.SetActive (true);
-
-				vectorSting = Vector2.up * (i + 0.5f) - startingPoint; // Calcul de la direction du dard
-				obj.GetComponent<Sting> ().SetCourse (3, vectorSting);
 			}
 		}
 	}

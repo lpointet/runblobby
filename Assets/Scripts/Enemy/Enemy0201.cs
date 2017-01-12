@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 /* SERBE ET RUSSE LE CERBERES
  * Ils envoient régulièrement des boules de feu en ligne droite vers le joueur
- * TODO : en hard+, certaines boules de feu explosent à mi chemin en plein d'autres boules (couleur différente ?)
- * TODO : en hard+, il y a un plafond de feu (pour éviter les doubles sauts) ?
+ * En hard+, certaines boules de feu explosent à mi chemin en plein d'autres boules (couleur différente)
  */
 public class Enemy0201 : Enemy {
 
@@ -16,10 +15,6 @@ public class Enemy0201 : Enemy {
 	private float[] yFireBallPosition = { -0.5f, 0.1f };
 
 	[SerializeField] private GameObject firePit;
-
-	void Start() {
-		//myAnim.SetFloat("ratioHP", 1f);
-	}
 
 	protected override void ChooseAttack (int numberAttack) {
 		switch (numberAttack) {
@@ -44,7 +39,7 @@ public class Enemy0201 : Enemy {
 
 	private IEnumerator FireSalve (float numberOfShots) {
 		// Attente de 1sec pour permettre à l'animation de se mettre en place
-		yield return new WaitForSeconds (1 * Time.timeScale);
+		yield return new WaitForSecondsRealtime (1);
 
 		int randomPosition = 1; // Permet de définir la position de la précédente boule de feu
 
@@ -58,7 +53,7 @@ public class Enemy0201 : Enemy {
 			StartCoroutine (FireShot (randomPosition, i * delayBetweenFire));
 		}
 
-		yield return new WaitForSeconds ((numberOfShots * delayBetweenFire) * Time.timeScale);
+		yield return new WaitForSecondsRealtime (numberOfShots * delayBetweenFire);
 
 		// Arrêt de l'animation qui tire des boules
 		myAnim.SetBool ("fireBall", false);
@@ -68,7 +63,7 @@ public class Enemy0201 : Enemy {
 		if (IsDead () || LevelManager.player.IsDead () || TimeManager.paused)
 			yield break;
 		
-		yield return new WaitForSeconds (delay * Time.timeScale);
+		yield return new WaitForSecondsRealtime (delay);
 
 		GameObject obj = PoolingManager.current.Spawn (fireBallName.name);
 

@@ -4,6 +4,20 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+// Un écran de gain d'item/mode à la fin d'une partie
+[System.Serializable]
+public class GainScreen {
+	public string presentationText;
+	public string gainText;
+	public Sprite gainSprite;
+
+	public GainScreen (string presentation, string gain, Sprite sprite) {
+		presentationText = presentation;
+		gainText = gain;
+		gainSprite = sprite;
+	}
+}
+
 // Une ligne de dialogue : le numéro de portrait, la position (gauche/droite), le texte
 [System.Serializable]
 public struct DialogEntry {
@@ -82,13 +96,23 @@ public class UIManager : MonoBehaviour {
 	public Slider experienceSliderEnd;
 	public Text gainLevel;
 	public Text tCurrentPlayerLevel;
-	public GameObject bNextLevel;
+	private List<Button> bEndUI = new List<Button> (); // Liste des boutons de l'interface finale, directement enfants de endUI
+	public GameObject bNextLevel; // Uniquement le bouton pour le niveau suivant
 	public ParticleSystem pFirework;
 	public Text tTitreEndGame;
 
 	public AudioClip endFailure;
 	public AudioClip endVictory;
 	private AudioSource endAudio;
+
+	public GameObject newItemUI;
+	public Image newItem;
+	public Image newItemBorder;
+	public Text tnewItemPresentation;
+	public Text tnewItemObject;
+	public Button bArmory;
+	private List<GainScreen> listGainScreen = new List<GainScreen> (); // Liste des nouveaux écrans à afficher
+	private bool changeGainObject = false; // Permet de savoir si on a changé un item dans les écrans de gains (en cas de multi gains)
 
 	private float timeUpdateValue;
 	private float delaySliderFull = 1.5f;
@@ -127,6 +151,11 @@ public class UIManager : MonoBehaviour {
 			uiManager = this;
 
 		sfxSound = GetComponentInChildren<SFXMenu> ();
+
+		foreach (Button button in endUI.GetComponentsInChildren<Button> (true)) {
+			if (button.transform.parent == endUI.transform)
+				bEndUI.Add (button);
+		}
 
         // Compteur
         defaultTextColor = meterText.color;
@@ -317,18 +346,24 @@ public class UIManager : MonoBehaviour {
 		ammunition.gameObject.SetActive (active);
 	}
 
-	public void ToggleEndMenu(bool active) {
+	public void ToggleEndMenu (bool active) {
 		endUI.SetActive (active);
 		standardUI.SetActive (!active);
 
+		// On cache les boutons temporairement (ils doivent être visibles si on clique ou à la fin de l'update des sliders)
+		foreach (Button button in bEndUI) {
+			button.gameObject.SetActive (false);
+		}
+
+		// On cache le menu du nouvel objet obtenu
+		newItemUI.SetActive (false);
+
 		if (LevelManager.player.IsDead ()) {
 			endUI.GetComponent<AudioSource> ().PlayOneShot (endFailure);
-			bNextLevel.SetActive (false);
 			tTitreEndGame.text = "YOU LOSE...";
 			pFirework.gameObject.SetActive (false);
 		} else {
 			endUI.GetComponent<AudioSource> ().PlayOneShot (endVictory);
-			bNextLevel.SetActive (true);
 			tTitreEndGame.text = "YOU WIN!";
 			pFirework.gameObject.SetActive (true);
 		}
@@ -336,7 +371,7 @@ public class UIManager : MonoBehaviour {
 		UpdateValueScore ();
 	}
 
-	public IEnumerator RunDialog(RuntimeAnimatorController[] protagonist, DialogEntry[] dialogLine, System.Action<bool> callback) {
+	public IEnumerator RunDialog (RuntimeAnimatorController[] protagonist, DialogEntry[] dialogLine, System.Action<bool> callback) {
 		dialogUI.SetActive (true);
 		standardUI.SetActive (false);
 		int currentLine = 0;
@@ -464,25 +499,179 @@ public class UIManager : MonoBehaviour {
 			yield return null;
 		}
 
-		// Lorsque les sliders ont terminés leurs courses
+		// Lorsque les sliders ont terminé leurs courses, on affiche le bonus de feuilles
 		StartCoroutine (PopText (moneyBonus, ScoreManager.GetBonusScore ()));
+
+		/****************************************************************************************************************/
+		/* Affichage des potentiels gains d'objets et le lien vers l'armurerie ici, avant d'afficher les autres boutons */
+		/****************************************************************************************************************/
+		SearchGain (); // Remplit la listGainScreen
+
+		// On n'évite totalement la boucle si la liste est vide
+		if (listGainScreen.Count > 0) {
+			while (!Input.GetMouseButtonUp (0) || listGainScreen.Count > 0) {
+				// Ajout du nouvel objet/mode
+				if (Input.GetMouseButtonUp (0)) {
+					// On met le suivant s'il existe
+					if (listGainScreen.Count > 0)
+						NewGainScreen ();
+				}
+				// Affichage de l'écran et des objets gagnés
+				if (!newItemUI.activeInHierarchy || changeGainObject) {
+					newItemUI.SetActive (true);
+					bArmory.gameObject.SetActive (false);
+
+					StartCoroutine (PopObject (newItem.transform));
+					StartCoroutine (PopObject (newItemBorder.transform));
+				}
+				// Affichage du bouton vers l'armurerie 1sec après l'affichage de l'objet
+				if (!bArmory.isActiveAndEnabled) {
+					yield return new WaitForSecondsRealtime (1);
+
+					bArmory.gameObject.SetActive (true);
+					StartCoroutine (PopObject (bArmory.transform));
+				}
+
+				changeGainObject = false;
+
+				yield return null;
+			}
+		}
+
+		// On cache le menu de gain d'objets
+		newItemUI.SetActive (false);
+		/*********************************************/
+		/* Fin d'affichage des nouveaux objets/modes */
+		/*********************************************/
+
+		// Lorsque les sliders ont terminé leurs courses, on affiche les boutons
+		foreach (Button button in bEndUI) {
+			button.gameObject.SetActive (true);
+			StartCoroutine (PopObject (button.transform));
+		}
+		if (LevelManager.player.IsDead ())
+			bNextLevel.SetActive (false); // On cache ce bouton si le joueur est mort
+
+		// On sauvegarde
+		_StaticFunction.Save ();
 	}
 
-	private IEnumerator PopText(Text text, int valueGainLevel) {
+	// Ajoute tous les écrans possibles de gain à la listGainScreen, en cas de victoire
+	private void SearchGain () {
+		listGainScreen.Clear (); // Nettoyage de la liste des écrans
+		// Remplissage de la liste des écrans
+		int levelNumber = LevelManager.levelManager.GetCurrentLevel ();
+		int levelMode = LevelManager.levelManager.GetCurrentDifficulty ();
+		string presentation;
+		string gain;
+		ItemDescription item;
+
+		// Le joueur ne doit pas être mort, et en mode "story" (on ne peut que "perdre" en mode "Arcade")
+		if (!LevelManager.player.IsDead () && LevelManager.levelManager.IsStory ()) {
+			// On teste la présence d'une condition de victoire non déjà remplie
+			// Ex : boss pas déjà mort, ratioRecord de vie et de feuilles inférieurs à leur seuils...
+			/* Normal */
+			if (levelMode == 0) {
+				if (!GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].isBossDead) {
+					// Ajouter écran de mode Arcade
+					// Ajouter écran de mode Hard
+					presentation = "You've unlocked two new modes!";
+					gain = "Hard + Arcade";
+					listGainScreen.Add (new GainScreen (presentation, gain, ListManager.current.level [levelNumber - GameData.gameData.firstLevel]));
+				}
+			}
+			/* Hard ou Hell */
+			else if (levelMode == 1 || levelMode == 2) {
+				if (!GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].isBossDead) {
+					if (levelMode == 1) {
+						// Ajouter écran de mode Hell si Hard
+						presentation = "You've unlocked a new mode!";
+						gain = "Hell";
+						listGainScreen.Add (new GainScreen (presentation, gain, ListManager.current.level [levelNumber - GameData.gameData.firstLevel]));
+					}
+					// Ajouter écran de nouvelle arme
+					item = SearchItem (levelNumber, levelMode, ItemType.weapon);
+					if (item != null) {
+						presentation = "You've unlocked a wonderful";
+						listGainScreen.Add (new GainScreen (presentation, item.itemName, item.itemImage));
+					}
+				}
+				// Le joueur n'a pas déjà enregistré le fait d'avoir un ratio
+				if (GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].healthRatioRecord < GameData.gameData.ratioHealthShield
+					&& Mathf.Clamp01 (LevelManager.player.minHealthRatio) >= GameData.gameData.ratioHealthShield) {
+					// Ajouter écran de nouveau bouclier
+					item = SearchItem (levelNumber, levelMode, ItemType.shield);
+					if (item != null) {
+						presentation = "You've unlocked a wonderful";
+						listGainScreen.Add (new GainScreen (presentation, item.itemName, item.itemImage));
+					}
+				}
+				if (GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].scoreRatioRecord < GameData.gameData.ratioScoreHelm
+					&& ScoreManager.GetRatioLeaf () >= GameData.gameData.ratioScoreHelm) {
+					// Ajouter écran de nouveau casque
+					item = SearchItem (levelNumber, levelMode, ItemType.helm);
+					if (item != null) {
+						presentation = "You've unlocked a wonderful";
+						listGainScreen.Add (new GainScreen (presentation, item.itemName, item.itemImage));
+					}
+				}
+			}
+			// Mise à jour des paramètres de fin de niveau (mort du boss)
+			GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [levelMode].isBossDead = true;
+		}
+		// En mode Arcade on ne peut que perdre
+		else if (!LevelManager.levelManager.IsStory ()) {
+			if (GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].arcadeData.distanceRecord < GameData.gameData.distanceLimitPerfume
+				&& LevelManager.levelManager.GetDistanceTraveled () >= GameData.gameData.distanceLimitPerfume) {
+				// Ajouter écran de nouveau parfum
+				item = SearchItem (levelNumber, levelMode, ItemType.perfume);
+				if (item != null) {
+					presentation = "You've unlocked a wonderful";
+					listGainScreen.Add (new GainScreen (presentation, item.itemName, item.itemImage));
+				}
+			}
+		}
+		// Ajout du premier objet
+		if (listGainScreen.Count > 0) {
+			NewGainScreen ();
+		}
+	}
+
+	private void NewGainScreen () {
+		tnewItemPresentation.text = listGainScreen [0].presentationText;
+		tnewItemObject.text = listGainScreen [0].gainText;
+		newItem.sprite = listGainScreen [0].gainSprite;
+		newItemBorder.sprite = listGainScreen [0].gainSprite;
+
+		listGainScreen.RemoveAt (0); // On enlève celui qu'on a actuellement
+		changeGainObject = true;
+	}
+
+	private ItemDescription SearchItem (int level, int mode, ItemType type) {
+		foreach (ItemDescription item in ListManager.current.item) {
+			if (item.itemLevel != level || item.itemMode != mode || item.itemType != type)
+				continue;
+			Debug.Log ("Gain item : " + item.itemName + " - Level demandé : " + level + " - Mode demandé : " + mode);
+			return item;
+		}
+		return null;
+	}
+
+	private IEnumerator PopText (Text text, int number) {
 		float timeScalePop = 0;
 		float delayPop = 0.15f;
 		float popScale = 0;
 		float initialScale = text.rectTransform.localScale.x;
 
-		if (valueGainLevel > 0) {
+		if (number > 0) {
 			text.gameObject.SetActive (true);
-			text.text = valueGainLevel.ToString ("+0");
+			text.text = number.ToString ("+0");
 		}
 
 		text.GetComponent<AudioSource> ().Play ();
 
 		while (timeScalePop < delayPop) {
-			popScale = Mathf.Lerp (initialScale, initialScale * 4f, timeScalePop);
+			popScale = Mathf.Lerp (initialScale / 2f, initialScale * 4f, timeScalePop);
 			text.rectTransform.localScale = new Vector2 (popScale, popScale);
 
 			timeScalePop += TimeManager.deltaTime;
@@ -490,6 +679,23 @@ public class UIManager : MonoBehaviour {
 		}
 
 		text.rectTransform.localScale = new Vector2 (initialScale, initialScale);
+	}
+
+	private IEnumerator PopObject (Transform transform) {
+		float timeScalePop = 0;
+		float delayPop = 0.15f;
+		float popScale = 0;
+		float initialScale = transform.localScale.x;
+
+		while (timeScalePop < delayPop) {
+			popScale = Mathf.Lerp (initialScale / 2f, initialScale * 4f, timeScalePop);
+			transform.localScale = new Vector2 (popScale, popScale);
+
+			timeScalePop += TimeManager.deltaTime;
+			yield return null;
+		}
+
+		transform.localScale = new Vector2 (initialScale, initialScale);
 	}
 
 	public IEnumerator CombatText (Transform parentTransform, string combatLog, LogType type = LogType.special, System.Action<bool> callback = null) {
@@ -587,8 +793,12 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void List_Click() {
-		//sfxSound.ButtonYesClick ();
 		_GameData.loadListLevel = true; // On demande à charger le menu du jeu (liste des levels)
+		SceneManager.LoadScene (0);
+	}
+
+	public void Armory_Click() {
+		_GameData.loadArmory = true; // On demande à charger l'armurerie (liste des équipements)
 		SceneManager.LoadScene (0);
 	}
 

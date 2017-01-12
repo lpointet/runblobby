@@ -24,12 +24,12 @@ GameObject:
   - 114: {fileID: 114000011481106582}
   - 114: {fileID: 114000012426204010}
   m_Layer: 10
-  m_Name: Lvl_1_Tile_16px
+  m_Name: 
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1000012109817474
 GameObject:
   m_ObjectHideFlags: 0
@@ -45,7 +45,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1000012399828346
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,12 +55,12 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011157981562}
   m_Layer: 10
-  m_Name: Sol
+  m_Name: 
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1000013579231520
 GameObject:
   m_ObjectHideFlags: 1
@@ -71,12 +71,12 @@ GameObject:
   - 4: {fileID: 4000010840836092}
   - 60: {fileID: 60000013787520270}
   m_Layer: 10
-  m_Name: Collision
+  m_Name: 
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4000010840836092
 Transform:
   m_ObjectHideFlags: 1

@@ -4,21 +4,22 @@ using System.Collections;
 public class Sting : MonoBehaviour {
 
 	private Rigidbody2D myRb;
+	private Transform myTransform;
+
+	private float moveSpeed = 3f;
 
 	void Awake () {
 		myRb = GetComponent<Rigidbody2D> ();
+		myTransform = transform;
+	}
+
+	void OnEnable () {
+		// Vitesse en fonction de l'angle
+		float rotaZ = (myTransform.eulerAngles.z - 90) * Mathf.Deg2Rad; // -90 pour compenser l'angle du Sprite
+		myRb.velocity = new Vector2 (-Mathf.Cos (rotaZ), -Mathf.Sin (rotaZ)) * moveSpeed;
 	}
 
 	void OnBecameInvisible () {
 		gameObject.SetActive (false);
-	}
-
-	public void SetCourse (float speed, Vector2 direction) {
-		float rotaZ; // Angle entre le dard et le boss
-
-		rotaZ = Mathf.Atan2 (direction.y, direction.x); // Angle entre l'horizontal et le vecteur calculé précédemment
-		transform.rotation = Quaternion.Euler (0f, 0f, rotaZ * Mathf.Rad2Deg - 90);
-
-		myRb.velocity = new Vector2 (Mathf.Cos (rotaZ), Mathf.Sin (rotaZ)) * speed;
 	}
 }

@@ -168,7 +168,7 @@ public class FlyPickup : Pickup {
 
 	// On attend un certain temps avant que l'oiseau récupère le joueur
 	private IEnumerator WaitBeforeFly(float delay) {
-		yield return new WaitForSeconds (delay * Time.timeScale);
+		yield return new WaitForSecondsRealtime (delay);
 
 		LevelManager.player.Fly();
 	}

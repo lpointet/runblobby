@@ -5,11 +5,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 22472632}
-  - 222: {fileID: 22210320}
-  - 114: {fileID: 11488630}
+  - component: {fileID: 22472632}
+  - component: {fileID: 22210320}
+  - component: {fileID: 11488630}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -22,20 +22,20 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 22449640}
-  - 222: {fileID: 22266380}
-  - 114: {fileID: 11444026}
-  - 114: {fileID: 11412488}
-  - 114: {fileID: 11493360}
+  - component: {fileID: 22449640}
+  - component: {fileID: 22266380}
+  - component: {fileID: 11444026}
+  - component: {fileID: 11412488}
+  - component: {fileID: 11493360}
   m_Layer: 5
-  m_Name: ItemItem
+  m_Name: GrassSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &11412488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -82,15 +82,15 @@ MonoBehaviour:
   textBonusColor: {r: 0.3764706, g: 0.69803923, b: 0.32156864, a: 1}
   textMalusColor: {r: 0.8156863, g: 0.1882353, b: 0.2784314, a: 1}
   textNeutralColor: {r: 0.9843137, g: 0.8039216, b: 0.3647059, a: 1}
-  itemName: Item
-  textDescription: 
+  itemName: Grass Sword
+  textDescription: Grass
   itemImage: {fileID: 11488630}
   itemType: 0
-  levelNumber: 0
-  levelMode: 0
+  levelNumber: 1
+  levelMode: 1
   bonusStatName: 000000000100000002000000
-  bonusStatValue: 000000000000000000000000
-  weight: 0
+  bonusStatValue: 010000000000000000000000
+  weight: 2
 --- !u!114 &11488630
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,7 +110,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300038, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+  m_Sprite: {fileID: 21300018, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -191,13 +191,13 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 22472632}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0.58, y: 0.625}
-  m_AnchorMax: {x: 0.58, y: 0.625}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.1, y: 0.875}
+  m_AnchorMax: {x: 0.1, y: 0.875}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 72, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -210,10 +210,10 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 22449640}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}

@@ -226,15 +226,20 @@ public class MainMenuManager : MonoBehaviour {
 
 		IsTactileAndMutli ();
 
-		/* On charge l'écran de "jeu" */
+		/* On charge l'écran de "jeu" selon les paramètres */
 		if (_GameData.loadListLevel) {
 			ActivatePlayerMenu ();
 			Level_Click ();
 			_GameData.loadListLevel = false;
 		}
+		else if (_GameData.loadArmory) {
+			ActivatePlayerMenu ();
+			Equipment_Click ();
+			_GameData.loadArmory = false;
+		}
 
 		listTalent = wTalent.GetComponentsInChildren<TalentButton> (); // TODO supprimer après les tests sur les talents
-		listItem = wItemSelection.GetComponentsInChildren<ItemButton> ();
+		listItem = wItemSelection.GetComponentsInChildren<ItemButton> (); // TODO aussi
 		initialLeafColor = tTotalLeaf.color; // TODO aussi
 
 		// Force le timeScale au cas où on vient du menu

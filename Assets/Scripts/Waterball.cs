@@ -5,12 +5,13 @@ public class Waterball : MonoBehaviour {
 
 	[SerializeField] private Firewall fireWall;
 	private ParticleSystem waterParticle;
+	private ParticleSystem.MainModule waterParticleMain;
 	private ParticleSystem.EmissionModule waterParticleEmission;
 	private ParticleSystem.MinMaxCurve initialParticleVelocityX;
 	private float initialParticleDampen;
-	private float initialParticleSize;
+	private ParticleSystem.MinMaxCurve initialParticleSize;
 
-	private Color initialColor;
+	private ParticleSystem.MinMaxGradient initialColor;
 	// Utilisé dans le cadre du second boss du second niveau
 	[SerializeField] private Color poisonousColor;
 	[SerializeField] private Enemy poisonousEnemy;
@@ -43,10 +44,11 @@ public class Waterball : MonoBehaviour {
 		myAnim = GetComponent<Animator> ();
 		myTransform = transform;
 
+		waterParticleMain = waterParticle.main;
 		waterParticleEmission = waterParticle.emission;
 		initialParticleVelocityX = waterParticle.velocityOverLifetime.x;
-		initialParticleSize = waterParticle.startSize;
-		initialColor = waterParticle.startColor;
+		initialParticleSize = waterParticleMain.startSize;
+		initialColor = waterParticleMain.startColor;
 	}
 
 	void Start () {
@@ -83,14 +85,14 @@ public class Waterball : MonoBehaviour {
 		alreadyHit = false;
 		myCollider.enabled = true;
 		mySprite.sprite = null; // Pour éviter que l'image réapparaisse pendant l'animation "Nothing"
-		waterParticle.startColor = initialColor;
+		waterParticleMain.startColor = initialColor;
 		mySprite.color = Color.white;
 
 		// Taille de particules
-		waterParticle.startSize = initialParticleSize;
+		waterParticleMain.startSize = initialParticleSize;
 
 		// Nombre de particule
-		waterParticleEmission.rate = 0;
+		waterParticleEmission.rateOverTime = 0;
 
 		// Direction des particules
 		ParticleSystem.VelocityOverLifetimeModule particleVelocity;
@@ -132,9 +134,9 @@ public class Waterball : MonoBehaviour {
 		// Empoisonnement de l'eau pendant le second boss en mode Hard ou Hell
 		if (LevelManager.levelManager.GetEnemyEnCours () != null
 		    && LevelManager.levelManager.GetEnemyEnCours ().GetType () == poisonousEnemy.GetType ()
-		    && LevelManager.levelManager.GetCurrentDifficulty () > 0) {
+			&& LevelManager.levelManager.GetCurrentDifficulty () > 0) {
 			// Couleur des particules et de la boule
-			waterParticle.startColor = Color.Lerp (initialColor, poisonousColor, (lifeTime - timeToLive) / lifeTime);
+			waterParticleMain.startColor = new ParticleSystem.MinMaxGradient (Color.Lerp (initialColor.color, poisonousColor, (lifeTime - timeToLive) / lifeTime));
 			mySprite.color = Color.Lerp (Color.white, poisonousColor, (lifeTime - timeToLive) / lifeTime);
 			// Au début le mur recule, puis il avance si on clique trop tard
 			firewallBackDistance = Mathf.Lerp (1, -0.5f, (lifeTime - timeToLive) / lifeTime);
@@ -148,7 +150,7 @@ public class Waterball : MonoBehaviour {
 		overrideEmit.velocity = Vector3.one;
 		waterParticle.Emit (overrideEmit, 20);
 
-		yield return new WaitForSeconds (0.5f * Time.timeScale);
+		yield return new WaitForSecondsRealtime (0.5f);
 	}
 
 	private void WaterHit (TouchWaterLevel2 touchObject) {
@@ -180,7 +182,7 @@ public class Waterball : MonoBehaviour {
 		float currentTime = 0;
 
 		// On force un taux d'émission à 20 (arbitraire)
-		waterParticleEmission.rate = 20f;
+		waterParticleEmission.rateOverTime = 20f;
 
 		// Direction des particules vers le mur de feu
 		ParticleSystem.VelocityOverLifetimeModule particleVelocity;
@@ -188,8 +190,10 @@ public class Waterball : MonoBehaviour {
 		float distanceFromFire = fireWall.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect - myTransform.position.x + 1f;
 		particleVelocity.x = new ParticleSystem.MinMaxCurve (distanceFromFire);
 
+		float tempSize = waterParticleMain.startSize.constant;
+
 		while (currentTime < timeToDissipate) {
-			waterParticle.startSize -= initialParticleSize * (TimeManager.deltaTime / timeToDissipate); // Réduction de la taille des particules
+			tempSize -= initialParticleSize.constant * (TimeManager.deltaTime / timeToDissipate); // Réduction de la taille des particules
 
 			currentTime += TimeManager.deltaTime;
 			yield return null;

@@ -16,6 +16,7 @@ public class PollenEffect : MonoBehaviour {
 	private AudioSource myAudio;
 
 	public ParticleSystem pollenBall;
+	private ParticleSystem.MainModule pollenBallMain;
 	private ParticleSystem.ShapeModule ballShape;
 	private ParticleSystem.EmissionModule ballEmission;
 	private ParticleSystem.MinMaxCurve ballRate;
@@ -54,6 +55,7 @@ public class PollenEffect : MonoBehaviour {
 			current = this;
 		
 		pollenParticle = GetComponentInChildren<ParticleSystem> ();
+		pollenBallMain = pollenBall.main;
 		pollenCollider = GetComponent<BoxCollider2D> ();
 		myAudio = GetComponent<AudioSource> ();
 
@@ -118,7 +120,7 @@ public class PollenEffect : MonoBehaviour {
 
 		ParticleSystem.EmissionModule emission;
 		emission = pollenParticle.emission;
-		emission.rate = numberParticle;
+		emission.rateOverTime = numberParticle;
 
 		// Balle
 		ballEmission = pollenBall.emission;
@@ -149,8 +151,8 @@ public class PollenEffect : MonoBehaviour {
 
 		if (!goingToSneeze) {
 			ballRate = new ParticleSystem.MinMaxCurve (Mathf.FloorToInt (Mathf.Lerp (0, 25, currentCharge / maxCharge)));
-			ballEmission.rate = ballRate;
-			pollenBall.startColor = Color.Lerp (cleanColor, sneezeColor, currentCharge / maxCharge);
+			ballEmission.rateOverTime = ballRate;
+			pollenBallMain.startColor = Color.Lerp (cleanColor, sneezeColor, currentCharge / maxCharge);
 			ballShape.arc = Mathf.Lerp (0, 360, currentCharge / maxCharge);
 		}
 	}

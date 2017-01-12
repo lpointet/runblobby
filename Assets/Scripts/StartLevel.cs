@@ -60,7 +60,7 @@ public class StartLevel : MonoBehaviour {
 		for (int i = 0; i < text.Length; i++) {
 			tempString += text [i];
 			levelName.text = tempString;
-			yield return new WaitForSeconds ((delayBeforeStart / 2f / text.Length) * Time.timeScale);
+			yield return new WaitForSecondsRealtime (delayBeforeStart / 2f / text.Length);
 		}
 	}
 

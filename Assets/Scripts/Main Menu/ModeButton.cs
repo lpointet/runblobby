@@ -33,7 +33,7 @@ public class ModeButton : MonoBehaviour {
 
 		// Si en mode "histoire"
 		if (mode != 9) {
-			StoryData storyData = GameData.gameData.playerData.levelData [levelNumber - 1].storyData [mode];
+			StoryData storyData = GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].storyData [mode];
 
 			if (tokenDistance != null) {
 				if (storyData.distanceRecord >= storyData.distanceMax)
@@ -42,20 +42,20 @@ public class ModeButton : MonoBehaviour {
 					tokenDistance.color = colorTokenInactif;
 			}
 			if (tokenLeaf != null) {
-				if (storyData.scoreRatioRecord >= 0.8f)
+				if (storyData.scoreRatioRecord >= GameData.gameData.ratioScoreHelm)
 					tokenLeaf.color = colorLeaf;
 				else
 					tokenLeaf.color = colorTokenInactif;
 			}
 			if (tokenLife != null) {
-				if (storyData.healthRatioRecord >= 0.75f)
+				if (storyData.healthRatioRecord >= GameData.gameData.ratioHealthShield)
 					tokenLife.color = colorLife;
 				else
 					tokenLife.color = colorTokenInactif;
 			}
 		} else { // Si en mode "arcade"
 			if (tokenDistance != null) {
-				if (GameData.gameData.playerData.levelData [levelNumber - 1].arcadeData.distanceRecord >= 5000)
+				if (GameData.gameData.playerData.levelData [levelNumber - GameData.gameData.firstLevel].arcadeData.distanceRecord >= GameData.gameData.distanceLimitPerfume)
 					tokenDistance.color = colorDistance;
 				else
 					tokenDistance.color = colorTokenInactif;

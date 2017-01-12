@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+// TODO est-ce encore utile ? Utilisé Simulation speed à la place ?
+
 public class ParticleUnscaled : MonoBehaviour {
 
 	private ParticleSystem particle;

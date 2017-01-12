@@ -105,7 +105,7 @@ public class Pickup : MonoBehaviour {
 	private IEnumerator Despawn() {
 		despawnCalled = true;
 		DespawnEffect();
-		yield return new WaitForSeconds (despawnTime * Time.timeScale);
+		yield return new WaitForSecondsRealtime (despawnTime);
 		OnDespawn();
 	}
 	
