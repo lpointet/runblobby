@@ -44,66 +44,62 @@ public class TouchManager : MonoBehaviour {
 			return;
 		
 		// Si l'appareil est touch et multi-touch
-		if (Input.touchSupported && Input.multiTouchEnabled) {
-			int nbTouches = Input.touchCount;
+		if (Input.touchSupported && Input.multiTouchEnabled && Input.touchCount > 0) {
+			for (int i = 0; i < Input.touchCount; i++) {
+				Touch touch = Input.GetTouch (i);
+				TouchPhase phase = touch.phase;
 
-			if (nbTouches > 0) {
-				for (int i = 0; i < nbTouches; i++) {
-					Touch touch = Input.GetTouch (i);
-					TouchPhase phase = touch.phase;
-
-					switch (phase) {
-					// Lorsqu'un nouveau contact est effectué, on regarde s'il est à droite ou à gauche
-					case TouchPhase.Began:
-						// Gauche
-						if (touch.position.x < screenMidWidth && Input.mousePosition.y < screenMaxHeight) {
-							leftTouchId = touch.fingerId;
-							leftTouchPosition = touch.position;
-							Mediator.current.Publish<TouchLeft> (new TouchLeft () {
-								leftTouchPosition = leftTouchPosition,
-								leftId = leftTouchId
+				switch (phase) {
+				// Lorsqu'un nouveau contact est effectué, on regarde s'il est à droite ou à gauche
+				case TouchPhase.Began:
+					// Gauche
+					if (touch.position.x < screenMidWidth && Input.mousePosition.y < screenMaxHeight) {
+						leftTouchId = touch.fingerId;
+						leftTouchPosition = touch.position;
+						Mediator.current.Publish<TouchLeft> (new TouchLeft () {
+							leftTouchPosition = leftTouchPosition,
+							leftId = leftTouchId
+						});
+					}
+					// Droite
+					else {
+						// On ne dépasse pas la hauteur du "menu" en haut (touche "Pause")
+						if (touch.position.y < screenMaxHeight) {
+							rightTouchId = touch.fingerId;
+							rightTouchPosition = touch.position;
+							Mediator.current.Publish<TouchRight> (new TouchRight () {
+								rightTouchPosition = rightTouchPosition,
+								rightId = rightTouchId
 							});
 						}
-						// Droite
-						else {
-							// On ne dépasse pas la hauteur du "menu" en haut (touche "Pause")
-							if (touch.position.y < screenMaxHeight) {
-								rightTouchId = touch.fingerId;
-								rightTouchPosition = touch.position;
-								Mediator.current.Publish<TouchRight> (new TouchRight () {
-									rightTouchPosition = rightTouchPosition,
-									rightId = rightTouchId
-								});
-							}
-						}
-						break;
-					// Tant qu'on est en contact (qu'on bouge ou non), on met à jour la position du contact courant gauche et/ou droite
-					case TouchPhase.Moved:
-					case TouchPhase.Stationary:
-						// Gauche
-						if (IsExistingFinger(touch.fingerId, FingerSide.left)) {
-							leftTouchPosition = touch.position;
-						}
-						// Droite
-						else if (IsExistingFinger(touch.fingerId, FingerSide.right)) {
-							rightTouchPosition = touch.position;
-						}
-						break;
-					// Lorsqu'on enlève un contact, on supprime les propriétés gauche ou droite de celui-ci
-					case TouchPhase.Ended:
-						// Gauche
-						if (IsExistingFinger(touch.fingerId, FingerSide.left)) {
-							leftTouchId = -1;
-						}
-						// Droite
-						else if (IsExistingFinger(touch.fingerId, FingerSide.right)) {
-							rightTouchId = -1;
-						}
-						Mediator.current.Publish<EndTouch> (new EndTouch () { fingerId = touch.fingerId });
-						break;
 					}
-						
+					break;
+				// Tant qu'on est en contact (qu'on bouge ou non), on met à jour la position du contact courant gauche et/ou droite
+				case TouchPhase.Moved:
+				case TouchPhase.Stationary:
+					// Gauche
+					if (IsExistingFinger(touch.fingerId, FingerSide.left)) {
+						leftTouchPosition = touch.position;
+					}
+					// Droite
+					else if (IsExistingFinger(touch.fingerId, FingerSide.right)) {
+						rightTouchPosition = touch.position;
+					}
+					break;
+				// Lorsqu'on enlève un contact, on supprime les propriétés gauche ou droite de celui-ci
+				case TouchPhase.Ended:
+					// Gauche
+					if (IsExistingFinger(touch.fingerId, FingerSide.left)) {
+						leftTouchId = -1;
+					}
+					// Droite
+					else if (IsExistingFinger(touch.fingerId, FingerSide.right)) {
+						rightTouchId = -1;
+					}
+					Mediator.current.Publish<EndTouch> (new EndTouch () { fingerId = touch.fingerId });
+					break;
 				}
+					
 			}
 		}
 		// Si l'appareil n'est pas touch ou multi-touch
