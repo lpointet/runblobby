@@ -14,19 +14,19 @@ public class Enemy : Character {
 	 */
 	[Header("Stats ennemies")]
 	[SerializeField] private float _timeToKill;
-	[SerializeField] private int damageToGive; // Dégâts en contact
+	[SerializeField] protected int damageToGive; // Dégâts en contact
 	[SerializeField] private string _firstName;
 	[SerializeField] private string _surName;
 
-	[SerializeField] private float numberOfAttack = 1; // Nombre d'attaques possibles
-	private List<int> attackList = new List<int> (); // Liste des attaques (leurs numéros)
+	[SerializeField] protected float numberOfAttack = 1; // Nombre d'attaques possibles
+	protected List<int> attackList = new List<int> (); // Liste des attaques (leurs numéros)
 	[SerializeField] protected float delayBetweenAtttack = 1; // Délai entre deux attaques
 	protected float timeToFire;	// Utilisé pour calculer le temps de lancer une attaque
 	private int previousAttackNumber;	// Numéro de l'attaque précédente
 	/* End of Stats */
 
-	[SerializeField] protected float[] popPosition = new float[2];
-	[SerializeField] protected float[] startPosition = new float[2];
+	[SerializeField] protected Vector2 popPosition;
+	[SerializeField] protected Vector2 startPosition;
 	private float lerpBeforeFight = 0;
 	protected bool popEnemy = false;
 
@@ -97,16 +97,18 @@ public class Enemy : Character {
 		PossibleCoin ();
 
 		// On le place à sa position AVANT début du combat
-		popPosition[0] = CameraManager.cameraRightPosition + 2f;
-		popPosition[1] = startPosition[1];
+		if (popPosition.x == 0)
+			popPosition.x = CameraManager.cameraRightPosition + 2f;
+		if (popPosition.y == 0)
+			popPosition.y = CameraManager.cameraUpPosition + 2f;
 
-		myTransform.position = new Vector2(popPosition[0], popPosition[1]);
+		myTransform.position = popPosition;
 		myTransform.rotation = Quaternion.identity;
 
 		popEnemy = true;
 		mySprite.enabled = true;
 
-		timeToFire = TimeManager.time + LevelManager.levelManager.enemySpawnDelay + Random.Range(1f, 2f);
+		timeToFire = TimeManager.time + LevelManager.levelManager.enemySpawnDelay + Random.Range(0.5f, 1f);
 
 		// Ajout du temps des talents
 		timeToKill += GameData.gameData.playerData.talent.bossLengthBonus * GameData.gameData.playerData.talent.bossLengthBonusPointValue;
@@ -153,11 +155,11 @@ public class Enemy : Character {
 
 		// Déplacement avant le combat
 		if (popEnemy) {
-			myTransform.position = new Vector2 (Mathf.Lerp(popPosition[0], startPosition[0], lerpBeforeFight), myTransform.position.y);
+			myTransform.position = Vector2.Lerp (popPosition, startPosition, lerpBeforeFight / LevelManager.levelManager.enemySpawnDelay);
 
-			lerpBeforeFight += TimeManager.deltaTime / LevelManager.levelManager.enemySpawnDelay;
+			lerpBeforeFight += TimeManager.deltaTime;
 
-			if (myTransform.position.x <= startPosition [0])
+			if (lerpBeforeFight >= LevelManager.levelManager.enemySpawnDelay)
 				popEnemy = false;
 			
 			return;
@@ -192,7 +194,7 @@ public class Enemy : Character {
 		// Faire un switch par attaque possible
 	}
 
-	protected virtual void OnTriggerEnter2D(Collider2D other){
+	protected virtual void OnTriggerEnter2D (Collider2D other){
 		// Si l'ennemi est déjà mort, il ne peut plus rien faire...
 		if( IsDead() )
 			return;
@@ -218,6 +220,8 @@ public class Enemy : Character {
 	public override void OnKill() {
 		GainExp ();
 		Despawn ();
+		CameraManager.cameraManager.ShakeScreen (4, 0.5f);
+		StartCoroutine (_StaticFunction.SleepGame (100));
 	}
 
 	protected virtual void GainExp() {
@@ -230,7 +234,7 @@ public class Enemy : Character {
 		gameObject.SetActive (false);
 	}
 
-	private void PossibleCoin() {
+	protected virtual void PossibleCoin() {
 		coins = ListManager.current.coins;
 
 		frequence = Mathf.Clamp01 (frequence);

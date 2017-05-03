@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TouchManager : MonoBehaviour {
 
@@ -43,7 +44,7 @@ public class TouchManager : MonoBehaviour {
 
 	void Update () {
 		// On désactive ces touches si le joueur est mort ou si le jeu est en pause
-		if (TimeManager.paused || LevelManager.player.IsDead ())
+		if (TimeManager.paused || LevelManager.player.IsDead () || SceneManager.GetActiveScene ().buildIndex == 0)
 			return;
 
 		// Si l'appareil est touch et multi-touch
@@ -121,21 +122,14 @@ public class TouchManager : MonoBehaviour {
 
 			if (mouseClick) {
 				// La première fois qu'on appuie, on regarde de quel côté on est pour "enregistrer" le bouton
+				// TODO placer toutes ces conditions dans le multi-touch
 				if (Input.GetMouseButtonDown (0)) {
 					
 					hit = Physics2D.Raycast (Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero, Mathf.Infinity, 1 << layerHit);
 
-					// Lorsque l'on clique sur de l'eau dans le niveau 2
-					if (LevelManager.levelManager.GetCurrentLevel() == 2 && hit.collider != null && hit.collider.name == "BallofWater") {
-						Mediator.current.Publish<TouchWaterLevel2> (new TouchWaterLevel2 () {
-							touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition),
-							objectId = hit.collider.gameObject.GetInstanceID ()
-						});
-						return;
-					}
-
-					// Lorsque l'on clique sur une zone que l'on peut casser
-					if (LevelManager.player.canBreakByClick > 0 && hit.collider != null) {
+					// Lorsque l'on clique sur une zone prévue à cette effet (layer Touch)
+					// TODO devrait permettre de supprimer tous les autres...
+					if (hit.collider != null) {
 						Mediator.current.Publish<TouchClickable> (new TouchClickable () {
 							touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition),
 							objectId = hit.collider.gameObject.GetInstanceID ()
@@ -143,8 +137,38 @@ public class TouchManager : MonoBehaviour {
 						return;
 					}
 
+					// Lorsque l'on clique sur des bulles d'eau dans le niveau 2
+					if (LevelManager.levelManager.GetCurrentLevel() == 2 
+						&& hit.collider != null && hit.collider.name == "BallofWater") {
+						Mediator.current.Publish<TouchWaterLevel2> (new TouchWaterLevel2 () {
+							touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition),
+							objectId = hit.collider.gameObject.GetInstanceID ()
+						});
+						return;
+					}
+
+					// Lorsque l'on clique pendant le niveau 3, durant le premier boss, et que le joueur s'est fait attraper
+					if (LevelManager.levelManager.GetCurrentLevel() == 3 
+						&& LevelManager.levelManager.GetEnemyEnCours() != null 
+						&& LevelManager.levelManager.GetEnemyEnCours().GetType () == typeof(Enemy0301) 
+						&& LevelManager.levelManager.GetEnemyEnCours().GetComponent <Enemy0301> ().heroGrabbed) {
+						Mediator.current.Publish<TouchLevel3Boss1> (new TouchLevel3Boss1 () { });
+						return;
+					}
+
+					/*// Lorsque l'on clique sur une zone que l'on peut casser
+					if (LevelManager.player.canBreakByClick > 0 
+						&& hit.collider != null) {
+						Mediator.current.Publish<TouchClickable> (new TouchClickable () {
+							touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition),
+							objectId = hit.collider.gameObject.GetInstanceID ()
+						});
+						return;
+					}*/
+
 					// Lorsque l'on clique sur les anges pendant que LastWish est actif
-					if (LevelManager.player.canCollectAngel && hit.collider != null) {
+					if (LevelManager.player.canCollectAngel 
+						&& hit.collider != null) {
 						Mediator.current.Publish<TouchClickable> (new TouchClickable () {
 							touchPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition),
 							objectId = hit.collider.gameObject.GetInstanceID ()
@@ -154,13 +178,15 @@ public class TouchManager : MonoBehaviour {
 
 					// Lorsque l'on clique sur le joueur
 					// On prend en compte la distance du clic par rapport au joueur, vu qu'il peut y avoir de nombreux obstacles sur le chemin du joueur pour détecter un collider
-					if (LevelManager.player.CanShieldAttract() && Vector2.Distance(LevelManager.player.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1.5f) {
+					if (LevelManager.player.CanShieldAttract() 
+						&& Vector2.Distance(LevelManager.player.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1.5f) {
 						Mediator.current.Publish<TouchPlayer> (new TouchPlayer () {	});
 						return;
 					}
 
 					// Gauche
-					if (Input.mousePosition.x < screenMidWidth && Input.mousePosition.y < screenMaxHeight) {
+					if (Input.mousePosition.x < screenMidWidth 
+						&& Input.mousePosition.y < screenMaxHeight) {
 						leftTouchId = 0;
 						leftTouchPosition = Input.mousePosition;
 						Mediator.current.Publish<TouchLeft> (new TouchLeft () {

@@ -29,7 +29,7 @@ public class EnemySoundEffect : MonoBehaviour {
 	}
 
 	void Update() {
-		if (!TimeManager.paused && !enemy.IsDead ()) {
+		if (!TimeManager.paused && enemy != null && !enemy.IsDead ()) {
 			if (!soundSource.isPlaying  && TimeManager.time > timeToMove) {
 				FootStepSound();
 
@@ -56,6 +56,7 @@ public class EnemySoundEffect : MonoBehaviour {
 
 	private void PlaySound(AudioClip sound, float volume) {
 		//soundSource.Stop ();
+		soundSource.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 		soundSource.clip = sound;
 		soundSource.volume = volume;
 		soundSource.Play ();

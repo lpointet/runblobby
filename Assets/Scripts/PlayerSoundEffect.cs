@@ -91,7 +91,8 @@ public class PlayerSoundEffect : MonoBehaviour {
 		//soundSource.Stop ();
 		if (hurted)
 			return;
-		
+
+		soundSource.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 		soundSource.clip = sound;
 		soundSource.volume = volume;
 		soundSource.Play ();

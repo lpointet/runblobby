@@ -47,6 +47,7 @@ public class ParticleSound : MonoBehaviour {
 
 		if (oneShot) {
 			myAudio.clip = sound;
+			myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 			myAudio.Play ();
 		} else
 			myAudio.PlayOneShot (sound);

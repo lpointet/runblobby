@@ -33,6 +33,7 @@ public class BulletManager : MonoBehaviour {
 	private Transform myTransform;
 	private Vector3 initialScale;
 	public TrailRenderer myTrail;
+	public GameObject myExplosion;
 
 	private LayerMask layerCollision;
 	private LayerMask layerCollisionEnemy; 	// Tous les objets qui peuvent être touchés par le héros
@@ -116,6 +117,9 @@ public class BulletManager : MonoBehaviour {
 
 		distanceTraveled = 0;
 		distanceCalculated = false;
+
+		if (myExplosion != null)
+			myExplosion.SetActive (false);
 	}
 
 	void Update () {
@@ -170,7 +174,7 @@ public class BulletManager : MonoBehaviour {
 	}
 
 	void OnBecameInvisible () {
-		Despawn();
+		//Despawn();
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -233,12 +237,19 @@ public class BulletManager : MonoBehaviour {
 	}
 
 	private void ImpactEffect() {
+		myRb.velocity = Vector3.zero;
+
 		// Son de l'impact
 		myAudio.volume = impactSoundVolume;
 		myAudio.PlayOneShot(bulletImpactSound);
+
 		mySprite.enabled = false; // On cache la balle
 		myTrail.gameObject.SetActive (false); // On désactive la trainée
-		Invoke ("Despawn", bulletImpactSound.length * Time.timeScale); // Durée du son
+		Invoke ("Despawn", 1.5f); // Durée de l'explosion * timeScale
+
+		if (myExplosion != null) {
+			myExplosion.SetActive (true);
+		}
 	}
 
 	private IEnumerator GrowingBullet(float endingScale) {

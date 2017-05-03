@@ -12,6 +12,7 @@ public class PollenEffect : MonoBehaviour {
 	public static PollenEffect current;
 
 	private ParticleSystem pollenParticle;
+	private ParticleSystem.MainModule pollenParticleMain;
 	private BoxCollider2D pollenCollider;
 	private AudioSource myAudio;
 
@@ -34,6 +35,7 @@ public class PollenEffect : MonoBehaviour {
 	private bool goingToSneeze = false;	// Permet de savoir si on a atteint la jauge maximale pour ne pas la baisser dans ce cas
 	private float currentCharge = 0f;	// Charge actuelle
 	private float maxCharge = 10f;		// Charge à partir de laquelle le joueur commence à éternuer
+	private float ratioCharge;
 	private float chargeSpeed = 1f;		// Gain de charge dans la zone pendant 1 seconde
 	private float dischargeSpeed = 2f;	// Perte de charge hors zone pendant 1 seconde
 	private float backForce = 5000f;	// Force de recul du joueur lors de l'éternument
@@ -55,13 +57,16 @@ public class PollenEffect : MonoBehaviour {
 			current = this;
 		
 		pollenParticle = GetComponentInChildren<ParticleSystem> ();
+		pollenParticleMain = pollenParticle.main;
+
 		pollenBallMain = pollenBall.main;
+		pollenBallTransform = pollenBall.transform;
+
 		pollenCollider = GetComponent<BoxCollider2D> ();
+
 		myAudio = GetComponent<AudioSource> ();
 
 		playerRb = LevelManager.player.GetComponent<Rigidbody2D> ();
-
-		pollenBallTransform = pollenBall.transform;
 	}
 
 	void Start () {
@@ -150,10 +155,12 @@ public class PollenEffect : MonoBehaviour {
 		}
 
 		if (!goingToSneeze) {
-			ballRate = new ParticleSystem.MinMaxCurve (Mathf.FloorToInt (Mathf.Lerp (0, 25, currentCharge / maxCharge)));
+			ratioCharge = currentCharge / maxCharge;
+			ballRate = new ParticleSystem.MinMaxCurve (Mathf.FloorToInt (Mathf.Lerp (0, 25, ratioCharge)));
 			ballEmission.rateOverTime = ballRate;
-			pollenBallMain.startColor = Color.Lerp (cleanColor, sneezeColor, currentCharge / maxCharge);
-			ballShape.arc = Mathf.Lerp (0, 360, currentCharge / maxCharge);
+			pollenBallMain.startColor = Color.Lerp (cleanColor, sneezeColor, ratioCharge);
+			ballShape.arc = Mathf.Lerp (0, 360, ratioCharge);
+			pollenParticleMain.startSize = 0.05f * Mathf.Lerp (1.0f, 2.5f, ratioCharge);
 		}
 	}
 
@@ -173,12 +180,13 @@ public class PollenEffect : MonoBehaviour {
 
 	private IEnumerator SneezeThePlayer() {
 		// On attend que le joueur soit au sol pour le faire reculer
-		// S'il vole, on éternue tout de suite
-		while (!LevelManager.player.IsGrounded () && !LevelManager.player.IsFlying ())
+		// S'il vole, on éternue jamais
+		while (!LevelManager.player.IsGrounded () || LevelManager.player.IsFlying())
 			yield return null;
 
 		playerRb.AddForce (Vector2.left * backForce);
 
+		myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 		myAudio.Play ();
 
 		// On enlève la charge de pollen quand il tousse

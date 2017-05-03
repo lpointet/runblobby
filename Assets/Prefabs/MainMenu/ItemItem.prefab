@@ -30,7 +30,7 @@ GameObject:
   - component: {fileID: 11412488}
   - component: {fileID: 11493360}
   m_Layer: 5
-  m_Name: GrassSword
+  m_Name: ItemItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

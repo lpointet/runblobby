@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 /* SERBE ET RUSSE LE CERBERES
  * Ils envoient régulièrement des boules de feu en ligne droite vers le joueur
- * En hard+, certaines boules de feu explosent à mi chemin en plein d'autres boules (couleur différente)
+ * Hard+, certaines boules de feu explosent à mi chemin en plein d'autres boules (couleur différente)
  */
 public class Enemy0201 : Enemy {
 

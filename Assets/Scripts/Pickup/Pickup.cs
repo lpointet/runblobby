@@ -8,8 +8,8 @@ public class Pickup : MonoBehaviour {
 	protected Transform myTransform; 		// Référence vers le transform du bonus
     protected Collider2D myCollider;
 
-	protected SpriteRenderer myRender;
-	protected SpriteRenderer myBackRender;
+	protected SpriteRenderer mySprite;
+	protected SpriteRenderer myBackSprite;
 	protected Animator myAnim;
 
 	// Aurait pu être dans une classe à part...
@@ -39,9 +39,9 @@ public class Pickup : MonoBehaviour {
 		initialParent = myTransform.parent;
 		SpriteRenderer[] tempSprite = GetComponentsInChildren<SpriteRenderer> ();
 		if (tempSprite.Length > 0)
-			myRender = tempSprite [0];
+			mySprite = tempSprite [0];
 		if(tempSprite.Length > 1)
-			myBackRender = tempSprite [1];
+			myBackSprite = tempSprite [1];
 		myAnim = GetComponentInChildren<Animator>();
         soundSource = GetComponent<AudioSource>();
         myCollider = GetComponent<Collider2D>();
@@ -56,13 +56,13 @@ public class Pickup : MonoBehaviour {
         despawnCalled = false;
 		weakCalled = false;
 
-		if (myRender != null) {
-			myRender.enabled = true;
-			myRender.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
+		if (mySprite != null) {
+			mySprite.enabled = true;
+			mySprite.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
 		}
-		if (myBackRender != null) {
-			myBackRender.enabled = false;
-			myBackRender.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
+		if (myBackSprite != null) {
+			myBackSprite.enabled = false;
+			myBackSprite.transform.localPosition = Vector2.zero; // On place le Sprite au milieu de son conteneur
 		}
     }
 
@@ -84,10 +84,15 @@ public class Pickup : MonoBehaviour {
 	}
 
 	// On lance les effets de Pick au moment de la collision
-	void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerEnter2D (Collider2D other) {
+		if (picked)
+			return;
+		
 		if (other.name == "Heros") {
 			picked = true;
 			OnPick();
+			if (!isActiveAndEnabled)
+				return;
 			PickEffect();
 		}
 	}
@@ -118,14 +123,9 @@ public class Pickup : MonoBehaviour {
 		if (this.GetType () != typeof(CoinPickup)) {
 			Pickup existingPickup = LevelManager.player.HasTypePickup (this.GetType ());
 
-			if (existingPickup != null) {
-				if (!LevelManager.player.HasLastWish ()) // Si le pickup concerne un lastWish, on ne change pas la durée
-					existingPickup.timeToLive += lifeTime;
-				else if (this.GetType () == typeof(FlyPickup)) { // Si le pickup concerne un le vol, on annule celui en cours pour que le vol change d'oiseau
-					Disable ();
-					despawnTime = 0;
-				} else
-					this.gameObject.SetActive (false);
+			if (existingPickup != null && existingPickup.transform.parent == LevelManager.player.transform) {
+				existingPickup.timeToLive += lifeTime;
+				this.gameObject.SetActive (false);
 
 				return;
 			}
@@ -137,8 +137,8 @@ public class Pickup : MonoBehaviour {
 			myTransform.position = myTransform.parent.position;
         }
 			
-		if (myBackRender != null)
-			myBackRender.enabled = true;
+		if (myBackSprite != null)
+			myBackSprite.enabled = true;
 
         LevelManager.player.AddPickup( myCollider );
     }
@@ -149,10 +149,10 @@ public class Pickup : MonoBehaviour {
 		if (_StaticFunction.ExistsAndHasParameter ("picked", myAnim))
 			myAnim.SetBool ("picked", true);
 		
-		else if (myRender != null) { // On cache directement ceux qui n'ont pas d'animation de ramassage
-			myRender.enabled = false;
-			if (myBackRender != null)
-				myBackRender.enabled = true;
+		else if (mySprite != null) { // On cache directement ceux qui n'ont pas d'animation de ramassage
+			mySprite.enabled = false;
+			if (myBackSprite != null)
+				myBackSprite.enabled = true;
 		}
 	}
 
@@ -176,12 +176,16 @@ public class Pickup : MonoBehaviour {
 			myTransform.parent = initialParent;
 		}
 
-        LevelManager.player.RemovePickup( myCollider );
+		if (_StaticFunction.ExistsAndHasParameter ("picked", myAnim))
+			myAnim.SetBool ("picked", false);
+
+		LevelManager.player.RemovePickup( myCollider );
 		gameObject.SetActive( false );
     }
 
 	protected virtual void PickupSound() {
 		if (soundSource != null && pickupSound != null) {
+			soundSource.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 			soundSource.volume = pickupVolume;
 			soundSource.PlayOneShot (pickupSound);
 			// Son "actif" dès que le pickup a fini de se dérouler

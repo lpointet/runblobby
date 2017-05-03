@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 using System.Collections;
 
 public class InviciblePickup : Pickup {
@@ -8,8 +9,16 @@ public class InviciblePickup : Pickup {
 
 	public LayerMask layerCoins;
 
+	private AudioMixer myMusicMixer;
+	private AudioMixer mySfxMixer;
+	private float musicCutoffDelta = 3500;
+	private float sfxCutoffDela = 3000;
+
 	protected override void Awake() {
 		base.Awake();
+
+		myMusicMixer = LevelManager.levelManager.GetComponent<AudioSource> ().outputAudioMixerGroup.audioMixer;
+		mySfxMixer = LevelManager.levelManager.GetComponentInChildren<SFXBackground> ().GetComponent<AudioSource> ().outputAudioMixerGroup.audioMixer;
 
 		parentAttach = true;
 		despawnTime = 0.3f;
@@ -24,6 +33,7 @@ public class InviciblePickup : Pickup {
 		base.OnPick();
 
 		LevelManager.player.SetInvincible( lifeTime );
+		clignottant = 0;
 
 		// Ajout du bouclier permanent si les talents le permettent
 		if (GameData.gameData.playerData.talent.shieldDef > 0)
@@ -43,10 +53,17 @@ public class InviciblePickup : Pickup {
 		}
 	}
 
+	protected override void PickEffect () {
+		base.PickEffect ();
+
+		AdjustLowPass (myMusicMixer, -musicCutoffDelta);
+		AdjustLowPass (mySfxMixer, -sfxCutoffDela);
+	}
+
 	protected override void WeakEffect() {
-		Color tempColor = myRender.color;
+		Color tempColor = mySprite.color;
 		tempColor.a = Mathf.Cos (coefClignottant * clignottant * clignottant);
-		myRender.color = tempColor;
+		mySprite.color = tempColor;
 
 		clignottant += TimeManager.deltaTime;
 	}
@@ -54,15 +71,29 @@ public class InviciblePickup : Pickup {
 	protected override void DespawnEffect() {
 		base.DespawnEffect();
 
-		myRender.color = new Color (myRender.color.r, myRender.color.g, myRender.color.b, 1f);
+		AdjustLowPass (myMusicMixer, musicCutoffDelta);
+		AdjustLowPass (mySfxMixer, sfxCutoffDela);
+
+		mySprite.color = new Color (mySprite.color.r, mySprite.color.g, mySprite.color.b, 1f);
 	}
 
 
 	private void AttractAllCoins (TouchPlayer touch) {
 		// Quand on appuye sur le joueur, on attire toutes les feuilles visibles à soi (rayon de 25, largement suffisant)
-		LevelManager.player.AttractCoins( 25, layerCoins, lifeTime );
+		LevelManager.player.AttractCoins( 25, layerCoins, 0 );
 
 		// TODO SFX ? Genre une 'explosion'
 		// TODO Est-ce que ça tue tous les objets qui peuvent être cassés également ?
+	}
+
+	private void AdjustLowPass (AudioMixer audioMixer, float cutoffDelta) {
+		float currentCutoff;
+		float newCutoff;
+
+		audioMixer.GetFloat ("cutoffLowPass", out currentCutoff);
+
+		newCutoff = Mathf.Max (1500, currentCutoff + cutoffDelta); // On ne descend pas sous 1500 (pour avoir du son quand même...)
+
+		audioMixer.SetFloat ("cutoffLowPass", newCutoff);
 	}
 }

@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 [RequireComponent (typeof (Camera))]
 public class CameraManager : MonoBehaviour {
 
     public static CameraManager cameraManager;
+
+	private Vector3 cameraInitPosition;
 
 	public static float cameraStartPosition;
 	public static float cameraEndPosition;
@@ -30,15 +33,15 @@ public class CameraManager : MonoBehaviour {
 	public float xOffset { get; private set; }
 	public float yOffset { get; private set; }
 
-    void Awake() {
+    void Awake () {
         if (cameraManager == null)
-            cameraManager = GetComponent<CameraManager>();
+            cameraManager = GetComponent<CameraManager> ();
 
 		backKiller = transform.Find ("BackKiller");
 		fallingKiller = transform.Find ("FallingKiller");
 		
-		backKillerCollider = backKiller.GetComponent<Collider2D>();
-		fallingKillerCollider = fallingKiller.GetComponent<Collider2D>();
+		backKillerCollider = backKiller.GetComponent<Collider2D> ();
+		fallingKillerCollider = fallingKiller.GetComponent<Collider2D> ();
 	}
 
 	void Start () {
@@ -48,13 +51,13 @@ public class CameraManager : MonoBehaviour {
 		xOffset = (Camera.main.orthographicSize * Camera.main.aspect) * xOffsetPourcentage;
 		//yOffset = Camera.main.orthographicSize * yOffsetPourcentage;
 		// Le yOffset doit placer le héros à 3 unités (taille max des block en hauteur) au-dessus du bas de l'écran (sachant qu'il commence déjà à -1)
-		yOffset = Camera.main.orthographicSize - 3 - LevelManager.levelManager.GetHeightStartBlock();
+		yOffset = Camera.main.orthographicSize - 3.0f - LevelManager.levelManager.GetHeightStartBlock();
 		transform.position = new Vector3(0 + xOffset, 0 + yOffset, transform.position.z);
-		
+
 		// On ajuste les fonds d'écran de sorte qu'ils rentrent dans la caméra en HAUTEUR et en LARGEUR
 		SpriteRenderer firstBG = bgContainer.transform.GetChild (0).GetComponent<SpriteRenderer>();
-		float yScale = Camera.main.orthographicSize * 2 / firstBG.bounds.size.y;
-		float xScale = Camera.main.orthographicSize * Camera.main.aspect * 2 / firstBG.bounds.size.x;
+		float yScale = Camera.main.orthographicSize * 2.0f / firstBG.bounds.size.y;
+		float xScale = Camera.main.orthographicSize * Camera.main.aspect * 2.0f / firstBG.bounds.size.x;
 		bgContainer.transform.localScale = new Vector3 (xScale, yScale, bgContainer.transform.localScale.z);
 
 		// Position réelle du bord de la caméra
@@ -64,13 +67,16 @@ public class CameraManager : MonoBehaviour {
 		cameraDownPosition = Camera.main.transform.position.y - Camera.main.orthographicSize;
 
 		// Décalé pour pouvoir prendre en compte des potentielles latences
-		cameraStartPosition = Camera.main.transform.position.x - Camera.main.orthographicSize * Camera.main.aspect - 3;
-		cameraEndPosition = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect + 5;
+		cameraStartPosition = cameraLeftPosition - 3.0f;
+		cameraEndPosition = cameraRightPosition + 5.0f;
+
+		// Enregistrement de la position "normale" de la caméra
+		cameraInitPosition = transform.position;
     }
 
 	void Update () {
 		#if UNITY_EDITOR
-		FixeResolution();
+		FixeResolution ();
 		#endif
 
 		if (isFollowing) {
@@ -78,14 +84,14 @@ public class CameraManager : MonoBehaviour {
 		}
 	}
 
-	private void FixeResolution() {
+	private void FixeResolution () {
 		//float sizeCameraPixelPerfect;
 		float sizeCameraMinWidth;
 
 		// calcul de la taille ortho (vertical en units / 2) à partir de la longueur demandée
 		if (unitsInWidth < widthMin)
 			unitsInWidth = widthMin;
-		sizeCameraMinWidth = unitsInWidth / (2f * Camera.main.aspect);
+		sizeCameraMinWidth = unitsInWidth / (2.0f * Camera.main.aspect);
 		//sizeCameraPixelPerfect = Screen.height / 64.0f / 2.0f; // 64 et non 32 pour éviter que ce soit trop petit sur un smartphone
 
 		// On ne doit pas être plus bas qu'une certaine orthographicSize, sinon la hauteur ne sera plus suffisante pour les sauts les plus hauts
@@ -97,8 +103,26 @@ public class CameraManager : MonoBehaviour {
 		//Camera.main.orthographicSize = sizeCameraMinWidth > sizeCameraPixelPerfect ? sizeCameraMinWidth : sizeCameraPixelPerfect;
 		Camera.main.orthographicSize = sizeCameraMinWidth;
 
-		// placement des zones qui dépendent de l'écran (donc de la caméra)
-		backKiller.position = transform.position + Vector3.left * (Camera.main.orthographicSize * Camera.main.aspect + backKillerCollider.bounds.size.x / 3f);
-		fallingKiller.position = transform.position + Vector3.down * (Camera.main.orthographicSize + fallingKillerCollider.bounds.size.y / 2f);
+		// Placement des zones qui dépendent de l'écran (donc de la caméra)
+		backKiller.position = transform.position + Vector3.left * (Camera.main.orthographicSize * Camera.main.aspect + backKillerCollider.bounds.size.x / 3.0f);
+		fallingKiller.position = transform.position + Vector3.down * (Camera.main.orthographicSize + fallingKillerCollider.bounds.size.y / 2.0f);
+	}
+
+	public void ShakeScreen (float pixelValue = 2, float delay = 0.25f) {
+		StartCoroutine (ShakingScreen (pixelValue, delay));
+	}
+
+	private IEnumerator ShakingScreen (float pixelValue, float delay) {
+		float currentTime = 0;
+		float pixelInUnit = pixelValue / 16.0f;
+
+		while (currentTime < delay) {
+			transform.position = new Vector3 (cameraInitPosition.x + pixelInUnit * Random.Range (0, 1.0f), cameraInitPosition.y + pixelInUnit * Random.Range (-1.0f, 1.0f), cameraInitPosition.z);
+
+			currentTime += TimeManager.deltaTime;
+			yield return null;
+		}
+
+		transform.position = cameraInitPosition;
 	}
 }

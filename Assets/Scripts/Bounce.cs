@@ -9,14 +9,19 @@ public class Bounce : MonoBehaviour {
 
 	private Collider2D myCollider;
 	private AudioSource myAudio;
+	private Animator myAnim;
 
 	private void Awake() {
 		myCollider = GetComponent<Collider2D> ();
 		myAudio = GetComponent<AudioSource> ();
+		myAnim = GetComponent<Animator> ();
 	}
 
 	private void OnEnable() {
 		myCollider.enabled = true;
+
+		if (myAnim != null)
+			myAnim.SetBool ("dead", false);
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -30,6 +35,7 @@ public class Bounce : MonoBehaviour {
 				LevelManager.MaybeKill (transform);
 
 				// Joue le son du rebond
+				myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 				myAudio.Play ();
 
 				// Permettre au héros de sauter même après un bounce

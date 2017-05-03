@@ -81,6 +81,7 @@ public class SFXBackground : MonoBehaviour {
 	}
 
 	private void PlaySound (AudioClip sound, float volume) {
+		myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 		myAudio.clip = sound;
 		myAudio.volume = volume;
 		myAudio.Play ();

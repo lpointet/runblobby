@@ -15,9 +15,15 @@ public class BurningGround : MonoBehaviour {
 	private ParticleSystem.EmissionModule burningEmission;
 	private float maxParticleRate = 20f;
 	private float maxParticleSize = 0.25f;
+	private float ratioParticle;
 
 	private AudioSource myAudio;
-	//private Rigidbody2D playerRb;
+
+	[Header("Red Screen")]
+	[SerializeField] private SpriteRenderer myRedScreen;
+	[SerializeField] private float minAlpha = 0;
+	[SerializeField] private float maxAlpha;
+	private Color currentRedScreenColor;
 
 	// Données concernant la charge de pollen
 	private float currentCharge = 0f;	// Charge actuelle
@@ -51,7 +57,8 @@ public class BurningGround : MonoBehaviour {
 		burningParticle = GetComponent<ParticleSystem> ();
 		myAudio = GetComponent<AudioSource> ();
 
-		//playerRb = LevelManager.player.GetComponent<Rigidbody2D> ();
+		minAlpha /= 255.0f;
+		maxAlpha /= 255.0f;
 	}
 
 	void Start () {
@@ -95,6 +102,15 @@ public class BurningGround : MonoBehaviour {
 		// Initialisation à 0 particule
 		burningEmission = burningParticle.emission;
 		burningEmission.rateOverTime = new ParticleSystem.MinMaxCurve (0);
+
+		// Taille de l'écran rouge
+		myRedScreen.transform.localScale = 2.1f * new Vector2 (Camera.main.orthographicSize * Camera.main.aspect, Camera.main.orthographicSize); // 2.1 pour gérer les screenshakes
+		// Position de l'écran rouge
+		myRedScreen.transform.position = new Vector2 (CameraManager.cameraManager.xOffset, CameraManager.cameraManager.yOffset);
+		// Couleur de l'écran rouge
+		currentRedScreenColor = myRedScreen.color;
+		currentRedScreenColor.a = minAlpha;
+		myRedScreen.color = currentRedScreenColor;
 	}
 
 	void Update() {
@@ -125,15 +141,20 @@ public class BurningGround : MonoBehaviour {
 				currentCharge = 0;
 		}
 
+		ratioParticle = currentCharge / maxCharge;
+			
 		// Quantité de particules
-		burningEmission.rateOverTime = new ParticleSystem.MinMaxCurve (Mathf.Lerp (0, maxParticleRate, currentCharge / maxCharge));
+		burningEmission.rateOverTime = new ParticleSystem.MinMaxCurve (Mathf.Lerp (0, maxParticleRate, ratioParticle));
 
 		// Taille de particules
-		burningMain.startSize = Mathf.Lerp (0.1f, maxParticleSize, currentCharge / maxCharge);
+		burningMain.startSize = Mathf.Lerp (0.1f, maxParticleSize, ratioParticle);
+
+		// Couleur de l'écran
+		currentRedScreenColor.a = Mathf.Lerp (minAlpha, maxAlpha, ratioParticle);
+		myRedScreen.color = currentRedScreenColor;
 	}
 
 	private void ForceJumpPlayer() {
-		//playerRb.AddForce (Vector2.up * jumpForce);
 		LevelManager.player.Jump (jumpForce);
 
 		if (myAudio != null)

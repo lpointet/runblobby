@@ -960,6 +960,9 @@ public class MainMenuManager : MonoBehaviour {
 
 		sItemWeight.value = value;
 		tItemWeight.text = string.Format ("{0}/{1}", value, sItemWeight.maxValue);
+
+		// TODO Si on a un objet mais pas débloqué le sac à dos
+		// Actuellement on affiche rien (la barre du sac est rouge, mais comme elle est vide on ne voit rien)
 	}
 
 	public void DisplayItemDescription (string itemName, string itemDescription) {
@@ -977,6 +980,9 @@ public class MainMenuManager : MonoBehaviour {
 		wPerfumeList.SetActive (false);
 
 		ItemButton.ResetDeltaStat ();
+
+		tItemName.text = "";
+		tItemDescription.text = "";
 
 		sfxSound.ChangeClick ();
 	}

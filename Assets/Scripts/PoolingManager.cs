@@ -33,6 +33,11 @@ public class PoolingManager : MonoBehaviour {
 		indexedPools.Clear ();
 		pools.Clear ();
 
+		// Ajout de chaque PoolingScript qui sont dans le GameObject PoolManager
+		foreach (PoolingScript pool in GetComponentsInChildren<PoolingScript> ()) {
+			poolCollection.Add (pool);
+		}
+
 		// On nettoie tout pour éviter qu'il y ait des blocs actifs quand on reboot
 		foreach (Transform obj in pooledObjectParent.GetComponentInChildren<Transform> ()) {
 			obj.gameObject.SetActive (false);

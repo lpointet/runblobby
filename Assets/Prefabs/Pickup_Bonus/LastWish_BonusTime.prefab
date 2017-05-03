@@ -76,8 +76,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a591467b320de94eade1a0dee3ccaa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingSpeed: 15
+  movingSpeed: 10
   addedTime: 2
+  aerialExplosion: {fileID: 126086, guid: 02140ad878123864a95ca4eb5e034aca, type: 2}
 --- !u!198 &19896430
 ParticleSystem:
   m_ObjectHideFlags: 1

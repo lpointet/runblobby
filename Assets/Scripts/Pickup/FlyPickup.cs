@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// TODO si zerogravity et qu'on déclenche le lastiwsh, movespeed = 0.
+
 public class FlyPickup : Pickup {
 
 	private Transform playerTransform;
@@ -40,6 +42,11 @@ public class FlyPickup : Pickup {
 			basePitch = this.soundSource.pitch;
 	}
 
+	void Reset () {
+		catched = false;
+		distancetoPlayer = 10f;
+	}
+
 	protected override void Update() {
 		if( !picked || TimeManager.paused) {
 			return;
@@ -56,6 +63,7 @@ public class FlyPickup : Pickup {
 					myTransform.position = new Vector2 (playerTransform.position.x, playerTransform.position.y + offsetYToPlayer);
 					catched = true;
 					myAnim.SetBool("picked", false);
+					LevelManager.player.Fly();
 				}
 			}
 		} else { // Une fois que l'oiseau est sur lui, on agit différemment tant qu'il n'est pas affaibli
@@ -84,6 +92,8 @@ public class FlyPickup : Pickup {
 			}
 		}
 
+		Reset ();
+
 		// Règles spéciales pour le Fly
 		if( parentAttach ) {
 			// Attacher le bonus au joueur
@@ -91,8 +101,8 @@ public class FlyPickup : Pickup {
 			myTransform.position = myTransform.parent.position;
 		}
 
-		if (myRender != null)
-			myRender.transform.localPosition = new Vector2(1 / 16f, -5.4f / 16f); // On place le Sprite correctement par rapport au joueur
+		if (mySprite != null)
+			mySprite.transform.localPosition = new Vector2(1 / 16f, -5.4f / 16f); // On place le Sprite correctement par rapport au joueur
 
 		LevelManager.player.AddPickup( myCollider );
 
@@ -103,7 +113,6 @@ public class FlyPickup : Pickup {
 
 		// On attend que l'oiseau arrive pour que le joueur "vole"
 		LevelManager.player.Jump(LevelManager.player.jumpHeight);
-		StartCoroutine( WaitBeforeFly(spawnTime) );
 
 		// On lui donne un bonus d'AutoCoin réduit
 		autoCoinBonus.ForceOnPick();
@@ -126,8 +135,6 @@ public class FlyPickup : Pickup {
 		myAnim.speed = 1;
 		if (soundSource != null)
 			soundSource.pitch = basePitch;
-		
-		catched = false;
 
 		// Montée de l'oiseau avant de supprimer
 		StartCoroutine( TakeOff(myTransform) );
@@ -162,14 +169,8 @@ public class FlyPickup : Pickup {
 
 		if (soundSource != null)
 			soundSource.Stop ();
-		flyTransform.gameObject.SetActive( false );
+		
 		LevelManager.player.RemovePickup( flyTransform.GetComponent<Collider2D>() );
-	}
-
-	// On attend un certain temps avant que l'oiseau récupère le joueur
-	private IEnumerator WaitBeforeFly(float delay) {
-		yield return new WaitForSecondsRealtime (delay);
-
-		LevelManager.player.Fly();
+		flyTransform.gameObject.SetActive( false );
 	}
 }

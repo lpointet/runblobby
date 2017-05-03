@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using Tiled2Unity;
 
 public class LevelManager : MonoBehaviour {
 
@@ -35,6 +34,7 @@ public class LevelManager : MonoBehaviour {
 	private float distanceTraveled; // pendant la phase bloc
 	private float localDistance; // variation permanente de la distance
 	private float distanceSinceLastBonus; // distance depuis l'apparition du dernier bonus
+	public float addedMoveSpeed = 0; // vitesse supplémentaire à celle du héros (vague, vent...)
 
 	// Mode Arcade
 	[Header("Arcade")]
@@ -160,7 +160,7 @@ public class LevelManager : MonoBehaviour {
 
     void Awake() {
 		if (levelManager == null)
-			levelManager = FindObjectOfType<LevelManager>();
+			levelManager = FindObjectOfType<LevelManager> ();
 
 		_player = FindObjectOfType<PlayerController> ();
 		sourceSound = GetComponent<AudioSource> ();
@@ -206,7 +206,7 @@ public class LevelManager : MonoBehaviour {
         blockList = new List<GameObject> {blockStart};
 		// ICI : Instantiate si jamais c'est un prefab
 		blockList[0].transform.position = new Vector3(-1, -1, 0) * heightStartBlock; // Juste sous le joueur, un peu en avant
-		sizeLastBlock = blockList[0].GetComponent<TiledMap> ().NumTilesWide;
+		sizeLastBlock = blockList[0].GetComponent<BlockSize> ().blockSize;
 		sizeFirstBlock = sizeLastBlock;
 		//layerCoins = LayerMask.NameToLayer ("Coins");
 
@@ -233,7 +233,7 @@ public class LevelManager : MonoBehaviour {
 		sourceSound.volume = soundVolumeInit;
 	
 		// Distance parcourue depuis le dernier update
-		localDistance = player.moveSpeed * Time.smoothDeltaTime;
+		localDistance = (player.moveSpeed + addedMoveSpeed) * Time.deltaTime;
 
 		// Définir dans quelle phase on se situe
 		if (IsStory() && currentPhase < listPhase.Length && GetDistanceTraveled() > listPhase[currentPhase]) {
@@ -326,9 +326,11 @@ public class LevelManager : MonoBehaviour {
 						}*/
 						// Si le parent de l'objet n'est pas sur la couche "Ground", on n'y touche pas
 						// Il s'agit d'un sous-objet
-						if ((1 << t.parent.gameObject.layer & layerNotGround) == 0) {
-							t.parent = PoolingManager.pooledObjectParent;
-							t.gameObject.SetActive (false);
+						if (t.parent != null) {
+							if ((1 << t.parent.gameObject.layer & layerNotGround) == 0) {
+								t.parent = PoolingManager.pooledObjectParent;
+								t.gameObject.SetActive (false);
+							}
 						}
 					}
 				}
@@ -336,7 +338,7 @@ public class LevelManager : MonoBehaviour {
 			blockList [0].SetActive (false);
 			blockList.RemoveAt (0);
 			
-			sizeFirstBlock = blockList [0].GetComponent<TiledMap> ().NumTilesWide;
+			sizeFirstBlock = blockList [0].GetComponent<BlockSize> ().blockSize;
 		}
 		
 		// Création du prochain bloc si le dernier bloc en cours approche de la fin de la caméra
@@ -402,7 +404,7 @@ public class LevelManager : MonoBehaviour {
 		obj.transform.rotation = lastBlock.transform.rotation;
         _StaticFunction.SetActiveRecursively(obj, true); // Normalement SetActive(true);
 
-		sizeLastBlock = obj.GetComponent<TiledMap>().NumTilesWide;
+		sizeLastBlock = obj.GetComponent<BlockSize>().blockSize;
 		
 		blockList.Add (obj); // On ajoute à la liste le bloc
 	}

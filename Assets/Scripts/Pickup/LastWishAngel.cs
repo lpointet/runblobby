@@ -2,11 +2,9 @@
 using System.Collections;
 
 public class LastWishAngel : MonoBehaviour {
-
-	private bool isActif = false;
-
+	
 	private Transform myTransform;
-	[SerializeField] private float movingSpeed = 15f;
+	[SerializeField] private float movingSpeed = 10f;
 	private float correctedMovingSpeed;
 	private float distanceToTravel;
 
@@ -14,6 +12,8 @@ public class LastWishAngel : MonoBehaviour {
 	private AngelDirection myDirection;
 
 	public float addedTime = 2f;
+
+	[SerializeField] private GameObject aerialExplosion;
 
 	void Awake () {
 		myTransform = transform;
@@ -48,9 +48,6 @@ public class LastWishAngel : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!isActif)
-			return;
-		
 		switch (myDirection) {
 		case AngelDirection.top:
 			myTransform.Translate (Vector2.up * correctedMovingSpeed * TimeManager.deltaTime);
@@ -69,16 +66,13 @@ public class LastWishAngel : MonoBehaviour {
 
 	// On considère qu'il est actif quand on le voit
 	void OnBecameVisible () {
-		isActif = true;
 		correctedMovingSpeed = movingSpeed + Random.Range (-movingSpeed / 5f, movingSpeed / 5f);
 		GetComponent<Animator> ().SetBool ("actif", true);
 	}
 
 	// On le désactive quand il sort de la caméra
 	void OnBecameInvisible () {
-		if (isActif) {
-			DisableAngel ();
-		}
+		DisableAngel ();
 	}
 
 	private void IsTouched (TouchClickable touch) {
@@ -89,7 +83,7 @@ public class LastWishAngel : MonoBehaviour {
 			LevelManager.player.GetLastWish ().AddTime (2f);
 
 			// Effet d'explosion
-			GameObject dust = PoolingManager.current.Spawn("AerialDust");
+			GameObject dust = PoolingManager.current.Spawn(aerialExplosion.name);
 
 			if (dust != null) {
 				dust.transform.position = myTransform.position;
@@ -102,7 +96,6 @@ public class LastWishAngel : MonoBehaviour {
 
 	private void DisableAngel () {
 		LevelManager.player.GetLastWish ().ClearCurrentAngel ();
-		isActif = false;
 		gameObject.SetActive (false);
 	}
 }

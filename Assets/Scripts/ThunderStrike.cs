@@ -8,7 +8,7 @@ public class ThunderStrike : MonoBehaviour {
 	private Animator myAnim;
 	private AudioSource myAudio;
 
-	private float distanceFromPlayer = 7f; 		// Distance à laquelle l'objet doit tomber par rapport au joueur
+	private float distanceFromPlayer = 10.0f; 		// Distance à laquelle l'objet doit tomber par rapport au joueur
 	//public float fallingSpeed = 2f;				// Vitesse de chute
 
 	private bool thunderAppeared = false;
@@ -51,6 +51,7 @@ public class ThunderStrike : MonoBehaviour {
 		myCollider.enabled = true;
 
 		myAudio.Stop ();
+		myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 		myAudio.clip = audioFire;
 		myAudio.Play ();
 	}

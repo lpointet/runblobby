@@ -17,7 +17,7 @@ public class _GameData : MonoBehaviour {
 	public static bool loadArmory = false;
 
 	/* Passage d'informations au LevelManager depuis le Menu */
-	public static int currentLevel = 2; // TODO ajuster
+	public static int currentLevel = 3; // TODO ajuster
 	public static int currentDifficulty = 1; // TODO ajuster
 	public static bool isStory = true;
 	public static string currentLevelName;

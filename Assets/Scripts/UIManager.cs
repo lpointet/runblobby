@@ -507,11 +507,12 @@ public class UIManager : MonoBehaviour {
 		/****************************************************************************************************************/
 		SearchGain (); // Remplit la listGainScreen
 
-		// On n'évite totalement la boucle si la liste est vide
+		// On évite totalement la boucle si la liste est vide
 		if (listGainScreen.Count > 0) {
-			while (!Input.GetMouseButtonUp (0) || listGainScreen.Count > 0) {
+			while (!Input.GetMouseButtonUp (0) && listGainScreen.Count > 0) {
 				// Ajout du nouvel objet/mode
 				if (Input.GetMouseButtonUp (0)) {
+					listGainScreen.RemoveAt (0); // On enlève celui qu'on a actuellement
 					// On met le suivant s'il existe
 					if (listGainScreen.Count > 0)
 						NewGainScreen ();
@@ -537,9 +538,9 @@ public class UIManager : MonoBehaviour {
 				yield return null;
 			}
 		}
-
 		// On cache le menu de gain d'objets
 		newItemUI.SetActive (false);
+
 		/*********************************************/
 		/* Fin d'affichage des nouveaux objets/modes */
 		/*********************************************/
@@ -643,7 +644,6 @@ public class UIManager : MonoBehaviour {
 		newItem.sprite = listGainScreen [0].gainSprite;
 		newItemBorder.sprite = listGainScreen [0].gainSprite;
 
-		listGainScreen.RemoveAt (0); // On enlève celui qu'on a actuellement
 		changeGainObject = true;
 	}
 

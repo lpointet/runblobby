@@ -104,6 +104,7 @@ public class Waterball : MonoBehaviour {
 		// On joue le son du pop
 		if (myAudio != null) {
 			myAudio.Stop ();
+			myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 			myAudio.clip = audioPop;
 			myAudio.Play ();
 		}
@@ -167,6 +168,7 @@ public class Waterball : MonoBehaviour {
 		// On joue le son du depop
 		if (myAudio != null) {
 			myAudio.Stop ();
+			myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 			myAudio.clip = audioVapor;
 			myAudio.Play ();
 		}

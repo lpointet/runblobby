@@ -24,14 +24,21 @@ public class ExplosionRadius : MonoBehaviour {
 
 	private Transform myTransform;
 	private SpriteRenderer mySprite;
+	private Animator myAnim;
 
 	private float ratioScaling = 0.25f; // L'image étant sur 64 pixels alors que l'unité est sur 16 pixels, il faut diviser par 4 pour avoir la taille "réelle"
 	private float currentExplosionTime = 0;
 
 	private bool startExplosion = false;
 
+	public float GetExplosionTime () {
+		return expansionTime + stayTime;
+	}
+
 	public void StartExplosion () {
 		gameObject.SetActive (true);
+
+		mySprite.color = explosionColor;
 
 		myTransform.localScale = Vector2.one * this.startRadius;
 
@@ -42,10 +49,11 @@ public class ExplosionRadius : MonoBehaviour {
 	void Awake () {
 		myTransform = transform;
 		mySprite = GetComponent<SpriteRenderer> ();
-
-		mySprite.color = explosionColor;
+		myAnim = GetComponent<Animator> ();
 
 		myTransform.localScale = Vector2.zero; // Permet de "cacher" l'explosion
+
+		gameObject.SetActive (false);
 	}
 
 	void OnEnable () {
@@ -75,6 +83,8 @@ public class ExplosionRadius : MonoBehaviour {
 
 		startRadius *= ratioScaling;
 		endRadius *= ratioScaling;
+		// Rotation aléatoire
+		myTransform.Rotate (Vector3.back, Random.Range (0, 360));
 	}
 
 	void Update () {
@@ -90,19 +100,23 @@ public class ExplosionRadius : MonoBehaviour {
 
 		// Si le temps d'explosion dépasse le temps d'expansion, on n'agrandit plus le cercle, et on l'affadit
 		if (currentExplosionTime > expansionTime) {
-			Color tempColor = mySprite.color;
+			Color tempColor = explosionColor;
 			tempColor.a = Mathf.Lerp (1, 0, (currentExplosionTime - expansionTime) / stayTime / 1.25f);
 			mySprite.color = tempColor;
 
+			myAnim.SetTrigger ("dissipate");
+
 			return;
 		}
-		//TODO faire un collider aussi
+
 		myTransform.localScale = Vector2.one * Mathf.Lerp (startRadius, endRadius, currentExplosionTime / expansionTime);
 	}
 
 	private void EndExplosionEffect () {
 		startExplosion = false;
 		myTransform.localScale = Vector2.zero;
+
+		myAnim.SetTrigger ("end");
 
 		gameObject.SetActive (false);
 	}

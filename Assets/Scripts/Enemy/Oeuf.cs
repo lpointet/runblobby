@@ -34,7 +34,7 @@ public class Oeuf : MonoBehaviour {
 
 	void Update () {
 		// On ne fait rien si on n'est pas en Hell
-		if (LevelManager.levelManager.GetCurrentDifficulty () != 2)
+		if (LevelManager.levelManager.GetCurrentDifficulty () < 2)
 			return;
 		
 		if (!broken) {
@@ -61,6 +61,7 @@ public class Oeuf : MonoBehaviour {
 		myTransform.localScale = Vector2.one;
 
 		broken = true;
+		myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 		myAudio.Play ();
 		myAnim.SetBool ("broken", broken);
 

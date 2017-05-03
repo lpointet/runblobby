@@ -8,10 +8,12 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class Firewall : MonoBehaviour {
 
-	private ParticleSystem fireParticle;
-	private ParticleSystem.ShapeModule fireShape;
+	/*private ParticleSystem fireParticle;
+	private ParticleSystem.ShapeModule fireShape;*/
 
 	private Transform myTransform;
+
+	[SerializeField] private GameObject firewallBlock;
 
 	// Données sur l'apparition de la boule d'eau
 	[SerializeField] private Waterball ballOfWater;
@@ -35,7 +37,7 @@ public class Firewall : MonoBehaviour {
 	[SerializeField] private float hellDelayBetweenBalls;
 
 	void Awake () {
-		fireParticle = GetComponentInChildren<ParticleSystem> ();
+		//fireParticle = GetComponentInChildren<ParticleSystem> ();
 		myTransform = transform;
 
 		timeToCreate = TimeManager.time + Random.Range (1f, 3f);
@@ -87,12 +89,28 @@ public class Firewall : MonoBehaviour {
 		myTransform.position = new Vector2 (CameraManager.cameraManager.xOffset, CameraManager.cameraManager.yOffset) + Vector2.left * Camera.main.orthographicSize * Camera.main.aspect * 2;
 		startingPosition = myTransform.position.x;
 
-		// Ajustement de la hauteur du mur de feu en fonction de l'écran (légèrement plus grand pour couvrir le bas) + un peu de largeur
-		ParticleSystem.ShapeModule shape;
+		// Ajustement de la hauteur des particules en fonction de l'écran (légèrement plus grand pour couvrir le bas) + un peu de largeur
+		/*ParticleSystem.ShapeModule shape;
 		shape = fireParticle.shape;
-		shape.box = Vector3.up * myTransform.localScale.y * 1.1f + Vector3.right;
-		// Position des particules
-		//fireParticle.transform.localPosition = 2 * Vector2.right;
+		shape.box = Vector3.up * myTransform.localScale.y * 1.1f + Vector3.right;*/
+
+		// Taille des blocs
+		firewallBlock.transform.localScale = new Vector3 (1.0f / myTransform.localScale.x, 1.0f / myTransform.localScale.y, 1);
+		// Position des blocs
+		firewallBlock.transform.localPosition = new Vector2 (0.5f, -0.5f);
+
+		// Duplication des blocs selon le besoin
+		// Ils ont une taille de 64, pour un ppu de 16, donc un ratio de 4
+		int numberBlock = Mathf.CeilToInt (myTransform.localScale.y / 4.0f);
+
+		for (int i = 0; i < numberBlock; i++) {
+			GameObject obj = Instantiate (firewallBlock);
+
+			if (obj != null) {
+				obj.transform.SetParent (myTransform, false);
+				obj.transform.localPosition = firewallBlock.transform.localPosition + Vector3.up * (i + 1) * firewallBlock.transform.localScale.y * 4.0f;
+			}
+		}
 	}
 
 	void Update () {

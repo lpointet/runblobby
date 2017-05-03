@@ -258,6 +258,13 @@ public class Character : MonoBehaviour {
 		if (!IsDead () && !IsInvincible ()) {
 			StartCoroutine (HurtEffect (invulnerabilityTime));
 			SetInvincible (invulnerabilityTime);
+
+			if (criticalHit)
+				CameraManager.cameraManager.ShakeScreen (3, 0.35f);
+			else
+				CameraManager.cameraManager.ShakeScreen (2, 0.25f);
+
+			StartCoroutine (_StaticFunction.SleepGame (50));
 		}
 	}
 	

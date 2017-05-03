@@ -8,6 +8,10 @@ public class Bave : MonoBehaviour {
 
 	public Sprite[] baveSprite;
 
+	public float minXScale;
+	public float maxXScale;
+	public float minYScale;
+	public float maxYScale;
 	private Vector2 finalScale;
 	private float lerpingTime;
 
@@ -52,11 +56,14 @@ public class Bave : MonoBehaviour {
 		// On affiche un sprite aléatoire parmi la liste
 		GetComponent<SpriteRenderer> ().sprite = baveSprite [Random.Range (0,  baveSprite.Length)];
 
-		finalScale = new Vector2 (Random.Range (1.75f, 2.5f), Random.Range (1f, 1.5f)); // Pas toujours la même taille de flaque
+		finalScale = new Vector2 (Random.Range (minXScale, maxXScale), Random.Range (minYScale, maxYScale)); // Pas toujours la même taille de flaque
 		lerpingTime = 0;
 		myTransform.localScale = Vector2.one;
 
-		myAudio.Play ();
+		if (myAudio != null) {
+			myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
+			myAudio.Play ();
+		}
 	}
 
 	void Update() {

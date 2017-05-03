@@ -85,7 +85,10 @@ public class Weapon : MonoBehaviour {
 		}
 	}
 
-	private void ShootController(TouchRight touch) {
+	private void ShootController (TouchRight touch) {
+		if (!LevelManager.player.activateTouch)
+			return;
+		
 		if (currentWeaponFireRate == 0 || !isMachineGun) {
 			// On attend une frame pour que WeaponRotation.cs ait le temps de se mettre en place
 			Invoke ("Shoot", TimeManager.deltaTime);
@@ -95,12 +98,12 @@ public class Weapon : MonoBehaviour {
 		}
 	}
 
-	private void ShootStop(EndTouch touch) {
+	private void ShootStop (EndTouch touch) {
 		if (shootingId == touch.fingerId)
 			wantToShoot = false;
 	}
 
-	private void Shoot() {
+	private void Shoot () {
 		// Si on a des munitions, on tire
 		if (currentLoad >= 1) {
 			// Recalcul de la puissance du tir au moment dudit tir
@@ -153,8 +156,8 @@ public class Weapon : MonoBehaviour {
 			currentWeaponAmmunition = weaponAmmunition + weaponOwner.machineGun;
 
 			// Ajout des talents de LastWish
-			if (GameData.gameData.playerData.talent.lastWishAtk > 0 && weaponOwner == LevelManager.player && LevelManager.player.HasLastWish ()) {Debug.Log(currentWeaponPower);
-				currentWeaponPower += Mathf.RoundToInt (GameData.gameData.playerData.talent.lastWishAtk * GameData.gameData.playerData.talent.lastWishAtkPointValue);Debug.Log(currentWeaponPower);
+			if (GameData.gameData.playerData.talent.lastWishAtk > 0 && weaponOwner == LevelManager.player && LevelManager.player.HasLastWish ()) {
+				currentWeaponPower += Mathf.RoundToInt (GameData.gameData.playerData.talent.lastWishAtk * GameData.gameData.playerData.talent.lastWishAtkPointValue);
 			}
 		} else {
 			Debug.LogWarning ("No Character for this Weapon " + this.name);

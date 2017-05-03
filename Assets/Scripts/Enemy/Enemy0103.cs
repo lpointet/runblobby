@@ -328,6 +328,7 @@ public class Enemy0103 : Enemy {
 		SFXBackground sfxBg = LevelManager.levelManager.GetComponentInChildren<SFXBackground> ();
 		AudioSource myAudio = sfxBg.GetComponent<AudioSource> ();
 		sfxBg.enabled = false;
+		myAudio.pitch = 1.0f + Random.Range (-0.25f, 0.35f);
 		myAudio.clip = boulderSound;
 		myAudio.volume = 1;
 		myAudio.loop = true;

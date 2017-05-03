@@ -5,11 +5,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 423198}
-  - 114: {fileID: 11463614}
-  - 114: {fileID: 11462440}
+  - component: {fileID: 423198}
+  - component: {fileID: 11463614}
+  - component: {fileID: 11462440}
   m_Layer: 0
   m_Name: _GameData
   m_TagString: Untagged
@@ -26,10 +26,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &11462440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -61,11 +61,332 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
   - {fileID: 21300002, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
   - {fileID: 21300004, guid: c6d5f0dcfd7848046990a8dadd8f1e65, type: 3}
-  bave:
-  - {fileID: 21300000, guid: 90ab8236c5bf05442849bda82d74a20e, type: 3}
-  - {fileID: 21300002, guid: 90ab8236c5bf05442849bda82d74a20e, type: 3}
-  - {fileID: 21300004, guid: 90ab8236c5bf05442849bda82d74a20e, type: 3}
-  - {fileID: 21300006, guid: 90ab8236c5bf05442849bda82d74a20e, type: 3}
+  level:
+  - {fileID: 21300000, guid: ae45b52df6fffe240ac394321500bcf1, type: 3}
+  - {fileID: 21300000, guid: 9337e4e15a3fa5441a975525d2f826eb, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  item:
+  - itemImage: {fileID: 21300018, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Grass Sword
+    itemLevel: 1
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300020, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Ash Sword
+    itemLevel: 2
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300022, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Limestone Sword
+    itemLevel: 3
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300024, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Seaweed Sword
+    itemLevel: 4
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300026, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Mud Sword
+    itemLevel: 5
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300028, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Pebble Sword
+    itemLevel: 6
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300030, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Cloud Sword
+    itemLevel: 7
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300032, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Moondust Sword
+    itemLevel: 8
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300034, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Star Sword
+    itemLevel: 9
+    itemMode: 1
+    itemType: 0
+  - itemImage: {fileID: 21300036, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Leaf Sword
+    itemLevel: 1
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300038, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Ember Sword
+    itemLevel: 2
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300040, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Granite Sword
+    itemLevel: 3
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300042, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Shell Sword
+    itemLevel: 4
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300044, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Reed Sword
+    itemLevel: 5
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300046, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Rock Sword
+    itemLevel: 6
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300048, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Hail Sword
+    itemLevel: 7
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300050, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Moonstone Sword
+    itemLevel: 8
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300052, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Antimater Sword
+    itemLevel: 9
+    itemMode: 2
+    itemType: 0
+  - itemImage: {fileID: 21300054, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Grass Shield
+    itemLevel: 1
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300056, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Ash Shield
+    itemLevel: 2
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300058, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Limestone Shield
+    itemLevel: 3
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300060, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Seaweed Shield
+    itemLevel: 4
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300062, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Mud Shield
+    itemLevel: 5
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300064, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Pebble Shield
+    itemLevel: 6
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300066, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Cloud Shield
+    itemLevel: 7
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300068, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Moondust Shield
+    itemLevel: 8
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300070, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Star Shield
+    itemLevel: 9
+    itemMode: 1
+    itemType: 1
+  - itemImage: {fileID: 21300072, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Leaf Shield
+    itemLevel: 1
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300074, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Ember Shield
+    itemLevel: 2
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300076, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Granite Shield
+    itemLevel: 3
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300078, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Shell Shield
+    itemLevel: 4
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300080, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Reed Shield
+    itemLevel: 5
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300082, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Rock Shield
+    itemLevel: 6
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300084, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Hail Shield
+    itemLevel: 7
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300086, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Moonstone Shield
+    itemLevel: 8
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300088, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Antimater Shield
+    itemLevel: 9
+    itemMode: 2
+    itemType: 1
+  - itemImage: {fileID: 21300090, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Grass Helm
+    itemLevel: 1
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300092, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Ash Helm
+    itemLevel: 2
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300094, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Limestone Helm
+    itemLevel: 3
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300096, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Seaweed Helm
+    itemLevel: 4
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300098, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Mud Helm
+    itemLevel: 5
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300100, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Pebble Helm
+    itemLevel: 6
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300102, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Cloud Helm
+    itemLevel: 7
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300104, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Moondust Helm
+    itemLevel: 8
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300106, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Star Helm
+    itemLevel: 9
+    itemMode: 1
+    itemType: 2
+  - itemImage: {fileID: 21300108, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Leaf Helm
+    itemLevel: 1
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300110, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Ember Helm
+    itemLevel: 2
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300112, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Granite Helm
+    itemLevel: 3
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300114, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Shell Helm
+    itemLevel: 4
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300116, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Reed Helm
+    itemLevel: 5
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300118, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Rock Helm
+    itemLevel: 6
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300120, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Hail Helm
+    itemLevel: 7
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300122, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Moonstone Helm
+    itemLevel: 8
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300124, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Antimater Helm
+    itemLevel: 9
+    itemMode: 2
+    itemType: 2
+  - itemImage: {fileID: 21300126, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Aroma
+    itemLevel: 1
+    itemMode: 9
+    itemType: 3
+  - itemImage: {fileID: 21300128, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Heat
+    itemLevel: 2
+    itemMode: 9
+    itemType: 3
+  - itemImage: {fileID: 21300130, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Dark
+    itemLevel: 3
+    itemMode: 9
+    itemType: 3
+  - itemImage: {fileID: 21300132, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Breeze
+    itemLevel: 4
+    itemMode: 9
+    itemType: 3
+  - itemImage: {fileID: 21300134, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Sulfur
+    itemLevel: 5
+    itemMode: 9
+    itemType: 3
+  - itemImage: {fileID: 21300136, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Vertigo
+    itemLevel: 6
+    itemMode: 9
+    itemType: 3
+  - itemImage: {fileID: 21300138, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Sunshine
+    itemLevel: 7
+    itemMode: 9
+    itemType: 3
+  - itemImage: {fileID: 21300140, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Eclipse
+    itemLevel: 8
+    itemMode: 9
+    itemType: 3
+  - itemImage: {fileID: 21300142, guid: 5d5da537b765004478d1e0cd0c156283, type: 3}
+    itemName: Void
+    itemLevel: 9
+    itemMode: 9
+    itemType: 3
 --- !u!114 &11463614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -88,23 +409,23 @@ MonoBehaviour:
     - scoreRecord: 0
       scoreRatioRecord: 0
       distanceRecord: 0
-      distanceMax: 200
-      isBossDead: 0
-      healthRatioRecord: 0
-    - scoreRecord: 0
-      scoreRatioRecord: 0
-      distanceRecord: 0
       distanceMax: 1000
       isBossDead: 0
       healthRatioRecord: 0
     - scoreRecord: 0
       scoreRatioRecord: 0
       distanceRecord: 0
-      distanceMax: 1000
+      distanceMax: 1500
+      isBossDead: 0
+      healthRatioRecord: 0
+    - scoreRecord: 0
+      scoreRatioRecord: 0
+      distanceRecord: 0
+      distanceMax: 2000
       isBossDead: 0
       healthRatioRecord: 0
   - levelNumber: 2
-    levelName: Le lac des cygnes
+    levelName: Hellish Hell
     arcadeData:
       scoreRecord: 0
       scoreRatioRecord: 0
@@ -113,19 +434,44 @@ MonoBehaviour:
     - scoreRecord: 0
       scoreRatioRecord: 0
       distanceRecord: 0
-      distanceMax: 500
+      distanceMax: 1000
       isBossDead: 0
       healthRatioRecord: 0
     - scoreRecord: 0
       scoreRatioRecord: 0
       distanceRecord: 0
-      distanceMax: 800
+      distanceMax: 1500
       isBossDead: 0
       healthRatioRecord: 0
     - scoreRecord: 0
       scoreRatioRecord: 0
       distanceRecord: 0
-      distanceMax: 1200
+      distanceMax: 2000
+      isBossDead: 0
+      healthRatioRecord: 0
+  - levelNumber: 3
+    levelName: Night Cave
+    arcadeData:
+      scoreRecord: 0
+      scoreRatioRecord: 0
+      distanceRecord: 0
+    storyData:
+    - scoreRecord: 0
+      scoreRatioRecord: 0
+      distanceRecord: 0
+      distanceMax: 1000
+      isBossDead: 0
+      healthRatioRecord: 0
+    - scoreRecord: 0
+      scoreRatioRecord: 0
+      distanceRecord: 0
+      distanceMax: 1500
+      isBossDead: 0
+      healthRatioRecord: 0
+    - scoreRecord: 0
+      scoreRatioRecord: 0
+      distanceRecord: 0
+      distanceMax: 2000
       isBossDead: 0
       healthRatioRecord: 0
 --- !u!1001 &100100000

@@ -1,10 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-
-// TODO ajouter des écrans après la victoire en cas de débloquage de nouveaux niveaux/diff/mode/items
-// TODO afficher les boutons pour poursuivre APRES ces écrans (si pas d'écrans, après le chargement des barres habituelles)
-// TODO mettre un texte par défaut pour la description des items "vides" dans le menu des équipements
 
 /* DRAGO LE DRAGON
  * Se déplace lentement de bas en haut, avec peu de variations

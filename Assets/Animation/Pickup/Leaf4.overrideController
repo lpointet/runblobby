@@ -1,0 +1,14 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Leaf4
+  m_Controller: {fileID: 9100000, guid: 7544f8df9cb4c6a4db8df871a6582994, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: c1f756832060db84081ecb65e27da633, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c1f756832060db84081ecb65e27da633, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e294cf7b0e1852044a0b4ba14e67f7ba, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 96fbbc0c437aa344bafc7cc2a8593d79, type: 2}

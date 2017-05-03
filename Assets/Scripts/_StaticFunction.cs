@@ -379,6 +379,22 @@ public static class _StaticFunction {
 		return (inCurrent - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 	}
 
+	// Fonction utilisée pour "arrêter" le temps temporairement
+	public static IEnumerator SleepGame (float millisecond) {
+		float currentTimeScale = Time.timeScale;
+		float currentTime = Time.unscaledTime;
+		float releaseTime = currentTime + millisecond / 1000.0f;
+
+		Time.timeScale = 0;
+
+		while (Time.unscaledTime < releaseTime) {
+			currentTime += Time.unscaledDeltaTime;
+			yield return null;
+		}
+
+		Time.timeScale = currentTimeScale;
+	}
+
 	// Fonction utilisée pour augmenter le volume d'un son progressivement
 	public static IEnumerator AudioFadeIn(AudioSource audio, float volumeMax = 1, float delay = 1) {
 		if (audio == null || volumeMax < 0)

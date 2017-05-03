@@ -11,10 +11,11 @@ public class PlayerController : Character {
 
 	// Calculé à partir des formules de portée et de hauteur max en partant des conditions initiales
 	// Permet de conserver une hauteur et une distance constante des sauts pour toutes les vitesses horizontales
-	private const float maxJumpHeight = 3;
-	private const float jumpDistance = 6;
-	private const float constJump = 4 * maxJumpHeight / jumpDistance;
-	private const float constGravity = 0.5f / maxJumpHeight / 10f;
+	[Header("Puissance des sauts")]
+	[SerializeField] private float maxJumpHeight = 3;
+	[SerializeField] private float jumpDistance = 6;
+	private float constJump;
+	private float constGravity;
 
 	/**
 	 * Player Stats
@@ -32,7 +33,7 @@ public class PlayerController : Character {
 	private float timeLerpHP;
 	private float lerpingHP;
 
-	private bool activateTouch = true; // Permet de bloquer ou non l'interaction de l'écran pour le joueur
+	public bool activateTouch { get; private set; } // Permet de bloquer ou non l'interaction de l'écran pour le joueur
 
 	private bool grounded;
 	[SerializeField] private Transform groundCheck;
@@ -69,6 +70,7 @@ public class PlayerController : Character {
 	private bool _bounced = false;
 	private int currentJump = 0;
 	private int initialMaxDoubleJump;
+	private bool wasGrounded = false;
 
 	[Header("Vol")]
 	[SerializeField] private GameObject parachute;
@@ -77,13 +79,19 @@ public class PlayerController : Character {
 	[SerializeField] private float flySpeedCoeffBonusLastWish = 2.5f; // Ajout d'un coef de multiplication si LastWish actif en ultime
 	private float initialGravityScale;
 	private bool isFlying = false; // Pendant le vol
-	private bool wasFlying = false; // A la fin d'un vol avant l'atterrissage
+	private bool _wasFlying = false; // A la fin d'un vol avant l'atterrissage
 	private bool wantToFly = false; // Quand le joueur touche l'écran pour sauter
 	private Vector2 flyingTouchPosition;
 	private int flyingTouchId = -1;
 
 	private float yPosAirDeath;
 	private float yVariableAirDeath = 0f;
+
+	[Header("SFX")]
+	[SerializeField] private GameObject aerialDust;
+	[SerializeField] private GameObject landingDust;
+	[SerializeField] private GameObject speedDust;
+	[SerializeField] private GameObject stunStar;
 
     /**
 	 * Getters & Setters
@@ -108,6 +116,11 @@ public class PlayerController : Character {
 		get { return _pooled; }
 		set { _pooled = value; }
 	}
+	public bool wasFlying {
+		get { return _wasFlying; }
+		set { _wasFlying = value; }
+	}
+
 
 	public bool canCollectAngel {
 		get { return _canCollectAngel; }
@@ -243,12 +256,16 @@ public class PlayerController : Character {
     /* End of Getters & Setters */
 
 	protected override void Awake() {
+		constJump = 4 * maxJumpHeight / jumpDistance;
+		constGravity = 0.5f / maxJumpHeight / 10f;
+
         base.Awake();
 
 		myRb = GetComponent<Rigidbody2D> ();
 		myAnim = GetComponent<Animator> ();
 		myAudio = GetComponent<PlayerSoundEffect> ();
 
+		activateTouch = true;
 		EquipWeapon (myTransform.FindChild ("Weapon").GetComponent<Weapon> ());
         initialMaxDoubleJump = maxDoubleJump;
 		minHealthRatio = 1;
@@ -360,8 +377,9 @@ public class PlayerController : Character {
 			myTransform.Translate (Mathf.Sign(myTransform.position.x) * Vector3.left * 0.005f);
 
 		// Assure qu'on puisse faire plusieurs sauts à partir du moment où on est au sol
-		if (IsGrounded ())
+		if (IsGrounded ()) {
 			currentJump = 0;
+		}
 
 		// Ajustement du saut et gravité en fonction de la vitesse
 		if (!IsFlying() && !wasFlying) {
@@ -403,8 +421,8 @@ public class PlayerController : Character {
             {
                 Collider2D[] colliderHits = new Collider2D[10];
                 int nbCollider;
-                // Si on touche quelque chose, on allume les 10 cases autour si ce sont des nuages
-                nbCollider = Physics2D.OverlapAreaNonAlloc(new Vector2(hit.point.x - 0.5f, hit.point.y - 0.4f), new Vector2(hit.point.x + 8.5f, hit.point.y + 0.4f), colliderHits, layerGround);
+                // Si on touche quelque chose, on allume les 15 cases autour si ce sont des nuages
+                nbCollider = Physics2D.OverlapAreaNonAlloc (new Vector2(hit.point.x - 0.5f, hit.point.y - 0.4f), new Vector2(hit.point.x + 13.5f, hit.point.y + 0.4f), colliderHits, layerGround);
                 for (int j = 0; j < nbCollider; j++)
                 {
                     cloudBlock = colliderHits[j].GetComponent<CloudBlock>();
@@ -418,6 +436,19 @@ public class PlayerController : Character {
 				wasFlying = false;
             }
         }
+
+		// Contrôle pour savoir si le joueur a atteri
+		if (!wasGrounded && IsGrounded () && !IsFlying ()) {
+			GameObject dust = PoolingManager.current.Spawn(landingDust.name);
+
+			if (dust != null) {
+				dust.transform.position = myTransform.position;
+				dust.transform.rotation = Quaternion.identity;
+
+				dust.gameObject.SetActive (true);
+			}
+		}
+		wasGrounded = LevelManager.player.IsGrounded () && !LevelManager.player.wasFlying;
 	}
 	
 	void OnGUI() {
@@ -461,7 +492,7 @@ public class PlayerController : Character {
 	private void PlayerActionRight (TouchRight touch) {
 		if (!activateTouch)
 			return;
-
+		
 		// Si un ennemi est présent, on ne peut sauter qu'à gauche de l'écran
 		if (LevelManager.levelManager.GetEnemyEnCours () != null)
 			return;
@@ -504,7 +535,7 @@ public class PlayerController : Character {
 	public void Jump (float jumpValue) {
 		// Affichage d'un effet de "nuage" à l'endroit du saut s'il est effectué en l'air
 		if (!IsGrounded () && !IsFlying ()) {
-			GameObject dust = PoolingManager.current.Spawn("AerialDust");
+			GameObject dust = PoolingManager.current.Spawn(aerialDust.name);
 
 			if (dust != null) {
 				dust.transform.position = myTransform.position;
@@ -643,6 +674,20 @@ public class PlayerController : Character {
 		}
 	}
 
+	public void SpeedDusting () {
+		if (TimeManager.paused || IsDead ())
+			return;
+		
+		GameObject dust = PoolingManager.current.Spawn(speedDust.name);
+
+		if (dust != null) {
+			dust.transform.position = myTransform.position + 0.5f * Vector3.left;
+			dust.transform.rotation = Quaternion.identity;
+
+			dust.gameObject.SetActive (true);
+		}
+	}
+
 	// Fonction ne servant qu'à lancer la coroutine ici, car les pickups disparaissent
 	public void AttractCoins( float radius, LayerMask layerCoins, float attractLength ) {
 		StartCoroutine (CoroutineAttractCoins (radius, layerCoins, attractLength));
@@ -660,8 +705,8 @@ public class PlayerController : Character {
 
 				for (int i = 0; i < nbCoins; i++) {
 					// On ignore les pièces de la liste si elles sont hors champ
-					if (coins [i].transform.position.x > myTransform.position.x + CameraManager.cameraEndPosition ||
-						coins [i].transform.position.x < myTransform.position.x + CameraManager.cameraStartPosition) {
+					if (coins [i].transform.position.x > CameraManager.cameraRightPosition ||
+						coins [i].transform.position.x < CameraManager.cameraLeftPosition) {
 						continue;
 					}
 
@@ -673,10 +718,14 @@ public class PlayerController : Character {
 					// Le vecteur direction nous donne la droite entre la pièce et le bonus, donc le joueur
 					direction = coins [i].transform.position - myTransform.position;
 
-					// Faire venir la pièce vers le joueur
-					// Vitesse inversement proportionelle à la distance, minimum 0.5
-					// Fonction de la vitesse de déplacement (pour prévenir des loupés en cas de haut vitesse)
-					coins [i].transform.Translate (RatioSpeed () * Mathf.Min (0.5f, 1 / direction.magnitude) * -direction.normalized);
+					// Si la pièce est dans le cercle unité autour du joueur, on la collecte, sinon on l'approche
+					if (direction.magnitude < 0.75f + RatioSpeed () * 0.1f) {
+						coins [i].GetComponent<CoinPickup> ().PickLeaf ();
+					} else {
+						// Faire venir la pièce vers le joueur
+						// Vitesse inversement proportionelle à la distance
+						coins [i].transform.Translate (RatioSpeed () * 0.75f / direction.magnitude * -direction.normalized);
+					}
 				}
 			}
 			attractLength -= TimeManager.deltaTime;
@@ -696,8 +745,8 @@ public class PlayerController : Character {
 			if (!TimeManager.paused && !IsDead ()) {
 				for (int i = 0; i < coinsLeft.Count; i++) {
 					// On supprime les pièces de la liste si elles sont hors champ
-					if (coinsLeft [i].transform.position.x > myTransform.position.x + CameraManager.cameraEndPosition ||
-					   coinsLeft [i].transform.position.x < myTransform.position.x + CameraManager.cameraStartPosition) {
+					if (coinsLeft [i].transform.position.x > CameraManager.cameraRightPosition ||
+					   coinsLeft [i].transform.position.x < CameraManager.cameraLeftPosition) {
 						coinsLeft.Remove (coinsLeft [i]);
 						continue;
 					}
@@ -711,10 +760,14 @@ public class PlayerController : Character {
 					// Le vecteur direction nous donne la droite entre la pièce et le bonus, donc le joueur
 					direction = coinsLeft [i].transform.position - myTransform.position;
 
-					// Faire venir la pièce vers le joueur
-					// Vitesse inversement proportionelle à la distance, minimum 0.5
-					// Fonction de la vitesse de déplacement (pour prévenir des loupés en cas de haut vitesse)
-					coinsLeft [i].transform.Translate (RatioSpeed () * Mathf.Min (0.5f, 1 / direction.magnitude) * -direction.normalized);
+					// Si la pièce est dans le cercle unité autour du joueur, on la collecte, sinon on l'approche
+					if (direction.magnitude < 0.75f + RatioSpeed () * 0.1f) {
+						coinsLeft [i].GetComponent<CoinPickup> ().PickLeaf ();
+					} else {
+						// Faire venir la pièce vers le joueur
+						// Vitesse inversement proportionelle à la distance
+						coinsLeft [i].transform.Translate (RatioSpeed () * 0.75f / direction.magnitude * -direction.normalized);
+					}
 				}
 			}
 			yield return null;
@@ -754,5 +807,54 @@ public class PlayerController : Character {
 
 		// On met à jour le ratio minHealthRatio si HP/HPmax est inférieur
 		minHealthRatio = Mathf.Min (healthPoint / (float)healthPointMax, minHealthRatio);
+	}
+
+	public void ShakePlayer (float shakingTime = 0.25f, bool disableTouch = true, bool slowPlayer = false, bool stunEffect = false) {
+		StartCoroutine (ShakingPlayer (shakingTime, disableTouch, slowPlayer, stunEffect));
+	}
+
+	public void StopShake () {
+		StopCoroutine (ShakingPlayer ());
+	}
+
+	private IEnumerator ShakingPlayer (float shakingTime = 0.25f, bool disableTouch = true, bool slowPlayer = false, bool stunEffect = false) {
+		LevelManager.player.SwitchTouch (false); // Le joueur ne peut plus agir
+
+		// Activation de l'effet de "stun" visuel
+		GameObject stun = PoolingManager.current.Spawn (stunStar.name);
+		if (stunEffect) {
+			if (stun != null) {
+				stun.transform.position = myTransform.position;
+				stun.transform.rotation = Quaternion.identity;
+				stun.transform.SetParent (myTransform, true);
+
+				stun.gameObject.SetActive (true);
+			}
+		}
+
+		float currentXPosition = myTransform.position.x; // Pour décaler par rapport à la position courante
+		float currentTime = 0;
+
+		while (currentTime < shakingTime) {
+			myTransform.position = new Vector2 (currentXPosition + 0.15f * Mathf.Sin (currentTime * 60.0f), myTransform.position.y);
+
+			// On fait reculer la position "moyenne" du joueur si on doit le bloquer de la distance parcourue par sa vitesse
+			if (slowPlayer)
+				currentXPosition -= LevelManager.levelManager.GetLocalDistance () * 0.5f;
+
+			currentTime += TimeManager.deltaTime;
+			yield return null;
+		}
+
+		myTransform.position = new Vector2 (currentXPosition, myTransform.position.y); // Remise à la position
+
+		if (stunEffect) {
+			if (stun != null) {
+				stun.transform.parent = PoolingManager.pooledObjectParent;
+				stun.gameObject.SetActive (false);
+			}
+		}
+
+		LevelManager.player.SwitchTouch (true);
 	}
 }

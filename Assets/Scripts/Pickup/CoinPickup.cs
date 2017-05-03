@@ -16,32 +16,41 @@ public class CoinPickup : Pickup {
 
 		playerTransform = LevelManager.player.transform;
 
-		despawnTime = 1f;
+		despawnTime = 0.2f;
 	}
 
 	protected override void Update () {
 		if (TimeManager.paused)
 			return;
 
-		if (!counted && myTransform.position.x < playerTransform.position.x + 1f) { // On prend un peu d'avance sur le joueur
+		if (!counted && myTransform.position.x < playerTransform.position.x + 1f) // On prend un peu d'avance sur le joueur
 			CountNewLeaf();
-		}
+
+		if (myTransform.position.x < CameraManager.cameraLeftPosition && !despawnCalled)
+			OnDespawn ();
 
 		base.Update ();
 	}
 	
 	public void Reset() {
 		myTransform.position = initialPosition;
-		myRender.transform.localPosition = Vector2.zero;
+		mySprite.transform.localPosition = Vector2.zero;
 		counted = false;
 	}
 
 	protected override void OnEnable() {
 		base.OnEnable();
-		// On s'assure que le collider n'est plus dans la table
-		LevelManager.player.RemovePickup( myCollider );
+		// On s'assure que le collider n'est plus dans la table (si jamais on va trop vite...)
+		//LevelManager.player.RemovePickup (myCollider);
 		// Réinitialiser les positions
 		Reset();
+	}
+
+	// Fonction permettant de "récupérer" les pièces depuis une autre classe
+	public void PickLeaf () {
+		picked = true;
+		OnPick ();
+		PickEffect ();
 	}
 
     protected override void OnPick() {
