@@ -18,10 +18,6 @@ public class TouchManager : MonoBehaviour {
 	private RaycastHit2D hit; // Sert à vérifier qu'on ne touche pas une zone "cliquable"
 	private LayerMask layerHit; // On n'intercepte pas autrement pour ne pas perdre des zones pour sauter/tirer - On intercepte si on est sur une zone "cliquable" et que le joueur peut cliquer
 
-	private bool mouseClick;
-	private bool mouseUp;
-	private bool mouseClicked;
-
 	void Awake () {
 		if (current == null) {
 			current = this;
@@ -46,7 +42,7 @@ public class TouchManager : MonoBehaviour {
 		// On désactive ces touches si le joueur est mort ou si le jeu est en pause
 		if (TimeManager.paused || LevelManager.player.IsDead () || SceneManager.GetActiveScene ().buildIndex == 0)
 			return;
-
+		
 		// Si l'appareil est touch et multi-touch
 		if (Input.touchSupported && Input.multiTouchEnabled) {
 			int nbTouches = Input.touchCount;
@@ -112,15 +108,7 @@ public class TouchManager : MonoBehaviour {
 		}
 		// Si l'appareil n'est pas touch ou multi-touch
 		else {
-			mouseClick = Input.GetMouseButton(0);
-			mouseUp = Input.GetMouseButtonUp(0);
-
-			// Certains écrans donnent true pour les 2 en même temps
-			if( mouseUp && mouseClick ) {
-				mouseClicked = true; // Permet d'attendre une frame avant de gérer la fin du clic
-			}
-
-			if (mouseClick) {
+			if (Input.GetMouseButton (0)) {
 				// La première fois qu'on appuie, on regarde de quel côté on est pour "enregistrer" le bouton
 				// TODO placer toutes ces conditions dans le multi-touch
 				if (Input.GetMouseButtonDown (0)) {
@@ -218,7 +206,7 @@ public class TouchManager : MonoBehaviour {
 						rightTouchPosition = Input.mousePosition;
 					}
 				}
-			} else if (mouseUp || mouseClicked) {
+			} else if (Input.GetMouseButtonUp (0)) {
 				// Gauche
 				if (leftTouchId != -1) {
 					Mediator.current.Publish<EndTouch> (new EndTouch () { fingerId = leftTouchId });
@@ -229,7 +217,6 @@ public class TouchManager : MonoBehaviour {
 					Mediator.current.Publish<EndTouch> (new EndTouch () { fingerId = rightTouchId });
 					rightTouchId = -1;
 				}
-				mouseClicked = false; // Reset
 			}
 		}
 	}
